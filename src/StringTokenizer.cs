@@ -35,15 +35,10 @@ public class StringTokenizer<TTokenType>
 
     public override int GetHashCode() => System.HashCode.Combine(TokenType, Text);
 
-    public static bool operator ==(Token left, Token right)
-    {
-      if (ReferenceEquals(left, null))
-        return ReferenceEquals(right, null);
+    public static bool operator ==(Token left, Token right) =>
+      (left is null && right is null) || (left is not null && left.Equals(right));
 
-      return left.Equals(right);
-    }
-
-    public static bool operator !=(Token left, Token right) =>  !(left == right);
+    public static bool operator !=(Token left, Token right) => !(left == right);
   }
 
   // Private fields
