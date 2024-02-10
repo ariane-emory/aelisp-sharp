@@ -1,7 +1,7 @@
 public static partial class AE
 {
-  public static class Types
-  {
+  // public static class Types
+  // {
     public abstract class LispObject
     {
       public LispObject? Properties { get; set; } = null;
@@ -110,12 +110,12 @@ public static partial class AE
       }
     }
 
-    public abstract class LispLambda : LispUserFunction
+    private class LispLambda : LispUserFunction
     {
       public LispLambda(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
     }
 
-    public abstract class LispMacro : LispUserFunction
+    public class LispMacro : LispUserFunction
     {
       public LispMacro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
     }
@@ -126,12 +126,12 @@ public static partial class AE
 
       public LispSymbol(string value) => Value = value;
     }
+//  }
 
-    public static readonly LispSymbol Nil = new LispSymbol("nil");
-    public static readonly LispSymbol True = new LispSymbol("t");
-    public static LispObject SymbolsList = Nil;
-  }
+  public static readonly LispSymbol Nil         = new LispSymbol("nil");
+  public static readonly LispSymbol True        = new LispSymbol("t");
+  public static          LispObject SymbolsList = Nil;
 
-  public static Types.LispObject Cons(Types.LispObject car, Types.LispObject cdr) => new Types.LispCons(car, cdr);
+  public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
 }
