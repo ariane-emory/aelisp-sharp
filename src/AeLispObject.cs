@@ -5,6 +5,13 @@ public static partial class AE
     public LispObject Properties { get; set; } = Nil;
   }
 
+  public class LispSymbol : LispObject
+  {
+    public string Value { get; }
+
+    public LispSymbol(string value) => Value = value;
+  }
+
   public class LispString : LispObject
   {
     public string Value { get; }
@@ -118,22 +125,28 @@ public static partial class AE
     public LispMacro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
   }
 
-  public class LispSymbol : LispObject
-  {
-    public string Value { get; }
-
-    public LispSymbol(string value) => Value = value;
-  }
-
-  public static readonly LispSymbol Nil   = new LispSymbol("nil");
-  public static readonly LispSymbol True  = new LispSymbol("t");
-  public static LispObject SymbolsList    = Nil;
+  public static readonly LispSymbol Nil = new LispSymbol("nil");
+  public static readonly LispSymbol True = new LispSymbol("t");
+  public static LispObject SymbolsList = Nil;
 
   public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
-   static AE() 
-   {
-      Nil.Properties = Nil;
-      True.Properties = Nil;
-   }
+  static AE()
+  {
+    Nil.Properties = Nil;
+    True.Properties = Nil;
+  }
+
+  class Dummy
+  {
+    public readonly int One;
+    public int Two { get; }
+
+    Dummy()
+    {
+      One = 1;
+      Two = 2;
+    }
+  }
+
 }
