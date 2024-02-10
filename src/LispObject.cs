@@ -1,6 +1,6 @@
 namespace AeLisp
 {
-  public static class Object
+  public static class Types
   {
     public abstract class LispObject
     {
@@ -128,6 +128,7 @@ namespace AeLisp
     }
 
     public static readonly LispSymbol Nil = new LispSymbol("nil");
+    public static readonly LispSymbol True = new LispSymbol("t");
     public static LispObject SymbolsList = Nil;
 
   }
