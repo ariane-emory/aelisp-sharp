@@ -31,19 +31,19 @@ public class StringTokenizer<TTokenType>
       return typeEquals && textEquals;
     }
 
-    public override bool Equals(object? obj) => obj is Token token && Equals(token);
+    // public override bool Equals(object? obj) => obj is Token token && Equals(token);
 
-    public override int GetHashCode() => System.HashCode.Combine(TokenType, Text);
+    // public override int GetHashCode() => System.HashCode.Combine(TokenType, Text);
 
-    public static bool operator ==(Token left, Token right)
-    {
-      if (ReferenceEquals(left, null))
-        return ReferenceEquals(right, null);
+    // public static bool operator ==(Token left, Token right)
+    // {
+    //   if (ReferenceEquals(left, null))
+    //     return ReferenceEquals(right, null);
 
-      return left.Equals(right);
-    }
+    //   return left.Equals(right);
+    // }
 
-    public static bool operator !=(Token left, Token right) =>  !(left == right);
+    // public static bool operator !=(Token left, Token right) =>  !(left == right);
   }
 
   // Private fields
