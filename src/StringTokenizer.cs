@@ -19,65 +19,31 @@ public class StringTokenizer<TTokenType>
       Text = value;
     }
 
-    // Implement IEquatable<Token>.Equals
+    // Instance methods
     public bool Equals(Token? other)
     {
       if (other is null)
-      {
         return false;
-      }
 
-      // Use EqualityComparer<T>.Default to handle equality comparison for TTokenType,
-      // which works for both value and reference types and respects IEquatable<T> if implemented.
       bool typeEquals = EqualityComparer<TTokenType>.Default.Equals(TokenType, other.TokenType);
       bool textEquals = Text == other.Text;
 
       return typeEquals && textEquals;
     }
 
-    // Override object.Equals
-    public override bool Equals(object? obj)
-    {
-      return obj is Token token && Equals(token);
-    }
+    public override bool Equals(object? obj) => obj is Token token && Equals(token);
 
-    // Override object.GetHashCode
-    public override int GetHashCode()
-    {
-      // Use System.HashCode if available (.NET Core 2.1+), for better hashing.
-      // Otherwise, you can use a simple approach like XOR (^) or a combination of field hash codes.
-      // Adjust the hashing strategy based on your needs and .NET version.
+    public override int GetHashCode() => System.HashCode.Combine(TokenType, Text);
 
-#if NETCOREAPP2_1_OR_GREATER
-      return System.HashCode.Combine(TokenType, Text);
-#else
-        unchecked // Overflow is fine, just wrap
-        {
-            int hash = 17;
-            // Suitable nullity checks etc, of course :)
-            hash = hash * 23 + TokenType.GetHashCode();
-            hash = hash * 23 + (Text != null ? Text.GetHashCode() : 0);
-            return hash;
-        }
-#endif
-    }
-
-    // Implement equality operator
     public static bool operator ==(Token left, Token right)
     {
       if (ReferenceEquals(left, null))
-      {
         return ReferenceEquals(right, null);
-      }
 
       return left.Equals(right);
     }
 
-    // Implement inequality operator
-    public static bool operator !=(Token left, Token right)
-    {
-      return !(left == right);
-    }
+    public static bool operator !=(Token left, Token right) =>  !(left == right);
   }
 
   // Private fields
