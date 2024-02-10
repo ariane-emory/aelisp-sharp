@@ -1,4 +1,4 @@
-namespace AeLisp
+public static partial class AE
 {
    public enum TokenType
    {

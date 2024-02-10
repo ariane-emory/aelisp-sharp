@@ -1,4 +1,4 @@
-namespace AeLisp
+public static partial class AE
 {
   public static class Types
   {
@@ -130,6 +130,8 @@ namespace AeLisp
     public static readonly LispSymbol Nil = new LispSymbol("nil");
     public static readonly LispSymbol True = new LispSymbol("t");
     public static LispObject SymbolsList = Nil;
-
   }
+
+  public static Types.LispObject Cons(Types.LispObject car, Types.LispObject cdr) => new Types.LispCons(car, cdr);
+
 }
