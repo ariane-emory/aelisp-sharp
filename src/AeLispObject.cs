@@ -2,7 +2,7 @@ public static partial class AE
 {
   public abstract class LispObject
   {
-    public LispObject? Properties { get; set; } = Nil;
+    public LispObject Properties { get; set; } = Nil;
   }
 
   public class LispString : LispObject
@@ -131,4 +131,9 @@ public static partial class AE
 
   public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
+   static AE() 
+   {
+      Nil.Properties = Nil;
+      True.Properties = Nil;
+   }
 }
