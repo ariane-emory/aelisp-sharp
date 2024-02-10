@@ -136,17 +136,4 @@ public static partial class AE
     Nil.Properties = Nil;
     True.Properties = Nil;
   }
-
-  class Dummy
-  {
-    public readonly int One;
-    public int Two { get; }
-
-    Dummy()
-    {
-      One = 1;
-      Two = 2;
-    }
-  }
-
 }
