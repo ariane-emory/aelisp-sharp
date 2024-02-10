@@ -1,4 +1,4 @@
-public static partial class AE
+public static partial class Ae
 {
   public abstract class LispObject
   {
@@ -131,7 +131,7 @@ public static partial class AE
 
   public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
-  static AE()
+  static Ae()
   {
     Nil.Properties = Nil;
     True.Properties = Nil;

@@ -1,4 +1,4 @@
-public static partial class AE
+public static partial class Ae
 {
   public enum TokenType
   {

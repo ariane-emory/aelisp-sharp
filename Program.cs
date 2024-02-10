@@ -4,7 +4,7 @@ class Program
 {
    static void Main()
    {
-      var tokens = new AE.Tokenizer().Tokenize(
+      var tokens = new Ae.Tokenizer().Tokenize(
         @"(123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
         + @"`(1 ,2 3) $(1 2 3) (1 2 ,@(4 5)) ?a 'b' '\n' ?\n ""he\""llo"" "
         + @" ""one \""two\"" three"" -05 1,234 2,3,4 1/3 -3/5 -4/1,200 ??? "
@@ -19,14 +19,14 @@ class Program
 
       // Print out the tokenized tokens:
       foreach (var (token, index) in tokens
-         .Where(token => token.TokenType != AE.TokenType.Whitespace)
+         .Where(token => token.TokenType != Ae.TokenType.Whitespace)
          .Select((value, index) => (value, index)))
          Console.WriteLine($"#{index}: {token.TokenType} [{token.Text}]");
 
       var lastToken = tokens.ToList()[tokens.Count()-1];
 
       // Die if we didn't tokenize everything:
-      if (lastToken.TokenType == AE.TokenType.Garbage)
+      if (lastToken.TokenType == Ae.TokenType.Garbage)
          Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
       // Exit successfully.
