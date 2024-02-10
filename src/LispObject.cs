@@ -14,13 +14,6 @@ namespace AeLisp
       public LispString(string value) => Value = value;
     }
 
-    public class LispSymbol : LispObject
-    {
-      public string Value { get; }
-
-      public LispSymbol(string value) => Value = value;
-    }
-
     public class LispError : LispObject
     {
       public string Value { get; }
@@ -126,5 +119,16 @@ namespace AeLisp
     {
       public LispMacro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
     }
+
+    public class LispSymbol : LispObject
+    {
+      public string Value { get; }
+
+      public LispSymbol(string value) => Value = value;
+    }
+
+    public static readonly LispSymbol Nil = new LispSymbol("nil");
+    public static LispObject SymbolsList = Nil;
+
   }
 }
