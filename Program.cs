@@ -29,9 +29,6 @@ class Program
       // if (lastToken.TokenType == Ae.TokenType.Garbage)
       //    Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
-      // Exit successfully.
-      Console.WriteLine("Done!");
-
       Ae.LispCons properList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil)));
       Ae.LispCons improperList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four"))));        
 
@@ -45,6 +42,11 @@ class Program
       foreach (var obj in improperList)
         Console.WriteLine(obj);
 
+      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
+      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
+      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
+
+      Console.WriteLine("Done.");
    }
 }
 

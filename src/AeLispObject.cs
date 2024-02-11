@@ -204,14 +204,20 @@ public static partial class Ae
     public LispObject Body { get; }
     public LispObject Env { get; }
 
+    private int Id { get; }
+    private static int NextId { get; set; }
+
+
     public LispUserFunction(LispObject parameters, LispObject body, LispObject env)
     {
       Parameters = parameters;
       Body = body;
       Env = env;
+      Id = NextId;
+      NextId++;
     }
 
-    public override string ToString() => $"{TypeName}()";
+    public override string ToString() => $"{TypeName}({Id})";
 
     public override string Write() => ToString();
   }
