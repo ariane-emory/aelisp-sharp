@@ -81,7 +81,7 @@ public static partial class Ae
 
     public LispChar(char value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName()}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -94,7 +94,7 @@ public static partial class Ae
 
     public LispInteger(int value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName()}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -107,7 +107,7 @@ public static partial class Ae
 
     public LispFloat(double value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName()}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -125,7 +125,7 @@ public static partial class Ae
       Denominator = denominator;
     }
 
-    public override string ToString() => $"{TypeName}(\"{Numerator}/{Denominator}\")";
+    public override string ToString() => $"{TypeName()}(\"{Numerator}/{Denominator}\")";
   }
 
   //================================================================================================
@@ -145,7 +145,7 @@ public static partial class Ae
       Values = values;
     }
 
-    public override string ToString() => $"{TypeName}(\"{Parent}\")";
+    public override string ToString() => $"{TypeName()}(\"{Parent}\")";
   }
 
   //================================================================================================
@@ -165,7 +165,7 @@ public static partial class Ae
       Function = fun;
     }
 
-    public override string ToString() => $"{TypeName}(\"{Name}\")";
+    public override string ToString() => $"{TypeName()}(\"{Name}\")";
   }
 
   //================================================================================================
@@ -185,7 +185,7 @@ public static partial class Ae
       Env = env;
     }
 
-    public override string ToString() => $"{TypeName}()";
+    public override string ToString() => $"{TypeName()}()";
   }
 
   //================================================================================================
@@ -238,8 +238,8 @@ public static partial class Ae
       Car = car;
       Cdr = cdr;
     }
-
-    public override string ToString() => $"{TypeName}({Car}, {Cdr})";
+    
+    public override string ToString() => $"{TypeName()}({Car}, {Cdr})";
 
     public IEnumerator<LispObject> GetEnumerator()
     {
