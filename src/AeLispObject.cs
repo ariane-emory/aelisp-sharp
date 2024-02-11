@@ -273,24 +273,31 @@ public static partial class Ae
 
       LispObject current = this;
 
-      while (current != Nil)
+      while (current is LispCons currentCons) // Ensures current is a LispCons before casting
       {
-        LispCons currentCons = (LispCons)current;
-        
+        // Write the current element
         sb.Append(currentCons.Car.Write());
 
-        if (currentCons.Cdr != Nil)
-          sb.Append(" ");
+        // Check if the next element is a cons cell or an improper list's end
+        if (currentCons.Cdr is LispCons)
+        {
+          sb.Append(" "); // Proper list element separator
 
-        current = (currentCons).Cdr;
+          current = currentCons.Cdr;
+        }
+        else if (currentCons.Cdr != Nil)
+        {
+          // Handle improper list: print " . " and the final element, then break
+          sb.Append(" . ").Append(currentCons.Cdr.Write());
+
+          break;
+        }
+        else
+        {
+          // End of a proper list
+          break;
+        }
       }
-
-
-      // foreach (var obj in this)
-      // {
-      //   sb.Append(obj.Write());
-      //   sb.Append(" ");
-      // }
 
       sb.Append(")");
 

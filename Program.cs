@@ -43,6 +43,7 @@ class Program
 
       Console.WriteLine(list);
       Console.WriteLine(list.Write());
+      Console.WriteLine(Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four")))).Write());
    }
 }
 
