@@ -26,16 +26,16 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
   // Private fields
   private readonly Func<TTokenType, string, TToken> _tokenCreator;
 
-  private List<(TTokenType, Regex, Func<string, string>?)> TokenDefinitions { get; } =
-    new List<(TTokenType, Regex, Func<string, string>?)>();
+  private List<(TTokenType, Regex, Func<TToken, TToken>?)> TokenDefinitions { get; } =
+    new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> tokenCreator)
   {
     _tokenCreator = tokenCreator;
   }
-     
+
   // Instance methods
-  protected void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
+  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
   {
     pattern = "(?:" + pattern + ")";
 
@@ -60,12 +60,12 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           if (match.Length == 0)
             throw new Exception("Zero-length match found, which could lead to an infinite loop.");
 
-          var str = match.Value;
+          var token = _tokenCreator(tokenType, match.Value);
 
           if (fun is not null)
-            str = fun(str);
+            token = fun(token);
 
-          yield return _tokenCreator(tokenType, str);
+          yield return token;
 
           input = input.Substring(match.Length);
           foundMatch = true;
