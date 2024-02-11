@@ -34,11 +34,13 @@ class Program
 
       Console.WriteLine(properList);
       Console.WriteLine(Ae.Write(properList));
+
       foreach (var obj in properList)
         Console.WriteLine(obj);
 
       Console.WriteLine(improperList);
       Console.WriteLine(Ae.Write(improperList));
+
       foreach (var obj in improperList)
         Console.WriteLine(obj);
 
