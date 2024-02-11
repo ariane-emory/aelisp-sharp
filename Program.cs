@@ -4,37 +4,6 @@ using static System.Console;
 
 class Program
 {
-
-  public static Ae.Object Intern(ref Ae.Object symbolsList, string key) {
-    var current = symbolsList;
-    
-    while (current != Nil)
-      if (current is Pair pair)
-      {
-        if (pair.Car is Symbol symbol)
-        {
-          if (symbol.Value == key)
-            return symbol;
-        }
-        else
-        {
-          throw new InvalidOperationException($"found {pair.Car} in symbols list.");
-        }
-        
-        current = pair.Cdr;
-      }
-      else
-      {
-        throw new InvalidOperationException($"{nameof(symbolsList)} is not a proper list");
-      }
-
-    var newSymbol = new Symbol(key);
-    
-    symbolsList = Cons(newSymbol, symbolsList);
-
-    return newSymbol;
-  }
-  
   static void Main()
    {
       var tokens = Tokenizer.Get().Tokenize(
@@ -85,6 +54,10 @@ class Program
 
       Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
 
+      Intern(ref symbolsList, "two");
+      WriteLine(symbolsList);
+      Intern(ref symbolsList, "four");
+      WriteLine(symbolsList);
       Intern(ref symbolsList, "two");
       WriteLine(symbolsList);
       Intern(ref symbolsList, "four");

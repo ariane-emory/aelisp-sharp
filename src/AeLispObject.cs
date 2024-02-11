@@ -347,4 +347,45 @@ public static partial class Ae
 
     return current == Ae.Nil;
   }
+
+  public static bool ListP(object obj)
+  {
+    return obj switch
+    {
+      Pair => true,
+      _ when obj == Nil => true,
+      _ => false,
+    };
+  }
+
+  public static Object Intern(ref Ae.Object symbolsList, string key)
+  {
+    var current = symbolsList;
+
+    while (current != Nil)
+      if (current is Pair pair)
+      {
+        if (pair.Car is Symbol symbol)
+        {
+          if (symbol.Value == key)
+            return symbol;
+        }
+        else
+        {
+          throw new InvalidOperationException($"found {pair.Car} in symbols list.");
+        }
+
+        current = pair.Cdr;
+      }
+      else
+      {
+        throw new InvalidOperationException($"{nameof(symbolsList)} is not a proper list");
+      }
+
+    var newSymbol = new Symbol(key);
+
+    symbolsList = Cons(newSymbol, symbolsList);
+
+    return newSymbol;
+  }
 }
