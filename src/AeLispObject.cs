@@ -271,14 +271,29 @@ public static partial class Ae
 
       sb.Append("(");
 
-      foreach (var obj in this)
+      LispObject current = this;
+
+      while (current != Nil)
       {
-        sb.Append(obj.Write());
-        sb.Append(" ");
+        LispCons currentCons = (LispCons)current;
+        
+        sb.Append(currentCons.Car.Write());
+
+        if (currentCons.Cdr != Nil)
+          sb.Append(" ");
+
+        current = (currentCons).Cdr;
       }
-      
+
+
+      // foreach (var obj in this)
+      // {
+      //   sb.Append(obj.Write());
+      //   sb.Append(" ");
+      // }
+
       sb.Append(")");
-      
+
       return sb.ToString();
     }
 
@@ -286,7 +301,7 @@ public static partial class Ae
     {
       LispObject current = this;
 
-      while (current != Ae.Nil)
+      while (current != Nil)
         if (current is LispCons cons)
         {
           yield return cons.Car;
