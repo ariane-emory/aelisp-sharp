@@ -40,7 +40,7 @@ public class StringTokenizer<TTokenType>
   }
 
   // Private fields
-  private List<(TTokenType, Regex, Func<string, string>?)> _tokenDefinitions { get; set; }
+  private List<(TTokenType, Regex, Func<string, string>?)> _tokenDefinitions { get; }
 
   // Constructor
   public StringTokenizer() => _tokenDefinitions = new List<(TTokenType, Regex, Func<string, string>?)>();
