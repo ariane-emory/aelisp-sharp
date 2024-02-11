@@ -10,7 +10,7 @@ public static partial class Ae
   public abstract class LispObject
   {
     public LispObject Properties { get; set; } = Nil;
-    
+
     public abstract override string ToString();
   }
 
@@ -28,7 +28,13 @@ public static partial class Ae
   {
     public string Value { get; }
 
-    public LispObjectWithStringValue(string value) => Value = value;
+    public LispObjectWithStringValue(string value)
+    {
+      if (string.IsNullOrEmpty(value))
+        throw new ArgumentException("Value cannot be null or empty", nameof(value));
+      
+      Value = value;
+    }
 
     public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
@@ -82,7 +88,7 @@ public static partial class Ae
     public int Value { get; }
 
     public LispInteger(int value) => Value = value;
-    
+
     public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
 
@@ -95,7 +101,7 @@ public static partial class Ae
     public double Value { get; }
 
     public LispFloat(double value) => Value = value;
-    
+
     public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
 
