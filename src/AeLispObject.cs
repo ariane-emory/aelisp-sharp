@@ -69,6 +69,8 @@ public static partial class Ae
     public char Value { get; }
 
     public LispChar(char value) => Value = value;
+
+    public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -80,6 +82,8 @@ public static partial class Ae
     public int Value { get; }
 
     public LispInteger(int value) => Value = value;
+    
+    public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -91,6 +95,8 @@ public static partial class Ae
     public double Value { get; }
 
     public LispFloat(double value) => Value = value;
+    
+    public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -107,6 +113,8 @@ public static partial class Ae
       Numerator = numerator;
       Denominator = denominator;
     }
+
+    public override string ToString() => $"{GetType().Name}(\"{Numerator}/{Denominator}\")";
   }
 
   //================================================================================================
@@ -125,6 +133,8 @@ public static partial class Ae
       Symbols = symbols;
       Values = values;
     }
+
+    public override string ToString() => $"{GetType().Name}(\"{Parent}\")";
   }
 
   //================================================================================================
@@ -143,6 +153,8 @@ public static partial class Ae
       Special = special;
       Function = fun;
     }
+
+    public override string ToString() => $"{GetType().Name}(\"{Name}\")";
   }
 
   //================================================================================================
@@ -161,6 +173,8 @@ public static partial class Ae
       Body = body;
       Env = env;
     }
+
+    public override string ToString() => $"{GetType().Name}()";
   }
 
   //================================================================================================
@@ -213,6 +227,8 @@ public static partial class Ae
       Car = car;
       Cdr = cdr;
     }
+
+    public override string ToString() => $"{GetType().Name}({Car}, {Cdr})";
 
     public IEnumerator<LispObject> GetEnumerator()
     {
