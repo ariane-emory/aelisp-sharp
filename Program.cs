@@ -1,5 +1,6 @@
 ﻿using static Utility;
 using static Ae;
+using static System.Console;
 
 class Program
 {
@@ -22,7 +23,7 @@ class Program
       foreach (var (token, index) in tokens
          .Where(token => token.TokenType != TokenType.Whitespace)
          .Select((value, index) => (value, index)))
-         Console.WriteLine($"#{index}: {token.TokenType} [{token.Text}]");
+         WriteLine($"#{index}: {token.TokenType} [{token.Text}]");
 
       var lastToken = tokens.ToList()[tokens.Count()-1];
 
@@ -33,23 +34,23 @@ class Program
       Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
       Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
 
-      Console.WriteLine(properList);
-      Console.WriteLine(Write(properList));
+      WriteLine(properList);
+      WriteLine(Write(properList));
 
       foreach (var obj in properList)
-        Console.WriteLine(obj);
+        WriteLine(obj);
 
-      Console.WriteLine(improperList);
-      Console.WriteLine(Write(improperList));
+      WriteLine(improperList);
+      WriteLine(Write(improperList));
 
       foreach (var obj in improperList)
-        Console.WriteLine(obj);
+        WriteLine(obj);
 
-      Console.WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-      Console.WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-      Console.WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+      WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+      WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+      WriteLine(Write(new Lambda(Nil, Nil, Nil)));
 
-      Console.WriteLine("Done.");
+      WriteLine("Done.");
    }
 }
 
