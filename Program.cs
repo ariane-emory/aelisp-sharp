@@ -42,9 +42,9 @@ class Program
       foreach (var obj in improperList)
         Console.WriteLine(obj);
 
-      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
-      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
-      Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil));
+      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
+      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
+      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
 
       Console.WriteLine("Done.");
    }
