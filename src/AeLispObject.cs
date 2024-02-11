@@ -328,6 +328,8 @@ public static partial class Ae
   // static methods
   //================================================================================================
 
+  public static string Write(LispObject obj) => obj.Write();
+  
   public static LispCons Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
   public static bool ProperListP(LispObject obj)

@@ -32,10 +32,7 @@ class Program
       // Exit successfully.
       Console.WriteLine("Done!");
 
-      Ae.LispCons list = Ae.Cons(new Ae.LispSymbol("one"), 
-                                 Ae.Cons(new Ae.LispSymbol("two"), 
-                                         Ae.Cons(new Ae.LispSymbol("three"),
-                                                 Ae.Nil)));
+      Ae.LispCons list = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil)));
       
       if (Ae.ProperListP(list))
         foreach (var obj in list)
@@ -43,7 +40,7 @@ class Program
 
       Console.WriteLine(list);
       Console.WriteLine(list.Write());
-      Console.WriteLine(Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four")))).Write());
+      Console.WriteLine(Ae.Write(Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four"))))));
    }
 }
 
