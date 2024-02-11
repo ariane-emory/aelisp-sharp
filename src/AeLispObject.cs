@@ -350,11 +350,13 @@ public static partial class Ae
 
   public static bool ListP(object obj) => (obj == Nil) || obj is Pair;
 
+  public static bool AtomP(object obj) => !ListP(obj);
+
   public static Object Intern(ref Ae.Object symbolsList, string key)
   {
-    if (! ListP(symbolsList))
-        throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
-    
+    if (!ListP(symbolsList))
+      throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
+
     var current = symbolsList;
 
     while (current != Nil)
