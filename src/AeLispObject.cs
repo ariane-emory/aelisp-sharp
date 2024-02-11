@@ -362,7 +362,7 @@ public static partial class Ae
   {
     var current = symbolsList;
 
-    while (current != Nil)
+    while (ListP(current))
       if (current is Pair pair)
       {
         if (pair.Car is Symbol symbol)
