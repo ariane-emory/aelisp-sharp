@@ -40,6 +40,8 @@ class Program
       if (Ae.ProperListP(list))
         foreach (var obj in list)
           Console.WriteLine(obj);
+
+      Console.WriteLine(list");
    }
 }
 
