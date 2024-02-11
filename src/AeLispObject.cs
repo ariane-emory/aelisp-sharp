@@ -93,7 +93,7 @@ public static partial class Ae
     public override string ToString() => $"{TypeName}(\"{Value}\")";
 
     public override string Write() => $"{Value}";
-    }
+  }
 
   //================================================================================================
   // Integer class
@@ -185,7 +185,7 @@ public static partial class Ae
     }
 
     public override string ToString() => $"{TypeName}(\"{Name}\")";
-    
+
     public override string Write() => ToString();
   }
 
@@ -264,7 +264,10 @@ public static partial class Ae
 
     public override string ToString() => $"{TypeName}({Car}, {Cdr})";
 
-    public override string Write() => ToString();
+    public override string Write()
+    {
+      return ToString();
+    }
 
     public IEnumerator<LispObject> GetEnumerator()
     {
