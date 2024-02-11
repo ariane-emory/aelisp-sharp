@@ -348,15 +348,7 @@ public static partial class Ae
     return current == Ae.Nil;
   }
 
-  public static bool ListP(object obj)
-  {
-    return obj switch
-    {
-      Pair => true,
-      _ when obj == Nil => true,
-      _ => false,
-    };
-  }
+  public static bool ListP(object obj) => (obj == Nil) || obj is Pair;
 
   public static Object Intern(ref Ae.Object symbolsList, string key)
   {
@@ -375,7 +367,7 @@ public static partial class Ae
         }
         else
         {
-          throw new InvalidOperationException($"found {pair.Car} in symbols list.");
+          throw new InvalidOperationException($"Found non-symbol {pair.Car} in symbols list.");
         }
 
         current = pair.Cdr;
