@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using System.Text;
 
 public static partial class Ae
 {
@@ -266,7 +267,19 @@ public static partial class Ae
 
     public override string Write()
     {
-      return ToString();
+      var sb = new StringBuilder();
+
+      sb.Append("(");
+
+      foreach (var obj in this)
+      {
+        sb.Append(obj.Write());
+        sb.Append(" ");
+      }
+      
+      sb.Append(")");
+      
+      return sb.ToString();
     }
 
     public IEnumerator<LispObject> GetEnumerator()

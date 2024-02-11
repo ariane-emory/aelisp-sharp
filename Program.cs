@@ -42,6 +42,7 @@ class Program
           Console.WriteLine(obj);
 
       Console.WriteLine(list);
+      Console.WriteLine(list.Write());
    }
 }
 
