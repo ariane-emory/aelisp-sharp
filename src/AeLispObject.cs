@@ -348,9 +348,9 @@ public static partial class Ae
     return current == Ae.Nil;
   }
 
-  public static bool ListP(object obj) => (obj == Nil) || obj is Pair;
+  public static bool ListP(Object obj) => (obj == Nil) || obj is Pair;
 
-  public static bool AtomP(object obj) => !ListP(obj);
+  public static bool AtomP(Object obj) => !ListP(obj);
 
   public static Object Intern(ref Ae.Object symbolsList, string key)
   {
