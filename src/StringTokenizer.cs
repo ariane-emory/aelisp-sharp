@@ -46,7 +46,7 @@ public class StringTokenizer<TTokenType>
   public StringTokenizer() => _tokenDefinitions = new List<(TTokenType, Regex, Func<string, string>?)>();
 
   // Instance methods
-  public void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
+  protected void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
   {
     pattern = "(?:" + pattern + ")";
 

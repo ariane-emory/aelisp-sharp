@@ -25,26 +25,6 @@ public static partial class Ae
 
   public class Tokenizer : StringTokenizer<TokenType>
   {
-    // Get the instance
-    public static Tokenizer Get()
-    {
-      if (_tokenizer is null)
-        _tokenizer = new Tokenizer();
-
-      return _tokenizer;
-    }
-  
-    // Constructor
-    private Tokenizer()
-    {
-      foreach (var (tokenType, discrete, fun, pattern) in Tokens)
-        Add(tokenType,
-            discrete
-              ? (pattern + FollowedByTokenBarrierOrEOF)
-              : (pattern),
-            fun);
-    }
-
     // Private constants.
     private static readonly List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)> Tokens =
        new List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)>
@@ -100,5 +80,25 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
+
+    // Get the instance
+    public static Tokenizer Get()
+    {
+      if (_tokenizer is null)
+        _tokenizer = new Tokenizer();
+
+      return _tokenizer;
+    }
+  
+    // Constructor
+    private Tokenizer()
+    {
+      foreach (var (tokenType, discrete, fun, pattern) in Tokens)
+        Add(tokenType,
+            discrete
+              ? (pattern + FollowedByTokenBarrierOrEOF)
+              : (pattern),
+            fun);
+    }
   }
 }
