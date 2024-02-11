@@ -41,18 +41,19 @@ public static partial class Ae
 
     private static Token<TokenType> UnescapeChars(Token<TokenType> token)
     {
+      var str = token.Text;
+
       foreach (var (escaped, unescaped) in EscapedChars)
-        token = new Token<TokenType>(token.TokenType, token.Text.Replace(escaped, unescaped));
-      
-      return token;
+        str = token.Text.Replace(escaped, unescaped);
+
+      return new Token<TokenType>(token.TokenType, str);
     }
 
-    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) => 
+    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
       UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
-    
 
     private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
-      new Token<TokenType>(token.TokenType, token.Text.Substring(1));
+      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
 
     // Private constants.
     private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
