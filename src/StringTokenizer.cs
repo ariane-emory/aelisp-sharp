@@ -15,13 +15,13 @@ using System.Text.RegularExpressions;
 //======================================================================================================================
 public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
 {
-  public static IToken<TTokenType> Create(TTokenType tokenType, string text) => new Token<TTokenType>(tokenType, text);
+  public static Token<TTokenType> Create(TTokenType tokenType, string text) => new Token<TTokenType>(tokenType, text);
 }
 
 //======================================================================================================================
 // Tokenizer class
 //======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken> where TToken // : IToken<TTokenType>
+public abstract class StringTokenizer<TTokenType, TToken> // where TToken : IToken<TTokenType>
 {
   // Private fields
   private readonly Func<TTokenType, string, TToken> _tokenCreator;
