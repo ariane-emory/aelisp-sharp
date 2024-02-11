@@ -207,39 +207,21 @@ public static partial class Ae
     public IEnumerator<LispObject> GetEnumerator()
     {
       LispObject current = this;
+
       while (current != Ae.Nil)
-      {
         if (current is LispCons cons)
         {
           yield return cons.Car;
+
           current = cons.Cdr;
         }
         else
         {
           yield break;
         }
-      }
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-      return this.GetEnumerator();
-    }
-
-    public bool IsProperList()
-    {
-        LispObject current = this;
-
-        while (current is LispCons cons)
-        {
-            if (cons.Cdr == Ae.Nil)
-                return true;
-
-            current = cons.Cdr;
-        }
-
-        return current == Ae.Nil;
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
   }
 
   //================================================================================================
@@ -247,4 +229,19 @@ public static partial class Ae
   //================================================================================================
   
   public static LispCons Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
+
+  public static bool ProperListP(LispObject obj)
+  {
+    LispObject current = obj;
+    
+    while (current is LispCons cons)
+    {
+      if (cons.Cdr == Ae.Nil)
+        return true;
+      
+      current = cons.Cdr;
+    }
+    
+    return current == Ae.Nil;
+  }
 }
