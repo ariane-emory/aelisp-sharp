@@ -1,3 +1,5 @@
+using System.Collections;
+
 public static partial class Ae
 {
   public abstract class LispObject
@@ -59,7 +61,7 @@ public static partial class Ae
     }
   }
 
-  public class LispCons : LispObject
+  public class LispCons : LispObject, IEnumerable<LispObject>
   {
     public LispObject Car { get; }
     public LispObject Cdr { get; }
@@ -68,6 +70,30 @@ public static partial class Ae
     {
       Car = car;
       Cdr = cdr;
+    }
+
+    // Implement IEnumerable<LispObject>
+    public IEnumerator<LispObject> GetEnumerator()
+    {
+      LispObject current = this;
+      while (current != Ae.Nil)
+      {
+        if (current is LispCons cons)
+        {
+          yield return cons.Car;
+          current = cons.Cdr;
+        }
+        else
+        {
+          yield break;
+        }
+      }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+      // Return the generic enumerator, which is also an IEnumerator
+      return this.GetEnumerator();
     }
   }
 

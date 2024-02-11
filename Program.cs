@@ -26,11 +26,19 @@ class Program
       var lastToken = tokens.ToList()[tokens.Count()-1];
 
       // Die if we didn't tokenize everything:
-      if (lastToken.TokenType == Ae.TokenType.Garbage)
-         Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
+      // if (lastToken.TokenType == Ae.TokenType.Garbage)
+      //    Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
       // Exit successfully.
-      Console.WriteLine("Done!");      
+      Console.WriteLine("Done!");
+
+      Ae.LispCons list = Ae.Cons(new Ae.LispSymbol("one"), 
+                                   Ae.Cons(new Ae.LispSymbol("two"), 
+                                           Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil))) as Ae.LispCons;
+
+      foreach (var obj in list)
+        Console.WriteLine(obj);
+
    }
 }
 
