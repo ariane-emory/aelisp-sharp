@@ -90,11 +90,7 @@ public static partial class Ae
       return _tokenizer;
     }
 
-    // Constructor
-    private Tokenizer()
-    {
-    }
-
+    // Static constructor
     static Tokenizer()
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
@@ -103,7 +99,6 @@ public static partial class Ae
               ? (pattern + FollowedByTokenBarrierOrEOF)
               : (pattern),
             fun);
-
     }
   }
 }
