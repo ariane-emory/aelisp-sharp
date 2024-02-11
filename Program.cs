@@ -37,9 +37,9 @@ class Program
                                          Ae.Cons(new Ae.LispSymbol("three"),
                                                  Ae.Nil)));
       
-      foreach (var obj in list)
-        Console.WriteLine(obj);
-
+      if (Ae.ProperListP(list))
+        foreach (var obj in list)
+          Console.WriteLine(obj);
    }
 }
 
