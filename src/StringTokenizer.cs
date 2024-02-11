@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 // Tokenizer class
 public class StringTokenizer<TTokenType>

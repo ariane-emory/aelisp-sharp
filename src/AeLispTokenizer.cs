@@ -1,5 +1,16 @@
 public static partial class Ae
 {
+
+  private static Tokenizer _tokenizer = new Tokenizer();
+
+  public static Tokenizer GetTokenizer()
+  {
+    if (_tokenizer is null)
+      _tokenizer = new Tokenizer();
+
+    return _tokenizer;
+  }
+
   public enum TokenType
   {
     At,
