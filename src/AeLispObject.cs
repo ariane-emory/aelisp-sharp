@@ -307,11 +307,11 @@ public static partial class Ae
       Object current = this;
 
       while (current != Nil)
-        if (current is Pair cons)
+        if (current is Pair pair)
         {
-          yield return cons.Car;
+          yield return pair.Car;
 
-          current = cons.Cdr;
+          current = pair.Cdr;
         }
         else
         {

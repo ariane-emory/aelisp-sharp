@@ -49,8 +49,10 @@ class Program
       WriteLine(Write(new Lambda(Nil, Nil, Nil)));
       WriteLine(Write(new Lambda(Nil, Nil, Nil)));
       WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-
+      
       WriteLine("Done.");
+
+      Pair symbolList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
    }
 }
 
