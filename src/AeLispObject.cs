@@ -13,6 +13,7 @@ public static partial class Ae
     public LispObject Properties { get; set; } = Nil;
 
     public abstract override string ToString();
+
     public abstract string Write();
 
     protected string TypeName
@@ -20,7 +21,10 @@ public static partial class Ae
       get
       {
         string className = GetType().Name;
-        return className.StartsWith("Lisp") ? className.Substring(4) : className;
+
+        return className.StartsWith("Lisp")
+          ? className.Substring(4)
+          : className;
       }
     }
   }
@@ -273,28 +277,26 @@ public static partial class Ae
 
       LispObject current = this;
 
-      while (current is LispCons currentCons) // Ensures current is a LispCons before casting
+      while (current is LispCons currentCons)
       {
-        // Write the current element
         sb.Append(currentCons.Car.Write());
 
-        // Check if the next element is a cons cell or an improper list's end
         if (currentCons.Cdr is LispCons)
         {
-          sb.Append(" "); // Proper list element separator
+          sb.Append(" ");
 
           current = currentCons.Cdr;
         }
         else if (currentCons.Cdr != Nil)
         {
-          // Handle improper list: print " . " and the final element, then break
-          sb.Append(" . ").Append(currentCons.Cdr.Write());
+
+          sb.Append(" . ");
+          sb.Append(currentCons.Cdr.Write());
 
           break;
         }
         else
         {
-          // End of a proper list
           break;
         }
       }
@@ -329,7 +331,7 @@ public static partial class Ae
   //================================================================================================
 
   public static string Write(LispObject obj) => obj.Write();
-  
+
   public static LispCons Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 
   public static bool ProperListP(LispObject obj)

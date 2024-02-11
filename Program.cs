@@ -32,15 +32,19 @@ class Program
       // Exit successfully.
       Console.WriteLine("Done!");
 
-      Ae.LispCons list = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil)));
-      
-      if (Ae.ProperListP(list))
-        foreach (var obj in list)
-          Console.WriteLine(obj);
+      Ae.LispCons properList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil)));
+      Ae.LispCons improperList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four"))));        
 
-      Console.WriteLine(list);
-      Console.WriteLine(list.Write());
-      Console.WriteLine(Ae.Write(Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four"))))));
+      Console.WriteLine(properList);
+      Console.WriteLine(Ae.Write(properList));
+      foreach (var obj in properList)
+        Console.WriteLine(obj);
+
+      Console.WriteLine(improperList);
+      Console.WriteLine(Ae.Write(improperList));
+      foreach (var obj in improperList)
+        Console.WriteLine(obj);
+
    }
 }
 
