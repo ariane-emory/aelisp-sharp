@@ -25,20 +25,6 @@ public static partial class Ae
 
   public class Tokenizer : StringTokenizer<TokenType, Token<TokenType>>
   {
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
-
     private static Token<TokenType> UnescapeChars(Token<TokenType> token)
     {
       var str = token.Text;
@@ -56,6 +42,20 @@ public static partial class Ae
       UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
 
     // Private constants.
+    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
+    {
+      (@"\a",   "\a"),
+      (@"\b",   "\b"),
+      (@"\f",   "\f"),
+      (@"\n",   "\n"),
+      (@"\r",   "\r"),
+      (@"\t",   "\t"),
+      (@"\v",   "\v"),
+      (@"\\",   "\\"),
+      (@"\'",   "\'"),
+      (@"\""",  "\""),
+    };
+
     private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
       new List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)>
       {
