@@ -13,7 +13,7 @@ public static partial class Ae
 
     public abstract override string ToString();
 
-    protected virtual string TypeName()
+    protected  string TypeName()
     {
       // Correctly strip "Lisp" prefix from the class name
       string className = GetType().Name;
