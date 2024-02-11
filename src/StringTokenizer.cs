@@ -1,19 +1,19 @@
 using System.Text.RegularExpressions;
 
-//======================================================================================================================
-// Token interface
-//======================================================================================================================
-public interface IToken<TTokenType>
-{
-  TTokenType TokenType { get; }
-  string Text { get; } 
-  static abstract IToken<TTokenType> Create(TTokenType tokenType, string text);
-}
+// //======================================================================================================================
+// // Token interface
+// //======================================================================================================================
+// public interface IToken<TTokenType>
+// {
+//   TTokenType TokenType { get; }
+//   string Text { get; } 
+//   static abstract IToken<TTokenType> Create(TTokenType tokenType, string text);
+// }
 
 //======================================================================================================================
 // Token class
 //======================================================================================================================
-public record Token<TTokenType>(TTokenType TokenType, string Text) : IToken<TTokenType>
+public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
 {
   public static IToken<TTokenType> Create(TTokenType tokenType, string text) => new Token<TTokenType>(tokenType, text);
 }
@@ -21,7 +21,7 @@ public record Token<TTokenType>(TTokenType TokenType, string Text) : IToken<TTok
 //======================================================================================================================
 // Tokenizer class
 //======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken> where TToken : IToken<TTokenType>
+public abstract class StringTokenizer<TTokenType, TToken> where TToken // : IToken<TTokenType>
 {
   // Private fields
   private readonly Func<TTokenType, string, TToken> _tokenCreator;
