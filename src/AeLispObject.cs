@@ -54,6 +54,8 @@ public static partial class Ae
       if (string.IsNullOrEmpty(Value))
         throw new ArgumentException("Value cannot be null or empty", nameof(Value));
     }
+
+    public override string Write() => Value;
   }
 
   //================================================================================================
@@ -63,6 +65,8 @@ public static partial class Ae
   public class LispString : LispObjectWithStringValue
   {
     public LispString(string value) : base(value) { }
+
+    public override string Write() => $"\"{Value}\"";
   }
 
   //================================================================================================
@@ -72,6 +76,8 @@ public static partial class Ae
   public class LispError : LispObjectWithStringValue
   {
     public LispError(string value) : base(value) { }
+
+    public override string Write() => ToString();
   }
 
   //================================================================================================
@@ -85,7 +91,9 @@ public static partial class Ae
     public LispChar(char value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
-  }
+
+    public override string Write() => $"{Value}";
+    }
 
   //================================================================================================
   // Integer class
@@ -98,6 +106,8 @@ public static partial class Ae
     public LispInteger(int value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
+
+    public override string Write() => $"{Value}";
   }
 
   //================================================================================================
@@ -111,6 +121,8 @@ public static partial class Ae
     public LispFloat(double value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
+
+    public override string Write() => $"{Value}";
   }
 
   //================================================================================================
@@ -128,7 +140,9 @@ public static partial class Ae
       Denominator = denominator;
     }
 
-    public override string ToString() => $"{TypeName}(\"{Numerator}/{Denominator}\")";
+    public override string ToString() => $"{TypeName}(\"Write()\")";
+
+    public override string Write() => $"{Numerator}/{Denominator}";
   }
 
   //================================================================================================
@@ -149,6 +163,8 @@ public static partial class Ae
     }
 
     public override string ToString() => $"{TypeName}(\"{Parent}\")";
+
+    public override string Write() => ToString();
   }
 
   //================================================================================================
@@ -169,6 +185,8 @@ public static partial class Ae
     }
 
     public override string ToString() => $"{TypeName}(\"{Name}\")";
+    
+    public override string Write() => ToString();
   }
 
   //================================================================================================
@@ -189,6 +207,8 @@ public static partial class Ae
     }
 
     public override string ToString() => $"{TypeName}()";
+
+    public override string Write() => ToString();
   }
 
   //================================================================================================
@@ -243,6 +263,8 @@ public static partial class Ae
     }
 
     public override string ToString() => $"{TypeName}({Car}, {Cdr})";
+
+    public override string Write() => ToString();
 
     public IEnumerator<LispObject> GetEnumerator()
     {
