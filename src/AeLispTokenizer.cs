@@ -92,7 +92,7 @@ public static partial class Ae
 
   private static Tokenizer _tokenizer = new Tokenizer();
 
-    public static Tokenizer GetTokenizer()
+    public static Tokenizer Get()
     {
       if (_tokenizer is null)
         _tokenizer = new Tokenizer();
