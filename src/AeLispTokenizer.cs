@@ -91,7 +91,7 @@ public static partial class Ae
     }
 
     // Static constructor
-    static Tokenizer()
+    private Tokenizer()
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
