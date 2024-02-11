@@ -36,6 +36,15 @@ public static partial class Ae
             fun);
     }
 
+    public static Tokenizer Get()
+    {
+      if (_tokenizer is null)
+        _tokenizer = new Tokenizer();
+
+      return _tokenizer;
+    }
+  
+
     // Private constants.
     private static readonly List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)> Tokens =
        new List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)>
@@ -71,6 +80,8 @@ public static partial class Ae
             (TokenType.Garbage,       discrete: false, fun: null, pattern: @".+$"),
     };
 
+    private static Tokenizer _tokenizer = new Tokenizer();
+  
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
     private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$)";
@@ -89,16 +100,5 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
-
-    private static Tokenizer _tokenizer = new Tokenizer();
-
-    public static Tokenizer Get()
-    {
-      if (_tokenizer is null)
-        _tokenizer = new Tokenizer();
-
-      return _tokenizer;
-    }
-
   }
 }
