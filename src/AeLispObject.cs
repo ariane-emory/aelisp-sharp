@@ -12,6 +12,7 @@ public static partial class Ae
     public LispObject Properties { get; set; } = Nil;
 
     public abstract override string ToString();
+    public abstract string Write();
 
     protected string TypeName
     {
