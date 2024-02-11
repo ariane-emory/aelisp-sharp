@@ -90,7 +90,7 @@ public static partial class Ae
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
 
-  private static Tokenizer _tokenizer = new Tokenizer();
+    private static Tokenizer _tokenizer = new Tokenizer();
 
     public static Tokenizer Get()
     {
