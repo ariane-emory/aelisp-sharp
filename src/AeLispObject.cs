@@ -16,15 +16,7 @@ public static partial class Ae
 
     public abstract string Write();
 
-    protected string TypeName
-    {
-      get
-      {
-        string className = GetType().Name;
-
-        return className;
-      }
-    }
+    protected string TypeName => GetType().Name;
   }
 
   //================================================================================================
