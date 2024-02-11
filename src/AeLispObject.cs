@@ -348,7 +348,7 @@ public static partial class Ae
     return current == Ae.Nil;
   }
 
-  public static bool ListP(Object obj) => (obj == Nil) || obj is Pair;
+  public static bool ListP(Object obj) => obj == Nil || obj is Pair;
 
   public static bool AtomP(Object obj) => !ListP(obj);
 
