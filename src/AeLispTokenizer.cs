@@ -29,35 +29,35 @@ public static partial class Ae
     private static readonly List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)> Tokens =
        new List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)>
        {
-            (TokenType.Whitespace,    discrete: false, fun: null, pattern: @"\s+"),
-            (TokenType.LParen,        discrete: false, fun: null, pattern: @"\("),
-            (TokenType.RParen,        discrete: true,  fun: null, pattern: @"\)"),
-            (TokenType.Nil,           discrete: true,  fun: null, pattern: @"nil"),
-            (TokenType.Dot,           discrete: true,  fun: null, pattern: @"\."),
-            (TokenType.CStyleChar,    discrete: true,  fun: null, pattern: @"'[^']'"),
-            (TokenType.CStyleChar,    discrete: true,  fun: null, pattern: @"'\\.'"),
-            (TokenType.Float,         discrete: true,  fun: null, pattern: Float),
-            (TokenType.Rational,      discrete: true,  fun: null, pattern: MaybeSigned + DigitSeparatedInteger + @"\/" + DigitSeparatedInteger),
-            (TokenType.Integer,       discrete: true,  fun: null, pattern: MaybeSigned + DigitSeparatedInteger),
-            (TokenType.String,        discrete: true,  fun: null, pattern: @"\""(\\\""|[^\""])*\"""),
-            (TokenType.Quote,         discrete: false, fun: null, pattern: @"'"),
-            (TokenType.Backtick,      discrete: false, fun: null, pattern: @"`"),
-            (TokenType.CommaAt,       discrete: false, fun: null, pattern: @",@"),
-            (TokenType.Comma,         discrete: false, fun: null, pattern: @","),
-            (TokenType.At,            discrete: false, fun: null, pattern: @"@"),
-            (TokenType.Dollar,        discrete: false, fun: null, pattern: @"\$"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: Integer + @"?" + MathOp),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: MathOp + Integer),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"[\?]{3}"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: SymBody),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"<"  + SymBody + @">"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"\*" + SymBody + @"\*"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
-            (TokenType.Symbol,        discrete: true,  fun: null, pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
-            (TokenType.LispStyleChar, discrete: true,  fun: null, pattern: @"\?\\."),
-            (TokenType.LispStyleChar, discrete: true,  fun: null, pattern: @"\?."),
-            (TokenType.Garbage,       discrete: false, fun: null, pattern: @".+$"),
+            (TokenType.Whitespace,    discrete: false, fun: null,               pattern: @"\s+"),
+            (TokenType.LParen,        discrete: false, fun: null,               pattern: @"\("),
+            (TokenType.RParen,        discrete: true,  fun: null,               pattern: @"\)"),
+            (TokenType.Nil,           discrete: true,  fun: null,               pattern: @"nil"),
+            (TokenType.Dot,           discrete: true,  fun: null,               pattern: @"\."),
+            (TokenType.CStyleChar,    discrete: true,  fun: null,               pattern: @"'[^']'"),
+            (TokenType.CStyleChar,    discrete: true,  fun: null,               pattern: @"'\\.'"),
+            (TokenType.Float,         discrete: true,  fun: null,               pattern: Float),
+            (TokenType.Rational,      discrete: true,  fun: null,               pattern: Rational),
+            (TokenType.Integer,       discrete: true,  fun: null,               pattern: MaybeSigned + DigitSeparatedInteger),
+            (TokenType.String,        discrete: true,  fun: null,               pattern: @"\""(\\\""|[^\""])*\"""),
+            (TokenType.Quote,         discrete: false, fun: null,               pattern: @"'"),
+            (TokenType.Backtick,      discrete: false, fun: null,               pattern: @"`"),
+            (TokenType.CommaAt,       discrete: false, fun: null,               pattern: @",@"),
+            (TokenType.Comma,         discrete: false, fun: null,               pattern: @","),
+            (TokenType.At,            discrete: false, fun: null,               pattern: @"@"),
+            (TokenType.Dollar,        discrete: false, fun: null,               pattern: @"\$"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: Integer + @"?" + MathOp),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: MathOp + Integer),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"[\?]{3}"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: SymBody),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"<"  + SymBody + @">"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"\*" + SymBody + @"\*"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
+            (TokenType.Symbol,        discrete: true,  fun: null,               pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
+            (TokenType.LispStyleChar, discrete: true,  fun: null,               pattern: @"\?\\."),
+            (TokenType.LispStyleChar, discrete: true,  fun: null,               pattern: @"\?."),
+            (TokenType.Garbage,       discrete: false, fun: null,               pattern: @".+$"),
     };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
@@ -69,6 +69,7 @@ public static partial class Ae
     private const string MaybeSigned = @"(?:" + Sign + @")?";
     private const string MaybeSymLeader = @"(?:[\-+:&!%#])?";
     private const string MaybeZeroPadding = @"(?:0+)?";
+    private const string Rational = MaybeSigned + DigitSeparatedInteger + @"\/" + DigitSeparatedInteger;
     private const string ShiftLeft = @"(?:\<\<)";
     private const string ShiftRight = @"(?:\>\>)";
     private const string Sign = @"(?:[\-+])";
@@ -81,7 +82,7 @@ public static partial class Ae
 
     private static Tokenizer _tokenizer = new Tokenizer();
 
-  
+
     // Get the instance
     public static Tokenizer Get()
     {
