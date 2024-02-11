@@ -147,10 +147,10 @@ public static partial class Ae
   public class Env : Object
   {
     public Object Parent { get; }
-    public Cell Symbols { get; }
-    public Cell Values { get; }
+    public Pair Symbols { get; }
+    public Pair Values { get; }
 
-    public Env(Object parent, Cell symbols, Cell values)
+    public Env(Object parent, Pair symbols, Pair values)
     {
       Parent = parent;
       Symbols = symbols;
@@ -249,15 +249,15 @@ public static partial class Ae
   }
 
   //================================================================================================
-  // Cell class
+  // Pair class
   //================================================================================================
 
-  public class Cell : Object, IEnumerable<Object>
+  public class Pair : Object, IEnumerable<Object>
   {
     public Object Car { get; }
     public Object Cdr { get; }
 
-    public Cell(Object car, Object cdr)
+    public Pair(Object car, Object cdr)
     {
       Car = car;
       Cdr = cdr;
@@ -273,11 +273,11 @@ public static partial class Ae
 
       Object current = this;
 
-      while (current is Cell currentCons)
+      while (current is Pair currentCons)
       {
         sb.Append(currentCons.Car.Write());
 
-        if (currentCons.Cdr is Cell)
+        if (currentCons.Cdr is Pair)
         {
           sb.Append(" ");
 
@@ -307,7 +307,7 @@ public static partial class Ae
       Object current = this;
 
       while (current != Nil)
-        if (current is Cell cons)
+        if (current is Pair cons)
         {
           yield return cons.Car;
 
@@ -331,13 +331,13 @@ public static partial class Ae
 
   public static string Write(Object obj) => obj.Write();
 
-  public static Cell Cons(Object car, Object cdr) => new Cell(car, cdr);
+  public static Pair Cons(Object car, Object cdr) => new Pair(car, cdr);
 
   public static bool ProperListP(Object obj)
   {
     Object current = obj;
 
-    while (current is Cell cons)
+    while (current is Pair cons)
     {
       if (cons.Cdr == Ae.Nil)
         return true;
