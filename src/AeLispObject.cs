@@ -10,6 +10,8 @@ public static partial class Ae
   public abstract class LispObject
   {
     public LispObject Properties { get; set; } = Nil;
+    
+    public abstract override string ToString();
   }
 
   //================================================================================================
