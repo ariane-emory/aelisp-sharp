@@ -23,7 +23,7 @@ public static partial class Ae
     Whitespace,
   };
 
-  public class Tokenizer : StringTokenizer<TokenType>
+  public class Tokenizer : StringTokenizer<TokenType, Token<TokenType>>
   {
     private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
     {
@@ -39,13 +39,14 @@ public static partial class Ae
       (@"\""",  "\""),
     };
 
-    private static string UnescapeChars(string str) {
+    private static string UnescapeChars(string str)
+    {
       foreach (var (escaped, unescaped) in EscapedChars)
         str = str.Replace(escaped, unescaped);
 
       return str;
     }
-    
+
     private static string TrimAndUnescape(string str) => UnescapeChars(str.Substring(1, str.Length - 2));
     private static string TrimFirstAndUnescape(string str) => UnescapeChars(str.Substring(1));
 
@@ -117,7 +118,7 @@ public static partial class Ae
     }
 
     // Private constructor
-    private Tokenizer()
+    private Tokenizer() : base((tokenType, text) => new Token<TokenType>(tokenType, text))
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
