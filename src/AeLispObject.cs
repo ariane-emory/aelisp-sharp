@@ -2,10 +2,24 @@ using System.Collections;
 
 public static partial class Ae
 {
+ //================================================================================================
+ // Base object abstract class
+ //================================================================================================
+  
   public abstract class LispObject
   {
     public LispObject Properties { get; set; } = Nil;
   }
+
+ //================================================================================================
+ // Core function delegate
+ //================================================================================================
+
+ public delegate LispObject LispCoreFunc(LispObject arg1, LispObject arg2, int arg3);
+
+ //================================================================================================
+ // Symbol class
+ //================================================================================================
 
   public class LispSymbol : LispObject
   {
@@ -14,6 +28,10 @@ public static partial class Ae
     public LispSymbol(string value) => Value = value;
   }
 
+  //================================================================================================
+  // String class
+  //================================================================================================
+
   public class LispString : LispObject
   {
     public string Value { get; }
@@ -21,6 +39,10 @@ public static partial class Ae
     public LispString(string value) => Value = value;
   }
 
+  //================================================================================================
+  // Error class
+  //================================================================================================
+  
   public class LispError : LispObject
   {
     public string Value { get; }
@@ -28,6 +50,10 @@ public static partial class Ae
     public LispError(string value) => Value = value;
   }
 
+  //================================================================================================
+  // Char class
+  //================================================================================================
+  
   public class LispChar : LispObject
   {
     public char Value { get; }
@@ -35,6 +61,10 @@ public static partial class Ae
     public LispChar(char value) => Value = value;
   }
 
+  //================================================================================================
+  // Integer class
+  //================================================================================================
+  
   public class LispInteger : LispObject
   {
     public int Value { get; }
@@ -42,6 +72,10 @@ public static partial class Ae
     public LispInteger(int value) => Value = value;
   }
 
+  //================================================================================================
+  // Float class
+  //================================================================================================
+  
   public class LispFloat : LispObject
   {
     public double Value { get; }
@@ -49,6 +83,10 @@ public static partial class Ae
     public LispFloat(double value) => Value = value;
   }
 
+  //================================================================================================
+  // Rational class
+  //================================================================================================
+  
   public class LispRational : LispObject
   {
     public int Numerator { get; }
@@ -61,6 +99,10 @@ public static partial class Ae
     }
   }
 
+  //================================================================================================
+  // Cons class
+  //================================================================================================
+
   public class LispCons : LispObject, IEnumerable<LispObject>
   {
     public LispObject Car { get; }
@@ -72,7 +114,6 @@ public static partial class Ae
       Cdr = cdr;
     }
 
-    // Implement IEnumerable<LispObject>
     public IEnumerator<LispObject> GetEnumerator()
     {
       LispObject current = this;
@@ -97,6 +138,10 @@ public static partial class Ae
     }
   }
 
+  //================================================================================================
+  // Environment frame class
+  //================================================================================================
+
   public class LispEnv : LispObject
   {
     public LispObject Parent { get; }
@@ -111,7 +156,9 @@ public static partial class Ae
     }
   }
 
-  public delegate LispObject LispCoreFunc(LispObject arg1, LispObject arg2, int arg3);
+  //================================================================================================
+  // Core function class
+  //================================================================================================
 
   public class LispCoreFunction : LispObject
   {
@@ -127,6 +174,10 @@ public static partial class Ae
     }
   }
 
+  //================================================================================================
+  // User function class
+  //================================================================================================
+  
   public abstract class LispUserFunction : LispObject
   {
     public LispObject Parameters { get; }
@@ -141,25 +192,45 @@ public static partial class Ae
     }
   }
 
+  //================================================================================================
+  // Lambda class
+  //================================================================================================
+  
   private class LispLambda : LispUserFunction
   {
     public LispLambda(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
   }
 
+  //================================================================================================
+  // Macro class
+  //================================================================================================
+  
   public class LispMacro : LispUserFunction
   {
     public LispMacro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
   }
 
+  //================================================================================================
+  // static variables
+  //================================================================================================
+  
   public static readonly LispSymbol Nil = new LispSymbol("nil");
   public static readonly LispSymbol True = new LispSymbol("t");
   public static LispObject SymbolsList = Nil;
 
-  public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
-
+  //================================================================================================
+  // static constructor
+  //================================================================================================
+  
   static Ae()
   {
     Nil.Properties = Nil;
     True.Properties = Nil;
   }
+
+  //================================================================================================
+  // static methods
+  //================================================================================================
+  
+  public static LispObject Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
 }
