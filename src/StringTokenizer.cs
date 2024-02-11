@@ -39,14 +39,11 @@ public abstract class StringTokenizer<TTokenType>
     public static bool operator !=(Token left, Token right) => !(left == right);
   }
 
-  // Private fields
-  private List<(TTokenType, Regex, Func<string, string>?)> TokenDefinitions { get; }
+    // Private fields
+    private List<(TTokenType, Regex, Func<string, string>?)> TokenDefinitions { get; } = new List<(TTokenType, Regex, Func<string, string>?)>();
 
-  // Constructor
-  public StringTokenizer() => TokenDefinitions = new List<(TTokenType, Regex, Func<string, string>?)>();
-
-  // Instance methods
-  protected void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
+    // Instance methods
+    protected void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
   {
     pattern = "(?:" + pattern + ")";
 
