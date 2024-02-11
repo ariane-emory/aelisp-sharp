@@ -60,8 +60,6 @@ public static partial class Ae
             (TokenType.Garbage,       discrete: false, fun: null, pattern: @".+$"),
     };
 
-    private static Tokenizer _tokenizer = new Tokenizer();
-
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
     private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$)";
@@ -80,6 +78,8 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
+
+    private static Tokenizer _tokenizer = new Tokenizer();
 
     // Get the instance
     public static Tokenizer Get()

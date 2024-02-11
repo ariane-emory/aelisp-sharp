@@ -3,41 +3,7 @@ using System.Text.RegularExpressions;
 // Tokenizer class
 public abstract class StringTokenizer<TTokenType>
 {
-  // Token class
-  public class Token : IEquatable<Token>
-  {
-    // Fields
-    public TTokenType TokenType { get; }
-    public string Text { get; }
-
-    // Constructor
-    public Token(TTokenType token, string value)
-    {
-      TokenType = token;
-      Text = value;
-    }
-
-    // Instance methods
-    public bool Equals(Token? other)
-    {
-      if (other is null)
-        return false;
-
-      bool typeEquals = EqualityComparer<TTokenType>.Default.Equals(TokenType, other.TokenType);
-      bool textEquals = Text == other.Text;
-
-      return typeEquals && textEquals;
-    }
-
-    public override bool Equals(object? obj) => obj is Token token && Equals(token);
-
-    public override int GetHashCode() => System.HashCode.Combine(TokenType, Text);
-
-    public static bool operator ==(Token left, Token right) =>
-      (left is null && right is null) || (left is not null && left.Equals(right));
-
-    public static bool operator !=(Token left, Token right) => !(left == right);
-  }
+  public record Token(TTokenType TokenType, string Text);
 
   // Private fields
   private List<(TTokenType, Regex, Func<string, string>?)> TokenDefinitions { get; } = new List<(TTokenType, Regex, Func<string, string>?)>();
