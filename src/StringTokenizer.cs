@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 // Tokenizer class
 public abstract class StringTokenizer<TTokenType>
 {
+
+  // Token class
   public record Token(TTokenType TokenType, string Text);
 
   // Private fields
