@@ -32,10 +32,11 @@ class Program
       // Exit successfully.
       Console.WriteLine("Done!");
 
-      Ae.LispCons list = (Ae.LispCons)Ae.Cons(new Ae.LispSymbol("one"), 
-                                              Ae.Cons(new Ae.LispSymbol("two"), 
-                                                      Ae.Cons(new Ae.LispSymbol("three"),
-                                                              Ae.Nil)));
+      Ae.LispCons list = Ae.Cons(new Ae.LispSymbol("one"), 
+                                 Ae.Cons(new Ae.LispSymbol("two"), 
+                                         Ae.Cons(new Ae.LispSymbol("three"),
+                                                 Ae.Nil)));
+      
       foreach (var obj in list)
         Console.WriteLine(obj);
 
