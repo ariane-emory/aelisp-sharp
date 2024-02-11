@@ -39,20 +39,32 @@ public static partial class Ae
       (@"\""",  "\""),
     };
 
-    private static string UnescapeChars(string str)
+    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
     {
       foreach (var (escaped, unescaped) in EscapedChars)
-        str = str.Replace(escaped, unescaped);
+        token.Text = token.Text.Replace(escaped, unescaped);
 
-      return str;
+      return token;
     }
 
-    private static string TrimAndUnescape(string str) => UnescapeChars(str.Substring(1, str.Length - 2));
-    private static string TrimFirstAndUnescape(string str) => UnescapeChars(str.Substring(1));
+    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token)
+    {
+      token = new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2));
+
+      return UnescapeChars(token);
+    }
+
+    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token)
+    {
+      token = new Token<TokenType>(token.TokenType, token.Text.Substring(1));
+      
+      return UnescapeChars(token);
+    }
+
 
     // Private constants.
-    private static readonly List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)> Tokens =
-      new List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)>
+    private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
+      new List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)>
       {
         (TokenType.Whitespace,    discrete: false, fun: null,                    pattern: @"\s+"),
         (TokenType.LParen,        discrete: false, fun: null,                    pattern: @"\("),
