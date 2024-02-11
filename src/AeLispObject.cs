@@ -52,14 +52,12 @@ public static partial class Ae
   }
 
   //================================================================================================
-  // Error class
+  // String class
   //================================================================================================
 
-  public class LispError : LispObject
+  public class LispError : LispObjectWithStringValue
   {
-    public string Value { get; }
-
-    public LispError(string value) => Value = value;
+    public LispError(string value) : base(value) { }
   }
 
   //================================================================================================
