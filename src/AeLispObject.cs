@@ -28,13 +28,7 @@ public static partial class Ae
   {
     public string Value { get; }
 
-    public LispObjectWithStringValue(string value)
-    {
-      if (string.IsNullOrEmpty(value))
-        throw new ArgumentException("Value cannot be null or empty", nameof(value));
-      
-      Value = value;
-    }
+    public LispObjectWithStringValue(string value) => Value = value;
 
     public override string ToString() => $"{GetType().Name}(\"{Value}\")";
   }
@@ -45,7 +39,11 @@ public static partial class Ae
 
   public class LispSymbol : LispObjectWithStringValue
   {
-    public LispSymbol(string value) : base(value) { }
+    public LispSymbol(string value): base(value)
+    {
+      if (string.IsNullOrEmpty(Value))
+        throw new ArgumentException("Value cannot be null or empty", nameof(Value));
+    }
   }
 
   //================================================================================================
