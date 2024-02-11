@@ -65,7 +65,7 @@ public static partial class Ae
   }
 
   //================================================================================================
-  // String class
+  // Error class
   //================================================================================================
 
   public class Error : ObjectWithStringValue
@@ -85,7 +85,7 @@ public static partial class Ae
 
     public Char(char value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName}(\'{Value}\')";
 
     public override string Write() => $"{Value}";
   }
@@ -100,7 +100,7 @@ public static partial class Ae
 
     public Integer(int value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName}({Value})";
 
     public override string Write() => $"{Value}";
   }
@@ -115,7 +115,7 @@ public static partial class Ae
 
     public Float(double value) => Value = value;
 
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName}({Value})";
 
     public override string Write() => $"{Value}";
   }
@@ -135,7 +135,7 @@ public static partial class Ae
       Denominator = denominator;
     }
 
-    public override string ToString() => $"{TypeName}(\"Write()\")";
+    public override string ToString() => $"{TypeName}({Write()})";
 
     public override string Write() => $"{Numerator}/{Denominator}";
   }
@@ -157,7 +157,7 @@ public static partial class Ae
       Values = values;
     }
 
-    public override string ToString() => $"{TypeName}(\"{Parent}\")";
+    public override string ToString() => $"{TypeName}({Parent})";
 
     public override string Write() => ToString();
   }

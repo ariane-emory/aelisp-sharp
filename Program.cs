@@ -30,7 +30,7 @@ class Program
       //    Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
       Ae.Pair properList = Ae.Cons(new Ae.Symbol("one"), Ae.Cons(new Ae.Symbol("two"), Ae.Cons(new Ae.Symbol("three"), Ae.Nil)));
-      Ae.Pair improperList = Ae.Cons(new Ae.Symbol("one"), Ae.Cons(new Ae.Symbol("two"), Ae.Cons(new Ae.Symbol("three"), new Ae.Symbol("four"))));        
+      Ae.Pair improperList = Ae.Cons(new Ae.Symbol("one"), Ae.Cons(new Ae.Integer(37), Ae.Cons(new Ae.Rational(3, 4), new Ae.Symbol("four"))));
 
       Console.WriteLine(properList);
       Console.WriteLine(Ae.Write(properList));
