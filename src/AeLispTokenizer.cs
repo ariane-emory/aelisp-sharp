@@ -89,16 +89,16 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
-  }
 
   private static Tokenizer _tokenizer = new Tokenizer();
 
-  public static Tokenizer GetTokenizer()
-  {
-    if (_tokenizer is null)
-      _tokenizer = new Tokenizer();
+    public static Tokenizer GetTokenizer()
+    {
+      if (_tokenizer is null)
+        _tokenizer = new Tokenizer();
 
-    return _tokenizer;
+      return _tokenizer;
+    }
+
   }
-
 }
