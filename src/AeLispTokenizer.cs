@@ -61,7 +61,7 @@ public static partial class Ae
     };
 
     private static Tokenizer _tokenizer = new Tokenizer();
-  
+
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
     private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$)";
@@ -89,9 +89,13 @@ public static partial class Ae
 
       return _tokenizer;
     }
-  
+
     // Constructor
     private Tokenizer()
+    {
+    }
+
+    static Tokenizer()
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
@@ -99,6 +103,7 @@ public static partial class Ae
               ? (pattern + FollowedByTokenBarrierOrEOF)
               : (pattern),
             fun);
+
     }
   }
 }
