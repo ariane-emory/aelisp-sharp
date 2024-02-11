@@ -12,6 +12,13 @@ public static partial class Ae
     public LispObject Properties { get; set; } = Nil;
 
     public abstract override string ToString();
+
+    protected virtual string TypeName()
+    {
+      // Correctly strip "Lisp" prefix from the class name
+      string className = GetType().Name;
+      return className.StartsWith("Lisp") ? className.Substring(4) : className;
+    }
   }
 
   //================================================================================================
@@ -30,7 +37,7 @@ public static partial class Ae
 
     public LispObjectWithStringValue(string value) => Value = value;
 
-    public override string ToString() => $"{GetType().Name}(\"{Value}\")";
+    public override string ToString() => $"{TypeName()}(\"{Value}\")";
   }
 
   //================================================================================================
@@ -39,7 +46,7 @@ public static partial class Ae
 
   public class LispSymbol : LispObjectWithStringValue
   {
-    public LispSymbol(string value): base(value)
+    public LispSymbol(string value) : base(value)
     {
       if (string.IsNullOrEmpty(Value))
         throw new ArgumentException("Value cannot be null or empty", nameof(Value));
