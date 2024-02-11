@@ -25,6 +25,15 @@ public static partial class Ae
 
   public class Tokenizer : StringTokenizer<TokenType>
   {
+    // Get the instance
+    public static Tokenizer Get()
+    {
+      if (_tokenizer is null)
+        _tokenizer = new Tokenizer();
+
+      return _tokenizer;
+    }
+  
     // Constructor
     private Tokenizer()
     {
@@ -35,15 +44,6 @@ public static partial class Ae
               : (pattern),
             fun);
     }
-
-    public static Tokenizer Get()
-    {
-      if (_tokenizer is null)
-        _tokenizer = new Tokenizer();
-
-      return _tokenizer;
-    }
-  
 
     // Private constants.
     private static readonly List<(TokenType type, bool discrete, Func<string, string>? fun, string pattern)> Tokens =
