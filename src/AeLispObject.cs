@@ -360,9 +360,12 @@ public static partial class Ae
 
   public static Object Intern(ref Ae.Object symbolsList, string key)
   {
+    if (! ListP(symbolsList))
+        throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
+    
     var current = symbolsList;
 
-    while (ListP(current))
+    while (current != Nil)
       if (current is Pair pair)
       {
         if (pair.Car is Symbol symbol)
