@@ -26,7 +26,7 @@ public static partial class Ae
   public class Tokenizer : StringTokenizer<TokenType>
   {
     // Constructor
-    public Tokenizer()
+    private Tokenizer()
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
