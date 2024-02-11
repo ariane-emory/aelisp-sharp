@@ -81,6 +81,7 @@ public static partial class Ae
 
     private static Tokenizer _tokenizer = new Tokenizer();
 
+  
     // Get the instance
     public static Tokenizer Get()
     {
@@ -90,7 +91,7 @@ public static partial class Ae
       return _tokenizer;
     }
 
-    // Static constructor
+    // Private constructor
     private Tokenizer()
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
