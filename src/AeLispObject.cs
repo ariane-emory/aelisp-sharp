@@ -8,9 +8,9 @@ public static partial class Ae
   // Base object abstract class
   //================================================================================================
 
-  public abstract class LispObject
+  public abstract class Object
   {
-    public LispObject Properties { get; set; } = Nil;
+    public Object Properties { get; set; } = Nil;
 
     public abstract override string ToString();
 
@@ -22,9 +22,7 @@ public static partial class Ae
       {
         string className = GetType().Name;
 
-        return className.StartsWith("Lisp")
-          ? className.Substring(4)
-          : className;
+        return className;
       }
     }
   }
@@ -33,17 +31,17 @@ public static partial class Ae
   // Core function delegate
   //================================================================================================
 
-  public delegate LispObject LispCoreFunc(LispObject arg1, LispObject arg2, int arg3);
+  public delegate Object CoreFunc(Object arg1, Object arg2, int arg3);
 
   //================================================================================================
-  // LispObjectWithStringValue abstract class
+  // ObjectWithStringValue abstract class
   //================================================================================================
 
-  public abstract class LispObjectWithStringValue : LispObject
+  public abstract class ObjectWithStringValue : Object
   {
     public string Value { get; }
 
-    public LispObjectWithStringValue(string value) => Value = value;
+    public ObjectWithStringValue(string value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
   }
@@ -52,9 +50,9 @@ public static partial class Ae
   // Symbol class
   //================================================================================================
 
-  public class LispSymbol : LispObjectWithStringValue
+  public class Symbol : ObjectWithStringValue
   {
-    public LispSymbol(string value) : base(value)
+    public Symbol(string value) : base(value)
     {
       if (string.IsNullOrEmpty(Value))
         throw new ArgumentException("Value cannot be null or empty", nameof(Value));
@@ -67,9 +65,9 @@ public static partial class Ae
   // String class
   //================================================================================================
 
-  public class LispString : LispObjectWithStringValue
+  public class String : ObjectWithStringValue
   {
-    public LispString(string value) : base(value) { }
+    public String(string value) : base(value) { }
 
     public override string Write() => $"\"{Value}\"";
   }
@@ -78,9 +76,9 @@ public static partial class Ae
   // String class
   //================================================================================================
 
-  public class LispError : LispObjectWithStringValue
+  public class Error : ObjectWithStringValue
   {
-    public LispError(string value) : base(value) { }
+    public Error(string value) : base(value) { }
 
     public override string Write() => ToString();
   }
@@ -89,11 +87,11 @@ public static partial class Ae
   // Char class
   //================================================================================================
 
-  public class LispChar : LispObject
+  public class Char : Object
   {
     public char Value { get; }
 
-    public LispChar(char value) => Value = value;
+    public Char(char value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
 
@@ -104,11 +102,11 @@ public static partial class Ae
   // Integer class
   //================================================================================================
 
-  public class LispInteger : LispObject
+  public class Integer : Object
   {
     public int Value { get; }
 
-    public LispInteger(int value) => Value = value;
+    public Integer(int value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
 
@@ -119,11 +117,11 @@ public static partial class Ae
   // Float class
   //================================================================================================
 
-  public class LispFloat : LispObject
+  public class Float : Object
   {
     public double Value { get; }
 
-    public LispFloat(double value) => Value = value;
+    public Float(double value) => Value = value;
 
     public override string ToString() => $"{TypeName}(\"{Value}\")";
 
@@ -134,12 +132,12 @@ public static partial class Ae
   // Rational class
   //================================================================================================
 
-  public class LispRational : LispObject
+  public class Rational : Object
   {
     public int Numerator { get; }
     public int Denominator { get; }
 
-    public LispRational(int numerator, int denominator)
+    public Rational(int numerator, int denominator)
     {
       Numerator = numerator;
       Denominator = denominator;
@@ -154,13 +152,13 @@ public static partial class Ae
   // Environment frame class
   //================================================================================================
 
-  public class LispEnv : LispObject
+  public class Env : Object
   {
-    public LispObject Parent { get; }
-    public LispCons Symbols { get; }
-    public LispCons Values { get; }
+    public Object Parent { get; }
+    public ConsCell Symbols { get; }
+    public ConsCell Values { get; }
 
-    public LispEnv(LispObject parent, LispCons symbols, LispCons values)
+    public Env(Object parent, ConsCell symbols, ConsCell values)
     {
       Parent = parent;
       Symbols = symbols;
@@ -176,13 +174,13 @@ public static partial class Ae
   // Core function class
   //================================================================================================
 
-  public class LispCoreFunction : LispObject
+  public class CoreFunction : Object
   {
     public string Name { get; }
     public bool Special { get; }
-    public LispCoreFunc Function { get; }
+    public CoreFunc Function { get; }
 
-    public LispCoreFunction(string name, bool special, LispCoreFunc fun)
+    public CoreFunction(string name, bool special, CoreFunc fun)
     {
       Name = name;
       Special = special;
@@ -198,17 +196,17 @@ public static partial class Ae
   // User function class
   //================================================================================================
 
-  public abstract class LispUserFunction : LispObject
+  public abstract class UserFunction : Object
   {
-    public LispObject Parameters { get; }
-    public LispObject Body { get; }
-    public LispObject Env { get; }
+    public Object Parameters { get; }
+    public Object Body { get; }
+    public Object Env { get; }
 
     private int Id { get; }
     private static int NextId { get; set; }
 
 
-    public LispUserFunction(LispObject parameters, LispObject body, LispObject env)
+    public UserFunction(Object parameters, Object body, Object env)
     {
       Parameters = parameters;
       Body = body;
@@ -226,27 +224,27 @@ public static partial class Ae
   // Lambda class
   //================================================================================================
 
-  public class LispLambda : LispUserFunction
+  public class Lambda : UserFunction
   {
-    public LispLambda(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
+    public Lambda(Object parameters, Object body, Object env) : base(parameters, body, env) { }
   }
 
   //================================================================================================
   // Macro class
   //================================================================================================
 
-  public class LispMacro : LispUserFunction
+  public class Macro : UserFunction
   {
-    public LispMacro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
+    public Macro(Object parameters, Object body, Object env) : base(parameters, body, env) { }
   }
 
   //================================================================================================
   // static variables
   //================================================================================================
 
-  public static readonly LispSymbol Nil = new LispSymbol("nil");
-  public static readonly LispSymbol True = new LispSymbol("t");
-  public static LispObject SymbolsList = Nil;
+  public static readonly Symbol Nil = new Symbol("nil");
+  public static readonly Symbol True = new Symbol("t");
+  public static Object SymbolsList = Nil;
 
   //================================================================================================
   // static constructor
@@ -259,15 +257,15 @@ public static partial class Ae
   }
 
   //================================================================================================
-  // Cons class
+  // ConsCell class
   //================================================================================================
 
-  public class LispCons : LispObject, IEnumerable<LispObject>
+  public class ConsCell : Object, IEnumerable<Object>
   {
-    public LispObject Car { get; }
-    public LispObject Cdr { get; }
+    public Object Car { get; }
+    public Object Cdr { get; }
 
-    public LispCons(LispObject car, LispObject cdr)
+    public ConsCell(Object car, Object cdr)
     {
       Car = car;
       Cdr = cdr;
@@ -281,13 +279,13 @@ public static partial class Ae
 
       sb.Append("(");
 
-      LispObject current = this;
+      Object current = this;
 
-      while (current is LispCons currentCons)
+      while (current is ConsCell currentCons)
       {
         sb.Append(currentCons.Car.Write());
 
-        if (currentCons.Cdr is LispCons)
+        if (currentCons.Cdr is ConsCell)
         {
           sb.Append(" ");
 
@@ -312,12 +310,12 @@ public static partial class Ae
       return sb.ToString();
     }
 
-    public IEnumerator<LispObject> GetEnumerator()
+    public IEnumerator<Object> GetEnumerator()
     {
-      LispObject current = this;
+      Object current = this;
 
       while (current != Nil)
-        if (current is LispCons cons)
+        if (current is ConsCell cons)
         {
           yield return cons.Car;
 
@@ -339,15 +337,15 @@ public static partial class Ae
   // static methods
   //================================================================================================
 
-  public static string Write(LispObject obj) => obj.Write();
+  public static string Write(Object obj) => obj.Write();
 
-  public static LispCons Cons(LispObject car, LispObject cdr) => new LispCons(car, cdr);
+  public static ConsCell Cons(Object car, Object cdr) => new ConsCell(car, cdr);
 
-  public static bool ProperListP(LispObject obj)
+  public static bool ProperListP(Object obj)
   {
-    LispObject current = obj;
+    Object current = obj;
 
-    while (current is LispCons cons)
+    while (current is ConsCell cons)
     {
       if (cons.Cdr == Ae.Nil)
         return true;

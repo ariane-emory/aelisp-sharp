@@ -29,8 +29,8 @@ class Program
       // if (lastToken.TokenType == Ae.TokenType.Garbage)
       //    Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
-      Ae.LispCons properList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), Ae.Nil)));
-      Ae.LispCons improperList = Ae.Cons(new Ae.LispSymbol("one"), Ae.Cons(new Ae.LispSymbol("two"), Ae.Cons(new Ae.LispSymbol("three"), new Ae.LispSymbol("four"))));        
+      Ae.ConsCell properList = Ae.Cons(new Ae.Symbol("one"), Ae.Cons(new Ae.Symbol("two"), Ae.Cons(new Ae.Symbol("three"), Ae.Nil)));
+      Ae.ConsCell improperList = Ae.Cons(new Ae.Symbol("one"), Ae.Cons(new Ae.Symbol("two"), Ae.Cons(new Ae.Symbol("three"), new Ae.Symbol("four"))));        
 
       Console.WriteLine(properList);
       Console.WriteLine(Ae.Write(properList));
@@ -44,9 +44,9 @@ class Program
       foreach (var obj in improperList)
         Console.WriteLine(obj);
 
-      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
-      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
-      Console.WriteLine(Ae.Write(new Ae.LispLambda(Ae.Nil, Ae.Nil, Ae.Nil)));
+      Console.WriteLine(Ae.Write(new Ae.Lambda(Ae.Nil, Ae.Nil, Ae.Nil)));
+      Console.WriteLine(Ae.Write(new Ae.Lambda(Ae.Nil, Ae.Nil, Ae.Nil)));
+      Console.WriteLine(Ae.Write(new Ae.Lambda(Ae.Nil, Ae.Nil, Ae.Nil)));
 
       Console.WriteLine("Done.");
    }
