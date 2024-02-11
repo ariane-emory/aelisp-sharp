@@ -147,10 +147,10 @@ public static partial class Ae
   public class Env : Object
   {
     public Object Parent { get; }
-    public ConsCell Symbols { get; }
-    public ConsCell Values { get; }
+    public Cell Symbols { get; }
+    public Cell Values { get; }
 
-    public Env(Object parent, ConsCell symbols, ConsCell values)
+    public Env(Object parent, Cell symbols, Cell values)
     {
       Parent = parent;
       Symbols = symbols;
@@ -249,15 +249,15 @@ public static partial class Ae
   }
 
   //================================================================================================
-  // ConsCell class
+  // Cell class
   //================================================================================================
 
-  public class ConsCell : Object, IEnumerable<Object>
+  public class Cell : Object, IEnumerable<Object>
   {
     public Object Car { get; }
     public Object Cdr { get; }
 
-    public ConsCell(Object car, Object cdr)
+    public Cell(Object car, Object cdr)
     {
       Car = car;
       Cdr = cdr;
@@ -273,11 +273,11 @@ public static partial class Ae
 
       Object current = this;
 
-      while (current is ConsCell currentCons)
+      while (current is Cell currentCons)
       {
         sb.Append(currentCons.Car.Write());
 
-        if (currentCons.Cdr is ConsCell)
+        if (currentCons.Cdr is Cell)
         {
           sb.Append(" ");
 
@@ -307,7 +307,7 @@ public static partial class Ae
       Object current = this;
 
       while (current != Nil)
-        if (current is ConsCell cons)
+        if (current is Cell cons)
         {
           yield return cons.Car;
 
@@ -331,13 +331,13 @@ public static partial class Ae
 
   public static string Write(Object obj) => obj.Write();
 
-  public static ConsCell Cons(Object car, Object cdr) => new ConsCell(car, cdr);
+  public static Cell Cons(Object car, Object cdr) => new Cell(car, cdr);
 
   public static bool ProperListP(Object obj)
   {
     Object current = obj;
 
-    while (current is ConsCell cons)
+    while (current is Cell cons)
     {
       if (cons.Cdr == Ae.Nil)
         return true;
