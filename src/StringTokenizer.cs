@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 
 // Tokenizer class
-public class StringTokenizer<TTokenType>
+public abstract class StringTokenizer<TTokenType>
 {
   // Token class
   public class Token : IEquatable<Token>
@@ -40,10 +40,10 @@ public class StringTokenizer<TTokenType>
   }
 
   // Private fields
-  private List<(TTokenType, Regex, Func<string, string>?)> _tokenDefinitions { get; }
+  private List<(TTokenType, Regex, Func<string, string>?)> TokenDefinitions { get; }
 
   // Constructor
-  public StringTokenizer() => _tokenDefinitions = new List<(TTokenType, Regex, Func<string, string>?)>();
+  public StringTokenizer() => TokenDefinitions = new List<(TTokenType, Regex, Func<string, string>?)>();
 
   // Instance methods
   protected void Add(TTokenType token, string pattern, Func<string, string>? fun = null)
@@ -53,7 +53,7 @@ public class StringTokenizer<TTokenType>
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
 
-    _tokenDefinitions.Add((token, new Regex(pattern), fun));
+    TokenDefinitions.Add((token, new Regex(pattern), fun));
   }
 
   public IEnumerable<Token> Tokenize(string input)
@@ -62,7 +62,7 @@ public class StringTokenizer<TTokenType>
     {
       bool foundMatch = false;
 
-      foreach (var (tokenType, regex, fun) in _tokenDefinitions)
+      foreach (var (tokenType, regex, fun) in TokenDefinitions)
       {
         var match = regex.Match(input);
 
