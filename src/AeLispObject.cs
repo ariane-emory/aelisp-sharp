@@ -319,9 +319,10 @@ public static partial class Ae
         }
         else
         {
-          // yield break;
+          yield return current;
+          yield break;
 
-          throw new InvalidOperationException("Enumerated improper list!");
+          // throw new InvalidOperationException("Enumerated improper list!");
         }
     }
 
