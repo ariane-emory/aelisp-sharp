@@ -91,9 +91,8 @@ public static partial class Ae
     }
 
     //==================================================================================================================
-    // Private constants.
+    // Private constants
     //==================================================================================================================
-
     private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
     {
       (@"\a",   "\a"),
@@ -109,14 +108,13 @@ public static partial class Ae
     };
 
     private static readonly List<(TokenType Type,
-                                  bool Discrete,
-                                  // Func<TTokenizerState, TToken, (TTokenizerState, TToken)>
                                   ProcesTokenFun? Process,
-                                  string Pattern)> Tokens =
+                                  string Pattern,
+                                  bool Discrete)> Tokens =
       new List<(TokenType Type,
-                bool Discrete,
                 ProcesTokenFun? Process,
-                string Pattern)>
+                string Pattern,
+                bool Discrete)>
       {
         (Type: TokenType.NewLine,       Discrete: false, Process: CountLines,           Pattern: @"\r?\n"),
         (Type: TokenType.Whitespace,    Discrete: false, Process: CountColumns,         Pattern: @"[ \t\f\v]+"),

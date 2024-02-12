@@ -47,7 +47,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _state = _createTokenizerState();
   }
 
+  //====================================================================================================================
   // Instance methods
+  //====================================================================================================================
   protected void Add(TTokenType type,
                      string pattern,
                      ProcesTokenFun? processToken = null,
@@ -73,7 +75,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
       {
         if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(_state))
           continue;
- 
+
         var match = definition.Pattern.Match(input);
 
         if (match.Success)
@@ -90,7 +92,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
           foundMatch = true;
           input = input.Substring(match.Length);
-          
+
           break;
         }
       }
