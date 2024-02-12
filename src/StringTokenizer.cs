@@ -17,15 +17,16 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
 
+  private TTokenizerState _state { get; set; }
+  
   private List<(TTokenType, Regex, Func<TToken, TToken>?)> TokenDefinitions { get; } =
     new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
-  private TTokenizerState State { get; set; }
   
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
     _createToken = createToken;
-    State = state;
+    _state = state;
   }
 
 // Instance methods
