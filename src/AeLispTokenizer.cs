@@ -48,7 +48,7 @@ public static partial class Ae
         Add(tokenType,
             discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
             process,
-            active is null ? NotInMultilineComment : InMultilineComment);
+            active is null ? NotInMultilineComment : active);
     }
 
     //==================================================================================================================
@@ -76,8 +76,8 @@ public static partial class Ae
                 TokenDefinitionIsActiveFun? IsActive,
                 string Pattern)>
       {
-        (Type: TokenType.NewLine,               Discrete: false, Process: CountLine,         IsActive: null,   Pattern: @"\r?\n"),
-        (Type: TokenType.Whitespace,            Discrete: false, Process: CountColumns,      IsActive: null,   Pattern: @"[ \t\f\v]+"),
+        (Type: TokenType.NewLine,               Discrete: false, Process: CountLine,         IsActive: Always, Pattern: @"\r?\n"),
+        (Type: TokenType.Whitespace,            Discrete: false, Process: CountColumns,      IsActive: Always, Pattern: @"[ \t\f\v]+"),
         (Type: TokenType.LParen,                Discrete: false, Process: CountColumns,      IsActive: null,   Pattern: @"\("),
         (Type: TokenType.RParen,                Discrete: true,  Process: CountColumns,      IsActive: null,   Pattern: @"\)"),
         (Type: TokenType.Nil,                   Discrete: true,  Process: CountColumns,      IsActive: null,   Pattern: @"nil"),
