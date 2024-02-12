@@ -63,8 +63,8 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      //(state, token) = ;
-      (state, token) = TrimFirst(CountColumns(state,token));
+      (state, token) = CountColumns(state,token);
+      (state, token) = TrimFirst(state, token);
       return UnescapeChars(state, token);
     }
 
