@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 //======================================================================================================================
 // Token class
 //======================================================================================================================
-public record struct Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
+public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
 {
   public static Token<TTokenType> Create(TTokenType tokenType, string text) => new Token<TTokenType>(tokenType, text);
 }
