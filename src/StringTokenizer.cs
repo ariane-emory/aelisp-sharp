@@ -36,12 +36,16 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
     TokenDefinitions.Add((token, new Regex(pattern), fun));
   }
 
+  protected virtual void Restart() { }
+
   public IEnumerable<TToken> Tokenize(string input)
   {
+    Restart();
+
     while (!string.IsNullOrEmpty(input))
     {
       WriteLine($"Enter while at \"{input}\".");
-      
+
       bool foundMatch = false;
 
       foreach (var (tokenType, regex, fun) in TokenDefinitions)

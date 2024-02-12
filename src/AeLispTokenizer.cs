@@ -74,7 +74,7 @@ public static partial class Ae
     private static PositionedToken<TokenType> CountColumns(PositionedToken<TokenType> token)
     {
       WriteLine($"Begin CountColumns with {Get().Line},{Get().Column} at \"{token.Text}\".");
-      
+
       token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
 
       Get().Column += token.Text.Length;
@@ -173,6 +173,15 @@ public static partial class Ae
     //==================================================================================================================
     public int Line { get; private set; } = 0;
     public int Column { get; private set; } = 0;
+
+    //==================================================================================================================
+    // Private methods
+    //==================================================================================================================
+    protected override void Restart()
+    {
+      Line = 0;
+      Column = 0;
+    }
 
     //==================================================================================================================
     // Private constructor

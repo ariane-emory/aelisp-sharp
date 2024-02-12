@@ -23,8 +23,8 @@ class Program
 // //        + @"\#!2garbage");
 
       // Die if we tokenized nothing:
-      // if (! tokens.Any())
-      //'   Die(1, "No tokens!");
+      if (! tokens.Any())
+         Die(1, "No tokens!");
 
       // Print out the tokenized tokens:
       foreach (var (token, index) in tokens
@@ -32,11 +32,11 @@ class Program
         .Select((value, index) => (value, index)))
         WriteLine($"#{index}: {token}");
 
-      // var lastToken = tokens.ToList()[tokens.Count()-1];
+      var lastToken = tokens.ToList()[tokens.Count()-1];
 
       // Die if we didn't tokenize everything:
-      // if (lastToken.TokenType == TokenType.Garbage)
-      //    Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
+      if (lastToken.TokenType == TokenType.Garbage)
+         Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
 
       Die(0, "Stop.");
                                             
