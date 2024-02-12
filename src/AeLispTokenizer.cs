@@ -71,7 +71,7 @@ public static partial class Ae
                 ProcesTokenFun? Process,
                 string Pattern)>
       {
-        (Type: TokenType.NewLine,       Discrete: false, Process: CountLines,           Pattern: @"\r?\n"),
+        (Type: TokenType.NewLine,       Discrete: false, Process: CountLine,            Pattern: @"\r?\n"),
         (Type: TokenType.Whitespace,    Discrete: false, Process: CountColumns,         Pattern: @"[ \t\f\v]+"),
         (Type: TokenType.LParen,        Discrete: false, Process: CountColumns,         Pattern: @"\("),
         (Type: TokenType.RParen,        Discrete: true,  Process: CountColumns,         Pattern: @"\)"),
@@ -175,7 +175,7 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLines((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
@@ -191,7 +191,14 @@ public static partial class Ae
 
       tup.State.Column += tup.Token.Text.Length;
 
-      return (tup.State, tup.Token);
+      return tup; // (tup.State, tup.Token);
+    }
+
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) SetTokenLinesAndColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
+
+      return tup;
     }
   }
 }
