@@ -19,8 +19,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state;
 
-  private List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform)> _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform)>();
+  private List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform, Func<TTokenizerState, bool>? IsActive)> _tokenDefinitions =
+    new List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform, Func<TTokenizerState, bool>? IsActive)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
@@ -29,14 +29,14 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   }
 
   // Instance methods
-  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
+  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? transform = null, Func<TTokenizerState, bool>? isActive = null)
   {
     pattern = "(?:" + pattern + ")";
 
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
 
-    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
+    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), transform, isActive));
   }
 
   protected virtual void Restart() { }
