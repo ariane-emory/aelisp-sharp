@@ -40,18 +40,36 @@ public static partial class Ae
   public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
   {
     //==================================================================================================================
+    // Private constants.
+    //==================================================================================================================
+
+    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
+    {
+      (@"\a",   "\a"),
+      (@"\b",   "\b"),
+      (@"\f",   "\f"),
+      (@"\n",   "\n"),
+      (@"\r",   "\r"),
+      (@"\t",   "\t"),
+      (@"\v",   "\v"),
+      (@"\\",   "\\"),
+      (@"\'",   "\'"),
+      (@"\""",  "\""),
+    };
+
+    //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
     // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
 
-    TokenProcessorFun UnescapeChars = (AeLispTokenizerState State, PositionedToken<TokenType> Token) =>
+    private static readonly TokenProcessorFun UnescapeChars = ((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup) =>
     {
-      var str = Token.Text;
+      var str = tup.Token.Text;
 
       foreach (var (escaped, unescaped) in EscapedChars)
         str = str.Replace(escaped, unescaped);
 
-      return (State, new PositionedToken<TokenType>(Token.TokenType, str, Token.Line, Token.Column));
+      return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, str, tup.Token.Line, tup.Token.Column));
     };
 
     // private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
@@ -108,22 +126,8 @@ public static partial class Ae
     }
 
     //==================================================================================================================
-    // Private constants.
+    // More private constants.
     //==================================================================================================================
-
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
 
     private static readonly List<(TokenType Type,
                                   bool Discrete,
