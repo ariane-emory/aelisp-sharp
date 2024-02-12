@@ -43,7 +43,7 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
-        
+
     private static (AeLispTokenizerState state, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
@@ -58,11 +58,11 @@ public static partial class Ae
     {
       (tup.State, tup.Token) = CountColumns((tup.State, tup.Token));
 
-            return UnescapeChars((tup.State,
-                                  new PositionedToken<TokenType>(tup.Token.TokenType,
-                                                                 tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                                                 tup.Token.Line,
-                                                                 tup.Token.Column)));
+      return UnescapeChars((tup.State,
+                            new PositionedToken<TokenType>(tup.Token.TokenType,
+                                                           tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                                           tup.Token.Line,
+                                                           tup.Token.Column)));
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
