@@ -158,10 +158,10 @@ public static partial class Ae
       tup = CountColumns(tup);
 
       return UnescapeChars((tup.State,
-                      new PositionedToken<TokenType>(tup.Token.TokenType,
-                                                     tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                                     tup.Token.Line,
-                                                     tup.Token.Column)));
+                            new PositionedToken<TokenType>(tup.Token.TokenType,
+                                                           tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                                           tup.Token.Line,
+                                                           tup.Token.Column)));
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
@@ -180,7 +180,7 @@ public static partial class Ae
 
       return tup;
     }
-  
+
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
