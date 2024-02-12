@@ -67,9 +67,9 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           WriteLine($"Advance input to \"{input}\".");
           foundMatch = true;
 
+          WriteLine($"Yielding the {tokenType}.");
           yield return token;
           WriteLine($"Yielded the {tokenType}.");
-
 
           break; // Successfully matched and processed, move to next segment of input
         }

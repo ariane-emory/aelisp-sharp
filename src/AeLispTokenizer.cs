@@ -11,6 +11,7 @@ public static partial class Ae
     CommaAt,
     Dollar,
     Dot,
+    Eof,
     Float,
     Garbage,
     Integer,
@@ -85,8 +86,9 @@ public static partial class Ae
     // Private constants.
     //==================================================================================================================
     private static readonly List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)> Tokens =
-  new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
-  {
+      new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
+      {
+        (TokenType.Eof,           discrete: false, fun: CountColumns,         pattern: @"$"),
         (TokenType.NewLine,       discrete: false, fun: CountLines,           pattern: @"\r?\n"),
         (TokenType.Whitespace,    discrete: false, fun: CountColumns,         pattern: @"[ \t\f\v]+"),
         // (TokenType.LParen,        discrete: false, fun: CountColumns,         pattern: @"\("),
