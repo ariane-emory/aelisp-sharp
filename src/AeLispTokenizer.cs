@@ -43,6 +43,9 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
+
+    private delegate (AeLispTokenizerState state, PositionedToken<TokenType>)
+      AeLispTokenizerTransformFun(AeLispTokenizerState state, PositionedToken<TokenType> token);
     
     private static (AeLispTokenizerState state, PositionedToken<TokenType>) UnescapeChars(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
@@ -56,21 +59,21 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimAndUnescape(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      (state, token) = CountColumns(state,token);
+      (state, token) = CountColumns(state, token);
 
       return UnescapeChars(state, new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      (state, token) = CountColumns(state,token);
+      (state, token) = CountColumns(state, token);
       (state, token) = TrimFirst(state, token);
       return UnescapeChars(state, token);
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      (state, token) = CountColumns(state,token);
+      (state, token) = CountColumns(state, token);
 
       return (state, new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
     }
@@ -208,13 +211,13 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
-                             new AeLispTokenizerState())
+    private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
+                               new AeLispTokenizerState())
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
             discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
             fun);
-        }
+    }
   }
 }

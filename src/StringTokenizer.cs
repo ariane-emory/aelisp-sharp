@@ -19,7 +19,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state;
 
-  private List<(TTokenType Type, Regex Pattern, Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)> _tokenDefinitions =
+  private List<(TTokenType Type,
+                Regex Pattern,
+                Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken,
+                Func<TTokenizerState, bool>? IsActive)>
+  _tokenDefinitions =
     new List<(TTokenType Type, Regex Pattern, Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
