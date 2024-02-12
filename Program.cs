@@ -64,7 +64,11 @@ class Program
   static void Main()
   {
     var filename = "data.lisp";
-    var totalTokens = TokenizeFile(filename);
+    var mode = Mode.Line;
+    var totalTokens?;
+
+    if (mode == Mode.Line)
+      totalTokens = TokenizeFile(filename);
 
     Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
