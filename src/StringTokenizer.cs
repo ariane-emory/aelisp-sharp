@@ -13,7 +13,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
   // Delegates 
   public delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
-  public delegate bool DefinitionIsActiveFun(TTokenizerState state);
+  public delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
   public delegate TToken CreateTokenFun(TTokenType type, string text);
   
   // Private fields
@@ -24,9 +24,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   private List<(TTokenType Type,
                 Regex Pattern,
                 ProcesTokenFun? ProcessToken,
-                DefinitionIsActiveFun? DefinitionIsActive)>
+                TokenDefinitionIsActiveFun? DefinitionIsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, DefinitionIsActiveFun? DefinitionIsActive)>();
+    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, TokenDefinitionIsActiveFun? DefinitionIsActive)>();
 
   // Constructor
   public StringTokenizer(CreateTokenFun createToken, TTokenizerState state)
@@ -39,7 +39,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   protected void Add(TTokenType token,
                      string pattern,
                      ProcesTokenFun? processToken = null,
-                     DefinitionIsActiveFun? isActive = null)
+                     TokenDefinitionIsActiveFun? isActive = null)
   {
     pattern = "(?:" + pattern + ")";
 
