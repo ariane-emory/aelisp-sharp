@@ -24,9 +24,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   private List<(TTokenType Type,
                 Regex Pattern,
                 ProcesTokenFun? ProcessToken,
-                DefinitionIsActiveFun? IsActive)>
+                DefinitionIsActiveFun? DefinitionIsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, DefinitionIsActiveFun? IsActive)>();
+    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, DefinitionIsActiveFun? DefinitionIsActive)>();
 
   // Constructor
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
