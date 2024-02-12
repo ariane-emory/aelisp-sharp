@@ -1,7 +1,7 @@
 using static System.Console;
 using System.Text.RegularExpressions;
 
- //======================================================================================================================
+//======================================================================================================================
 // Token class
 //======================================================================================================================
 public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
@@ -45,7 +45,7 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
       foreach (var (tokenType, regex, fun) in TokenDefinitions)
       {
         WriteLine($"Try matching a {tokenType} token with \"{regex}\" at {input}.");
-        
+
         var match = regex.Match(input);
 
         if (match.Success)
@@ -54,17 +54,18 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
             throw new Exception("Zero-length match found, which could lead to an infinite loop.");
 
           WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
-          
+
           var token = _tokenCreator(tokenType, match.Value);
 
           if (fun is not null)
             token = fun(token);
-          
+
           input = input.Substring(match.Length);
           foundMatch = true;
 
-          WriteLine($"Yield the {tokenType}.");
           yield return token;
+          WriteLine($"Yield the {tokenType}.");
+
 
           break; // Successfully matched and processed, move to next segment of input
         }
