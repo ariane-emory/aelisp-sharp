@@ -25,23 +25,9 @@ public static partial class Ae
 
   public class Tokenizer : StringTokenizer<TokenType, Token<TokenType>>
   {
-    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
-    {
-      var str = token.Text;
-
-      foreach (var (escaped, unescaped) in EscapedChars)
-        str = token.Text.Replace(escaped, unescaped);
-
-      return new Token<TokenType>(token.TokenType, str);
-    }
-
-    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
-
-    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
-
+    //==================================================================================================================
     // Private constants.
+    //==================================================================================================================
     private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
     {
       (@"\a",   "\a"),
@@ -112,8 +98,28 @@ public static partial class Ae
 
     private static Tokenizer _tokenizer = new Tokenizer();
 
+    //==================================================================================================================
+    // Token callbacks
+    //==================================================================================================================
+    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
+    {
+      var str = token.Text;
 
+      foreach (var (escaped, unescaped) in EscapedChars)
+        str = token.Text.Replace(escaped, unescaped);
+
+      return new Token<TokenType>(token.TokenType, str);
+    }
+
+    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
+      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
+
+    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
+      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
+
+    //==================================================================================================================
     // Get the instance
+    //==================================================================================================================
     public static Tokenizer Get()
     {
       if (_tokenizer is null)
@@ -122,7 +128,9 @@ public static partial class Ae
       return _tokenizer;
     }
 
+    //==================================================================================================================
     // Private constructor
+    //==================================================================================================================
     private Tokenizer() : base((tokenType, text) => new Token<TokenType>(tokenType, text))
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
