@@ -16,6 +16,13 @@ class Program
 
      foreach (var (line, lineNumber) in input.Select((line, lineNumber) => (line, lineNumber))) {
        var newTokens = Tokenizer.Get().Tokenize(line).Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
+       var lastToken = newTokens.ToList()[newTokens.Count()-1];
+     
+     // Die if we didn't tokenize everything:
+     if (lastToken.TokenType == TokenType.Garbage)
+       Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
+       
+       
        tokens.AddRange(newTokens);
      }
 
