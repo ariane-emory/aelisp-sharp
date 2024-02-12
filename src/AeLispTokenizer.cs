@@ -155,7 +155,7 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      (tup.State, tup.Token) = CountColumns((tup.State, tup.Token));
+      tup = CountColumns((tup.State, tup.Token));
 
       return UnescapeChars((tup.State,
                             new PositionedToken<TokenType>(tup.Token.TokenType,
