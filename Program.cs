@@ -6,6 +6,8 @@ class Program
 {
   static void Main()
    {
+     var input = File.ReadAllLines("data.lisp");
+     
      var tokens = Tokenizer.Get().Tokenize(@"
 one two
 three (123 457 *bingo*
