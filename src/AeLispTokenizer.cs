@@ -177,17 +177,16 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
+      tup = SetTokenLinesAndColumns(tup);
 
       tup.State.Line++;
       tup.State.Column = 0;
 
-      return (tup.State, tup.Token);
+      return tup;
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      //tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
       tup = SetTokenLinesAndColumns(tup);
       
       tup.State.Column += tup.Token.Text.Length;
