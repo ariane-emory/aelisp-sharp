@@ -71,15 +71,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
     while (!string.IsNullOrEmpty(input))
     {
-      // WriteLine($"Enter while at \"{input}\".");
-
       bool foundMatch = false;
 
-      // foreach (var (tokenType, regex, processToken) in _tokenDefinitions)
       foreach (var definition in _tokenDefinitions)
       {
-        // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
-
         if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(_state))
           continue;
  
@@ -87,8 +82,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
         if (match.Success)
         {
-          // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
-
           var token = _createToken(definition.Type, match.Value);
 
           if (match.Length == 0)
@@ -97,15 +90,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
           if (definition.ProcessToken is not null)
             (_state, token) = definition.ProcessToken((_state, token));
 
-          input = input.Substring(match.Length);
-
-          // WriteLine($"Advance input to \"{input}\".");
-          foundMatch = true;
-
-          // WriteLine($"Yielding the {tokenType}.");
           yield return token;
-          // WriteLine($"Yielded the {tokenType}.");
 
+          foundMatch = true;
+          input = input.Substring(match.Length);
+          
           break; // Successfully matched and processed, move to next segment of input
         }
       }

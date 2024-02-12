@@ -83,8 +83,6 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      // WriteLine($"Begin CountColumns with {tup.State.Line},{tup.State.Column} at \"{token.Text}\".");
-
       tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
       tup.State.Column += tup.Token.Text.Length;
