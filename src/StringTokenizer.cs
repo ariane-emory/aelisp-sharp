@@ -44,6 +44,8 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
 
       foreach (var (tokenType, regex, fun) in TokenDefinitions)
       {
+        WriteLine($"Try matching a {tokenType} token with \"{regex}\" at {input}.");
+        
         var match = regex.Match(input);
 
         if (match.Success)
@@ -58,12 +60,11 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           if (fun is not null)
             token = fun(token);
           
-          yield return token;
-
-          WriteLine($"Yield the {tokenType}.");
-
           input = input.Substring(match.Length);
           foundMatch = true;
+
+          WriteLine($"Yield the {tokenType}.");
+          yield return token;
 
           break; // Successfully matched and processed, move to next segment of input
         }
