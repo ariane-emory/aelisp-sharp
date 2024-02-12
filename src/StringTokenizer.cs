@@ -18,11 +18,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
   protected delegate TTokenizerState CreateTokenizerStateFun(TTokenType type, string text);
-  
+
   //====================================================================================================================
   // Private fields
   //====================================================================================================================
   private readonly CreateTokenFun _createToken;
+  private readonly CreateTokenizerStateFun _createTokenizerState;
 
   private TTokenizerState _state;
 
@@ -39,9 +40,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Constructor
   //====================================================================================================================
-  protected StringTokenizer(CreateTokenFun createToken, TTokenizerState state)
+  protected StringTokenizer(CreateTokenFun createToken, TTokenizerState state, CreateTokenizerStateFun createTokenizerStateFun)
   {
     _createToken = createToken;
+    _createTokenizerState = createTokenizerStateFun;
+
     _state = state;
   }
 
