@@ -38,21 +38,21 @@ public static partial class Ae
       foreach (var (escaped, unescaped) in EscapedChars)
         str = token.Text.Replace(escaped, unescaped);
 
-      return new PositionedToken<TokenType>(token.TokenType, str, 0, 0);
+      return new PositionedToken<TokenType>(token.TokenType, str, token.Line, token.Column);
     }
 
     private static PositionedToken<TokenType> TrimAndUnescape(PositionedToken<TokenType> token)
     {
       CountColumns(token);
 
-      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), 0, 0));
+      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
         }
     
     private static PositionedToken<TokenType> TrimFirstAndUnescape(PositionedToken<TokenType> token)
     {
       CountColumns(token);
 
-      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), 0, 0));
+      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
     }
     
     private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
