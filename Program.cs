@@ -11,12 +11,11 @@ class Program
      if (! File.Exists(filename))
        throw new ApplicationException($"No file '{filename}'.");
 
+     var tokens = new List<PositionedToken<TokenType>>();
      var input = File.ReadAllLines(filename);
 
-     var tokens = new List<PositionedToken<TokenType>>();
-     
-     foreach (var line in input)
-       tokens.AddRange(Tokenizer.Get().Tokenize(line));
+     foreach (var (line, lineNo) in input.Select((line, lineNo) => (line, lineNo)))
+       tokens.AddRange(Tokenizer.Get().Tokenize(line).Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNo, t.Column)));
 
       // Die if we tokenized nothing:
       if (! tokens.Any())
