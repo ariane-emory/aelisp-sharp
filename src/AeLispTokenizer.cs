@@ -26,36 +26,36 @@ public static partial class Ae
 
   public record PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text);
 
-  public class Tokenizer : StringTokenizer<TokenType, Token<TokenType>>
+  public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
   {
     //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
-    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
+    private static PositionedToken<TokenType> UnescapeChars(PositionedToken<TokenType> token)
     {
       var str = token.Text;
 
       foreach (var (escaped, unescaped) in EscapedChars)
         str = token.Text.Replace(escaped, unescaped);
 
-      return new Token<TokenType>(token.TokenType, str);
+      return new PositionedToken<TokenType>(token.TokenType, str, 0, 0);
     }
 
-    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token)
+    private static PositionedToken<TokenType> TrimAndUnescape(PositionedToken<TokenType> token)
     {
       CountColumns(token);
-      
-      return UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
-    }
+
+      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), 0, 0));
+        }
     
-    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token)
+    private static PositionedToken<TokenType> TrimFirstAndUnescape(PositionedToken<TokenType> token)
     {
       CountColumns(token);
-      
-      return UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
+
+      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), 0, 0));
     }
     
-    private static Token<TokenType> CountLines(Token<TokenType> token)
+    private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
     {
       Get().Line++;
       Get().Column = 0;
@@ -63,7 +63,7 @@ public static partial class Ae
       return token;
     }
 
-    private static Token<TokenType> CountColumns(Token<TokenType> token)
+    private static PositionedToken<TokenType> CountColumns(PositionedToken<TokenType> token)
     {
       Get().Column += token.Text.Length;
       
@@ -73,8 +73,8 @@ public static partial class Ae
     //==================================================================================================================
     // Private constants.
     //==================================================================================================================
-    private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
-      new List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)>
+    private static readonly List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)> Tokens =
+      new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
       {
         (TokenType.NewLine,       discrete: false, fun: CountLines,           pattern: @"\r?\n"),
         (TokenType.Whitespace,    discrete: false, fun: CountColumns,         pattern: @"[ \t\f\v]+"),
@@ -164,7 +164,7 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-    private Tokenizer() : base((tokenType, text) => new Token<TokenType>(tokenType, text))
+  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0))
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
