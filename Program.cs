@@ -6,8 +6,8 @@ class Program
 {
   static void Main()
    {
-      var tokens = Tokenizer.Get().Tokenize(@"one two
-                                            three");
+     var tokens = Tokenizer.Get().Tokenize(@"one two");
+
 //         @"one two
 // three (123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
 //         + @"`(1 ,2 3) $(1 2 3) (1 2 ,@(4 5)) ?a ?\n ""he\""llo"" "
@@ -28,9 +28,9 @@ class Program
 
       // Print out the tokenized tokens:
       foreach (var (token, index) in tokens
-        .Where(token => token.TokenType != TokenType.Whitespace)
+               // .Where(token => token.TokenType != TokenType.Whitespace)
         .Select((value, index) => (value, index)))
-        WriteLine(token);
+        WriteLine($"#{index}: {token}");
 
       var lastToken = tokens.ToList()[tokens.Count()-1];
 

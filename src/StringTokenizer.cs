@@ -1,3 +1,4 @@
+using static System.Console;
 using System.Text.RegularExpressions;
 
  //======================================================================================================================
@@ -50,11 +51,15 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           if (match.Length == 0)
             throw new Exception("Zero-length match found, which could lead to an infinite loop.");
 
+          WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
+          
           var token = _tokenCreator(tokenType, match.Value);
 
           if (fun is not null)
             token = fun(token);
-
+          
+          WriteLine($"Yield the {tokenType}.");
+          
           yield return token;
 
           input = input.Substring(match.Length);
