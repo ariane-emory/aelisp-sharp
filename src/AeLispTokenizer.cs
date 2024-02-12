@@ -40,28 +40,8 @@ public static partial class Ae
   public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
   {
     //==================================================================================================================
-    // Private constants.
-    //==================================================================================================================
-
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
-
-    //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
-    // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
-
     private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
@@ -116,8 +96,22 @@ public static partial class Ae
     }
 
     //==================================================================================================================
-    // More private constants.
+    // Private constants.
     //==================================================================================================================
+
+    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
+    {
+      (@"\a",   "\a"),
+      (@"\b",   "\b"),
+      (@"\f",   "\f"),
+      (@"\n",   "\n"),
+      (@"\r",   "\r"),
+      (@"\t",   "\t"),
+      (@"\v",   "\v"),
+      (@"\\",   "\\"),
+      (@"\'",   "\'"),
+      (@"\""",  "\""),
+    };
 
     private static readonly List<(TokenType Type,
                                   bool Discrete,

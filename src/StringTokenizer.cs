@@ -13,8 +13,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
   // Delegates 
   public delegate (TTokenizerState, TToken) TokenProcessorFun((TTokenizerState State, TToken Token) tup);
-  public delegate bool DefinitionIsActiveFun(TTokenizerState State);
-
+  public delegate bool DefinitionIsActiveFun(TTokenizerState state);
+  public delegate TToken CreateTokenFun(TTokenType type, string text);
+  
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
 
