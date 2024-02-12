@@ -14,6 +14,7 @@ public static partial class Ae
     Integer,
     LParen,
     LispStyleChar,
+    NewLine,
     Nil,
     Quote,
     RParen,
@@ -45,7 +46,8 @@ public static partial class Ae
     private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
       new List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)>
       {
-        (TokenType.Whitespace,    discrete: false, fun: null,                    pattern: @"\s+"),
+        (TokenType.NewLine,       discrete: false, fun: null,                    pattern: @"\r?\n"),
+        (TokenType.Whitespace,    discrete: false, fun: null,                    pattern: @"[ \t\f\v]+"),
         (TokenType.LParen,        discrete: false, fun: null,                    pattern: @"\("),
         (TokenType.RParen,        discrete: true,  fun: null,                    pattern: @"\)"),
         (TokenType.Nil,           discrete: true,  fun: null,                    pattern: @"nil"),
