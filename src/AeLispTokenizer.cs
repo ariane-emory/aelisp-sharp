@@ -71,37 +71,37 @@ public static partial class Ae
                 ProcesTokenFun? Process,
                 string Pattern)>
       {
-        (Type: TokenType.NewLine,       Discrete: false, Process: CountLine,            Pattern: @"\r?\n"),
-        (Type: TokenType.Whitespace,    Discrete: false, Process: CountColumns,         Pattern: @"[ \t\f\v]+"),
-        (Type: TokenType.LParen,        Discrete: false, Process: CountColumns,         Pattern: @"\("),
-        (Type: TokenType.RParen,        Discrete: true,  Process: CountColumns,         Pattern: @"\)"),
-        (Type: TokenType.Nil,           Discrete: true,  Process: CountColumns,         Pattern: @"nil"),
-        (Type: TokenType.Dot,           Discrete: true,  Process: CountColumns,         Pattern: @"\."),
-        (Type: TokenType.CStyleChar,    Discrete: true,  Process: TrimAndUnescape,      Pattern: @"'[^']'"),
-        (Type: TokenType.CStyleChar,    Discrete: true,  Process: TrimAndUnescape,      Pattern: @"'\\.'"),
-        (Type: TokenType.Float,         Discrete: true,  Process: CountColumns,         Pattern: Float),
-        (Type: TokenType.Rational,      Discrete: true,  Process: CountColumns,         Pattern: Rational),
-        (Type: TokenType.Integer,       Discrete: true,  Process: CountColumns,         Pattern: MaybeSigned + DigitSeparatedInteger),
-        (Type: TokenType.String,        Discrete: true,  Process: TrimAndUnescape,      Pattern: @"\""(\\\""|[^\""])*\"""),
-        (Type: TokenType.Quote,         Discrete: false, Process: CountColumns,         Pattern: @"'"),
-        (Type: TokenType.Backtick,      Discrete: false, Process: CountColumns,         Pattern: @"`"),
-        (Type: TokenType.CommaAt,       Discrete: false, Process: CountColumns,         Pattern: @",@"),
-        (Type: TokenType.Comma,         Discrete: false, Process: CountColumns,         Pattern: @","),
-        (Type: TokenType.At,            Discrete: false, Process: CountColumns,         Pattern: @"@"),
-        (Type: TokenType.Dollar,        Discrete: false, Process: CountColumns,         Pattern: @"\$"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: Integer + @"?" + MathOp),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: MathOp + Integer),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"[\?]{3}"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: SymBody),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"<"  + SymBody + @">"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"\*" + SymBody + @"\*"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
-        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,         Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
-        (Type: TokenType.LispStyleChar, Discrete: true,  Process: TrimFirstAndUnescape, Pattern: @"\?\\."),
-        (Type: TokenType.LispStyleChar, Discrete: true,  Process: TrimFirstAndUnescape, Pattern: @"\?."),
-        (Type: TokenType.LineComment,   Discrete: false, Process: TrimFirst,            Pattern: @";.+"),
-        (Type: TokenType.Garbage,       Discrete: false, Process: CountColumns,         Pattern: @".+"),
+        (Type: TokenType.NewLine,       Discrete: false, Process: CountLine,         Pattern: @"\r?\n"),
+        (Type: TokenType.Whitespace,    Discrete: false, Process: CountColumns,      Pattern: @"[ \t\f\v]+"),
+        (Type: TokenType.LParen,        Discrete: false, Process: CountColumns,      Pattern: @"\("),
+        (Type: TokenType.RParen,        Discrete: true,  Process: CountColumns,      Pattern: @"\)"),
+        (Type: TokenType.Nil,           Discrete: true,  Process: CountColumns,      Pattern: @"nil"),
+        (Type: TokenType.Dot,           Discrete: true,  Process: CountColumns,      Pattern: @"\."),
+        (Type: TokenType.CStyleChar,    Discrete: true,  Process: ProcStringLike,    Pattern: @"'[^']'"),
+        (Type: TokenType.CStyleChar,    Discrete: true,  Process: ProcStringLike,    Pattern: @"'\\.'"),
+        (Type: TokenType.Float,         Discrete: true,  Process: CountColumns,      Pattern: Float),
+        (Type: TokenType.Rational,      Discrete: true,  Process: CountColumns,      Pattern: Rational),
+        (Type: TokenType.Integer,       Discrete: true,  Process: CountColumns,      Pattern: MaybeSigned + DigitSeparatedInteger),
+        (Type: TokenType.String,        Discrete: true,  Process: ProcStringLike,    Pattern: @"\""(\\\""|[^\""])*\"""),
+        (Type: TokenType.Quote,         Discrete: false, Process: CountColumns,      Pattern: @"'"),
+        (Type: TokenType.Backtick,      Discrete: false, Process: CountColumns,      Pattern: @"`"),
+        (Type: TokenType.CommaAt,       Discrete: false, Process: CountColumns,      Pattern: @",@"),
+        (Type: TokenType.Comma,         Discrete: false, Process: CountColumns,      Pattern: @","),
+        (Type: TokenType.At,            Discrete: false, Process: CountColumns,      Pattern: @"@"),
+        (Type: TokenType.Dollar,        Discrete: false, Process: CountColumns,      Pattern: @"\$"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: Integer + @"?" + MathOp),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: MathOp + Integer),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"[\?]{3}"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: SymBody),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"<"  + SymBody + @">"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"\*" + SymBody + @"\*"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
+        (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
+        (Type: TokenType.LispStyleChar, Discrete: true,  Process: ProcLispStyleChar, Pattern: @"\?\\."),
+        (Type: TokenType.LispStyleChar, Discrete: true,  Process: ProcLispStyleChar, Pattern: @"\?."),
+        (Type: TokenType.LineComment,   Discrete: false, Process: TrimFirst,         Pattern: @";.+"),
+        (Type: TokenType.Garbage,       Discrete: false, Process: CountColumns,      Pattern: @".+"),
       };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
@@ -153,33 +153,23 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, str, tup.Token.Line, tup.Token.Column));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = CountColumns((tup.State, tup.Token));
+      tup = CountColumns(tup);
 
       return UnescapeChars((tup.State,
-                            new PositionedToken<TokenType>(tup.Token.TokenType,
-                                                           tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                                           tup.Token.Line,
-                                                           tup.Token.Column)));
+                      new PositionedToken<TokenType>(tup.Token.TokenType,
+                                                     tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                                     tup.Token.Line,
+                                                     tup.Token.Column)));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => UnescapeChars(TrimFirst(CountColumns(tup)));
-
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = CountColumns(tup);
-
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
-    }
-
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-    {
-      tup = CountColumns(tup);
-
-      return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1, tup.Token.Text.Length - 2), tup.Token.Line, tup.Token.Column));
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
