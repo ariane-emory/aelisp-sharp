@@ -6,7 +6,7 @@ class Program
 {
   static void Main()
    {
-     var tokens = Tokenizer.Get().Tokenize(@"one");
+     var tokens = Tokenizer.Get().Tokenize(@"one two");
 
 //         @"one two
 // three (123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
@@ -32,7 +32,7 @@ class Program
         .Select((value, index) => (value, index)))
         WriteLine($"#{index}: {token}");
 
-      var lastToken = tokens.ToList()[tokens.Count()-1];
+      // var lastToken = tokens.ToList()[tokens.Count()-1];
 
       // Die if we didn't tokenize everything:
       // if (lastToken.TokenType == TokenType.Garbage)
