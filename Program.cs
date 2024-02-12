@@ -28,7 +28,7 @@ class Program
       foreach (var (token, index) in tokens
          .Where(token => token.TokenType != TokenType.Whitespace)
          .Select((value, index) => (value, index)))
-         WriteLine($"#{index}: {token.TokenType} [{token.Text}]");
+         WriteLine($"#{index}: {token.TokenType} [{token.Text}] @ {token.Line}, {token.Column}");
 
       var lastToken = tokens.ToList()[tokens.Count()-1];
 
