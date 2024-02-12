@@ -36,17 +36,17 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   }
 
   // Instance methods
-  protected void Add(TTokenType token,
+  protected void Add(TTokenType type,
                      string pattern,
                      ProcesTokenFun? processToken = null,
-                     TokenDefinitionIsActiveFun? isActive = null)
+                     TokenDefinitionIsActiveFun? definitionIsActive = null)
   {
     pattern = "(?:" + pattern + ")";
 
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
 
-    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), processToken, isActive));
+    _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
   protected virtual void Restart() { }
