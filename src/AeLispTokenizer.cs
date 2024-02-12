@@ -188,7 +188,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
-      
+
       tup.State.Column += tup.Token.Text.Length;
 
       return tup;
