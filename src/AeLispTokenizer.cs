@@ -175,6 +175,13 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
 
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup = CountColumns(tup);
+
+      return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1, tup.Token.Text.Length - 2), tup.Token.Line, tup.Token.Column));
+    }
+
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
