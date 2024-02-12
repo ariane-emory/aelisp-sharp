@@ -76,7 +76,6 @@ public static partial class Ae
                 string Pattern)>
       {
         (Type: TokenType.Newline,                Discrete: false, Process: CountLine,         IsActive: null,               Pattern: @"\r?\n"),
-        (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"),
         (Type: TokenType.Whitespace,             Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"[ \t\f\v]+"),
         (Type: TokenType.LParen,                 Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"\("),
         (Type: TokenType.RParen,                 Discrete: true,  Process: CountColumns,      IsActive: null,               Pattern: @"\)"),
@@ -109,6 +108,7 @@ public static partial class Ae
         (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|"),
         (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"\|#"),
         (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"\S+"),
+        (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"),
         (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"),
         (Type: TokenType.Garbage,                Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @".+"),
       };
