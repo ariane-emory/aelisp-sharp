@@ -19,8 +19,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state;
 
-  private List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform, Func<TTokenizerState, bool>? IsActive)> _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform, Func<TTokenizerState, bool>? IsActive)>();
+  private List<(TTokenType Type, Regex Pattern, Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)> _tokenDefinitions =
+    new List<(TTokenType Type, Regex Pattern, Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
@@ -29,14 +29,17 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   }
 
   // Instance methods
-  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? transform = null, Func<TTokenizerState, bool>? isActive = null)
+  protected void Add(TTokenType token,
+                     string pattern,
+                     Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? transformToken = null,
+                     Func<TTokenizerState, bool>? isActive = null)
   {
     pattern = "(?:" + pattern + ")";
 
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
 
-    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), transform, isActive));
+    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), transformToken, isActive));
   }
 
   protected virtual void Restart() { }
@@ -51,7 +54,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
       bool foundMatch = false;
 
-      // foreach (var (tokenType, regex, transform) in _tokenDefinitions)
+      // foreach (var (tokenType, regex, transformToken) in _tokenDefinitions)
       foreach (var definition in _tokenDefinitions)
       {
         // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
@@ -67,8 +70,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
           if (match.Length == 0)
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
-          if (definition.Transform is not null)
-            token = definition.Transform(token);
+          if (definition.ProcessToken is not null)
+            token = definition.ProcessToken(token);
 
           input = input.Substring(match.Length);
 
