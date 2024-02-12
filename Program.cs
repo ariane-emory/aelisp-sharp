@@ -23,8 +23,8 @@ class Program
 // //        + @"\#!2garbage");
 
       // Die if we tokenized nothing:
-      if (! tokens.Any())
-         Die(1, "No tokens!");
+      // if (! tokens.Any())
+      //'   Die(1, "No tokens!");
 
       // Print out the tokenized tokens:
       foreach (var (token, index) in tokens
