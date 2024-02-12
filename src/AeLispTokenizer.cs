@@ -108,13 +108,13 @@ public static partial class Ae
     };
 
     private static readonly List<(TokenType Type,
+                                  bool Discrete,
                                   ProcesTokenFun? Process,
-                                  string Pattern,
-                                  bool Discrete)> Tokens =
+                                  string Pattern)> Tokens =
       new List<(TokenType Type,
+                bool Discrete,
                 ProcesTokenFun? Process,
-                string Pattern,
-                bool Discrete)>
+                string Pattern)>
       {
         (Type: TokenType.NewLine,       Discrete: false, Process: CountLines,           Pattern: @"\r?\n"),
         (Type: TokenType.Whitespace,    Discrete: false, Process: CountColumns,         Pattern: @"[ \t\f\v]+"),

@@ -25,7 +25,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   private readonly CreateTokenFun _createToken;
   private readonly CreateTokenizerStateFun _createTokenizerState;
 
-  private TTokenizerState _state;
+  private TTokenizerState? _state;
 
   private List<(TTokenType Type,
                 Regex Pattern,
@@ -44,7 +44,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
-    _state = _createTokenizerState();
   }
 
   //====================================================================================================================
