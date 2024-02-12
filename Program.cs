@@ -2,14 +2,22 @@
 using static Ae;
 using static System.Console;
 
-enum Mode
-{
-  Line,
-  File,
-};
-
 class Program
 {
+  enum Mode
+  {
+    Line,
+    File,
+  };
+
+  static void PrintTokens(List<PositionedToken<TokenType>> tokens)
+  {
+    foreach (var (token, index) in tokens
+     .Where(token => token.TokenType != TokenType.Whitespace)
+     .Select((value, index) => (value, index)))
+      WriteLine($"#{index}: {token}");
+  }
+
   static void Main()
   {
     var filename = "data.lisp";
@@ -38,11 +46,7 @@ class Program
           Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastNewToken.Text}\"");
       }
 
-      // Print out the tokenized tokens:
-      foreach (var (token, index) in newTokens
-       .Where(token => token.TokenType != TokenType.Whitespace)
-       .Select((value, index) => (value, index)))
-        WriteLine($"#{index}: {token}");
+      PrintTokens(newTokens);
 
       tokens.AddRange(newTokens);
 
