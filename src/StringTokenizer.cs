@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 //======================================================================================================================
 // Token class
 //======================================================================================================================
-public record struct Token<TTokenType>(TTokenType TokenType, string Text); // : IToken<TTokenType>
+public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 
 //======================================================================================================================
 // Tokenizer class
 //======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // where TToken : IToken<TTokenType>
+public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
