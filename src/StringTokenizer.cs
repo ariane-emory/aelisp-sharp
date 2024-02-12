@@ -15,14 +15,14 @@ public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<T
 public abstract class StringTokenizer<TTokenType, TToken> // where TToken : IToken<TTokenType>
 {
   // Private fields
-  private readonly Func<TTokenType, string, TToken> _tokenCreator;
+  private readonly Func<TTokenType, string, TToken> _createToken;
 
   private List<(TTokenType, Regex, Func<TToken, TToken>?)> TokenDefinitions { get; } =
     new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
-  public StringTokenizer(Func<TTokenType, string, TToken> tokenCreator)
+  public StringTokenizer(Func<TTokenType, string, TToken> createToken)
   {
-    _tokenCreator = tokenCreator;
+    _createToken = createToken;
   }
 
   // Instance methods
@@ -58,7 +58,7 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
         {
           // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
 
-          var token = _tokenCreator(tokenType, match.Value);
+          var token = _createToken(tokenType, match.Value);
 
           if (match.Length == 0)
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
