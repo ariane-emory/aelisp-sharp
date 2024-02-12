@@ -47,7 +47,8 @@ public static partial class Ae
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
             discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
-            process);
+            process,
+            active is null ? NotInMultilineComment : InMultilineComment);
     }
 
     //==================================================================================================================
@@ -211,6 +212,19 @@ public static partial class Ae
       tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
       return tup;
+    }
+
+    //==================================================================================================================
+    // 'Is active?' callbacks
+    //==================================================================================================================
+    private static bool NotInMultilineComment(AeLispTokenizerState state)
+    {
+      return !InMultilineComment(state);
+    }
+
+    private static bool InMultilineComment(AeLispTokenizerState state)
+    {
+      return false;
     }
   }
 }
