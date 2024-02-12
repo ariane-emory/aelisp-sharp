@@ -18,20 +18,15 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static void Main()
+  static int TokenizeFile(string filename)
   {
-    var filename = "data.lisp";
+    var lineNumber = 0;
+    var tokens = new List<PositionedToken<TokenType>>();
+    var improperList = new List<object>();
+    var improperLis = new List<object>();
     var totalTokens = 0;
 
-    Tokenizer.Get().Reset();
-
-    if (!File.Exists(filename))
-      throw new ApplicationException($"No file '{filename}'.");
-
-    var tokens = new List<PositionedToken<TokenType>>();
-    var input = File.ReadAllLines(filename);
-
-    foreach (var (line, lineNumber) in input.Select((line, lineNumber) => (line, lineNumber)))
+    foreach (var line in File.ReadLines(filename))
     {
       var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
         .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
@@ -54,46 +49,56 @@ class Program
       if (!tokens.Any())
         Die(1, "No tokens!");
 
-      var lastToken = tokens.ToList()[tokens.Count() - 1];
-
       // Die if we didn't tokenize everything:
+      var lastToken = tokens.ToList()[Math.Max(0, tokens.Count() - 1)];
+
       if (lastToken.TokenType == TokenType.Garbage)
-        Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
+        Die(1, $"Failed to tokenize the entire input -  remaining text: \"{lastToken.Text}\"");
+
+      lineNumber++;
     }
+
+    return totalTokens;
+  }
+
+  static void Main()
+  {
+    var filename = "data.lisp";
+    var totalTokens = TokenizeFile(filename);
 
     Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
-    Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
-    Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
+    // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
+    // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
 
-    WriteLine(properList);
-    WriteLine(Write(properList));
+    // WriteLine(properList);
+    // WriteLine(Write(properList));
 
-    foreach (var obj in properList)
-      WriteLine(obj);
+    // foreach (var obj in properList)
+    //   WriteLine(obj);
 
-    WriteLine(improperList);
-    WriteLine(Write(improperList));
+    // WriteLine(improperList);
+    // WriteLine(Write(improperList));
 
-    foreach (var obj in improperList)
-      WriteLine(obj);
+    // foreach (var obj in improperList)
+    //   WriteLine(obj);
 
-    WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-    WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-    WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
 
-    WriteLine("Done.");
+    // WriteLine("Done.");
 
-    Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
+    // Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
 
-    Intern(ref symbolsList, "two");
-    WriteLine(symbolsList);
-    Intern(ref symbolsList, "four");
-    WriteLine(symbolsList);
-    Intern(ref symbolsList, "two");
-    WriteLine(symbolsList);
-    Intern(ref symbolsList, "four");
-    WriteLine(symbolsList);
+    // Intern(ref symbolsList, "two");
+    // WriteLine(symbolsList);
+    // Intern(ref symbolsList, "four");
+    // WriteLine(symbolsList);
+    // Intern(ref symbolsList, "two");
+    // WriteLine(symbolsList);
+    // Intern(ref symbolsList, "four");
+    // WriteLine(symbolsList);
   }
 }
 
