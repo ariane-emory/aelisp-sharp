@@ -61,13 +61,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  private void Restart() {
-    _state = _createTokenizerState();
-  }
-
   public IEnumerable<TToken> Tokenize(string input)
   {
-    Restart();
+    _state = _createTokenizerState();
 
     while (!string.IsNullOrEmpty(input))
     {
@@ -95,12 +91,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
           foundMatch = true;
           input = input.Substring(match.Length);
           
-          break; // Successfully matched and processed, move to next segment of input
+          break;
         }
       }
 
       if (!foundMatch)
-        break; // No more matches found, exit the loop
+        break;
     }
   }
 }
