@@ -12,7 +12,7 @@ public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<T
 //======================================================================================================================
 // Tokenizer class
 //======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken> // where TToken : IToken<TTokenType>
+public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // where TToken : IToken<TTokenType>
 {
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
@@ -20,67 +20,70 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
   private List<(TTokenType, Regex, Func<TToken, TToken>?)> TokenDefinitions { get; } =
     new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
-  public StringTokenizer(Func<TTokenType, string, TToken> createToken)
+  private TTokenizerState State { get; set; }
+  
+  public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
     _createToken = createToken;
+    State = state;
   }
 
-  // Instance methods
-  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
+// Instance methods
+protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
+{
+  pattern = "(?:" + pattern + ")";
+
+  if (!pattern.StartsWith("^"))
+    pattern = "^" + pattern;
+
+  TokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
+}
+
+protected virtual void Restart() { }
+
+public IEnumerable<TToken> Tokenize(string input)
+{
+  Restart();
+
+  while (!string.IsNullOrEmpty(input))
   {
-    pattern = "(?:" + pattern + ")";
+    // WriteLine($"Enter while at \"{input}\".");
 
-    if (!pattern.StartsWith("^"))
-      pattern = "^" + pattern;
+    bool foundMatch = false;
 
-    TokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
-  }
-
-  protected virtual void Restart() { }
-
-  public IEnumerable<TToken> Tokenize(string input)
-  {
-    Restart();
-
-    while (!string.IsNullOrEmpty(input))
+    foreach (var (tokenType, regex, fun) in TokenDefinitions)
     {
-      // WriteLine($"Enter while at \"{input}\".");
+      // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
-      bool foundMatch = false;
+      var match = regex.Match(input);
 
-      foreach (var (tokenType, regex, fun) in TokenDefinitions)
+      if (match.Success)
       {
-        // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
+        // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
 
-        var match = regex.Match(input);
+        var token = _createToken(tokenType, match.Value);
 
-        if (match.Success)
-        {
-          // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
+        if (match.Length == 0)
+          throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
-          var token = _createToken(tokenType, match.Value);
+        if (fun is not null)
+          token = fun(token);
 
-          if (match.Length == 0)
-            throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
+        input = input.Substring(match.Length);
 
-          if (fun is not null)
-            token = fun(token);
+        // WriteLine($"Advance input to \"{input}\".");
+        foundMatch = true;
 
-          input = input.Substring(match.Length);
+        // WriteLine($"Yielding the {tokenType}.");
+        yield return token;
+        // WriteLine($"Yielded the {tokenType}.");
 
-          // WriteLine($"Advance input to \"{input}\".");
-          foundMatch = true;
-
-          // WriteLine($"Yielding the {tokenType}.");
-          yield return token;
-          // WriteLine($"Yielded the {tokenType}.");
-
-          break; // Successfully matched and processed, move to next segment of input
-        }
+        break; // Successfully matched and processed, move to next segment of input
       }
-
-      if (!foundMatch)
-        break; // No more matches found, exit the loop
     }
+
+    if (!foundMatch)
+      break; // No more matches found, exit the loop
   }
+}
 }

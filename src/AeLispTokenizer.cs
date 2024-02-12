@@ -27,12 +27,17 @@ public static partial class Ae
     Whitespace,
   };
 
+  public class AeLispTokenizerState
+  {
+    public bool InsideMultilineComment { get; set; }
+  }
+
   public record PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text)
   {
     public override string ToString() => $"{tokenType} [{Text}] @ {Line},{Column}";
   }
 
-  public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
+  public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
   {
     //==================================================================================================================
     // Token callbacks
@@ -194,7 +199,7 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-    private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0))
+  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0), new AeLispTokenizerState())
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
@@ -202,6 +207,6 @@ public static partial class Ae
               ? (pattern + FollowedByTokenBarrierOrEOF)
               : (pattern),
             fun);
-    }
+        }
   }
 }
