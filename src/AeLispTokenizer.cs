@@ -37,6 +37,18 @@ public static partial class Ae
   public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
   {
     //==================================================================================================================
+    // Private constructor
+    //==================================================================================================================
+    private Tokenizer() : base(createToken: (tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
+                               createTokenizerStateFun: () => new AeLispTokenizerState())
+    {
+      foreach (var (tokenType, discrete, fun, pattern) in Tokens)
+        Add(tokenType,
+            discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
+            fun);
+    }
+
+    //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
@@ -180,18 +192,6 @@ public static partial class Ae
         _tokenizer = new Tokenizer();
 
       return _tokenizer;
-    }
-
-    //==================================================================================================================
-    // Private constructor
-    //==================================================================================================================
-    private Tokenizer() : base(createToken: (tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
-                               createTokenizerStateFun: () => new AeLispTokenizerState())
-    {
-      foreach (var (tokenType, discrete, fun, pattern) in Tokens)
-        Add(tokenType,
-            discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
-            fun);
     }
   }
 }
