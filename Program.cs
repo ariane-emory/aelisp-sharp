@@ -42,6 +42,8 @@ class Program
       // Die if we didn't tokenize everything:
       if (lastToken.TokenType == TokenType.Garbage)
         Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
+
+      WriteLine("\n");
     }
 
     Die(0, "Tokenized all input.");

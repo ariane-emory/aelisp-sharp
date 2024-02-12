@@ -73,21 +73,21 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLines((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, Get().Line, Get().Column);
+      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
-      Get().Line++;
-      Get().Column = 0;
+      tup.State.Line++;
+      tup.State.Column = 0;
 
       return (tup.State, tup.Token);
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      // WriteLine($"Begin CountColumns with {Get().Line},{Get().Column} at \"{token.Text}\".");
+      // WriteLine($"Begin CountColumns with {tup.State.Line},{tup.State.Column} at \"{token.Text}\".");
 
-      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, Get().Line, Get().Column);
+      tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
-      Get().Column += tup.Token.Text.Length;
+      tup.State.Column += tup.Token.Text.Length;
 
       return (tup.State, tup.Token);
     }
@@ -185,12 +185,6 @@ public static partial class Ae
 
       return _tokenizer;
     }
-
-    //==================================================================================================================
-    // Properties
-    //==================================================================================================================
-    public int Line { get; private set; } = 0;
-    public int Column { get; private set; } = 0;
 
     //==================================================================================================================
     // Private constructor
