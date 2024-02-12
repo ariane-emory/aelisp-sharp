@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 //======================================================================================================================
 // Token class
 //======================================================================================================================
-public record Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
+public record struct Token<TTokenType>(TTokenType TokenType, string Text) // : IToken<TTokenType>
 {
   public static Token<TTokenType> Create(TTokenType tokenType, string text) => new Token<TTokenType>(tokenType, text);
 }
@@ -26,6 +26,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   _tokenDefinitions =
     new List<(TTokenType Type, Regex Pattern, Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
 
+  // Constructor
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
     _createToken = createToken;

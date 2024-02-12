@@ -32,7 +32,7 @@ public static partial class Ae
     public bool InsideMultilineComment { get; set; }
   }
 
-  public record PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text)
+  public record struct PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text)
   {
     public override string ToString() => $"{tokenType} [{Text}] @ {Line},{Column}";
   }
@@ -209,8 +209,8 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-    private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
-                               new AeLispTokenizerState())
+  private Tokenizer() : base(createToken: (tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
+                             state: new AeLispTokenizerState())
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
