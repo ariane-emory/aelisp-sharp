@@ -27,22 +27,27 @@ public static partial class Ae
   public class Tokenizer : StringTokenizer<TokenType, Token<TokenType>>
   {
     //==================================================================================================================
+    // Token callbacks
+    //==================================================================================================================
+    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
+    {
+      var str = token.Text;
+
+      foreach (var (escaped, unescaped) in EscapedChars)
+        str = token.Text.Replace(escaped, unescaped);
+
+      return new Token<TokenType>(token.TokenType, str);
+    }
+
+    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
+      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
+
+    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
+      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
+
+    //==================================================================================================================
     // Private constants.
     //==================================================================================================================
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
-
     private static readonly List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)> Tokens =
       new List<(TokenType type, bool discrete, Func<Token<TokenType>, Token<TokenType>>? fun, string pattern)>
       {
@@ -100,24 +105,19 @@ public static partial class Ae
 
     private static Tokenizer _tokenizer = new Tokenizer();
 
-    //==================================================================================================================
-    // Token callbacks
-    //==================================================================================================================
-    private static Token<TokenType> UnescapeChars(Token<TokenType> token)
+    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
     {
-      var str = token.Text;
-
-      foreach (var (escaped, unescaped) in EscapedChars)
-        str = token.Text.Replace(escaped, unescaped);
-
-      return new Token<TokenType>(token.TokenType, str);
-    }
-
-    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
-
-    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
+      (@"\a",   "\a"),
+      (@"\b",   "\b"),
+      (@"\f",   "\f"),
+      (@"\n",   "\n"),
+      (@"\r",   "\r"),
+      (@"\t",   "\t"),
+      (@"\v",   "\v"),
+      (@"\\",   "\\"),
+      (@"\'",   "\'"),
+      (@"\""",  "\""),
+    };
 
     //==================================================================================================================
     // Get the instance
