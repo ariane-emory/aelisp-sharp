@@ -17,7 +17,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   public delegate TToken CreateTokenFun(TTokenType type, string text);
   
   // Private fields
-  private readonly Func<TTokenType, string, TToken> _createToken;
+  private readonly CreateTokenFun _createToken;
 
   private TTokenizerState _state;
 
@@ -29,7 +29,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, DefinitionIsActiveFun? DefinitionIsActive)>();
 
   // Constructor
-  public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
+  public StringTokenizer(CreateTokenFun createToken, TTokenizerState state)
   {
     _createToken = createToken;
     _state = state;
