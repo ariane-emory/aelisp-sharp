@@ -44,13 +44,13 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
 
     while (!string.IsNullOrEmpty(input))
     {
-      WriteLine($"Enter while at \"{input}\".");
+      // WriteLine($"Enter while at \"{input}\".");
 
       bool foundMatch = false;
 
       foreach (var (tokenType, regex, fun) in TokenDefinitions)
       {
-        WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
+        // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
         var match = regex.Match(input);
 
@@ -59,7 +59,7 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           if (match.Length == 0)
             throw new Exception("Zero-length match found, which could lead to an infinite loop.");
 
-          WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
+          // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
 
           var token = _tokenCreator(tokenType, match.Value);
 
@@ -68,12 +68,12 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
 
           input = input.Substring(match.Length);
 
-          WriteLine($"Advance input to \"{input}\".");
+          // WriteLine($"Advance input to \"{input}\".");
           foundMatch = true;
 
-          WriteLine($"Yielding the {tokenType}.");
+          // WriteLine($"Yielding the {tokenType}.");
           yield return token;
-          WriteLine($"Yielded the {tokenType}.");
+          // WriteLine($"Yielded the {tokenType}.");
 
           break; // Successfully matched and processed, move to next segment of input
         }
