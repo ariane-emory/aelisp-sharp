@@ -11,7 +11,7 @@ class Program
     for (int ix = 0; ix < 3; ix++)
     {
       Tokenizer.Get().Reset();
-      
+
       if (!File.Exists(filename))
         throw new ApplicationException($"No file '{filename}'.");
 
@@ -22,17 +22,20 @@ class Program
       {
         var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
           .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
-        
-        var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
+
+        if (newTokens.Any())
+        {
+          var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
+
+          if (lastNewToken.TokenType == TokenType.Garbage)
+            Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastNewToken.Text}\"");  
+        }
 
         // Print out the tokenized tokens:
         foreach (var (token, index) in newTokens
-                 // .Where(token => token.TokenType != TokenType.Whitespace)
-                 .Select((value, index) => (value, index)))
+         // .Where(token => token.TokenType != TokenType.Whitespace)
+         .Select((value, index) => (value, index)))
           WriteLine($"#{index}: {token}");
-
-        if (lastNewToken.TokenType == TokenType.Garbage)
-          Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastNewToken.Text}\"");
 
         tokens.AddRange(newTokens);
       }
