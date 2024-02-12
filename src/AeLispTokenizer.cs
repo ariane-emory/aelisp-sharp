@@ -100,7 +100,7 @@ public static partial class Ae
         (Type: TokenType.Symbol,        Discrete: true,  Process: CountColumns,      Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
         (Type: TokenType.LispStyleChar, Discrete: true,  Process: ProcLispStyleChar, Pattern: @"\?\\."),
         (Type: TokenType.LispStyleChar, Discrete: true,  Process: ProcLispStyleChar, Pattern: @"\?."),
-        (Type: TokenType.LineComment,   Discrete: false, Process: TrimFirst,         Pattern: @";.+"),
+        (Type: TokenType.LineComment,   Discrete: false, Process: TrimFirst,         Pattern: @";.+$"),
         (Type: TokenType.Garbage,       Discrete: false, Process: CountColumns,      Pattern: @".+"),
       };
 
