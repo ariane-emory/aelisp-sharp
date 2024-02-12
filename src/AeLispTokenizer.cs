@@ -32,7 +32,7 @@ public static partial class Ae
     public bool InsideMultilineComment { get; set; }
   }
 
-  public record PositionedToken<TTokenType>(TTokenType TokenType, string Text, int Line, int Column) // : Token<TTokenType>(tokenType, Text)
+  public record struct PositionedToken<TTokenType>(TTokenType TokenType, string Text, int Line, int Column) // : Token<TTokenType>(tokenType, Text)
   {
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
   }
