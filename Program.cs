@@ -33,7 +33,7 @@ class Program
 
         // Print out the tokenized tokens:
         foreach (var (token, index) in newTokens
-         // .Where(token => token.TokenType != TokenType.Whitespace)
+         .Where(token => token.TokenType != TokenType.Whitespace)
          .Select((value, index) => (value, index)))
           WriteLine($"#{index}: {token}");
 
