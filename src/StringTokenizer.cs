@@ -40,6 +40,8 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
   {
     while (!string.IsNullOrEmpty(input))
     {
+      WriteLine($"Enter while at \"{input}\".");
+      
       bool foundMatch = false;
 
       foreach (var (tokenType, regex, fun) in TokenDefinitions)
@@ -61,10 +63,12 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
             token = fun(token);
 
           input = input.Substring(match.Length);
+
+          WriteLine($"Advance input to \"{input}\".");
           foundMatch = true;
 
           yield return token;
-          WriteLine($"Yield the {tokenType}.");
+          WriteLine($"Yielded the {tokenType}.");
 
 
           break; // Successfully matched and processed, move to next segment of input
