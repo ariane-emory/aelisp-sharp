@@ -11,12 +11,16 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 //======================================================================================================================
 public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
+  //====================================================================================================================
   // Delegates 
+  //====================================================================================================================
   protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
   protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
   
+  //====================================================================================================================
   // Private fields
+  //====================================================================================================================
   private readonly CreateTokenFun _createToken;
 
   private TTokenizerState _state;
@@ -26,9 +30,14 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
                 ProcesTokenFun? ProcessToken,
                 TokenDefinitionIsActiveFun? DefinitionIsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, TokenDefinitionIsActiveFun? DefinitionIsActive)>();
+    new List<(TTokenType Type,
+              Regex Pattern,
+              ProcesTokenFun? ProcessToken,
+              TokenDefinitionIsActiveFun? DefinitionIsActive)>();
 
+  //====================================================================================================================
   // Constructor
+  //====================================================================================================================
   protected StringTokenizer(CreateTokenFun createToken, TTokenizerState state)
   {
     _createToken = createToken;
