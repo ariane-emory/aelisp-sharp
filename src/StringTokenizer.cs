@@ -71,7 +71,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
           if (definition.ProcessToken is not null)
-            token = definition.ProcessToken(token);
+            (_state, token) = definition.ProcessToken(_state, token);
 
           input = input.Substring(match.Length);
 

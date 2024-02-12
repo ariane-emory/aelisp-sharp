@@ -42,48 +42,50 @@ public static partial class Ae
     //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
-    private static PositionedToken<TokenType> UnescapeChars(PositionedToken<TokenType> token)
+    // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
+    
+    private static (AeLispTokenizerState state, PositionedToken<TokenType>) UnescapeChars(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
       var str = token.Text;
 
       foreach (var (escaped, unescaped) in EscapedChars)
         str = str.Replace(escaped, unescaped);
-      
-      return new PositionedToken<TokenType>(token.TokenType, str, token.Line, token.Column);
+
+      return (state, new PositionedToken<TokenType>(token.TokenType, str, token.Line, token.Column));
     }
 
-    private static PositionedToken<TokenType> TrimAndUnescape(PositionedToken<TokenType> token)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimAndUnescape(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      token = CountColumns(token);
+      (state, token) = CountColumns(state,token);
 
-      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
+      return UnescapeChars(state, new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
     }
 
-    private static PositionedToken<TokenType> TrimFirstAndUnescape(PositionedToken<TokenType> token)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      token = CountColumns(token);
-
-      return UnescapeChars(TrimFirst(token));
+      (state, token) = CountColumns(state,token);
+      (state, token) = TrimFirst(state, token);
+      return UnescapeChars(state, token);
     }
 
-    private static PositionedToken<TokenType> TrimFirst(PositionedToken<TokenType> token)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
-      token = CountColumns(token);
+      (state, token) = CountColumns(state,token);
 
-      return new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column);
+      return (state, new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
     }
 
-    private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLines(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
       token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
 
       Get().Line++;
       Get().Column = 0;
 
-      return token;
+      return (state, token);
     }
 
-    private static PositionedToken<TokenType> CountColumns(PositionedToken<TokenType> token)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
       // WriteLine($"Begin CountColumns with {Get().Line},{Get().Column} at \"{token.Text}\".");
 
@@ -91,7 +93,7 @@ public static partial class Ae
 
       Get().Column += token.Text.Length;
 
-      return token;
+      return (state, token);
     }
 
     //==================================================================================================================
@@ -112,40 +114,47 @@ public static partial class Ae
       (@"\""",  "\""),
     };
 
-    private static readonly List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)> Tokens =
-      new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
+    private static readonly List<(TokenType Type,
+                                  bool Discrete,
+                                  // Func<TTokenizerState, TToken, (TTokenizerState, TToken)>
+                                  Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
+                                  string Pattern)> Tokens =
+      new List<(TokenType Type,
+                bool Discrete,
+                Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
+                string Pattern)>
       {
-        (TokenType.NewLine,       discrete: false, fun: CountLines,           pattern: @"\r?\n"),
-        (TokenType.Whitespace,    discrete: false, fun: CountColumns,         pattern: @"[ \t\f\v]+"),
-        (TokenType.LParen,        discrete: false, fun: CountColumns,         pattern: @"\("),
-        (TokenType.RParen,        discrete: true,  fun: CountColumns,         pattern: @"\)"),
-        (TokenType.Nil,           discrete: true,  fun: CountColumns,         pattern: @"nil"),
-        (TokenType.Dot,           discrete: true,  fun: CountColumns,         pattern: @"\."),
-        (TokenType.CStyleChar,    discrete: true,  fun: TrimAndUnescape,      pattern: @"'[^']'"),
-        (TokenType.CStyleChar,    discrete: true,  fun: TrimAndUnescape,      pattern: @"'\\.'"),
-        (TokenType.Float,         discrete: true,  fun: CountColumns,         pattern: Float),
-        (TokenType.Rational,      discrete: true,  fun: CountColumns,         pattern: Rational),
-        (TokenType.Integer,       discrete: true,  fun: CountColumns,         pattern: MaybeSigned + DigitSeparatedInteger),
-        (TokenType.String,        discrete: true,  fun: TrimAndUnescape,      pattern: @"\""(\\\""|[^\""])*\"""),
-        (TokenType.Quote,         discrete: false, fun: CountColumns,         pattern: @"'"),
-        (TokenType.Backtick,      discrete: false, fun: CountColumns,         pattern: @"`"),
-        (TokenType.CommaAt,       discrete: false, fun: CountColumns,         pattern: @",@"),
-        (TokenType.Comma,         discrete: false, fun: CountColumns,         pattern: @","),
-        (TokenType.At,            discrete: false, fun: CountColumns,         pattern: @"@"),
-        (TokenType.Dollar,        discrete: false, fun: CountColumns,         pattern: @"\$"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: Integer + @"?" + MathOp),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: MathOp + Integer),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"[\?]{3}"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: SymBody),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"<"  + SymBody + @">"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"\*" + SymBody + @"\*"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
-        (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
-        (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?\\."),
-        (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?."),
-        (TokenType.LineComment,   discrete: false, fun: TrimFirst,            pattern: @";.+"),
-        (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+"),
+        (TokenType.NewLine,       Discrete: false, TransformToken: CountLines,           Pattern: @"\r?\n"),
+        (TokenType.Whitespace,    Discrete: false, TransformToken: CountColumns,         Pattern: @"[ \t\f\v]+"),
+        (TokenType.LParen,        Discrete: false, TransformToken: CountColumns,         Pattern: @"\("),
+        (TokenType.RParen,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"\)"),
+        (TokenType.Nil,           Discrete: true,  TransformToken: CountColumns,         Pattern: @"nil"),
+        (TokenType.Dot,           Discrete: true,  TransformToken: CountColumns,         Pattern: @"\."),
+        (TokenType.CStyleChar,    Discrete: true,  TransformToken: TrimAndUnescape,      Pattern: @"'[^']'"),
+        (TokenType.CStyleChar,    Discrete: true,  TransformToken: TrimAndUnescape,      Pattern: @"'\\.'"),
+        (TokenType.Float,         Discrete: true,  TransformToken: CountColumns,         Pattern: Float),
+        (TokenType.Rational,      Discrete: true,  TransformToken: CountColumns,         Pattern: Rational),
+        (TokenType.Integer,       Discrete: true,  TransformToken: CountColumns,         Pattern: MaybeSigned + DigitSeparatedInteger),
+        (TokenType.String,        Discrete: true,  TransformToken: TrimAndUnescape,      Pattern: @"\""(\\\""|[^\""])*\"""),
+        (TokenType.Quote,         Discrete: false, TransformToken: CountColumns,         Pattern: @"'"),
+        (TokenType.Backtick,      Discrete: false, TransformToken: CountColumns,         Pattern: @"`"),
+        (TokenType.CommaAt,       Discrete: false, TransformToken: CountColumns,         Pattern: @",@"),
+        (TokenType.Comma,         Discrete: false, TransformToken: CountColumns,         Pattern: @","),
+        (TokenType.At,            Discrete: false, TransformToken: CountColumns,         Pattern: @"@"),
+        (TokenType.Dollar,        Discrete: false, TransformToken: CountColumns,         Pattern: @"\$"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: Integer + @"?" + MathOp),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: MathOp + Integer),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"[\?]{3}"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: SymBody),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"<"  + SymBody + @">"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"\*" + SymBody + @"\*"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
+        (TokenType.Symbol,        Discrete: true,  TransformToken: CountColumns,         Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
+        (TokenType.LispStyleChar, Discrete: true,  TransformToken: TrimFirstAndUnescape, Pattern: @"\?\\."),
+        (TokenType.LispStyleChar, Discrete: true,  TransformToken: TrimFirstAndUnescape, Pattern: @"\?."),
+        (TokenType.LineComment,   Discrete: false, TransformToken: TrimFirst,            Pattern: @";.+"),
+        (TokenType.Garbage,       Discrete: false, TransformToken: CountColumns,         Pattern: @".+"),
       };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
@@ -204,9 +213,7 @@ public static partial class Ae
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
-            discrete
-              ? (pattern + FollowedByTokenBarrierOrEOF)
-              : (pattern),
+            discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
             fun);
         }
   }
