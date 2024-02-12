@@ -7,7 +7,8 @@ class Program
   static void Main()
    {
       var tokens = Tokenizer.Get().Tokenize(
-        @"(123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
+        @"one two
+three (123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
         + @"`(1 ,2 3) $(1 2 3) (1 2 ,@(4 5)) ?a ?\n ""he\""llo"" "
         + @" ""one \""two\"" three"" -05 1,234 2,3,4 1/3 -3/5 -4/1,200 ??? "
         + @"here--it/is! %another-symbol1-23//asd 1+ 10- ∨ ⊤ ⊥ ≤ ≥ × 12.004 "

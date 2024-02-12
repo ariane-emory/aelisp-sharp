@@ -43,20 +43,22 @@ public static partial class Ae
 
     private static PositionedToken<TokenType> TrimAndUnescape(PositionedToken<TokenType> token)
     {
-      CountColumns(token);
+      token = CountColumns(token);
 
       return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
-        }
+    }
     
     private static PositionedToken<TokenType> TrimFirstAndUnescape(PositionedToken<TokenType> token)
     {
-      CountColumns(token);
+      token = CountColumns(token);
 
       return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
     }
     
     private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
     {
+      token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
+
       Get().Line++;
       Get().Column = 0;
       
@@ -65,6 +67,8 @@ public static partial class Ae
 
     private static PositionedToken<TokenType> CountColumns(PositionedToken<TokenType> token)
     {
+      token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
+
       Get().Column += token.Text.Length;
       
       return token;
