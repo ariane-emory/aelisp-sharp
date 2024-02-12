@@ -109,7 +109,7 @@ public static partial class Ae
         (Type: TokenType.LineComment,            Discrete: false, Process: TrimFirst,         IsActive: null,               Pattern: @";.+$"),
         (Type: TokenType.MultilineCommentBegin,  Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|"),
         (Type: TokenType.MultilineCommentEnd,    Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"\|#"),
-        (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @".(!\|#)*"),
+        (Type: TokenType.MultilineCommentMatter, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"\S+"),
         (Type: TokenType.Garbage,                Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @".+"),
       };
 
