@@ -12,7 +12,7 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
   // Delegates 
-  public delegate (TTokenizerState, TToken) TokenProcessorFun((TTokenizerState State, TToken Token) tup);
+  public delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
   public delegate bool DefinitionIsActiveFun(TTokenizerState state);
   public delegate TToken CreateTokenFun(TTokenType type, string text);
   
@@ -23,10 +23,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
   private List<(TTokenType Type,
                 Regex Pattern,
-                TokenProcessorFun? ProcessToken,
+                ProcesTokenFun? ProcessToken,
                 DefinitionIsActiveFun? IsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, TokenProcessorFun? ProcessToken, DefinitionIsActiveFun? IsActive)>();
+    new List<(TTokenType Type, Regex Pattern, ProcesTokenFun? ProcessToken, DefinitionIsActiveFun? IsActive)>();
 
   // Constructor
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
@@ -38,7 +38,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   // Instance methods
   protected void Add(TTokenType token,
                      string pattern,
-                     TokenProcessorFun? processToken = null,
+                     ProcesTokenFun? processToken = null,
                      DefinitionIsActiveFun? isActive = null)
   {
     pattern = "(?:" + pattern + ")";

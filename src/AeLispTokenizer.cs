@@ -116,11 +116,11 @@ public static partial class Ae
     private static readonly List<(TokenType Type,
                                   bool Discrete,
                                   // Func<TTokenizerState, TToken, (TTokenizerState, TToken)>
-                                  TokenProcessorFun? Process,
+                                  ProcesTokenFun? Process,
                                   string Pattern)> Tokens =
       new List<(TokenType Type,
                 bool Discrete,
-                TokenProcessorFun? Process,
+                ProcesTokenFun? Process,
                 string Pattern)>
       {
         (Type: TokenType.NewLine,       Discrete: false, Process: CountLines,           Pattern: @"\r?\n"),
