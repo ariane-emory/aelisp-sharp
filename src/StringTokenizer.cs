@@ -17,74 +17,73 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
 
-  private TTokenizerState _state { get; set; }
-  
-  private List<(TTokenType, Regex, Func<TToken, TToken>?)> _tokenDefinitions { get; } =
+  private TTokenizerState _state;
+
+  private List<(TTokenType, Regex, Func<TToken, TToken>?)> _tokenDefinitions =
     new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
-  
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
     _createToken = createToken;
     _state = state;
   }
 
-// Instance methods
-protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
-{
-  pattern = "(?:" + pattern + ")";
-
-  if (!pattern.StartsWith("^"))
-    pattern = "^" + pattern;
-
-  _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
-}
-
-protected virtual void Restart() { }
-
-public IEnumerable<TToken> Tokenize(string input)
-{
-  Restart();
-
-  while (!string.IsNullOrEmpty(input))
+  // Instance methods
+  protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun = null)
   {
-    // WriteLine($"Enter while at \"{input}\".");
+    pattern = "(?:" + pattern + ")";
 
-    bool foundMatch = false;
+    if (!pattern.StartsWith("^"))
+      pattern = "^" + pattern;
 
-    foreach (var (tokenType, regex, fun) in _tokenDefinitions)
-    {
-      // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
-
-      var match = regex.Match(input);
-
-      if (match.Success)
-      {
-        // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
-
-        var token = _createToken(tokenType, match.Value);
-
-        if (match.Length == 0)
-          throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
-
-        if (fun is not null)
-          token = fun(token);
-
-        input = input.Substring(match.Length);
-
-        // WriteLine($"Advance input to \"{input}\".");
-        foundMatch = true;
-
-        // WriteLine($"Yielding the {tokenType}.");
-        yield return token;
-        // WriteLine($"Yielded the {tokenType}.");
-
-        break; // Successfully matched and processed, move to next segment of input
-      }
-    }
-
-    if (!foundMatch)
-      break; // No more matches found, exit the loop
+    _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
   }
-}
+
+  protected virtual void Restart() { }
+
+  public IEnumerable<TToken> Tokenize(string input)
+  {
+    Restart();
+
+    while (!string.IsNullOrEmpty(input))
+    {
+      // WriteLine($"Enter while at \"{input}\".");
+
+      bool foundMatch = false;
+
+      foreach (var (tokenType, regex, fun) in _tokenDefinitions)
+      {
+        // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
+
+        var match = regex.Match(input);
+
+        if (match.Success)
+        {
+          // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
+
+          var token = _createToken(tokenType, match.Value);
+
+          if (match.Length == 0)
+            throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
+
+          if (fun is not null)
+            token = fun(token);
+
+          input = input.Substring(match.Length);
+
+          // WriteLine($"Advance input to \"{input}\".");
+          foundMatch = true;
+
+          // WriteLine($"Yielding the {tokenType}.");
+          yield return token;
+          // WriteLine($"Yielded the {tokenType}.");
+
+          break; // Successfully matched and processed, move to next segment of input
+        }
+      }
+
+      if (!foundMatch)
+        break; // No more matches found, exit the loop
+    }
+  }
 }
