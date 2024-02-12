@@ -79,9 +79,9 @@ public static partial class Ae
         (Type: TokenType.Dot,           Discrete: true,  Process: CountColumns,      Pattern: @"\."),
         (Type: TokenType.CStyleChar,    Discrete: true,  Process: ProcStringLike,    Pattern: @"'[^']'"),
         (Type: TokenType.CStyleChar,    Discrete: true,  Process: ProcStringLike,    Pattern: @"'\\.'"),
-        (Type: TokenType.Float,         Discrete: true,  Process: CountColumns,      Pattern: Float),
-        (Type: TokenType.Rational,      Discrete: true,  Process: CountColumns,      Pattern: Rational),
-        (Type: TokenType.Integer,       Discrete: true,  Process: CountColumns,      Pattern: MaybeSigned + DigitSeparatedInteger),
+        (Type: TokenType.Float,         Discrete: true,  Process: StripCommas,       Pattern: Float),
+        (Type: TokenType.Rational,      Discrete: true,  Process: StripCommas,       Pattern: Rational),
+        (Type: TokenType.Integer,       Discrete: true,  Process: StripCommas,       Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,        Discrete: true,  Process: ProcStringLike,    Pattern: @"\""(\\\""|[^\""])*\"""),
         (Type: TokenType.Quote,         Discrete: false, Process: CountColumns,      Pattern: @"'"),
         (Type: TokenType.Backtick,      Discrete: false, Process: CountColumns,      Pattern: @"`"),
@@ -172,6 +172,15 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
 
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup = CountColumns(tup);
+
+      tup.Token.Text = tup.Token.Text.Replace(",", "");
+
+      return tup;
+    }
+  
     private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
