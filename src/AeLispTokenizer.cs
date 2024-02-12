@@ -67,9 +67,9 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      (tup.State, tup.Token) = CountColumns((tup.State, tup.Token));
-      (tup.State, tup.Token) = TrimFirst((tup.State, tup.Token));
-      return UnescapeChars((tup.State, tup.Token));
+      tup = CountColumns(tup);
+      tup = TrimFirst(tup);
+      return UnescapeChars(tup);
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
