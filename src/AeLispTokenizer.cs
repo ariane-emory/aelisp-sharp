@@ -43,10 +43,7 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
-
-    private delegate (AeLispTokenizerState state, PositionedToken<TokenType>)
-      AeLispTokenizerTransformFun(AeLispTokenizerState state, PositionedToken<TokenType> token);
-    
+        
     private static (AeLispTokenizerState state, PositionedToken<TokenType>) UnescapeChars(AeLispTokenizerState state, PositionedToken<TokenType> token)
     {
       var str = token.Text;
