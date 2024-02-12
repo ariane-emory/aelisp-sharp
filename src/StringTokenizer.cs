@@ -25,7 +25,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   private readonly CreateTokenFun _createToken;
   private readonly CreateTokenizerStateFun _createTokenizerState;
 
-  private TTokenizerState? _state;
+  private TTokenizerState _state;
 
   private List<(TTokenType Type,
                 Regex Pattern,
@@ -44,6 +44,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
+    _state = _createTokenizerState();
   }
 
   //====================================================================================================================
@@ -62,9 +63,14 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public IEnumerable<TToken> Tokenize(string input)
+  public void Reset()
   {
     _state = _createTokenizerState();
+  }
+
+  public IEnumerable<TToken> Tokenize(string input, bool reset)
+  {
+    Reset();
 
     while (!string.IsNullOrEmpty(input))
     {
@@ -97,7 +103,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
       }
 
       if (!foundMatch)
-        break;
+  break;
     }
   }
 }

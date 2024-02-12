@@ -10,7 +10,7 @@ here--it/is! %another-symbol1-23//asd 1+ 10- ∨ ⊤ ⊥ ≤ ≥ × 12.004
 >> <= 1- 2- -2 - %2 2% 02,345 1,234 -1,234 >>2 <<3 2>> 3<< << >> 
 a::b/c :keyword @
 ; this line is a comment.
-&rest -a / !abc ! <!good> 'a' '\n' '\"' 
-?a ?\n
+&rest -a / !abc ! <!good> 'a' '\n' '\"' #| I am a
+multiline comment |# ?a ?\n
 "hello\nworld" 
 1,234,567 1
