@@ -70,7 +70,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
   public IEnumerable<TToken> Tokenize(string input, bool reset)
   {
-    Reset();
+    if (reset)
+      Reset();
 
     while (!string.IsNullOrEmpty(input))
     {
