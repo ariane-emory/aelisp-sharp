@@ -19,8 +19,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state;
 
-  private List<(TTokenType, Regex, Func<TToken, TToken>?)> _tokenDefinitions =
-    new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
+  private List<(TTokenType type, Regex patern, Func<TToken, TToken>? transform)> _tokenDefinitions =
+    new List<(TTokenType type, Regex patern, Func<TToken, TToken>? transform)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
