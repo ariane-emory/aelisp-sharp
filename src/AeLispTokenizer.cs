@@ -1,3 +1,5 @@
+using static System.Console;
+
 public static partial class Ae
 {
   public enum TokenType
@@ -29,7 +31,7 @@ public static partial class Ae
     public override string ToString() => $"{tokenType} [{Text}] @ {Line},{Column}";
   }
 
-    public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
+  public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
   {
     //==================================================================================================================
     // Token callbacks
@@ -50,30 +52,32 @@ public static partial class Ae
 
       return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2), token.Line, token.Column));
     }
-    
+
     private static PositionedToken<TokenType> TrimFirstAndUnescape(PositionedToken<TokenType> token)
     {
       token = CountColumns(token);
 
       return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
     }
-    
+
     private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
     {
       token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
 
       Get().Line++;
       Get().Column = 0;
-      
+
       return token;
     }
 
     private static PositionedToken<TokenType> CountColumns(PositionedToken<TokenType> token)
     {
+      WriteLine($"Begin CountColumns with {Get().Line},{Get().Column} at \"{token.Text}\".");
+      
       token = new PositionedToken<TokenType>(token.TokenType, token.Text, Get().Line, Get().Column);
 
       Get().Column += token.Text.Length;
-      
+
       return token;
     }
 
@@ -81,8 +85,8 @@ public static partial class Ae
     // Private constants.
     //==================================================================================================================
     private static readonly List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)> Tokens =
-      new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
-      {
+  new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
+  {
         (TokenType.NewLine,       discrete: false, fun: CountLines,           pattern: @"\r?\n"),
         (TokenType.Whitespace,    discrete: false, fun: CountColumns,         pattern: @"[ \t\f\v]+"),
         (TokenType.LParen,        discrete: false, fun: CountColumns,         pattern: @"\("),
@@ -113,7 +117,7 @@ public static partial class Ae
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?\\."),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?."),
         (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+$"),
-      };
+  };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
@@ -171,7 +175,7 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0))
+    private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0))
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
