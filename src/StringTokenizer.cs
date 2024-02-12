@@ -50,7 +50,7 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
 
       foreach (var (tokenType, regex, fun) in TokenDefinitions)
       {
-        WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
+        // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
         var match = regex.Match(input);
 
