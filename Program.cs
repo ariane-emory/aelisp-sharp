@@ -33,7 +33,7 @@ class Program
      if (lastToken.TokenType == TokenType.Garbage)
        Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastToken.Text}\"");
      
-     Die(0, "Stop.");
+     Die(0, "Tokenized all input.");
      
      Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
      Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
