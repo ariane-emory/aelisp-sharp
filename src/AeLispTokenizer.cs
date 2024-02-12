@@ -224,7 +224,7 @@ public static partial class Ae
 
     private static bool InMultilineComment(AeLispTokenizerState state)
     {
-      return false;
+      return state.InMultilineComment;
     }
   }
 }
