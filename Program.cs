@@ -18,7 +18,7 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static int TokenizeFile(string filename)
+  static int TokenizeFileByLine(string filename)
   {
     var lineNumber = 0;
     var tokens = new List<PositionedToken<TokenType>>();
@@ -61,14 +61,43 @@ class Program
     return totalTokens;
   }
 
+  int TokenizeString(string line)
+  {
+    var newTokens = Tokenizer.Get().Tokenize($"{line}", false);
+
+    if (newTokens.Any())
+    {
+      var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
+
+      if (lastNewToken.TokenType == TokenType.Garbage)
+        Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastNewToken.Text}\"");
+    }
+
+    PrintTokens(newTokens);
+
+    tokens.AddRange(newTokens);
+
+    // Die if we tokenized nothing:
+    if (!tokens.Any())
+      Die(1, "No tokens!");
+
+    // Die if we didn't tokenize everything:
+    var lastToken = tokens.ToList()[Math.Max(0, tokens.Count() - 1)];
+
+    if (lastToken.TokenType == TokenType.Garbage)
+      Die(1, $"Failed to tokenize the entire input -  remaining text: \"{lastToken.Text}\"");
+  }
+
   static void Main()
   {
     var filename = "data.lisp";
     var mode = Mode.Line;
     int? totalTokens = null;
 
-        if (mode == Mode.Line)
-      totalTokens = TokenizeFile(filename);
+    if (mode == Mode.Line)
+      totalTokens = TokenizeFileByLine(filename);
+    else
+      totalTokens = TokenizeString(filename);
 
     Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
