@@ -21,10 +21,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private List<(TTokenType Type,
                 Regex Pattern,
-                Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken,
+                Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? ProcessToken,
                 Func<TTokenizerState, bool>? IsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
+    new List<(TTokenType Type, Regex Pattern, Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
@@ -35,7 +35,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
   // Instance methods
   protected void Add(TTokenType token,
                      string pattern,
-                     Func<TTokenizerState, TToken, (TTokenizerState, TToken)>? processToken = null,
+                     Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? processToken = null,
                      Func<TTokenizerState, bool>? isActive = null)
   {
     pattern = "(?:" + pattern + ")";
@@ -75,7 +75,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
           if (definition.ProcessToken is not null)
-            (_state, token) = definition.ProcessToken(_state, token);
+            (_state, token) = definition.ProcessToken((_state, token));
 
           input = input.Substring(match.Length);
 
