@@ -19,8 +19,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state;
 
-  private List<(TTokenType type, Regex patern, Func<TToken, TToken>? transform)> _tokenDefinitions =
-    new List<(TTokenType type, Regex patern, Func<TToken, TToken>? transform)>();
+  private List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform)> _tokenDefinitions =
+    new List<(TTokenType Type, Regex Pattern, Func<TToken, TToken>? Transform)>();
 
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
   {
@@ -51,23 +51,24 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
       bool foundMatch = false;
 
-      foreach (var (tokenType, regex, transform) in _tokenDefinitions)
+      // foreach (var (tokenType, regex, transform) in _tokenDefinitions)
+      foreach (var definition in _tokenDefinitions)
       {
         // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
-        var match = regex.Match(input);
+        var match = definition.Pattern.Match(input);
 
         if (match.Success)
         {
           // WriteLine($"Matched a {tokenType} token: \"{match.Value}\"");
 
-          var token = _createToken(tokenType, match.Value);
+          var token = _createToken(definition.Type, match.Value);
 
           if (match.Length == 0)
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
-          if (transform is not null)
-            token = transform(token);
+          if (definition.Transform is not null)
+            token = definition.Transform(token);
 
           input = input.Substring(match.Length);
 
