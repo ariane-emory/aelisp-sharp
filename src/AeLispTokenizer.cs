@@ -85,9 +85,24 @@ public static partial class Ae
     //==================================================================================================================
     // Private constants.
     //==================================================================================================================
+
+    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
+    {
+      (@"\a",   "\a"),
+      (@"\b",   "\b"),
+      (@"\f",   "\f"),
+      (@"\n",   "\n"),
+      (@"\r",   "\r"),
+      (@"\t",   "\t"),
+      (@"\v",   "\v"),
+      (@"\\",   "\\"),
+      (@"\'",   "\'"),
+      (@"\""",  "\""),
+    };
+
     private static readonly List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)> Tokens =
-      new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
-      {
+          new List<(TokenType type, bool discrete, Func<PositionedToken<TokenType>, PositionedToken<TokenType>>? fun, string pattern)>
+          {
         (TokenType.Eof,           discrete: false, fun: CountColumns,         pattern: @"$"),
         (TokenType.NewLine,       discrete: false, fun: CountLines,           pattern: @"\r?\n"),
         (TokenType.Whitespace,    discrete: false, fun: CountColumns,         pattern: @"[ \t\f\v]+"),
@@ -119,7 +134,7 @@ public static partial class Ae
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?\\."),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?."),
         (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+$"),
-  };
+      };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
@@ -142,20 +157,6 @@ public static partial class Ae
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
 
     private static Tokenizer _tokenizer = new Tokenizer();
-
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
 
     //==================================================================================================================
     // Get the instance
