@@ -10,7 +10,7 @@ class Program
     File,
   };
 
-  static void PrintTokens(List<PositionedToken<TokenType>> tokens)
+  static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
      .Where(token => token.TokenType != TokenType.Whitespace)
@@ -63,7 +63,7 @@ class Program
 
   int TokenizeString(string line)
   {
-    var newTokens = Tokenizer.Get().Tokenize($"{line}", false);
+    var newTokens = Tokenizer.Get().Tokenize($"{line}", false).ToList();
 
     if (newTokens.Any())
     {
