@@ -15,6 +15,7 @@ public static partial class Ae
     Garbage,
     Integer,
     LParen,
+    LineComment,
     LispStyleChar,
     NewLine,
     Nil,
@@ -57,7 +58,14 @@ public static partial class Ae
     {
       token = CountColumns(token);
 
-      return UnescapeChars(new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column));
+      return UnescapeChars(TrimFirst(token));
+    }
+
+    private static PositionedToken<TokenType> TrimFirst(PositionedToken<TokenType> token)
+    {
+      token = CountColumns(token);
+
+      return new PositionedToken<TokenType>(token.TokenType, token.Text.Substring(1), token.Line, token.Column);
     }
 
     private static PositionedToken<TokenType> CountLines(PositionedToken<TokenType> token)
@@ -131,6 +139,7 @@ public static partial class Ae
         (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?\\."),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?."),
+        (TokenType.LineComment,   discrete: false, fun: TrimFirst,            pattern: @";.+"),
         (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+"),
       };
 
