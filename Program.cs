@@ -23,7 +23,7 @@ class Program
         var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
           .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
         
-        var lastNewToken = newTokens.ToList()[newTokens.Count() - 1];
+        var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
 
         // Print out the tokenized tokens:
         foreach (var (token, index) in newTokens
