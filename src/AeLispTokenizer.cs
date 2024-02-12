@@ -53,10 +53,10 @@ public static partial class Ae
     //==================================================================================================================
     public static Tokenizer Get()
     {
-      if (_tokenizer is null)
-        _tokenizer = new Tokenizer();
+      if (_instance is null)
+        _instance = new Tokenizer();
 
-      return _tokenizer;
+      return _instance;
     }
 
     //==================================================================================================================
@@ -138,7 +138,7 @@ public static partial class Ae
       (@"\""",  "\""),
     };
 
-    private static Tokenizer _tokenizer = new Tokenizer();
+    private static Tokenizer _instance = new Tokenizer();
 
     //==================================================================================================================
     // Token callbacks
