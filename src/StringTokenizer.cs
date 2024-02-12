@@ -40,12 +40,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Constructor
   //====================================================================================================================
-  protected StringTokenizer(CreateTokenFun createToken, TTokenizerState state, CreateTokenizerStateFun createTokenizerStateFun)
+  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
-
-    _state = state;
+    _state = _createTokenizerState();
   }
 
   // Instance methods
@@ -62,7 +61,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  protected virtual void Restart() { }
+  private void Restart() {
+    _state = _createTokenizerState();
+  }
 
   public IEnumerable<TToken> Tokenize(string input)
   {
