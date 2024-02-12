@@ -27,7 +27,7 @@ public static partial class Ae
     Whitespace,
   };
 
-  public record struct AeLispTokenizerState(int Line = 0, int Column = 0);
+  public record struct AeLispTokenizerState(int Line = 0, int Column = 0, bool InMultilineComment = false);
 
   public record struct PositionedToken<TTokenType>(TTokenType TokenType, string Text, int Line, int Column)
   {
