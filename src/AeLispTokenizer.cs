@@ -62,7 +62,7 @@ public static partial class Ae
     //==================================================================================================================
     // Func<AeLispTokenizerState, PositionedToken<TokenType>, (AeLispTokenizerState, PositionedToken<TokenType>)>? TransformToken,
 
-    private static readonly TokenProcessorFun UnescapeChars = ((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup) =>
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
 
@@ -70,17 +70,7 @@ public static partial class Ae
         str = str.Replace(escaped, unescaped);
 
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, str, tup.Token.Line, tup.Token.Column));
-    };
-
-    // private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-    // {
-    //   var str = tup.Token.Text;
-
-    //   foreach (var (escaped, unescaped) in EscapedChars)
-    //     str = str.Replace(escaped, unescaped);
-
-    //   return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, str, tup.Token.Line, tup.Token.Column));
-    // }
+    }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
