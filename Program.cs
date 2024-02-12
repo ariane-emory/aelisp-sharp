@@ -28,9 +28,9 @@ class Program
 
       // Print out the tokenized tokens:
       foreach (var (token, index) in tokens
-         .Where(token => token.TokenType != TokenType.Whitespace)
-         .Select((value, index) => (value, index)))
-         WriteLine($"#{index}: {token.TokenType} [{token.Text}] @ {token.Line},{token.Column}");
+        .Where(token => token.TokenType != TokenType.Whitespace)
+        .Select((value, index) => (value, index)))
+        WriteLine(token);
 
       var lastToken = tokens.ToList()[tokens.Count()-1];
 

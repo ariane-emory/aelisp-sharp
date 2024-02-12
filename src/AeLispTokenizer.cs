@@ -24,9 +24,12 @@ public static partial class Ae
     Whitespace,
   };
 
-  public record PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text);
+  public record PositionedToken<TTokenType>(TTokenType tokenType, string Text, int Line, int Column) : Token<TTokenType>(tokenType, Text)
+  {
+    public override string ToString() => $"{tokenType} [{Text}] @ {Line},{Column}";
+  }
 
-  public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
+    public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>>
   {
     //==================================================================================================================
     // Token callbacks
