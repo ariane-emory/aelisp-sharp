@@ -19,7 +19,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
   private TTokenizerState _state { get; set; }
   
-  private List<(TTokenType, Regex, Func<TToken, TToken>?)> TokenDefinitions { get; } =
+  private List<(TTokenType, Regex, Func<TToken, TToken>?)> _tokenDefinitions { get; } =
     new List<(TTokenType, Regex, Func<TToken, TToken>?)>();
 
   
@@ -37,7 +37,7 @@ protected void Add(TTokenType token, string pattern, Func<TToken, TToken>? fun =
   if (!pattern.StartsWith("^"))
     pattern = "^" + pattern;
 
-  TokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
+  _tokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
 }
 
 protected virtual void Restart() { }
@@ -52,7 +52,7 @@ public IEnumerable<TToken> Tokenize(string input)
 
     bool foundMatch = false;
 
-    foreach (var (tokenType, regex, fun) in TokenDefinitions)
+    foreach (var (tokenType, regex, fun) in _tokenDefinitions)
     {
       // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
