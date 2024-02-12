@@ -17,7 +17,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
   protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
-  protected delegate TTokenizerState CreateTokenizerStateFun(TTokenType type, string text);
+  protected delegate TTokenizerState CreateTokenizerStateFun();
 
   //====================================================================================================================
   // Private fields
