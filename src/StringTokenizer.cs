@@ -58,9 +58,9 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
           if (fun is not null)
             token = fun(token);
           
-          WriteLine($"Yield the {tokenType}.");
-          
           yield return token;
+
+          WriteLine($"Yield the {tokenType}.");
 
           input = input.Substring(match.Length);
           foundMatch = true;

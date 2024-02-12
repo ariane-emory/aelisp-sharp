@@ -6,7 +6,7 @@ class Program
 {
   static void Main()
    {
-     var tokens = Tokenizer.Get().Tokenize(@"one two");
+     var tokens = Tokenizer.Get().Tokenize(@"one");
 
 //         @"one two
 // three (123 457 *bingo* <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 "
