@@ -11,6 +11,9 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 //======================================================================================================================
 public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
+  // Delegates 
+  public delegate (TTokenizerState, TToken) TokenProcessorFun((TTokenizerState State, TToken Token) tup);
+
   // Private fields
   private readonly Func<TTokenType, string, TToken> _createToken;
 
@@ -18,10 +21,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
   private List<(TTokenType Type,
                 Regex Pattern,
-                Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? ProcessToken,
+                TokenProcessorFun? ProcessToken,
                 Func<TTokenizerState, bool>? IsActive)>
   _tokenDefinitions =
-    new List<(TTokenType Type, Regex Pattern, Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
+    new List<(TTokenType Type, Regex Pattern, TokenProcessorFun? ProcessToken, Func<TTokenizerState, bool>? IsActive)>();
 
   // Constructor
   public StringTokenizer(Func<TTokenType, string, TToken> createToken, TTokenizerState state)
@@ -33,7 +36,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   // Instance methods
   protected void Add(TTokenType token,
                      string pattern,
-                     Func<(TTokenizerState, TToken), (TTokenizerState, TToken)>? processToken = null,
+                     TokenProcessorFun? processToken = null,
                      Func<TTokenizerState, bool>? isActive = null)
   {
     pattern = "(?:" + pattern + ")";
