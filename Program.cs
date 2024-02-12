@@ -14,8 +14,10 @@ class Program
      var tokens = new List<PositionedToken<TokenType>>();
      var input = File.ReadAllLines(filename);
 
-     foreach (var (line, lineNumber) in input.Select((line, lineNumber) => (line, lineNumber)))
-       tokens.AddRange(Tokenizer.Get().Tokenize(line).Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)));
+     foreach (var (line, lineNumber) in input.Select((line, lineNumber) => (line, lineNumber))) {
+       var newTokens = Tokenizer.Get().Tokenize(line).Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
+       tokens.AddRange(newTokens);
+     }
 
      // Die if we tokenized nothing:
      if (! tokens.Any())
