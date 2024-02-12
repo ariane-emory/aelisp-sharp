@@ -17,6 +17,8 @@ public static partial class Ae
     LParen,
     LineComment,
     LispStyleChar,
+    MultilineCommentBegin,
+    MultilineCommentEnd,
     NewLine,
     Nil,
     Quote,
