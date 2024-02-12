@@ -80,7 +80,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
       {
         // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
-        if (!definition.DefinitionIsActive(_state))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(_state))
           continue;
  
         var match = definition.Pattern.Match(input);
