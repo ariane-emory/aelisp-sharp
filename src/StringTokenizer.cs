@@ -51,7 +51,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
 
       bool foundMatch = false;
 
-      foreach (var (tokenType, regex, fun) in _tokenDefinitions)
+      foreach (var (tokenType, regex, transform) in _tokenDefinitions)
       {
         // WriteLine($"Try matching a {tokenType} token with \"{regex}\" at \"{input}\".");
 
@@ -66,8 +66,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> // wh
           if (match.Length == 0)
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
-          if (fun is not null)
-            token = fun(token);
+          if (transform is not null)
+            token = transform(token);
 
           input = input.Substring(match.Length);
 
