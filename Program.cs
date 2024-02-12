@@ -6,7 +6,12 @@ class Program
 {
   static void Main()
    {
-     var input = File.ReadAllText("data.lisp");
+     var filename = "data.lisp";
+
+     if (! File.Exists(filename))
+       throw new ApplicationException($"No file '{filename}'.");
+
+     var input = File.ReadAllText(filename);
      
      var tokens = Tokenizer.Get().Tokenize(input);
 
