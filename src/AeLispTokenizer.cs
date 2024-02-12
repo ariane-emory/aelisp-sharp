@@ -131,7 +131,7 @@ public static partial class Ae
         (TokenType.Symbol,        discrete: true,  fun: CountColumns,         pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?\\."),
         (TokenType.LispStyleChar, discrete: true,  fun: TrimFirstAndUnescape, pattern: @"\?."),
-        (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+$"),
+        (TokenType.Garbage,       discrete: false, fun: CountColumns,         pattern: @".+"),
       };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";

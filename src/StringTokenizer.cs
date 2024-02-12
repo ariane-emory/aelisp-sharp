@@ -33,7 +33,7 @@ public abstract class StringTokenizer<TTokenType, TToken> // where TToken : ITok
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
 
-    TokenDefinitions.Add((token, new Regex(pattern), fun));
+    TokenDefinitions.Add((token, new Regex(pattern, RegexOptions.Singleline), fun));
   }
 
   protected virtual void Restart() { }
