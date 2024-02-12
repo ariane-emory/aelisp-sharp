@@ -199,7 +199,8 @@ public static partial class Ae
     //==================================================================================================================
     // Private constructor
     //==================================================================================================================
-  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0), new AeLispTokenizerState())
+  private Tokenizer() : base((tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
+                             new AeLispTokenizerState())
     {
       foreach (var (tokenType, discrete, fun, pattern) in Tokens)
         Add(tokenType,
