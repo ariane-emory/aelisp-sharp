@@ -13,4 +13,4 @@ a::b/c :keyword @
 &rest -a / !abc ! <!good> 'a' '\n' '\"' 
 ?a ?\n
 "hello\nworld" 
-1,234,567
+1,234,567 1
