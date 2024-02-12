@@ -66,15 +66,12 @@ public static partial class Ae
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirstAndUnescape((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-    {
-      tup = CountColumns(tup);
-      tup = TrimFirst(tup);
-      return UnescapeChars(tup);
-    }
+      => UnescapeChars(TrimFirst(CountColumns(tup)));
+
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      (tup.State, tup.Token) = CountColumns((tup.State, tup.Token));
+      tup = CountColumns(tup);
 
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
