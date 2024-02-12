@@ -6,9 +6,8 @@ class Program
 {
   static void Main()
    {
-     var tokens = Tokenizer.Get().Tokenize( // @"one two");
-
-        @"one two
+     var tokens = Tokenizer.Get().Tokenize(@"
+one two
 three (123 457 *bingo*
 <boop> nil (789 nil)) 12 34 (1 . (2 3)) 'nil '123 
 `(1 ,2 3) $(1 2 3) (1 2 ,@(4 5)) ?a ?\n ""he\""llo""
@@ -20,8 +19,7 @@ here--it/is! %another-symbol1-23//asd 1+ 10- ∨ ⊤ ⊥ ≤ ≥ × 12.004
 a::b/c :keyword @
 &rest -a / !abc ! <!good> 'a' '\n' '\""' 
  ""hello\nworld"" 
- ?a ?\n ");
-//        + @"\#!2garbage");
+ ?a ?\n \#!2garbage");
 
       // Die if we tokenized nothing:
       if (! tokens.Any())
