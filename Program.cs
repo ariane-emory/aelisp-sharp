@@ -17,8 +17,8 @@ class Program
         + @"a::b/c :keyword @
 &rest -a / !abc ! <!good> 'a' '\n' '\""' "
         + @" ""hello\nworld"" "
-        + @" ?a ?\n "
-        + @"\#!2garbage");
+        + @" ?a ?\n ");
+//        + @"\#!2garbage");
 
       // Die if we tokenized nothing:
       if (! tokens.Any())

@@ -39,12 +39,20 @@ public static partial class Ae
       return new Token<TokenType>(token.TokenType, str);
     }
 
-    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
-
-    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token) =>
-      UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
-
+    private static Token<TokenType> TrimAndUnescape(Token<TokenType> token)
+    {
+      CountColumns(token);
+      
+      return UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1, token.Text.Length - 2)));
+    }
+    
+    private static Token<TokenType> TrimFirstAndUnescape(Token<TokenType> token)
+    {
+      CountColumns(token);
+      
+      return UnescapeChars(new Token<TokenType>(token.TokenType, token.Text.Substring(1)));
+    }
+    
     private static Token<TokenType> CountLines(Token<TokenType> token)
     {
       Get().Line++;
