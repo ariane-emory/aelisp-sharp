@@ -50,14 +50,28 @@ class Program
   static void Main()
   {
     var filename = "data.lisp";
-    var mode = Mode.LineByLine;
 
-    var tokenizeResult = mode switch
     {
-      Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
-      Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
-      _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-    };
+      var mode = Mode.LineByLine;
+
+      var tokenizeResult = mode switch
+      {
+        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
+        Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+      };
+    }
+
+    {
+      var mode = Mode.EntireFileAtOnce;
+
+      var tokenizeResult = mode switch
+      {
+        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
+        Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+      };
+    }
   }
 
   // Die(0, $"Tokenized all input, {totalTokens} tokens.");
