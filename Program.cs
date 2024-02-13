@@ -51,9 +51,9 @@ class Program
   {
     var filename = "data.lisp";
 
-    {
-      var mode = Mode.LineByLine;
 
+    foreach (var mode in new[] { Mode.LineByLine, Mode.EntireFileAtOnce })
+    {
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
@@ -61,25 +61,10 @@ class Program
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
-      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
-    }
-
-    WriteLine("");
-
-    {
-      var mode = Mode.EntireFileAtOnce;
-
-      var tokenizeResult = mode switch
-      {
-        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
-        Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
-        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-      };
-
-      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.\n\n");
     }
   }
-
+  
   // Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
   // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
