@@ -21,7 +21,7 @@ class Program
   }
 
   static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
-   tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
+    (! tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
   static TokenizeResult TokenizeFileByLines(string filename)
   {
@@ -35,16 +35,11 @@ class Program
       var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
         .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
 
-      if (newTokens.Any())
+      if (CheckForGarbage(newTokens))
       {
-        var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
-
-        if (lastNewToken.TokenType == TokenType.Garbage)
-        {
-          tokenizeResult.TokenizedAllInput = false;
-
-          return tokenizeResult;
-        }
+        tokenizeResult.TokenizedAllInput = false;
+        
+        return tokenizeResult;
       }
 
       PrintTokens(newTokens);
