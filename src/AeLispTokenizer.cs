@@ -118,7 +118,7 @@ public static partial class Ae
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
-    private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$)";
+    private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$|(?:#\|))";
     private const string Integer = @"(?:(?:[1-9]\d*)|0)";
     private const string MathOp = @"(?:[+\-%/\*\^]|" + ShiftLeft + @"|" + ShiftRight + @")";
     private const string MaybePunctuationSuffix = @"(?:[\?\!\*\+]|\!\!)?";
