@@ -9,7 +9,7 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 //======================================================================================================================
 // Tokenizer class
 //======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
+public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where TTokenizerState : struct
 {
   //====================================================================================================================
   // Types
