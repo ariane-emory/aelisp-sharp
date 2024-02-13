@@ -22,8 +22,10 @@ class Program
     foreach (var line in lines)
     {
       arg.Input = line;
-      
       arg = TokenizeLine(arg);
+
+      if (arg.Tokens is not null && EndsWithGarbage(arg.Tokens))
+        return arg;
     }
 
     return arg;
@@ -34,27 +36,21 @@ class Program
     arg = Tokenizer.Get().Tokenize(arg);
 
     if (arg.Tokens is not null)
-    {
       PrintTokens(arg.Tokens);
-    
-      if (EndsWithGarbage(arg.Tokens))
-        return arg;
-    }
-    
+
     return arg;
   }
 
-  enum Mode
-  {
-    LineByLine,
-    EntireFileAtOnce,
-  };
+  enum Mode { LineByLine, EntireFileAtOnce, };
 
   static void Main()
   {
     var filename = "data.lisp";
 
-    foreach (var mode in new[] { Mode.LineByLine, Mode.EntireFileAtOnce })
+    foreach (var mode in new[] {
+      Mode.LineByLine,
+      Mode.EntireFileAtOnce
+    })
     {
       var tokenizeResult = mode switch
       {
@@ -66,7 +62,7 @@ class Program
       if (tokenizeResult.Tokens is not null)
         WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
-      WriteLine($"\n\n===\n\n");
+      WriteLine($"\n\n---\n\n");
     }
   }
 

@@ -74,19 +74,21 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct Arg(string? Input, TTokenizerState? State, List<TToken>? Tokens);
-  
+  public record struct Arg(string? Input, List<TToken>? Tokens, TTokenizerState? State);
+
+  public Arg Tokenize(string? Input, List<TToken>? Tokens, TTokenizerState? State) => Tokenize(new Arg(Input, Tokens, State));
+
   public Arg Tokenize(Arg arg)
   {
-    if (arg.Input is null)
-      return arg;
-    
     if (arg.State is null)
       arg.State = _createTokenizerState();
 
     if (arg.Tokens is null)
       arg.Tokens = new List<TToken>();
-    
+
+    if (arg.Input is null)
+      return arg;
+
     while (!string.IsNullOrEmpty(arg.Input))
     {
       bool foundMatch = false;
@@ -109,7 +111,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
             (arg.State, token) = definition.ProcessToken((arg.State.Value, token));
 
           arg.Tokens.Add(token);
-          
+
           foundMatch = true;
           arg.Input = arg.Input.Substring(match.Length);
 
