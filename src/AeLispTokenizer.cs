@@ -195,14 +195,12 @@ public static partial class Ae
         string number = match.Groups[2].Value;
 
         if (string.IsNullOrEmpty(number) || number == "0")
-          return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, "0", tup.Token.Line, tup.Token.Column));
+          tup.Token.Text = "0";
         else
-          return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, sign + number, tup.Token.Line, tup.Token.Column));
+          tup.Token.Text = sign + number;
       }
-      else
-      {
-        return tup;
-      }
+
+      return tup;
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
