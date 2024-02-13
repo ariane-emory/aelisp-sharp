@@ -15,12 +15,11 @@ class Program
   static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
     tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput, AeLispTokenizerState? State);
+  // record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput, AeLispTokenizerState? State);
 
-  static TokenizeResult TokenizeLines(IEnumerable<string> lines)
+  static Tokenizer.TokenizeArg TokenizeLines(IEnumerable<string> lines)
   {
-    var tokens = new List<PositionedToken<TokenType>>();
-    var lineNumber = 0;
+    var tokenizeArg = new Tokenizer.TokenizeArg(null, null, null);
 
     AeLispTokenizerState? state = null;
     
@@ -30,24 +29,27 @@ class Program
 
       state = result.State;
       
-      tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
+      // tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
 
-      lineNumber++;
+      // lineNumber++;
     }
 
-    return new TokenizeResult(tokens, true, state);
+    return tokenizeArg;
   }
 
-  static TokenizeResult TokenizeLine(string line, AeLispTokenizerState? state)
+  static Tokenizer.TokenizeArg TokenizeLine(string line, AeLispTokenizerState? state)
   {
-    var result = Tokenizer.Get().Tokenize(line, state);
+    var result = Tokenizer.Get().Tokenize(new Tokenizer.TokenizeArg(line, state, null));
 
-    PrintTokens(result.Tokens);
+    if (result.Tokens is not null)
+    {
+      PrintTokens(result.Tokens);
     
-    if (EndsWithGarbage(result.Tokens))
-      return new TokenizeResult(result.Tokens, false, result.State);
-
-    return new TokenizeResult(result.Tokens, true, result.State);
+      if (EndsWithGarbage(result.Tokens))
+        return result;
+    }
+    
+    return result;
   }
 
   enum Mode
@@ -69,7 +71,10 @@ class Program
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
-      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.\n\n");
+      if (tokenizeResult.Tokens is not null)
+        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+
+      WriteLine($"\n\n");
     }
   }
 
