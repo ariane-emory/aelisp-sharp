@@ -85,7 +85,7 @@ public static partial class Ae
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"),
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
         (Type: TokenType.Float,            Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: Float),
-        (Type: TokenType.Rational,         Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Rational),
+        (Type: TokenType.Rational,         Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational),
         (Type: TokenType.Integer,          Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,           Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""(\\\""|[^\""])*\"""),
         (Type: TokenType.Quote,            Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"'"),
@@ -181,7 +181,6 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
 
-    // does not handle floats or rationals yet:
     private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
@@ -190,11 +189,34 @@ public static partial class Ae
       var match = Regex.Match(tup.Token.Text, pattern);
       var sign = match.Groups[1].Value;
       var number = match.Groups[2].Value;
-      
+
       tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
         ? "0"
         : sign + number;
 
+      return tup;
+    }
+
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup.Token.Text = tup.Token.Text.Replace(",", "");
+
+      var pattern = @"^([+-]?)(?:0*)(\d+)\/(?:0*)(\d+)$";
+      var match = Regex.Match(tup.Token.Text, pattern);
+      var sign = match.Groups[1].Value;
+      var numer = match.Groups[2].Value;
+      var denom = match.Groups[3].Value;
+
+      numer = (string.IsNullOrEmpty(numer) || numer == "0")
+        ? "0"
+        : sign + numer;
+
+      // denom = (string.IsNullOrEmpty(denom) || denom == "0")
+      //   ? "0"
+      //   : denom;
+
+      tup.Token.Text = numer + "/" + denom;
+      
       return tup;
     }
 
