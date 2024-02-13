@@ -37,7 +37,7 @@ class Program
 
   static TokenizeResult TokenizeLine(string line)
   {
-    var tokens = Tokenizer.Get().Tokenize(line, false).ToList();
+    var tokens = Tokenizer.Get().Tokenize(line).ToList();
 
     PrintTokens(tokens);
 

@@ -79,11 +79,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _state = _createTokenizerState();
   }
 
-  public IEnumerable<TToken> Tokenize(string input, bool reset)
+  public IEnumerable<TToken> Tokenize(string input)
   {
-    if (reset) // ResetMode == StringTokenizerResetMode.Auto)
-      Reset();
-
     while (!string.IsNullOrEmpty(input))
     {
       bool foundMatch = false;
