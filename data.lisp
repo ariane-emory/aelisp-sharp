@@ -20,3 +20,6 @@ one two#|three
 four
 five|#six
 ?a ?\\ ?\n a#|b|#c
+"hello\nworld"
+"hello
+world" 
