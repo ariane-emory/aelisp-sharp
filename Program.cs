@@ -25,15 +25,9 @@ class Program
 
     foreach (var line in lines)
     {
-      var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
-        .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
+      var result = TokenizeLine(line);
 
-      PrintTokens(newTokens);
-
-      tokens.AddRange(newTokens);
-
-      if (CheckForGarbage(tokens))
-        return new TokenizeResult(tokens, false);
+      tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
 
       lineNumber++;
     }
