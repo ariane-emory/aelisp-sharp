@@ -4,8 +4,6 @@ using static System.Console;
 
 class Program
 {
-  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
-
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
@@ -16,6 +14,8 @@ class Program
 
   static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
     (!tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
+
+  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
 
   static TokenizeResult TokenizeLines(IEnumerable<string> lines)
   {
@@ -41,6 +41,19 @@ class Program
     return new TokenizeResult(tokens, true);
   }
 
+
+  static TokenizeResult TokenizeLine(string line)
+  {
+    var tokens = Tokenizer.Get().Tokenize($"{line}", false).ToList();
+
+    PrintTokens(tokens);
+
+    if (CheckForGarbage(tokens))
+      return new TokenizeResult(tokens, false);
+
+    return new TokenizeResult(tokens, true);
+  }
+
   enum Mode
   {
     LineByLine,
@@ -50,7 +63,6 @@ class Program
   static void Main()
   {
     var filename = "data.lisp";
-
 
     foreach (var mode in new[] { Mode.LineByLine, Mode.EntireFileAtOnce })
     {
@@ -64,7 +76,7 @@ class Program
       WriteLine($"Token count: {tokenizeResult.Tokens.Count}.\n\n");
     }
   }
-  
+
   // Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
   // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
