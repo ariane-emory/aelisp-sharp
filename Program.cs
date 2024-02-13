@@ -10,7 +10,7 @@ class Program
     File,
   };
 
-  record TokenizeResult(List<PositionedToken<TokenType>> Token, bool TokenizedAllInput);
+  record struct TokenizeResult(List<PositionedToken<TokenType>> Token, bool TokenizedAllInput);
 
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
   {
