@@ -112,6 +112,7 @@ public static partial class Ae
       .Add((Type: TokenType.MultilineCommentB, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentE, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentC, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
+  //         (Type: TokenType.Garbage,          Discrete: false, Process: null,      IsActive: null,               Pattern: @".+"),
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
