@@ -76,7 +76,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
   public IEnumerable<TToken> Tokenize(string input) => Tokenize(input, _createTokenizerState());
   
-  public IEnumerable<TToken> Tokenize(string input, TTokenizerState state)
+  public IEnumerable<(TToken Token, TTokenizerState State)> Tokenize(string input, TTokenizerState state)
   {
     while (!string.IsNullOrEmpty(input))
     {
