@@ -15,36 +15,39 @@ class Program
   static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
     tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
+  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput, AeLispTokenizerState? State);
 
   static TokenizeResult TokenizeLines(IEnumerable<string> lines)
   {
     var tokens = new List<PositionedToken<TokenType>>();
-
     var lineNumber = 0;
 
+    AeLispTokenizerState? state = null;
+    
     foreach (var line in lines)
     {
-      var result = TokenizeLine(line);
+      var result = TokenizeLine(line, state);
 
+      state = result.State;
+      
       tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
 
       lineNumber++;
     }
 
-    return new TokenizeResult(tokens, true);
+    return new TokenizeResult(tokens, true, state);
   }
 
-  static TokenizeResult TokenizeLine(string line)
+  static TokenizeResult TokenizeLine(string line, AeLispTokenizerState? state)
   {
-    var (tokens, state) = Tokenizer.Get().Tokenize(line);
+    var result = Tokenizer.Get().Tokenize(line, state);
 
-    PrintTokens(tokens);
+    PrintTokens(result.Tokens);
     
-    if (EndsWithGarbage(tokens))
-      return new TokenizeResult(tokens, false);
+    if (EndsWithGarbage(result.Tokens))
+      return new TokenizeResult(result.Tokens, false, result.State);
 
-    return new TokenizeResult(tokens, true);
+    return new TokenizeResult(result.Tokens, true, result.State);
   }
 
   enum Mode
@@ -62,7 +65,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename)),
+        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
