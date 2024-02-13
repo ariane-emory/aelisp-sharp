@@ -84,9 +84,9 @@ public static partial class Ae
         (Type: TokenType.Dot,              Discrete: true,  Process: CountColumns,      IsActive: null,               Pattern: @"\."),
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"),
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
-        (Type: TokenType.Float,            Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Float),
+        (Type: TokenType.Float,            Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: Float),
         (Type: TokenType.Rational,         Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Rational),
-        (Type: TokenType.Integer,          Discrete: true,  Process: ProcInteger,       IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
+        (Type: TokenType.Integer,          Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,           Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""(\\\""|[^\""])*\"""),
         (Type: TokenType.Quote,            Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"'"),
         (Type: TokenType.Backtick,         Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"`"),
@@ -182,7 +182,7 @@ public static partial class Ae
     }
 
     // does not handle floats or rationals yet:
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcInteger((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
