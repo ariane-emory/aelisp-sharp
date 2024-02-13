@@ -4,6 +4,7 @@ using static System.Console;
 
 class Program
 {
+  //====================================================================================================================
   static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
@@ -12,9 +13,11 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
+  //====================================================================================================================
   static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
     tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
+  //====================================================================================================================
   static Tokenizer.Arg TokenizeLines(IEnumerable<string> lines)
   {
     var arg = new Tokenizer.Arg(null, null, null);
@@ -31,6 +34,7 @@ class Program
     return arg;
   }
 
+  //====================================================================================================================
   static Tokenizer.Arg TokenizeLine(Tokenizer.Arg arg)
   {
     arg = Tokenizer.Get().Tokenize(arg);
@@ -41,8 +45,10 @@ class Program
     return arg;
   }
 
+  //====================================================================================================================
   enum Mode { LineByLine, EntireFileAtOnce, };
 
+  //====================================================================================================================
   static void Main()
   {
     var filename = "data.lisp";
