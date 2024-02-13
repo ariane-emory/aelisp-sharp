@@ -47,7 +47,7 @@ public static partial class Ae
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
             discrete ? (pattern + FollowedByTokenBarrierOrEOF) : (pattern),
-            process,
+            process is null ? null : ((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)  => process(tup),
             active is null ? NotInMultilineComment : active);
     }
 
@@ -181,14 +181,12 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-    {
-      return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
-    }
+     => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Replace(",", "");
+      tup = StripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+)?)$";
       var match = Regex.Match(tup.Token.Text, pattern);
@@ -207,7 +205,7 @@ public static partial class Ae
     {
       tup = ProcNumber(tup);
 
-      var pattern = @"^(.*?)(?:0*)$";      
+      var pattern = @"^(.*?)(?:0*)$";
       var match = Regex.Match(tup.Token.Text, pattern);
 
       tup.Token.Text = match.Groups[1].Value;
@@ -218,7 +216,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Replace(",", "");
+      tup = StripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d+)\/(?:0*)(\d+)$";
       var match = Regex.Match(tup.Token.Text, pattern);
@@ -231,7 +229,7 @@ public static partial class Ae
         : sign + numer;
 
       tup.Token.Text = numer + "/" + denom;
-      
+
       return tup;
     }
 
