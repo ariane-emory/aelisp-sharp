@@ -109,11 +109,12 @@ public static partial class Ae
       .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."))
       .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."))
       .Add((Type: TokenType.LineComment,       Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.MultilineCommentB,  Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"))
-      .Add((Type: TokenType.MultilineCommentE,  Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"\|#"))
-      .Add((Type: TokenType.MultilineCommentC,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"\S+"))
-      .Add((Type: TokenType.MultilineCommentN,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
-      .Add((Type: TokenType.MultilineCommentS,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
+      .Add((Type: TokenType.MultilineCommentS, Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
+      .Add((Type: TokenType.MultilineCommentB, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|[^\n]*\n"))
+      .Add((Type: TokenType.MultilineCommentE, Discrete: true,  Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
+      .Add((Type: TokenType.MultilineCommentC, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
+  //    .Add((Type: TokenType.MultilineCommentN,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
+  //    .Add((Type: TokenType.MultilineCommentS,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
@@ -181,7 +182,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcTrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
-
+  
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
@@ -199,51 +200,50 @@ public static partial class Ae
       return tup;
     }
 
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup = ProcNumber(tup);
+      
+      var pattern = @"^(.*?\.\d*?)0*?$";
+      var replacement = "$1";
 
-  private static (AeLispTokenizerState, PositionedToken<TokenType>)
-  ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-  {
-    tup = ProcNumber(tup);
-    
-    var pattern = @"^(.*?\.\d*?)0*?$";
-    var replacement = "$1";
+      tup.Token.Text = Regex.Replace(tup.Token.Text, pattern, replacement);
+       
+      if (tup.Token.Text.StartsWith("."))
+        tup.Token.Text = "0" + tup.Token.Text;
 
-    tup.Token.Text = Regex.Replace(tup.Token.Text, pattern, replacement);
-     
-    if (tup.Token.Text.StartsWith("."))
-      tup.Token.Text = "0" + tup.Token.Text;
+      if (tup.Token.Text.EndsWith("."))
+        tup.Token.Text += "0";
 
-    if (tup.Token.Text.EndsWith("."))
-      tup.Token.Text += "0";
-
-    return tup;
-  }
-
+      return tup;
+    }
+  
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcStripCommas(tup);
-
+      
       var pattern = @"^([+-]?)(?:0*)(\d+)\/(?:0*)(\d+)$";
       var match = Regex.Match(tup.Token.Text, pattern);
       var sign = match.Groups[1].Value;
       var numer = match.Groups[2].Value;
       var denom = match.Groups[3].Value;
-
+      
       numer = (string.IsNullOrEmpty(numer) || numer == "0")
         ? "0"
         : sign + numer;
-
+      
       tup.Token.Text = numer + "/" + denom;
-
+      
       return tup;
     }
-
+  
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcStripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
-
+      
       return tup;
     }
 
@@ -252,7 +252,7 @@ public static partial class Ae
     {
       tup.State.InMultilineComment = true;
 
-      return tup;
+      return CountLine(tup);
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)

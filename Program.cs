@@ -4,11 +4,23 @@ using static System.Console;
 
 class Program
 {
-  //====================================================================================================================
-  static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
+
+  static readonly List<TokenType> Excluded = new List<TokenType>
+  {
+    TokenType.Whitespace,
+    TokenType.LineComment,
+    TokenType.MultilineCommentB,
+    TokenType.MultilineCommentC,
+    TokenType.MultilineCommentN,
+    TokenType.MultilineCommentS,
+    TokenType.Newline,                
+  };
+
+//====================================================================================================================
+static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
-             //.Where(token => token.TokenType != TokenType.Whitespace)
+             .Where(token => ! Excluded.Contains(token.TokenType))
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }

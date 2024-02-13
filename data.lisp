@@ -15,4 +15,7 @@ a::b/c :keyword @
 multiline comment |# ?a ?\n
 "hello\nworld" 
 1,234,567 1
-one two #|three   four|# five
+2.0 2.01000 -3.01230100 2.000 .0  000.000 00001.10000 
+one two #|three
+four
+five|#six
