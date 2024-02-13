@@ -106,8 +106,8 @@ public static partial class Ae
         (Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."),
         (Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."),
         (Type: TokenType.LineComment,      Discrete: false, Process: TrimFirst,         IsActive: null,               Pattern: @";[^\n]*"),
-        (Type: TokenType.MultilineComment, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|"),
-        (Type: TokenType.MultilineComment, Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"\|#"),
+        (Type: TokenType.MultilineComment, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"),
+        (Type: TokenType.MultilineComment, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"\|#"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"\S+"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"),
@@ -152,7 +152,8 @@ public static partial class Ae
     //==================================================================================================================
     // Token callbacks
     //==================================================================================================================
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
 
@@ -162,7 +163,8 @@ public static partial class Ae
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, str, tup.Token.Line, tup.Token.Column));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = CountColumns(tup);
 
@@ -173,15 +175,18 @@ public static partial class Ae
                                                            tup.Token.Column)));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => UnescapeChars(TrimFirst(CountColumns(tup)));
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
@@ -197,7 +202,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcNumber(tup);
 
@@ -209,7 +215,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
@@ -228,7 +235,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = CountColumns(tup);
 
@@ -237,7 +245,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcBeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    BeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = CountColumns(tup);
 
@@ -246,7 +255,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcEndMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    EndMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = CountColumns(tup);
 
@@ -255,7 +265,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
 
@@ -265,7 +276,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
 
@@ -274,7 +286,8 @@ public static partial class Ae
       return tup;
     }
 
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) SetTokenLinesAndColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
+    SetTokenLinesAndColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token = new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text, tup.State.Line, tup.State.Column);
 
