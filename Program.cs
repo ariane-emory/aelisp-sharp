@@ -10,7 +10,7 @@ class Program
     File,
   };
 
-  record struct TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool? TokenizedAllInput);
+  record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
 
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
   {
@@ -21,12 +21,11 @@ class Program
   }
 
   static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
-    (! tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
+    (!tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
   static TokenizeResult TokenizeFileByLines(string filename)
   {
-    var tokenizeResult = new TokenizeResult();
-    tokenizeResult.Tokens = new List<PositionedToken<TokenType>>();
+    var tokens = new List<PositionedToken<TokenType>>();
 
     var lineNumber = 0;
 
@@ -35,23 +34,17 @@ class Program
       var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
         .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
 
-      if (CheckForGarbage(newTokens))
-      {
-        tokenizeResult.TokenizedAllInput = false;
-        
-        return tokenizeResult;
-      }
-
       PrintTokens(newTokens);
 
-      tokenizeResult.Tokens.AddRange(newTokens);
+      tokens.AddRange(newTokens);
+
+      if (CheckForGarbage(tokens))
+        return new TokenizeResult(tokens, false);
 
       lineNumber++;
     }
 
-    tokenizeResult.TokenizedAllInput = true;
-
-    return tokenizeResult;
+    return new TokenizeResult(tokens, true);
   }
 
   static void Main()
