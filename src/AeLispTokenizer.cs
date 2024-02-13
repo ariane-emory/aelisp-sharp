@@ -18,7 +18,11 @@ public static partial class Ae
     LParen,
     LineComment,
     LispStyleChar,
-    MultilineComment,
+    MultilineCommentB,
+    MultilineCommentE,
+    MultilineCommentC,
+    MultilineCommentN,
+    MultilineCommentS,
     Newline,
     Nil,
     Quote,
@@ -105,11 +109,11 @@ public static partial class Ae
       .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."))
       .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."))
       .Add((Type: TokenType.LineComment,       Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @".*\|#"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"\S+"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
+      .Add((Type: TokenType.MultilineCommentB,  Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"))
+      .Add((Type: TokenType.MultilineCommentE,  Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"\|#"))
+      .Add((Type: TokenType.MultilineCommentC,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"\S+"))
+      .Add((Type: TokenType.MultilineCommentN,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
+      .Add((Type: TokenType.MultilineCommentS,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
