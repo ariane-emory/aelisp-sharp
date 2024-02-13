@@ -4,7 +4,7 @@ using static System.Console;
 
 class Program
 {
-  static void PrintTokens(List<PositionedToken<TokenType>> tokens)
+  static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
      .Where(token => token.TokenType != TokenType.Whitespace)
@@ -37,10 +37,11 @@ class Program
 
   static TokenizeResult TokenizeLine(string line)
   {
-    var tokens = Tokenizer.Get().Tokenize(line).ToList();
+    var pairs = Tokenizer.Get().Tokenize(line).ToList();
+    var tokens = pairs.Select(p => p.Token).ToList();
 
     PrintTokens(tokens);
-
+    
     if (EndsWithGarbage(tokens))
       return new TokenizeResult(tokens, false);
 

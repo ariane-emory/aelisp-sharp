@@ -74,7 +74,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public IEnumerable<TToken> Tokenize(string input) => Tokenize(input, _createTokenizerState());
+  public IEnumerable<(TToken Token, TTokenizerState State)> Tokenize(string input) => Tokenize(input, _createTokenizerState());
   
   public IEnumerable<(TToken Token, TTokenizerState State)> Tokenize(string input, TTokenizerState state)
   {
@@ -99,7 +99,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
           if (definition.ProcessToken is not null)
             (state, token) = definition.ProcessToken((state, token));
 
-          yield return token;
+          yield return (token, state);
 
           foundMatch = true;
           input = input.Substring(match.Length);
