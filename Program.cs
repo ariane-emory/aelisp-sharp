@@ -8,8 +8,8 @@ class Program
   static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
-     .Where(token => token.TokenType != TokenType.Whitespace)
-     .Select((value, index) => (value, index)))
+             //.Where(token => token.TokenType != TokenType.Whitespace)
+             .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
 

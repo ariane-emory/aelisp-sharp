@@ -1,4 +1,4 @@
-one two
+one two #|three |# four
 three (123 457 *bingo*
        <boop> nil (789 nil))
  12 34 (1 . (2 3)) 'nil '123 
@@ -15,3 +15,4 @@ a::b/c :keyword @
 multiline comment |# ?a ?\n
 "hello\nworld" 
 1,234,567 1
+one two #|three   four|# five
