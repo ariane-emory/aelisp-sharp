@@ -20,11 +20,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
   protected delegate TTokenizerState CreateTokenizerStateFun();
 
   //====================================================================================================================
-  // Public properties
-  //====================================================================================================================
-  // public StringTokenizerResetMode ResetMode { get; set; }
-
-  //====================================================================================================================
   // Private fields
   //====================================================================================================================
   private readonly CreateTokenFun _createToken;
