@@ -74,10 +74,13 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input) => Tokenize(input, _createTokenizerState());
+  // public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input) => Tokenize(input, _createTokenizerState());
   
-  public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input, TTokenizerState state)
+  public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input, TTokenizerState? state = null)
   {
+    if (state is null)
+      state = _createTokenizerState();
+  
     var tokens = new List<TToken>();
     
     while (!string.IsNullOrEmpty(input))
@@ -86,7 +89,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
 
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
           continue;
 
         var match = definition.Pattern.Match(input);
@@ -99,7 +102,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
           if (definition.ProcessToken is not null)
-            (state, token) = definition.ProcessToken((state, token));
+            (state, token) = definition.ProcessToken((state.Value, token));
 
           tokens.Add(token);
           
@@ -114,6 +117,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
       //   break;
 
     }
-    return (tokens, state);
+    return (tokens, state.Value);
   }
 }
