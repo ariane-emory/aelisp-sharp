@@ -4,12 +4,6 @@ using static System.Console;
 
 class Program
 {
-  enum Mode
-  {
-    Line,
-    File,
-  };
-
   record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
 
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
@@ -47,45 +41,58 @@ class Program
     return new TokenizeResult(tokens, true);
   }
 
+  enum Mode
+  {
+    LineByLine,
+    EntireFileAtOnce,
+  };
+
   static void Main()
   {
     var filename = "data.lisp";
-    var mode = Mode.Line;
-    var tokenizeResult = TokenizeLines(File.ReadAllLines(filename));
+    var mode = Mode.LineByLine;
 
-    // Die(0, $"Tokenized all input, {totalTokens} tokens.");
-
-    // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
-    // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
-
-    // WriteLine(properList);
-    // WriteLine(Write(properList));
-
-    // foreach (var obj in properList)
-    //   WriteLine(obj);
-
-    // WriteLine(improperList);
-    // WriteLine(Write(improperList));
-
-    // foreach (var obj in improperList)
-    //   WriteLine(obj);
-
-    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-    // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-
-    // WriteLine("Done.");
-
-    // Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
-
-    // Intern(ref symbolsList, "two");
-    // WriteLine(symbolsList);
-    // Intern(ref symbolsList, "four");
-    // WriteLine(symbolsList);
-    // Intern(ref symbolsList, "two");
-    // WriteLine(symbolsList);
-    // Intern(ref symbolsList, "four");
-    // WriteLine(symbolsList);
+    var tokenizeResult = mode switch
+    {
+      Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
+      Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
+      _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+    };
   }
+
+  // Die(0, $"Tokenized all input, {totalTokens} tokens.");
+
+  // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
+  // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
+
+  // WriteLine(properList);
+  // WriteLine(Write(properList));
+
+  // foreach (var obj in properList)
+  //   WriteLine(obj);
+
+  // WriteLine(improperList);
+  // WriteLine(Write(improperList));
+
+  // foreach (var obj in improperList)
+  //   WriteLine(obj);
+
+  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
+
+  // WriteLine("Done.");
+
+  // Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
+
+  // Intern(ref symbolsList, "two");
+  // WriteLine(symbolsList);
+  // Intern(ref symbolsList, "four");
+  // WriteLine(symbolsList);
+  // Intern(ref symbolsList, "two");
+  // WriteLine(symbolsList);
+  // Intern(ref symbolsList, "four");
+  // WriteLine(symbolsList);
+  // }
 }
 
