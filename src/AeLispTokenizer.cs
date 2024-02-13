@@ -104,7 +104,7 @@ public static partial class Ae
         (Type: TokenType.Symbol,           Discrete: true,  Process: CountColumns,      IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
         (Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."),
         (Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."),
-        (Type: TokenType.LineComment,      Discrete: false, Process: TrimFirst,         IsActive: null,               Pattern: @";.+$"),
+        (Type: TokenType.LineComment,      Discrete: false, Process: TrimFirst,         IsActive: null,               Pattern: @";[^\n]*"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"\|#"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"\S+"),
