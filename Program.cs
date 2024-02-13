@@ -14,8 +14,8 @@ class Program
   }
 
   //====================================================================================================================
-  static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
-    tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
+  // static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
+  //   tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
   //====================================================================================================================
   static Tokenizer.Arg TokenizeLines(IEnumerable<string> lines)
@@ -27,8 +27,11 @@ class Program
       arg.Input = line;
       arg = TokenizeLine(arg);
 
-      if (arg.Tokens is not null && EndsWithGarbage(arg.Tokens))
+      if (!string.IsNullOrEmpty(arg.Input))
         return arg;
+      
+      // if (arg.Tokens is not null && EndsWithGarbage(arg.Tokens))
+      //   return arg;
     }
 
     return arg;

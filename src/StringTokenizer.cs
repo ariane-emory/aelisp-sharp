@@ -14,18 +14,16 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
   //====================================================================================================================
   // Delegates 
   //====================================================================================================================
-  protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
-  protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
   protected delegate TTokenizerState CreateTokenizerStateFun();
+  protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
+  protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
 
   //====================================================================================================================
   // Private fields
   //====================================================================================================================
   private readonly CreateTokenFun _createToken;
   private readonly CreateTokenizerStateFun _createTokenizerState;
-
-  // private TTokenizerState _state;
 
   private List<(TTokenType Type,
                 Regex Pattern,
@@ -40,12 +38,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
   //====================================================================================================================
   // Constructor
   //====================================================================================================================
-  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun) //, StringTokenizerResetMode resetMode)
+  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
-    // _state = _createTokenizerState();
-    // ResetMode = resetMode;
   }
 
   //====================================================================================================================
