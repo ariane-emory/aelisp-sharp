@@ -106,15 +106,12 @@ public static partial class Ae
       .Add((Type: TokenType.Symbol,            Discrete: true,  Process: null,              IsActive: null,               Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"))
       .Add((Type: TokenType.Symbol,            Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"))
       .Add((Type: TokenType.Symbol,            Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
-      .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."))
-      .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."))
+      .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\?."))
       .Add((Type: TokenType.LineComment,       Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
       .Add((Type: TokenType.MultilineCommentS, Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentB, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentE, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentC, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
-  //    .Add((Type: TokenType.MultilineCommentN,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
-  //    .Add((Type: TokenType.MultilineCommentS,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";

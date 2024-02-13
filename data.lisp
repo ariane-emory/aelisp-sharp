@@ -19,3 +19,4 @@ multiline comment |# ?a ?\n
 one two#|three
 four
 five|#six
+?a ?\\ ?\n a#|b|#c
