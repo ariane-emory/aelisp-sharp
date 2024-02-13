@@ -106,7 +106,7 @@ public static partial class Ae
       .Add((Type: TokenType.LispStyleChar,     Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."))
       .Add((Type: TokenType.LineComment,       Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
       .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"))
-      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"\|#"))
+      .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @".*\|#"))
       .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"\S+"))
       .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
       .Add((Type: TokenType.MultilineComment,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
