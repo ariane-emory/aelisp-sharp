@@ -37,7 +37,7 @@ class Program
 
   static TokenizeResult TokenizeLine(string line)
   {
-    var tokens = Tokenizer.Get().Tokenize(line, false).ToList();
+    var tokens = Tokenizer.Get().Tokenize(line).ToList();
 
     PrintTokens(tokens);
 
@@ -59,6 +59,8 @@ class Program
 
     foreach (var mode in new[] { Mode.LineByLine, Mode.EntireFileAtOnce })
     {
+      Tokenizer.Get().Reset();
+      
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),

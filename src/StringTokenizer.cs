@@ -12,6 +12,11 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 {
   //====================================================================================================================
+  // Types
+  //====================================================================================================================
+  public enum StringTokenizerResetMode { Auto, Manual };
+  
+  //====================================================================================================================
   // Delegates 
   //====================================================================================================================
   protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
@@ -19,6 +24,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
   protected delegate TTokenizerState CreateTokenizerStateFun();
 
+  //====================================================================================================================
+  // Public properties
+  //====================================================================================================================
+  public StringTokenizerResetMode ResetMode { get; set; }
+  
   //====================================================================================================================
   // Private fields
   //====================================================================================================================
@@ -68,9 +78,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _state = _createTokenizerState();
   }
 
-  public IEnumerable<TToken> Tokenize(string input, bool reset)
+  public IEnumerable<TToken> Tokenize(string input)
   {
-    if (reset)
+    if (ResetMode == StringTokenizerResetMode.Auto)
       Reset();
 
     while (!string.IsNullOrEmpty(input))
@@ -104,7 +114,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
       }
 
       if (!foundMatch)
-  break;
+        break;
     }
   }
 }
