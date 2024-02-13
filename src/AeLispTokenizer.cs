@@ -191,13 +191,11 @@ public static partial class Ae
 
       if (match.Success)
       {
-        string sign = match.Groups[1].Value;
-        string number = match.Groups[2].Value;
+        var (sign, number) = (match.Groups[1].Value, match.Groups[2].Value);
 
-        if (string.IsNullOrEmpty(number) || number == "0")
-          tup.Token.Text = "0";
-        else
-          tup.Token.Text = sign + number;
+        tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
+          ? "0"
+          : sign + number;
       }
 
       return tup;
