@@ -12,7 +12,6 @@ public static partial class Ae
     Dollar,
     Dot,
     Float,
-    // Garbage,
     Integer,
     LParen,
     LineComment,
@@ -111,7 +110,6 @@ public static partial class Ae
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"\S+"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"),
         (Type: TokenType.MultilineComment, Discrete: false, Process: CountColumns,      IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"),
-        // (Type: TokenType.Garbage,          Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @".+"),
       };
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
