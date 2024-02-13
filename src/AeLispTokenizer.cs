@@ -186,7 +186,7 @@ public static partial class Ae
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
-      var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+))$";
+      var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+)?)$";
       var match = Regex.Match(tup.Token.Text, pattern);
       var sign = match.Groups[1].Value;
       var number = match.Groups[2].Value;
