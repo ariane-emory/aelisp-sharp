@@ -16,6 +16,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
   //====================================================================================================================
   // public enum StringTokenizerResetMode { Auto, Manual };
 
+  public record struct TokenizeArgs(string Input, TTokenizerState? State = null, List<TToken>? Tokens = null);
+
   //====================================================================================================================
   // Delegates 
   //====================================================================================================================
@@ -74,8 +76,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  // public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input) => Tokenize(input, _createTokenizerState());
-  
   public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input, TTokenizerState? state = null)
   {
     if (state is null)
