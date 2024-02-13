@@ -205,7 +205,10 @@ public static partial class Ae
     var replacement = "$1";
 
     tup.Token.Text = Regex.Replace(tup.Token.Text, pattern, replacement);
-    
+     
+    if (tup.Token.Text.StartsWith("."))
+      tup.Token.Text = "0" + tup.Token.Text;
+
     if (tup.Token.Text.EndsWith("."))
       tup.Token.Text += "0";
     // else
