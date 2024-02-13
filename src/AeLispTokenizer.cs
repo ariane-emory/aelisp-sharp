@@ -84,7 +84,7 @@ public static partial class Ae
         (Type: TokenType.Dot,              Discrete: true,  Process: CountColumns,      IsActive: null,               Pattern: @"\."),
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"),
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
-        (Type: TokenType.Float,            Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: Float),
+        (Type: TokenType.Float,            Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float),
         (Type: TokenType.Rational,         Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational),
         (Type: TokenType.Integer,          Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,           Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""(\\\""|[^\""])*\"""),
@@ -197,6 +197,18 @@ public static partial class Ae
       return tup;
     }
 
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup = ProcNumber(tup);
+
+      var pattern = @"^(.*?)(?:0*)$";      
+      var match = Regex.Match(tup.Token.Text, pattern);
+
+      tup.Token.Text = match.Groups[1].Value;
+
+      return tup;
+    }
+
     private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
@@ -210,10 +222,6 @@ public static partial class Ae
       numer = (string.IsNullOrEmpty(numer) || numer == "0")
         ? "0"
         : sign + numer;
-
-      // denom = (string.IsNullOrEmpty(denom) || denom == "0")
-      //   ? "0"
-      //   : denom;
 
       tup.Token.Text = numer + "/" + denom;
       
