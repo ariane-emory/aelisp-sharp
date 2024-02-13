@@ -74,10 +74,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public IEnumerable<(TToken Token, TTokenizerState State)> Tokenize(string input) => Tokenize(input, _createTokenizerState());
+  public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input) => Tokenize(input, _createTokenizerState());
   
-  public IEnumerable<(TToken Token, TTokenizerState State)> Tokenize(string input, TTokenizerState state)
+  public (List<TToken> Tokens, TTokenizerState State) Tokenize(string input, TTokenizerState state)
   {
+    var tokens = new List<TToken>();
+    
     while (!string.IsNullOrEmpty(input))
     {
       bool foundMatch = false;
@@ -99,8 +101,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
           if (definition.ProcessToken is not null)
             (state, token) = definition.ProcessToken((state, token));
 
-          yield return (token, state);
-
+          tokens.Add(token);
+          
           foundMatch = true;
           input = input.Substring(match.Length);
 
@@ -108,8 +110,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
         }
       }
 
-      if (!foundMatch)
-        break;
+      // if (!foundMatch)
+      //   break;
+
     }
+    return (tokens, state);
   }
 }
