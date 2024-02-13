@@ -20,14 +20,9 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens)
-  {
-    var lastToken = tokens[Math.Max(0, tokens.Count() - 1)];
+  static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
+   tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-    if (lastToken.TokenType == TokenType.Garbage)
-      return true;
-  }
-  
   static TokenizeResult TokenizeFileByLines(string filename)
   {
     var tokenizeResult = new TokenizeResult();
