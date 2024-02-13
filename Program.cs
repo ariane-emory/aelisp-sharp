@@ -56,7 +56,7 @@ class Program
 
       var tokenizeResult = mode switch
       {
-        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename)),
+        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
         Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
