@@ -211,9 +211,7 @@ public static partial class Ae
 
     if (tup.Token.Text.EndsWith("."))
       tup.Token.Text += "0";
-    // else
-    //   tup.Token.Text = Regex.Replace(tup.Token.Text, @"(\.\d+?)0+$", "$1");
-    
+
     return tup;
   }
 
