@@ -25,7 +25,7 @@ class Program
 
     foreach (var line in lines)
     {
-      var result = TokenizeLine(line);
+      var result = TokenizeLine(line, false);
 
       tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
 
@@ -35,9 +35,9 @@ class Program
     return new TokenizeResult(tokens, true);
   }
 
-  static TokenizeResult TokenizeLine(string line)
+  static TokenizeResult TokenizeLine(string line, bool reset)
   {
-    var tokens = Tokenizer.Get().Tokenize(line, false).ToList();
+    var tokens = Tokenizer.Get().Tokenize(line, reset).ToList();
 
     PrintTokens(tokens);
 
@@ -64,7 +64,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename)),
+        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), reset: false),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
