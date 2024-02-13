@@ -24,42 +24,34 @@ class Program
   {
     var tokenizeResult = new TokenizeResult();
     tokenizeResult.Tokens = new List<PositionedToken<TokenType>>();
-    
-    var lineNumber = 0;
 
-    var totalTokens = 0;
+    var lineNumber = 0;
 
     foreach (var line in File.ReadLines(filename))
     {
       var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
         .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
 
-      totalTokens += newTokens.Count;
-
       if (newTokens.Any())
       {
         var lastNewToken = newTokens.ToList()[Math.Max(0, newTokens.Count() - 1)];
 
         if (lastNewToken.TokenType == TokenType.Garbage)
-          Die(1, $"Failed to tokenize the entire input, remaining text: \"{lastNewToken.Text}\"");
+        {
+          tokenizeResult.TokenizedAllInput = false;
+
+          return tokenizeResult;
+        }
       }
 
       PrintTokens(newTokens);
 
       tokenizeResult.Tokens.AddRange(newTokens);
 
-      // Die if we tokenized nothing:
-      if (!tokenizeResult.Tokens.Any())
-        Die(1, "No tokens!");
-
-      // Die if we didn't tokenize everything:
-      var lastToken = tokenizeResult.Tokens.ToList()[Math.Max(0, tokenizeResult.Tokens.Count() - 1)];
-
-      if (lastToken.TokenType == TokenType.Garbage)
-        Die(1, $"Failed to tokenize the entire input -  remaining text: \"{lastToken.Text}\"");
-
       lineNumber++;
     }
+
+    tokenizeResult.TokenizedAllInput = true;
 
     return tokenizeResult;
   }
