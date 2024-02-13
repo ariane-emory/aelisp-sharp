@@ -41,8 +41,8 @@ public static partial class Ae
     // Private constructor
     //==================================================================================================================
     private Tokenizer() : base(createToken: (tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
-                               createTokenizerStateFun: () => new AeLispTokenizerState(),
-                               resetMode: StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>.StringTokenizerResetMode.Auto)
+                               createTokenizerStateFun: () => new AeLispTokenizerState()) // ,
+                               // resetMode: StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>.StringTokenizerResetMode.Auto)
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,

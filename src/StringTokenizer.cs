@@ -14,8 +14,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Types
   //====================================================================================================================
-  public enum StringTokenizerResetMode { Auto, Manual };
-  
+  // public enum StringTokenizerResetMode { Auto, Manual };
+
   //====================================================================================================================
   // Delegates 
   //====================================================================================================================
@@ -27,8 +27,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Public properties
   //====================================================================================================================
-  public StringTokenizerResetMode ResetMode { get; set; }
-  
+  // public StringTokenizerResetMode ResetMode { get; set; }
+
   //====================================================================================================================
   // Private fields
   //====================================================================================================================
@@ -50,12 +50,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Constructor
   //====================================================================================================================
-  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun, StringTokenizerResetMode resetMode)
+  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun) //, StringTokenizerResetMode resetMode)
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
     _state = _createTokenizerState();
-    ResetMode = resetMode;
+    // ResetMode = resetMode;
   }
 
   //====================================================================================================================
@@ -79,9 +79,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _state = _createTokenizerState();
   }
 
-  public IEnumerable<TToken> Tokenize(string input)
+  public IEnumerable<TToken> Tokenize(string input, bool reset)
   {
-    if (ResetMode == StringTokenizerResetMode.Auto)
+    if (reset) // ResetMode == StringTokenizerResetMode.Auto)
       Reset();
 
     while (!string.IsNullOrEmpty(input))
