@@ -33,7 +33,7 @@ public static partial class Ae
 
   public record struct PositionedToken<TTokenType>(TTokenType TokenType, string Text, int Line, int Column)
   {
-    public override string ToString() => $"{TokenType} [{Text}] @ {Line}:{Column}";
+    public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
   }
 
   public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
