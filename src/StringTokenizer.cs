@@ -8,16 +8,16 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 
 //======================================================================================================================
 // StringTokenizer class
-//======================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where TTokenizerState : struct
+//=====================================================================================================================
+public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where TTokenizeState : struct
 {
   //====================================================================================================================
   // Delegates 
   //====================================================================================================================
   protected delegate TToken CreateTokenFun(TTokenType type, string text);
-  protected delegate TTokenizerState CreateTokenizerStateFun();
-  protected delegate (TTokenizerState, TToken) ProcesTokenFun((TTokenizerState State, TToken Token) tup);
-  protected delegate bool TokenDefinitionIsActiveFun(TTokenizerState state);
+  protected delegate TTokenizeState CreateTokenizerStateFun();
+  protected delegate (TTokenizeState, TToken) ProcesTokenFun((TTokenizeState State, TToken Token) tup);
+  protected delegate bool TokenDefinitionIsActiveFun(TTokenizeState state);
 
   //====================================================================================================================
   // Private fields
@@ -60,9 +60,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizerState? State);
+  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State);
 
-  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizerState? State) => Tokenize(new TokenizeData(Input, Tokens, State));
+  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizeState? State) => Tokenize(new TokenizeData(Input, Tokens, State));
 
   public TokenizeData Tokenize(TokenizeData tokenizeData)
   {
