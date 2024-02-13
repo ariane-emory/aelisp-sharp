@@ -21,14 +21,12 @@ class Program
   {
     var tokenizeArg = new Tokenizer.TokenizeArg(null, null, null);
 
-    AeLispTokenizerState? state = null;
-    
     foreach (var line in lines)
     {
-      var result = TokenizeLine(line, state);
-
-      state = result.State;
+      tokenizeArg.Input = line;
       
+      tokenizeArg = TokenizeLine(tokenizeArg);
+
       // tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
 
       // lineNumber++;
@@ -37,7 +35,7 @@ class Program
     return tokenizeArg;
   }
 
-  static Tokenizer.TokenizeArg TokenizeLine(Tokenzizer.TokenArg arg) // string line, AeLispTokenizerState? state)
+  static Tokenizer.TokenizeArg TokenizeLine(Tokenizer.TokenizeArg arg) // string line, AeLispTokenizerState? state)
   {
     var result = Tokenizer.Get().Tokenize(arg); // new Tokenizer.TokenizeArg(line, state, null));
 
@@ -67,14 +65,14 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
+        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeArg(File.ReadAllText(filename), null, null)),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
       if (tokenizeResult.Tokens is not null)
         WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
-      WriteLine($"\n\n");
+      WriteLine($"\n\n===\n\n");
     }
   }
 
