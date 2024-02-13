@@ -186,17 +186,14 @@ public static partial class Ae
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
-      var pattern = @"^([+-]?)(?:0*)(\d*)$";
+      var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+))$";
       var match = Regex.Match(tup.Token.Text, pattern);
-
-      // if (match.Success)
-      // {
-        var (sign, number) = (match.Groups[1].Value, match.Groups[2].Value);
-
-        tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
-          ? "0"
-          : sign + number;
-      // }
+      var sign = match.Groups[1].Value;
+      var number = match.Groups[2].Value;
+      
+      tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
+        ? "0"
+        : sign + number;
 
       return tup;
     }
