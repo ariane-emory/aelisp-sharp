@@ -104,7 +104,7 @@ public static partial class Ae
       .Add((Type: TokenType.Symbol,           Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
       .Add((Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\."))
       .Add((Type: TokenType.LispStyleChar,    Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?."))
-      .Add((Type: TokenType.LineComment,      Discrete: false, Process: TrimFirst,         IsActive: null,               Pattern: @";[^\n]*"))
+      .Add((Type: TokenType.LineComment,      Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
       .Add((Type: TokenType.MultilineComment, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|"))
       .Add((Type: TokenType.MultilineComment, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"\|#"))
       .Add((Type: TokenType.MultilineComment, Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"\S+"))
@@ -150,7 +150,7 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    ProcUnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
 
@@ -164,7 +164,7 @@ public static partial class Ae
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => UnescapeChars((tup.State,
+      => ProcUnescapeChars((tup.State,
                         new PositionedToken<TokenType>(tup.Token.TokenType,
                                                        tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                                        tup.Token.Line,
@@ -172,16 +172,16 @@ public static partial class Ae
   
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => UnescapeChars(TrimFirst(tup));
+      => ProcUnescapeChars(ProcTrimFirst(tup));
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    ProcTrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = StripCommas(tup);
+      tup = ProcStripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+)?)$";
       var match = Regex.Match(tup.Token.Text, pattern);
@@ -218,7 +218,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
     ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = StripCommas(tup);
+      tup = ProcStripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d+)\/(?:0*)(\d+)$";
       var match = Regex.Match(tup.Token.Text, pattern);
@@ -236,7 +236,7 @@ public static partial class Ae
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    ProcStripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
