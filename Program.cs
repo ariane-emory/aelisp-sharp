@@ -23,13 +23,13 @@ class Program
   static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
     (!tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-  static TokenizeResult TokenizeFileByLines(string filename)
+  static TokenizeResult TokenizeLines(IEnumerable<string> lines)
   {
     var tokens = new List<PositionedToken<TokenType>>();
 
     var lineNumber = 0;
 
-    foreach (var line in File.ReadLines(filename))
+    foreach (var line in lines)
     {
       var newTokens = Tokenizer.Get().Tokenize($"{line}", false)
         .Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList();
@@ -51,7 +51,7 @@ class Program
   {
     var filename = "data.lisp";
     var mode = Mode.Line;
-    var tokenizeResult = TokenizeFileByLines(filename);
+    var tokenizeResult = TokenizeLines(File.ReadAllLines(filename));
 
     // Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
