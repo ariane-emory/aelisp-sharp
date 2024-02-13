@@ -86,7 +86,7 @@ public static partial class Ae
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
         (Type: TokenType.Float,            Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Float),
         (Type: TokenType.Rational,         Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Rational),
-        (Type: TokenType.Integer,          Discrete: true,  Process: ProcIntegers,      IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
+        (Type: TokenType.Integer,          Discrete: true,  Process: ProcInteger,       IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,           Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""(\\\""|[^\""])*\"""),
         (Type: TokenType.Quote,            Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"'"),
         (Type: TokenType.Backtick,         Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"`"),
@@ -182,21 +182,21 @@ public static partial class Ae
     }
 
     // does not handle floats or rationals yet:
-    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcIntegers((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcInteger((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
       var pattern = @"^([+-]?)(?:0*)(\d*)$";
       var match = Regex.Match(tup.Token.Text, pattern);
 
-      if (match.Success)
-      {
+      // if (match.Success)
+      // {
         var (sign, number) = (match.Groups[1].Value, match.Groups[2].Value);
 
         tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
           ? "0"
           : sign + number;
-      }
+      // }
 
       return tup;
     }
