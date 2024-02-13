@@ -74,10 +74,13 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct TokenizeArg(string? Input, TTokenizerState? State, List<TToken>? Tokens);
+  public record struct Arg(string? Input, TTokenizerState? State, List<TToken>? Tokens);
   
-  public TokenizeArg Tokenize(TokenizeArg arg)
+  public Arg Tokenize(Arg arg)
   {
+    if (arg.Input is null)
+      return arg;
+    
     if (arg.State is null)
       arg.State = _createTokenizerState();
 

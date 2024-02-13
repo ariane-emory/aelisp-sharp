@@ -15,33 +15,33 @@ class Program
   static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
     tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-  static Tokenizer.TokenizeArg TokenizeLines(IEnumerable<string> lines)
+  static Tokenizer.Arg TokenizeLines(IEnumerable<string> lines)
   {
-    var tokenizeArg = new Tokenizer.TokenizeArg(null, null, null);
+    var arg = new Tokenizer.Arg(null, null, null);
 
     foreach (var line in lines)
     {
-      tokenizeArg.Input = line;
+      arg.Input = line;
       
-      tokenizeArg = TokenizeLine(tokenizeArg);
+      arg = TokenizeLine(arg);
     }
 
-    return tokenizeArg;
+    return arg;
   }
 
-  static Tokenizer.TokenizeArg TokenizeLine(Tokenizer.TokenizeArg arg)
+  static Tokenizer.Arg TokenizeLine(Tokenizer.Arg arg)
   {
-    var result = Tokenizer.Get().Tokenize(arg);
+    arg = Tokenizer.Get().Tokenize(arg);
 
-    if (result.Tokens is not null)
+    if (arg.Tokens is not null)
     {
-      PrintTokens(result.Tokens);
+      PrintTokens(arg.Tokens);
     
-      if (EndsWithGarbage(result.Tokens))
-        return result;
+      if (EndsWithGarbage(arg.Tokens))
+        return arg;
     }
     
-    return result;
+    return arg;
   }
 
   enum Mode
@@ -59,7 +59,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeArg(File.ReadAllText(filename), null, null)),
+        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.Arg(File.ReadAllText(filename), null, null)),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
