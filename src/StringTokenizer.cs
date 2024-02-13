@@ -50,11 +50,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   //====================================================================================================================
   // Constructor
   //====================================================================================================================
-  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
+  protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun, StringTokenizerResetMode resetMode)
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
     _state = _createTokenizerState();
+    ResetMode = resetMode;
   }
 
   //====================================================================================================================
