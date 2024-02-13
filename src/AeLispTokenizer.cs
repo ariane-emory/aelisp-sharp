@@ -134,19 +134,18 @@ public static partial class Ae
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
 
-    private static readonly List<(string, string)> EscapedChars = new List<(string, string)>
-    {
-      (@"\a",   "\a"),
-      (@"\b",   "\b"),
-      (@"\f",   "\f"),
-      (@"\n",   "\n"),
-      (@"\r",   "\r"),
-      (@"\t",   "\t"),
-      (@"\v",   "\v"),
-      (@"\\",   "\\"),
-      (@"\'",   "\'"),
-      (@"\""",  "\""),
-    };
+    private static readonly ImmutableList<(string, string)> EscapedChars = ImmutableList.Create(
+      (@"\a", "\a"),
+      (@"\b", "\b"),
+      (@"\f", "\f"),
+      (@"\n", "\n"),
+      (@"\r", "\r"),
+      (@"\t", "\t"),
+      (@"\v", "\v"),
+      (@"\\", "\\"),
+      (@"\'", "\'"),
+      (@"\""", "\"")
+      );
 
     private static Tokenizer _instance = new Tokenizer();
 
