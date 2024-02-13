@@ -15,8 +15,6 @@ class Program
   static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
     tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
-  // record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput, AeLispTokenizerState? State);
-
   static Tokenizer.TokenizeArg TokenizeLines(IEnumerable<string> lines)
   {
     var tokenizeArg = new Tokenizer.TokenizeArg(null, null, null);
@@ -26,18 +24,14 @@ class Program
       tokenizeArg.Input = line;
       
       tokenizeArg = TokenizeLine(tokenizeArg);
-
-      // tokens.AddRange(result.Tokens.Select(t => new PositionedToken<TokenType>(t.TokenType, t.Text, lineNumber, t.Column)).ToList());
-
-      // lineNumber++;
     }
 
     return tokenizeArg;
   }
 
-  static Tokenizer.TokenizeArg TokenizeLine(Tokenizer.TokenizeArg arg) // string line, AeLispTokenizerState? state)
+  static Tokenizer.TokenizeArg TokenizeLine(Tokenizer.TokenizeArg arg)
   {
-    var result = Tokenizer.Get().Tokenize(arg); // new Tokenizer.TokenizeArg(line, state, null));
+    var result = Tokenizer.Get().Tokenize(arg);
 
     if (result.Tokens is not null)
     {
