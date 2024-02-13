@@ -37,9 +37,9 @@ class Program
     return tokenizeArg;
   }
 
-  static Tokenizer.TokenizeArg TokenizeLine(string line, AeLispTokenizerState? state)
+  static Tokenizer.TokenizeArg TokenizeLine(Tokenzizer.TokenArg arg) // string line, AeLispTokenizerState? state)
   {
-    var result = Tokenizer.Get().Tokenize(new Tokenizer.TokenizeArg(line, state, null));
+    var result = Tokenizer.Get().Tokenize(arg); // new Tokenizer.TokenizeArg(line, state, null));
 
     if (result.Tokens is not null)
     {
