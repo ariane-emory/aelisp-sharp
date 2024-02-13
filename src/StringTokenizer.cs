@@ -62,10 +62,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
 
   public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State) { };
 
-  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
+  public IEnumerable<TokenizeData> Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
     Tokenize(new TokenizeData(Input, Tokens, State));
 
-  public TokenizeData Tokenize(TokenizeData tokenizeData)
+  public IEnumerable<TokenizeData> Tokenize(TokenizeData tokenizeData)
   {
     if (tokenizeData.State is null)
       tokenizeData.State = _createTokenizerState();
@@ -73,8 +73,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
     if (tokenizeData.Tokens is null)
       tokenizeData.Tokens = new List<TToken>();
 
-    if (tokenizeData.Input is null)
-      return tokenizeData;
+    if (string.IsNullOrEmpty(tokenizeData.Input))
+    {
+      yield return tokenizeData;
+      yield break;
+    }
 
     while (!string.IsNullOrEmpty(tokenizeData.Input))
     {
@@ -102,14 +105,16 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
           tokenizeData.Tokens.Add(token);
           tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
 
+          yield return tokenizeData;
+
           break;
         }
       }
 
       if (!foundMatch)
-        break;
+        yield break;
     }
 
-    return tokenizeData;
+    yield return tokenizeData;
   }
 }

@@ -14,14 +14,14 @@ class Program
     TokenType.MultilineCommentE,
     TokenType.MultilineCommentN,
     TokenType.MultilineCommentS,
-    TokenType.Newline,                
+    TokenType.Newline,
   };
 
-//====================================================================================================================
-static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
+  //====================================================================================================================
+  static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
-             .Where(token => ! Excluded.Contains(token.TokenType))
+             .Where(token => !Excluded.Contains(token.TokenType))
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
@@ -46,7 +46,8 @@ static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   //====================================================================================================================
   static Tokenizer.TokenizeData TokenizeLine(Tokenizer.TokenizeData tokenizeData)
   {
-    tokenizeData = Tokenizer.Get().Tokenize(tokenizeData);
+    foreach (var td in Tokenizer.Get().Tokenize(tokenizeData))
+      tokenizeData = td;
 
     if (tokenizeData.Tokens is not null)
       PrintTokens(tokenizeData.Tokens);
@@ -63,9 +64,9 @@ static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
     var filename = "data.lisp";
 
     foreach (var mode in new[] {
-      Mode.LineByLine,
-      Mode.EntireFileAtOnce
-    })
+        Mode.LineByLine,
+        Mode.EntireFileAtOnce
+      })
     {
       var tokenizeResult = mode switch
       {
