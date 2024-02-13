@@ -60,7 +60,11 @@ class Program
         Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
+
+      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
     }
+
+    WriteLine("");
 
     {
       var mode = Mode.EntireFileAtOnce;
@@ -71,6 +75,8 @@ class Program
         Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
+
+      WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
     }
   }
 
