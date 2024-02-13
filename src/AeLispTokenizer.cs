@@ -1,4 +1,5 @@
 using static System.Console;
+using System.Text.RegularExpressions;
 
 public static partial class Ae
 {
@@ -41,7 +42,7 @@ public static partial class Ae
     //==================================================================================================================
     private Tokenizer() : base(createToken: (tokenType, text) => new PositionedToken<TokenType>(tokenType, text, 0, 0),
                                createTokenizerStateFun: () => new AeLispTokenizerState()) // ,
-                               // resetMode: StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>.StringTokenizerResetMode.Auto)
+                                                                                          // resetMode: StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>.StringTokenizerResetMode.Auto)
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
@@ -85,7 +86,7 @@ public static partial class Ae
         (Type: TokenType.CStyleChar,       Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
         (Type: TokenType.Float,            Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Float),
         (Type: TokenType.Rational,         Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: Rational),
-        (Type: TokenType.Integer,          Discrete: true,  Process: StripCommas,       IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
+        (Type: TokenType.Integer,          Discrete: true,  Process: ProcIntegers,      IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
         (Type: TokenType.String,           Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""(\\\""|[^\""])*\"""),
         (Type: TokenType.Quote,            Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"'"),
         (Type: TokenType.Backtick,         Discrete: false, Process: CountColumns,      IsActive: null,               Pattern: @"`"),
@@ -178,6 +179,30 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>) TrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
+    }
+
+    // does not handle floats or rationals yet:
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcIntegers((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    {
+      tup.Token.Text = tup.Token.Text.Replace(",", "");
+
+      var pattern = @"^([+-]?)(?:0*)(\d*)$";
+      var match = Regex.Match(tup.Token.Text, pattern);
+
+      if (match.Success)
+      {
+        string sign = match.Groups[1].Value;
+        string number = match.Groups[2].Value;
+
+        if (string.IsNullOrEmpty(number) || number == "0")
+          return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, "0", tup.Token.Line, tup.Token.Column));
+        else
+          return (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, sign + number, tup.Token.Line, tup.Token.Column));
+      }
+      else
+      {
+        return tup;
+      }
     }
 
     private static (AeLispTokenizerState, PositionedToken<TokenType>) StripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)

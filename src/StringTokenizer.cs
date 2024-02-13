@@ -60,7 +60,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State);
+  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State) { };
 
   public TokenizeData Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
     Tokenize(new TokenizeData(Input, Tokens, State));
