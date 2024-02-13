@@ -11,6 +11,7 @@ class Program
     TokenType.LineComment,
     TokenType.MultilineCommentB,
     TokenType.MultilineCommentC,
+    TokenType.MultilineCommentE,
     TokenType.MultilineCommentN,
     TokenType.MultilineCommentS,
     TokenType.Newline,                

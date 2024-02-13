@@ -111,7 +111,7 @@ public static partial class Ae
       .Add((Type: TokenType.LineComment,       Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
       .Add((Type: TokenType.MultilineCommentS, Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentB, Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|[^\n]*\n"))
-      .Add((Type: TokenType.MultilineCommentE, Discrete: true,  Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
+      .Add((Type: TokenType.MultilineCommentE, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentC, Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
   //    .Add((Type: TokenType.MultilineCommentN,  Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"\r?\n"))
   //    .Add((Type: TokenType.MultilineCommentS,  Discrete: false, Process: null,              IsActive: InMultilineComment, Pattern: @"[ \t\f\v]+"));
