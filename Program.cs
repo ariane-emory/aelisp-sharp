@@ -10,6 +10,8 @@ class Program
     File,
   };
 
+  record TokenizeResult(List<PositionedToken<TokenType>> Token, bool TokenizedAllInput);
+
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
@@ -18,7 +20,7 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static int TokenizeFile(string filename)
+  static int TokenizeFileByLines(string filename)
   {
     var lineNumber = 0;
     var tokens = new List<PositionedToken<TokenType>>();
@@ -67,8 +69,8 @@ class Program
     var mode = Mode.Line;
     int? totalTokens = null;
 
-        if (mode == Mode.Line)
-      totalTokens = TokenizeFile(filename);
+    if (mode == Mode.Line)
+      totalTokens = TokenizeFileByLines(filename);
 
     Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
