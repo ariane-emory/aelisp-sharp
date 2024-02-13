@@ -113,10 +113,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
         }
       }
 
-      // if (!foundMatch)
-      //   break;
+      if (!foundMatch)
+        break;
 
     }
+    
     return (tokens, state.Value);
   }
 }
