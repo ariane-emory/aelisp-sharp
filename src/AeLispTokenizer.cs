@@ -33,12 +33,12 @@ public static partial class Ae
     Whitespace,
   };
 
-  public record struct AeLispTokenizerState(int Line = 0, int Column = 0, bool InMultilineComment = false);
-
   public record struct PositionedToken<TTokenType>(TTokenType TokenType, string Text, int Line, int Column)
   {
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
   }
+
+  public record struct AeLispTokenizerState(int Line = 0, int Column = 0, bool InMultilineComment = false);
 
   public class Tokenizer : StringTokenizer<TokenType, PositionedToken<TokenType>, AeLispTokenizerState>
   {

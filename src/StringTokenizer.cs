@@ -9,7 +9,10 @@ public record struct Token<TTokenType>(TTokenType TokenType, string Text);
 //======================================================================================================================
 // StringTokenizer class
 //=====================================================================================================================
-public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where TTokenizeState : struct
+public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
+  where TTokenType : struct
+  where TToken : struct
+  where TTokenizeState : struct
 {
   //====================================================================================================================
   // Delegates 
@@ -60,22 +63,22 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State) { };
+  public record struct TokenizeData(string? Input, TTokenizeState? State) { };
 
-  public IEnumerable<TokenizeData> Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
-    Tokenize(new TokenizeData(Input, Tokens, State));
+  public IEnumerable<(TToken?, TokenizeData)> Tokenize(string? Input, TTokenizeState? State = null) =>
+    Tokenize(new TokenizeData(Input, State));
 
-  public IEnumerable<TokenizeData> Tokenize(TokenizeData tokenizeData)
+  public IEnumerable<(TToken?, TokenizeData)> Tokenize(TokenizeData tokenizeData)
   {
     if (tokenizeData.State is null)
       tokenizeData.State = _createTokenizerState();
 
-    if (tokenizeData.Tokens is null)
-      tokenizeData.Tokens = new List<TToken>();
+    // if (tokenizeData.Tokens is null)
+    //   tokenizeData.Tokens = new List<TToken>();
 
     if (string.IsNullOrEmpty(tokenizeData.Input))
     {
-      yield return tokenizeData;
+      yield return (null, tokenizeData);
       yield break;
     }
 
@@ -102,11 +105,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
           if (definition.ProcessToken is not null)
             (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
 
-          tokenizeData.Tokens.Add(token);
           tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
 
-          yield return tokenizeData;
-
+          yield return (token, tokenizeData);
+          
           break;
         }
       }
@@ -115,6 +117,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
         yield break;
     }
 
-    yield return tokenizeData;
+    yield return (null, tokenizeData);
   }
 }

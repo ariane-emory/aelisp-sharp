@@ -29,7 +29,7 @@ class Program
   //====================================================================================================================
   static Tokenizer.TokenizeData TokenizeLines(IEnumerable<string> lines)
   {
-    var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
+    var tokenizeData = new Tokenizer.TokenizeData(null, null);
 
     foreach (var line in lines)
     {
@@ -46,12 +46,14 @@ class Program
   //====================================================================================================================
   static Tokenizer.TokenizeData TokenizeLine(Tokenizer.TokenizeData tokenizeData)
   {
-    foreach (var td in Tokenizer.Get().Tokenize(tokenizeData))
+    foreach (var (token, td) in Tokenizer.Get().Tokenize(tokenizeData))
+    {
       tokenizeData = td;
 
-    if (tokenizeData.Tokens is not null)
-      PrintTokens(tokenizeData.Tokens);
-
+      if (token is not null)
+        PrintTokens(new[] { token.Value }.AsEnumerable());
+    }
+    
     return tokenizeData;
   }
 
@@ -71,12 +73,12 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null, null)),
+        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null)),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
-      if (tokenizeResult.Tokens is not null)
-        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      // if (tokenizeResult.Tokens is not null)
+      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
       WriteLine($"\n\n---\n\n");
     }
