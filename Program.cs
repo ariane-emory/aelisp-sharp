@@ -12,8 +12,8 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static bool CheckForGarbage(List<PositionedToken<TokenType>> tokens) =>
-    (!tokens.Any()) || tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
+  static bool EndsWithGarbage(List<PositionedToken<TokenType>> tokens) =>
+    tokens.Any() && tokens[Math.Max(0, tokens.Count() - 1)].TokenType == TokenType.Garbage;
 
   record TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool TokenizedAllInput);
 
@@ -41,7 +41,7 @@ class Program
 
     PrintTokens(tokens);
 
-    if (CheckForGarbage(tokens))
+    if (EndsWithGarbage(tokens))
       return new TokenizeResult(tokens, false);
 
     return new TokenizeResult(tokens, true);
