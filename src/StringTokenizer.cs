@@ -92,14 +92,14 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
           if (match.Length == 0)
             throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
 
+          foundMatch = true;
+
           var token = _createToken(definition.Type, match.Value);
 
           if (definition.ProcessToken is not null)
             (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
 
           tokenizeData.Tokens.Add(token);
-
-          foundMatch = true;
           tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
 
           break;
