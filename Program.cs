@@ -20,8 +20,10 @@ class Program
       WriteLine($"#{index}: {token}");
   }
 
-  static int TokenizeFileByLines(string filename)
+  static TokenizeResult TokenizeFileByLines(string filename)
   {
+    var tokenizeResult = new TokenizeResult();
+    
     var lineNumber = 0;
     var tokens = new List<PositionedToken<TokenType>>();
     var improperList = new List<object>();
@@ -60,19 +62,17 @@ class Program
       lineNumber++;
     }
 
-    return totalTokens;
+    return tokenizeResult;
   }
 
   static void Main()
   {
     var filename = "data.lisp";
     var mode = Mode.Line;
-    int? totalTokens = null;
 
-    if (mode == Mode.Line)
-      totalTokens = TokenizeFileByLines(filename);
+    var tokenizeResult = TokenizeFileByLines(filename);
 
-    Die(0, $"Tokenized all input, {totalTokens} tokens.");
+    // Die(0, $"Tokenized all input, {totalTokens} tokens.");
 
     // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
     // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
