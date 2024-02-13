@@ -10,7 +10,7 @@ class Program
     File,
   };
 
-  record struct TokenizeResult(List<PositionedToken<TokenType>> Token, bool TokenizedAllInput);
+  record struct TokenizeResult(List<PositionedToken<TokenType>> Tokens, bool? TokenizedAllInput);
 
   static void PrintTokens(List<PositionedToken<TokenType>> tokens)
   {
@@ -23,11 +23,10 @@ class Program
   static TokenizeResult TokenizeFileByLines(string filename)
   {
     var tokenizeResult = new TokenizeResult();
+    tokenizeResult.Tokens = new List<PositionedToken<TokenType>>();
     
     var lineNumber = 0;
-    var tokens = new List<PositionedToken<TokenType>>();
-    var improperList = new List<object>();
-    var improperLis = new List<object>();
+
     var totalTokens = 0;
 
     foreach (var line in File.ReadLines(filename))
@@ -47,14 +46,14 @@ class Program
 
       PrintTokens(newTokens);
 
-      tokens.AddRange(newTokens);
+      tokenizeResult.Tokens.AddRange(newTokens);
 
       // Die if we tokenized nothing:
-      if (!tokens.Any())
+      if (!tokenizeResult.Tokens.Any())
         Die(1, "No tokens!");
 
       // Die if we didn't tokenize everything:
-      var lastToken = tokens.ToList()[Math.Max(0, tokens.Count() - 1)];
+      var lastToken = tokenizeResult.Tokens.ToList()[Math.Max(0, tokenizeResult.Tokens.Count() - 1)];
 
       if (lastToken.TokenType == TokenType.Garbage)
         Die(1, $"Failed to tokenize the entire input -  remaining text: \"{lastToken.Text}\"");
@@ -69,7 +68,6 @@ class Program
   {
     var filename = "data.lisp";
     var mode = Mode.Line;
-
     var tokenizeResult = TokenizeFileByLines(filename);
 
     // Die(0, $"Tokenized all input, {totalTokens} tokens.");
