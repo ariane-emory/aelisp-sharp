@@ -60,31 +60,31 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct Arg(string? Input, List<TToken>? Tokens, TTokenizerState? State);
+  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizerState? State);
 
-  public Arg Tokenize(string? Input, List<TToken>? Tokens, TTokenizerState? State) => Tokenize(new Arg(Input, Tokens, State));
+  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizerState? State) => Tokenize(new TokenizeData(Input, Tokens, State));
 
-  public Arg Tokenize(Arg arg)
+  public TokenizeData Tokenize(TokenizeData tokenizeData)
   {
-    if (arg.State is null)
-      arg.State = _createTokenizerState();
+    if (tokenizeData.State is null)
+      tokenizeData.State = _createTokenizerState();
 
-    if (arg.Tokens is null)
-      arg.Tokens = new List<TToken>();
+    if (tokenizeData.Tokens is null)
+      tokenizeData.Tokens = new List<TToken>();
 
-    if (arg.Input is null)
-      return arg;
+    if (tokenizeData.Input is null)
+      return tokenizeData;
 
-    while (!string.IsNullOrEmpty(arg.Input))
+    while (!string.IsNullOrEmpty(tokenizeData.Input))
     {
       bool foundMatch = false;
 
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(arg.State.Value))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(tokenizeData.State.Value))
           continue;
 
-        var match = definition.Pattern.Match(arg.Input);
+        var match = definition.Pattern.Match(tokenizeData.Input);
 
         if (match.Success)
         {
@@ -94,12 +94,12 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
           if (definition.ProcessToken is not null)
-            (arg.State, token) = definition.ProcessToken((arg.State.Value, token));
+            (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
 
-          arg.Tokens.Add(token);
+          tokenizeData.Tokens.Add(token);
 
           foundMatch = true;
-          arg.Input = arg.Input.Substring(match.Length);
+          tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
 
           break;
         }
@@ -109,6 +109,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState> where
         break;
     }
 
-    return arg;
+    return tokenizeData;
   }
 }

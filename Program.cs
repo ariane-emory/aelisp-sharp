@@ -14,31 +14,31 @@ class Program
   }
 
   //====================================================================================================================
-  static Tokenizer.Arg TokenizeLines(IEnumerable<string> lines)
+  static Tokenizer.TokenizeData TokenizeLines(IEnumerable<string> lines)
   {
-    var arg = new Tokenizer.Arg(null, null, null);
+    var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
 
     foreach (var line in lines)
     {
-      arg.Input = line;
-      arg = TokenizeLine(arg);
+      tokenizeData.Input = line;
+      tokenizeData = TokenizeLine(tokenizeData);
 
-      if (!string.IsNullOrEmpty(arg.Input))
+      if (!string.IsNullOrEmpty(tokenizeData.Input))
         break;
     }
 
-    return arg;
+    return tokenizeData;
   }
 
   //====================================================================================================================
-  static Tokenizer.Arg TokenizeLine(Tokenizer.Arg arg)
+  static Tokenizer.TokenizeData TokenizeLine(Tokenizer.TokenizeData tokenizeData)
   {
-    arg = Tokenizer.Get().Tokenize(arg);
+    tokenizeData = Tokenizer.Get().Tokenize(tokenizeData);
 
-    if (arg.Tokens is not null)
-      PrintTokens(arg.Tokens);
+    if (tokenizeData.Tokens is not null)
+      PrintTokens(tokenizeData.Tokens);
 
-    return arg;
+    return tokenizeData;
   }
 
   //====================================================================================================================
@@ -57,7 +57,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.Arg(File.ReadAllText(filename), null, null)),
+        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null, null)),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
