@@ -41,7 +41,6 @@ class Program
     return new TokenizeResult(tokens, true);
   }
 
-
   static TokenizeResult TokenizeLine(string line)
   {
     var tokens = Tokenizer.Get().Tokenize($"{line}", false).ToList();
@@ -69,7 +68,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLines(new string[] { File.ReadAllText(filename) }),
+        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename)),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
