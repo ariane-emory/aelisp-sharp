@@ -35,7 +35,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   private readonly CreateTokenFun _createToken;
   private readonly CreateTokenizerStateFun _createTokenizerState;
 
-  private TTokenizerState _state;
+  // private TTokenizerState _state;
 
   private List<(TTokenType Type,
                 Regex Pattern,
@@ -54,7 +54,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
   {
     _createToken = createToken;
     _createTokenizerState = createTokenizerStateFun;
-    _state = _createTokenizerState();
+    // _state = _createTokenizerState();
     // ResetMode = resetMode;
   }
 
@@ -74,12 +74,9 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public void Reset()
-  {
-    _state = _createTokenizerState();
-  }
-
-  public IEnumerable<TToken> Tokenize(string input)
+  public IEnumerable<TToken> Tokenize(string input) => Tokenize(input, _createTokenizerState());
+  
+  public IEnumerable<TToken> Tokenize(string input, TTokenizerState state)
   {
     while (!string.IsNullOrEmpty(input))
     {
@@ -87,7 +84,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
 
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(_state))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state))
           continue;
 
         var match = definition.Pattern.Match(input);
@@ -100,7 +97,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizerState>
             throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
 
           if (definition.ProcessToken is not null)
-            (_state, token) = definition.ProcessToken((_state, token));
+            (state, token) = definition.ProcessToken((state, token));
 
           yield return token;
 
