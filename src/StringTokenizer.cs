@@ -25,10 +25,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
   private readonly CreateTokenFun _createToken;
   private readonly CreateTokenizerStateFun _createTokenizerState;
 
-  private List<(TTokenType Type,
-                Regex Pattern,
-                ProcesTokenFun? ProcessToken,
-                TokenDefinitionIsActiveFun? DefinitionIsActive)>
+  private readonly List<(TTokenType Type,
+                         Regex Pattern,
+                         ProcesTokenFun? ProcessToken,
+                         TokenDefinitionIsActiveFun? DefinitionIsActive)>
   _tokenDefinitions =
     new List<(TTokenType Type,
               Regex Pattern,
