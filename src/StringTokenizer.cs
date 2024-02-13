@@ -62,7 +62,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
 
   public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State);
 
-  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizeState? State) =>
+  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
     Tokenize(new TokenizeData(Input, Tokens, State));
 
   public TokenizeData Tokenize(TokenizeData tokenizeData)
@@ -78,7 +78,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
 
     while (!string.IsNullOrEmpty(tokenizeData.Input))
     {
-      bool foundMatch = false;
+      var foundMatch = false;
 
       foreach (var definition in _tokenDefinitions)
       {
