@@ -62,7 +62,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
 
   public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State);
 
-  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizeState? State) => Tokenize(new TokenizeData(Input, Tokens, State));
+  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens, TTokenizeState? State) =>
+    Tokenize(new TokenizeData(Input, Tokens, State));
 
   public TokenizeData Tokenize(TokenizeData tokenizeData)
   {
@@ -88,10 +89,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState> where 
 
         if (match.Success)
         {
-          var token = _createToken(definition.Type, match.Value);
-
           if (match.Length == 0)
-            throw new Exception($"Zero-length match found: {token}, which could lead to an infinite loop.");
+            throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
+
+          var token = _createToken(definition.Type, match.Value);
 
           if (definition.ProcessToken is not null)
             (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
