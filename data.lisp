@@ -20,5 +20,7 @@ one two#|three
 four
 five|#six
 ?a ?\\ ?\n a#|b|#c
-"same\string"
+"same\nstring"
+"same
+string"
 
