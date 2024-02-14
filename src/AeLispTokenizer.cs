@@ -14,6 +14,7 @@ public static partial class Ae
     Dollar,
     Dot,
     Float,
+    Garbage,
     Integer,
     LParen,
     LineComment,
@@ -110,8 +111,8 @@ public static partial class Ae
       .Add((Type: TokenType.InlineComment,              Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning,  Discrete: false, Process: BeginMLC,          IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentContentEnd, Discrete: false, Process: EndMLC,            IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
-      .Add((Type: TokenType.MultilineCommentContent,    Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
-  //         (Type: TokenType.Garbage,          Discrete: false, Process: null,      IsActive: null,               Pattern: @".+"),
+      .Add((Type: TokenType.MultilineCommentContent,    Discrete: false, Process: CountLine,         IsActive: InMultilineComment, Pattern: @"[^\n]*\n"))
+      .Add((Type: TokenType.Garbage,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
