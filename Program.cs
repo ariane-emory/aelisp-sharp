@@ -120,12 +120,6 @@ class Program
   enum Mode { LineByLine, EntireFileAtOnce, };
 
   //====================================================================================================================
-  static void Main()
-  {
-    var filename = "data.lisp";
-
-  }
-
   static void DoTokenizeAndPrintLinesTests(string filename)
   {
     foreach (var mode in new[] {
@@ -144,5 +138,14 @@ class Program
       WriteLine($"\n\n---\n\n");
     }
   }
+
+  //====================================================================================================================
+  static void Main()
+  {
+    var filename = "data.lisp";
+
+  }
+
+  //====================================================================================================================
 }
 
