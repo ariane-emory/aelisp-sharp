@@ -275,7 +275,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcEndMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = TrimLast(UnescapeChars(ProcCountLine(tup)));
+      tup = TrimLast(UnescapeChars(tup));
       tup.State.Mode = AeLispTokenizerStateMode.Normal;
       
       return tup;
