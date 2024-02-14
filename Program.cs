@@ -26,14 +26,44 @@ class Program
   }
 
   //====================================================================================================================
+  public class WrappedTokenizer
+  {
+    private AeLispTokenizerState? _state = null;
+
+    public void Reset()
+    {
+      _state = null;
+    }
+
+    public IEnumerable<PositionedToken<TokenType>> Tokenize(string input)
+    {
+      var state = _state;
+
+      foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
+      {
+        state = newState;
+
+        if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
+          yield break;
+        else if (newToken is not null)
+          yield return newToken.Value;
+        else
+          break;
+      }
+
+      _state = state;
+    }
+  }
+
+  //====================================================================================================================
   static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
   TokenizeLine(string? input, AeLispTokenizerState? state)
   {
     var tokens = new List<PositionedToken<TokenType>>();
 
-    foreach (var (newInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
+    foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
     {
-      (input, state) = (newInput, newState);
+      (input, state) = (leftoverInput, newState);
 
       if (newToken is not null)
         tokens.Add(newToken.Value);
@@ -54,7 +84,7 @@ class Program
 
     foreach (var line in lines)
     {
-      var (newInput, newState, newTokens) = TokenizeLine(line, state);
+      var (leftoverInput, newState, newTokens) = TokenizeLine(line, state);
 
       state = newState;
 
