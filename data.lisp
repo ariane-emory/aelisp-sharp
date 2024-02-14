@@ -1,4 +1,4 @@
-"one embedded\"quote
-two embedded\"quote
-three embedded\"quote" four
+"one embedded\"quote\" word
+two embedded\"quote\" word
+three embedded\"quote\" word" four
 
