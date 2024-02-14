@@ -63,29 +63,83 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  //====================================================================================================================
-  public IEnumerable<(string? Input, TTokenizeState State, TToken? Token)>
-  Tokenize(string? input, TTokenizeState? state = null)
+  // //====================================================================================================================
+  // public IEnumerable<(string? Input, TTokenizeState State, TToken? Token)>
+  // Tokenize(string? input, TTokenizeState? state = null)
+  // {
+  //   if (state is null)
+  //     state = _createTokenizerState();
+
+  //   if (string.IsNullOrEmpty(input))
+  //   {
+  //     yield return (input, state.Value, null);
+  //     yield break;
+  //   }
+
+  //   while (!string.IsNullOrEmpty(input))
+  //   {
+  //     var foundMatch = false;
+
+  //     foreach (var definition in _tokenDefinitions)
+  //     {
+  //       if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
+  //         continue;
+
+  //       var match = definition.Pattern.Match(input);
+
+  //       if (match.Success)
+  //       {
+  //         if (match.Length == 0)
+  //           throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
+
+  //         foundMatch = true;
+
+  //         var token = _createToken(definition.Type, match.Value);
+
+  //         if (definition.ProcessToken is not null)
+  //           (state, token) = definition.ProcessToken((state.Value, token));
+
+  //         input = input.Substring(match.Length);
+
+  //         yield return (input, state.Value, token);
+
+  //         break;
+  //       }
+  //     }
+
+  //     if (!foundMatch)
+  //       yield break;
+  //   }
+
+  //   yield return (input, state.Value, null);
+  // }
+
+  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State) { };
+
+  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
+    Tokenize(new TokenizeData(Input, Tokens, State));
+
+  public TokenizeData Tokenize(TokenizeData tokenizeData)
   {
-    if (state is null)
-      state = _createTokenizerState();
+    if (tokenizeData.State is null)
+      tokenizeData.State = _createTokenizerState();
 
-    if (string.IsNullOrEmpty(input))
-    {
-      yield return (input, state.Value, null);
-      yield break;
-    }
+    if (tokenizeData.Tokens is null)
+      tokenizeData.Tokens = new List<TToken>();
 
-    while (!string.IsNullOrEmpty(input))
+    if (tokenizeData.Input is null)
+      return tokenizeData;
+
+    while (!string.IsNullOrEmpty(tokenizeData.Input))
     {
       var foundMatch = false;
 
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(tokenizeData.State.Value))
           continue;
 
-        var match = definition.Pattern.Match(input);
+        var match = definition.Pattern.Match(tokenizeData.Input);
 
         if (match.Success)
         {
@@ -97,20 +151,20 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
           var token = _createToken(definition.Type, match.Value);
 
           if (definition.ProcessToken is not null)
-            (state, token) = definition.ProcessToken((state.Value, token));
+            (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
 
-          input = input.Substring(match.Length);
-
-          yield return (input, state.Value, token);
+          tokenizeData.Tokens.Add(token);
+          tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
 
           break;
         }
       }
 
       if (!foundMatch)
-        yield break;
+        break;
     }
 
-    yield return (input, state.Value, null);
+    return tokenizeData;
   }
+  
 }
