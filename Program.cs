@@ -49,22 +49,24 @@ class Program
   }
 
   //====================================================================================================================
-  // static Tokenizer.TokenizeData TokenizeAndPrintLines(IEnumerable<string> lines)
-  // {
-  //   var (input, state, token) = Tokenizer.Get().NextToken(input, null);
-  //   var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
+  static (string? Input, AeLispTokenizerState State, List<AeToken> Tokens)
+  TokenizeAndPrintLines(IEnumerable<string> lines, AeLispTokenizerState? state = null)
+  {
+    var tokens = new List<AeToken>();
 
-  //   foreach (var line in lines)
-  //   {
-  //     tokenizeData.Input = line;
-  //     tokenizeData = TokenizeAndPrintLine(tokenizeData);
+    foreach (var line in lines)
+    {
+      var (leftoverInput, newState, newTokens) = TokenizeAndPrintLine(line, state);
+      state = newState;
 
-  //     if (!string.IsNullOrEmpty(tokenizeData.Input))
-  //       break;
-  //   }
+      if (!string.IsNullOrEmpty(leftoverInput))
+        throw new ApplicationException($"leftover input \"{leftoverInput}\".");
 
-  //   return tokenizeData;
-  // }
+      tokens.AddRange(newTokens);
+    }
+
+    return (null, state!.Value, tokens);
+  }
 
   //====================================================================================================================
   public class AeLispTokenizerTokenStream : Pidgin.ITokenStream<AeToken>
@@ -107,13 +109,13 @@ class Program
     var filename = "data.lisp";
 
     foreach (var mode in new[] {
-//        Mode.LineByLine,
+        Mode.LineByLine,
         Mode.EntireFileAtOnce
       })
     {
       var tokenizeResult = mode switch
       {
-        // Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+        Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n"), null),
         Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
