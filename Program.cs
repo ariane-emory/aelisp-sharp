@@ -152,7 +152,7 @@ class Program
   {
     var filename = "data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new AeLispTokenizerTokenStream(fileText);
+    var stream = new AeLispTokenizerTokenStream(fileText, IsIncludedTokenType);
     var ary = new AeToken[16];
     stream.Read(ary);
     PrintTokens(ary);
