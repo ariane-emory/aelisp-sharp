@@ -71,7 +71,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     if (!string.IsNullOrEmpty(input))
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
+        if (definition.DefinitionIsActive is not null
+            && !definition.DefinitionIsActive(state.Value))
           continue;
 
         var match = definition.Pattern.Match(input);

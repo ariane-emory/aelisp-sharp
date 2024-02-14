@@ -70,23 +70,18 @@ public static partial class Ae
     //==================================================================================================================
     // Get the instance
     //==================================================================================================================
-    public static Tokenizer Get()
-    {
-      if (_instance is null)
-        _instance = new Tokenizer();
-
-      return _instance;
-    }
+    public static Tokenizer Get() => _instance ??= new Tokenizer();
 
     //==================================================================================================================
     // Private constants
     //==================================================================================================================
 
-    private static readonly ImmutableArray<(TokenType Type,
-                                           bool Discrete,
-                                           ProcesTokenFun? Process,
-                                           TokenDefinitionIsActiveFun? IsActive,
-                                           string Pattern)> Tokens =
+    private static readonly
+      ImmutableArray<(TokenType Type,
+                      bool Discrete,
+                      ProcesTokenFun? Process,
+                      TokenDefinitionIsActiveFun? IsActive,
+                      string Pattern)> Tokens =
       ImmutableArray<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
       .Add((Type: TokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
       .Add((Type: TokenType.Whitespace,                Discrete: false, Process: null,              IsActive: null,               Pattern: @"[ \t\f\v]+"))
@@ -160,10 +155,10 @@ public static partial class Ae
     private static (TokenizerState, Token)
       ProcStringLike((TokenizerState State, Token Token) tup)
       => UnescapeChars((tup.State,
-                            new Token(tup.Token.TokenType,
-                                      tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                      tup.Token.Line,
-                                      tup.Token.Column)));
+                        new Token(tup.Token.TokenType,
+                                  tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                  tup.Token.Line,
+                                  tup.Token.Column)));
     
     private static (TokenizerState, Token)
       ProcLispStyleChar((TokenizerState State, Token Token) tup)
@@ -171,11 +166,14 @@ public static partial class Ae
     
     private static (TokenizerState, Token)
       ProcTrimFirst((TokenizerState State, Token Token) tup)
-      => (tup.State, new Token(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
+      => (tup.State,
+          new Token(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     
     private static (TokenizerState, Token)
       TrimLast((TokenizerState State, Token Token) tup)
-      => (tup.State, new Token(tup.Token.TokenType, tup.Token.Text.Substring(0, tup.Token.Text.Length-1), tup.Token.Line, tup.Token.Column));
+      => (tup.State,
+          new Token(tup.Token.TokenType,
+                    tup.Token.Text.Substring(0, tup.Token.Text.Length-1), tup.Token.Line, tup.Token.Column));
     
     private static (TokenizerState, Token)
       ProcNumber((TokenizerState State, Token Token) tup)
@@ -353,13 +351,11 @@ public static partial class Ae
     private string? _input;
     private readonly Func<Token, bool>? _exclude;
     private TokenizerState? _state;
-    private readonly Queue<Token> _queued;
 
     public TokenizerTokenStream(string input, Func<Token, bool>? exclude = null)
     {
       _input = input;
       _exclude = exclude;
-      _queued = new Queue<Token>();
     }
 
     public int Read(Span<Token> buffer)
