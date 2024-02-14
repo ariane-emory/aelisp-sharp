@@ -80,7 +80,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
 
       foreach (var definition in _tokenDefinitions)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(tokenizeData.State.Value))
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
           continue;
 
         var match = definition.Pattern.Match(input);
@@ -100,7 +100,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
           input = input.Substring(match.Length);
 
           yield return (input, state, token);
-          
+
           break;
         }
       }
@@ -109,6 +109,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
         yield break;
     }
 
-    yield return (null, tokenizeData);
+    yield return (input, state, null);
   }
 }

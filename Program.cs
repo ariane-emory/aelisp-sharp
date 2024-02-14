@@ -27,34 +27,37 @@ class Program
   }
 
   //====================================================================================================================
-  static Tokenizer.TokenizeData TokenizeLines(IEnumerable<string> lines)
+  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
+  TokenizeLines(IEnumerable<string> lines)
   {
-    var tokenizeData = new Tokenizer.TokenizeData(null, null);
+    (string? input, AeLispTokenizerState? state, List<PositionedToken<TokenType>> tokens) = (null, null, new List<PositionedToken<TokenType>>());
 
     foreach (var line in lines)
     {
-      tokenizeData.Input = line;
-      tokenizeData = TokenizeLine(tokenizeData);
-
-      if (!string.IsNullOrEmpty(tokenizeData.Input))
-        break;
+      (input, state, tokens) = TokenizeLine(line, state);
+      tokens.AddRange(tokens);
     }
 
-    return tokenizeData;
+    return (input, state, tokens);
   }
 
   //====================================================================================================================
-  static Tokenizer.TokenizeData TokenizeLine(Tokenizer.TokenizeData tokenizeData)
+  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
+  TokenizeLine(string? input, AeLispTokenizerState? state)
   {
-    foreach (var (token, td) in Tokenizer.Get().Tokenize(tokenizeData))
-    {
-      tokenizeData = td;
+    var tokens = new List<PositionedToken<TokenType>>();
 
-      if (token is not null)
-        PrintTokens(new[] { token.Value }.AsEnumerable());
+    foreach (var (newInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
+    {
+      (input, state) = (newInput, newState);
+
+      if (newToken is not null)
+        tokens.Add(newToken.Value);
     }
-    
-    return tokenizeData;
+
+    PrintTokens(tokens);
+
+    return (input, state, tokens);
   }
 
   //====================================================================================================================
@@ -73,7 +76,7 @@ class Program
       var tokenizeResult = mode switch
       {
         Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null)),
+        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
