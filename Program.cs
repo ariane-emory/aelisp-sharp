@@ -141,7 +141,8 @@ class Program
         _state = newState;
         _input = newInput;
 
-        _queued.Enqueue(newToken.Value);
+        if (_filter is null || _filter(newToken.Value))
+          _queued.Enqueue(newToken.Value);
       }
     }
   }
