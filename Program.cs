@@ -93,16 +93,17 @@ class Program
 
       Enqueue(requested);
 
-      for (int ix = 0; ix < requested; ix++)
+      var ix = 0;
+
+      for (; ix < requested; ix++)
         buffer[ix] = _queued.Dequeue();
-      
-      return 0;
+
+      return ix + 1;
     }
 
     private void Enqueue(int requested)
     {
-      while (_queued.Count < requested
-   && !string.IsNullOrEmpty(_input))
+      while (_queued.Count < requested && !string.IsNullOrEmpty(_input))
       {
         var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
 
