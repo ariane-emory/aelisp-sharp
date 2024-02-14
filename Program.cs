@@ -1,10 +1,14 @@
 ﻿using static Utility;
 using static Ae;
 using static System.Console;
+using Pidgin;
+using static Pidgin.Parser;
+using static Pidgin.Parser<char>;
+
+using AeToken = Ae.PositionedToken<Ae.TokenType>;
 
 class Program
 {
-
   static readonly List<TokenType> ExcludedTokenTypes = new List<TokenType>
   {
     TokenType.Whitespace,
@@ -17,7 +21,7 @@ class Program
   };
 
   //====================================================================================================================
-  static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
+  static void PrintTokens(IEnumerable<AeToken> tokens)
   {
     foreach (var (token, index) in tokens
              .Where(token => !ExcludedTokenTypes.Contains(token.TokenType))
@@ -29,7 +33,7 @@ class Program
   // // GPT's idea:
   // public class WrappedTokenizer
   // {
-  //   public IEnumerable<PositionedToken<TokenType>> Tokenize(string input, ref AeLispTokenizerState? state)
+  //   public IEnumerable<AeToken> Tokenize(string input, ref AeLispTokenizerState? state)
   //   {
   //     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
   //     {
@@ -51,7 +55,7 @@ class Program
       _state = null;
     }
 
-    public IEnumerable<PositionedToken<TokenType>> Tokenize(string input)
+    public IEnumerable<AeToken> Tokenize(string input)
     {
       var state = _state;
 
@@ -72,10 +76,10 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
-  TokenizeLine(string? input, AeLispTokenizerState? state)
+  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
+  TokenizeAndPrintLine(string? input, AeLispTokenizerState? state)
   {
-    var tokens = new List<PositionedToken<TokenType>>();
+    var tokens = new List<AeToken>();
 
     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
     {
@@ -91,16 +95,16 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
-  TokenizeLines(IEnumerable<string> lines)
+  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
+  TokenizeAndPrintLines(IEnumerable<string> lines)
   {
-    var tokens = new List<PositionedToken<TokenType>>();
+    var tokens = new List<AeToken>();
 
     AeLispTokenizerState? state = null;
 
     foreach (var line in lines)
     {
-      var (leftoverInput, newState, newTokens) = TokenizeLine(line, state);
+      var (leftoverInput, newState, newTokens) = TokenizeAndPrintLine(line, state);
 
       state = newState;
 
@@ -126,13 +130,15 @@ class Program
     {
       // var tokenizeResult = mode switch
       // {
-      //   Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-      //   Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
+      //   Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+      //   Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
       //   _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       // };
 
       // if (tokenizeResult.Tokens is not null)
       //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+
+      // WriteLine($"\n\n---\n\n");
 
       int count = 0;
 
