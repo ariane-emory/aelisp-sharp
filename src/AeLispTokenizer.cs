@@ -121,7 +121,7 @@ public static partial class Ae
 
       .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: BeginMLS,          IsActive: NotInMultilineString, Pattern: @"\""" + StringContent+ @"\n"))
       .Add((Type: TokenType.MultilineStringEnd,         Discrete: true,  Process: EndMLS,            IsActive: InMultilineString,    Pattern: StringContent + @"\"""))
-      .Add((Type: TokenType.MultilineStringContent,     Discrete: false, Process: null,              IsActive: InMultilineString,    Pattern: @"(?:(?!\\"")[^\n])*\n"))
+      .Add((Type: TokenType.MultilineStringContent,     Discrete: false, Process: null,              IsActive: InMultilineString,    Pattern: StringContent + @"\n"))  // @"(?:(?!\\"")[^\n])*\n"))
 
       .Add((Type: TokenType.InlineComment,              Discrete: false, Process: null,              IsActive: null,                 Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning,  Discrete: false, Process: BeginMLC,          IsActive: null,                 Pattern: @"#\|[^\n]*\n"))
