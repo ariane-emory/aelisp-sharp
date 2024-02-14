@@ -117,19 +117,16 @@ class Program
 
     public int Read(Span<AeToken> buffer)
     {
-      var requested = buffer.Length;
-
-      Enqueue(requested);
+      Enqueue(buffer.Length);
 
       var ix = 0;
-
-      requested = Math.Min(requested, _queued.Count);
+      var read_count = Math.Min(buffer.Length, _queued.Count);
       
-      for (; ix < requested; ix++)
+      for (; ix < read_count; ix++)
         buffer[ix] = _queued.Dequeue();
 
-      return ix + 1;
-    }
+      return ix;
+        }
 
     private void Enqueue(int requested)
     {
