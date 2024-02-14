@@ -43,8 +43,7 @@ class Program
 
       (input, state) = (newInput, newState);
 
-      if (newToken is not null)
-        tokens.Add(newToken.Value);
+      tokens.Add(newToken.Value);
     }
 
     PrintTokens(tokens);
