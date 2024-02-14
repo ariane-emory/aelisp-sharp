@@ -20,7 +20,7 @@ one two#|three
 four
 five|#six
 ?a ?\\ ?\n a#|b|#c
-"same
+"same embedded\"quote
 blah
 string" one
 

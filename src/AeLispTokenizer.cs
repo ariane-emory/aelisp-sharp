@@ -119,7 +119,7 @@ public static partial class Ae
 //      .Add((Type: TokenType.String,                     Discrete: true,  Process: ProcStringLike,    IsActive: null,                 Pattern: @"\""(\\\""|[^\""])*\"""))
       .Add((Type: TokenType.String,                     Discrete: true,  Process: null,              IsActive: NotInMultilineString, Pattern: @"\""" + StringContent+ @"\"""))
 
-      .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: BeginMLS,          IsActive: NotInMultilineString, Pattern: @"\""[^\n]*\n"))
+      .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: BeginMLS,          IsActive: NotInMultilineString, Pattern: @"\""" + StringContent+ @"\n"))
       .Add((Type: TokenType.MultilineStringEnd,         Discrete: true,  Process: EndMLS,            IsActive: InMultilineString,    Pattern: @"(?:(?!\\"")[^\n])*\"""))
       .Add((Type: TokenType.MultilineStringContent,     Discrete: false, Process: null,              IsActive: InMultilineString,    Pattern: @"(?:(?!\\"")[^\n])*\n"))
 
