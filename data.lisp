@@ -22,5 +22,5 @@ five|#six
 ?a ?\\ ?\n a#|b|#c
 "same\nstring"
 "same
-string" one
+blah \" string" one
 
