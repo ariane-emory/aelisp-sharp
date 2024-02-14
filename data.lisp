@@ -21,6 +21,6 @@ four
 five|#six
 ?a ?\\ ?\n a#|b|#c
 "one embedded\"quote
-two
-three" four
+two embedded\"quote
+three embedded\"quote" four
 
