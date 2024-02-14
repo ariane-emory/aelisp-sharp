@@ -5,7 +5,7 @@ using static System.Console;
 class Program
 {
 
-  static readonly List<TokenType> Excluded = new List<TokenType>
+  static readonly List<TokenType> ExcludedTokenTypes = new List<TokenType>
   {
     TokenType.Whitespace,
     TokenType.LineComment,
@@ -20,7 +20,7 @@ class Program
   static void PrintTokens(IEnumerable<PositionedToken<TokenType>> tokens)
   {
     foreach (var (token, index) in tokens
-             .Where(token => !Excluded.Contains(token.TokenType))
+             .Where(token => !ExcludedTokenTypes.Contains(token.TokenType))
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
@@ -45,7 +45,7 @@ class Program
     //       state = newState;
     //       if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
     //         yield break;
-    //       else if (newToken is not null && !Excluded.Contains(newToken.Value.TokenType))
+    //       else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
     //         yield return newToken.Value;
     //     }
     //   }
@@ -63,7 +63,7 @@ class Program
           yield break;
         else if (newToken is null)
           break;
-        else if (newToken is not null && !Excluded.Contains(newToken.Value.TokenType))
+        else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
           yield return newToken.Value;
       }
 
