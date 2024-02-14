@@ -15,7 +15,7 @@ class Program
     TokenType.MultilineCommentBeginning,
     TokenType.MultilineCommentContent,
     TokenType.MultilineCommentEnd,
-    TokenType.InlineComment,
+    TokenType.Comment,
     TokenType.Newline,
   };
 
