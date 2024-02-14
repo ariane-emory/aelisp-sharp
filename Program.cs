@@ -4,8 +4,7 @@ using static Ae;
 using static Utility;
 using Pidgin;
 using static Pidgin.Parser;
-using static Pidgin.Parser<Ae.PositionedToken<Ae.TokenType>>; // no error
-using AeToken = Ae.PositionedToken<Ae.TokenType>;
+using static Pidgin.Parser<Ae.Token>; // no error
 
 class Program
 {
@@ -19,11 +18,11 @@ class Program
     TokenType.Newline);
 
   //====================================================================================================================
-  static bool IsExcludedTokenType(AeToken token) => ExcludedTokenTypes.Contains(token.TokenType);
-  static bool IsIncludedTokenType(AeToken token) => !IsExcludedTokenType(token);
+  static bool IsExcludedTokenType(Ae.Token token) => ExcludedTokenTypes.Contains(token.TokenType);
+  static bool IsIncludedTokenType(Ae.Token token) => !IsExcludedTokenType(token);
 
   //====================================================================================================================
-  static void PrintTokens(IEnumerable<AeToken> tokens)
+  static void PrintTokens(IEnumerable<Ae.Token> tokens)
   {
     foreach (var (token, index) in tokens
              //.Where(IsIncludedTokenType)
@@ -32,10 +31,10 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState State, List<AeToken> Tokens)
+  static (string? Input, AeLispTokenizerState State, List<Ae.Token> Tokens)
   TokenizeAndPrintLine(string? input, AeLispTokenizerState? state = null)
   {
-    var tokens = new List<AeToken>();
+    var tokens = new List<Ae.Token>();
 
     while (!string.IsNullOrEmpty(input)) // infinite loop risk, fix!
     {
@@ -55,10 +54,10 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState State, List<AeToken> Tokens)
+  static (string? Input, AeLispTokenizerState State, List<Ae.Token> Tokens)
   TokenizeAndPrintLines(IEnumerable<string> lines, AeLispTokenizerState? state = null)
   {
-    var tokens = new List<AeToken>();
+    var tokens = new List<Ae.Token>();
 
     foreach (var line in lines)
     {
@@ -104,7 +103,7 @@ class Program
     var fileText = File.ReadAllText(filename);
     var stream = new Ae.TokenizerTokenStream(fileText, IsExcludedTokenType);
     var take = 32;
-    var ary = new AeToken[take];
+    var ary = new Ae.Token[take];
     var read = stream.Read(ary);
     PrintTokens(ary.Take(read));
   }
