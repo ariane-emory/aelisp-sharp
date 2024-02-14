@@ -45,10 +45,10 @@ class Program
 
         if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
           yield break;
-        else if (newToken is not null)
-          yield return newToken.Value;
-        else
+        else if (newToken is null)
           break;
+        else if (newToken is not null && !Excluded.Contains(newToken.Value.TokenType))
+          yield return newToken.Value;
       }
 
       _state = state;
@@ -101,10 +101,11 @@ class Program
   static void Main()
   {
     var filename = "data.lisp";
+    var wrapped = new WrappedTokenizer();
 
     foreach (var mode in new[] {
         Mode.LineByLine,
-        Mode.EntireFileAtOnce
+        // Mode.EntireFileAtOnce
       })
     {
       // var tokenizeResult = mode switch
@@ -120,8 +121,13 @@ class Program
       switch (mode)
       {
         case Mode.LineByLine:
+          foreach (var line in File.ReadAllLines(filename))
+            foreach (var token in wrapped.Tokenize(line))
+              WriteLine(token);
           break;
         case Mode.EntireFileAtOnce:
+          foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
+            WriteLine(token);
           break;
       }
 
