@@ -86,8 +86,8 @@ class Program
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
-      // if (tokenizeResult.Tokens is not null)
-      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      if (tokenizeResult.Tokens is not null)
+        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
       WriteLine($"\n\n---\n\n");
     }
