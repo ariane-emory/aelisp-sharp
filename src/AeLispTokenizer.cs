@@ -312,7 +312,6 @@ public static partial class Ae
     private static bool NotInMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool Always(AeLispTokenizerState state) => true;
 
-    
     //==================================================================================================================
     // Patterns are down here since they confuse csharp-mode's indentation logic:
     //==================================================================================================================
