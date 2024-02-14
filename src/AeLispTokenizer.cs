@@ -135,7 +135,7 @@ public static partial class Ae
       (@"\t", "\t"),
       (@"\v", "\v"),
       (@"\\", "\\"),
-      (@"\'", "\'"),
+      // (@"\'", "\'"),
       (@"\""", "\"")
       );
 
@@ -344,6 +344,6 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
-    private const string StringContent = @"(?:(?:\\\"")|(?:\\[^""])|[^\""\n\\])*";                                                 
+    private const string StringContent = @"(?:(?:\\[abfnrtv\\""])|[^\""\n\\])*"; // Keep this in sync with EscapedChars.
   }
 }
