@@ -9,14 +9,14 @@ using AeToken = Ae.PositionedToken<Ae.TokenType>;
 
 class Program
 {
-    static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
-      TokenType.Whitespace,
-      TokenType.LineComment,
-      TokenType.MultilineCommentBeginning,
-      TokenType.MultilineCommentContent,
-      TokenType.MultilineCommentEnd,
-      TokenType.Comment,
-      TokenType.Newline);
+  static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
+    TokenType.Whitespace,
+    TokenType.LineComment,
+    TokenType.MultilineCommentBeginning,
+    TokenType.MultilineCommentContent,
+    TokenType.MultilineCommentEnd,
+    TokenType.Comment,
+    TokenType.Newline);
 
   //====================================================================================================================
   static bool IsExcludedTokenType(AeToken token) => ExcludedTokenTypes.Contains(token.TokenType);

@@ -83,12 +83,12 @@ public static partial class Ae
     // Private constants
     //==================================================================================================================
 
-    private static readonly ImmutableList<(TokenType Type,
+    private static readonly ImmutableArray<(TokenType Type,
                                            bool Discrete,
                                            ProcesTokenFun? Process,
                                            TokenDefinitionIsActiveFun? IsActive,
                                            string Pattern)> Tokens =
-      ImmutableList<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
+      ImmutableArray<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
       .Add((Type: TokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
       .Add((Type: TokenType.Whitespace,                Discrete: false, Process: null,              IsActive: null,               Pattern: @"[ \t\f\v]+"))
       .Add((Type: TokenType.LParen,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @"\("))
@@ -127,7 +127,7 @@ public static partial class Ae
       .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
       //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
-    private static readonly ImmutableList<(string, string)> EscapedChars = ImmutableList.Create(
+    private static readonly ImmutableArray<(string, string)> EscapedChars = ImmutableArray.Create(
       (@"\a", "\a"),
       (@"\b", "\b"),
       (@"\f", "\f"),
