@@ -56,8 +56,7 @@ public static partial class Ae
     // Private constructor
     //==================================================================================================================
     private Tokenizer() : base(createToken: (tokenType, text) => new Token(tokenType, text, 0, 0),
-                               createTokenizerStateFun: () => new TokenizerState()) // ,
-                                                                                          // resetMode: StringTokenizer<TokenType, Token, TokenizerState>.StringTokenizerResetMode.Auto)
+                               createTokenizerStateFun: () => new TokenizerState())
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
