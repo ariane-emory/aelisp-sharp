@@ -158,37 +158,43 @@ class Program
         Mode.EntireFileAtOnce
       })
     {
-      // var tokenizeResult = mode switch
-      // {
-      //   Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-      //   Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
-      //   _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-      // };
 
-      // if (tokenizeResult.Tokens is not null)
-      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+            if (true)
+            {
+                var tokenizeResult = mode switch
+                {
+                    Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+                    Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
+                    _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                };
 
-      // WriteLine($"\n\n---\n\n");
+                if (tokenizeResult.Tokens is not null)
+                    WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
-      int count = 0;
+                WriteLine($"\n\n---\n\n");
+            }
+            else
+            {
+                int count = 0;
 
-      wrapped.Reset();
+                wrapped.Reset();
 
-      switch (mode)
-      {
-        case Mode.LineByLine:
-          foreach (var line in File.ReadAllLines(filename).Select(s => s + "\n")) // experiment with removing the \n and using allowing $ instead of \n in tok defs.
-            foreach (var token in wrapped.Tokenize(line))
-              WriteLine($"#{count++}: {token}");
-          break;
-        case Mode.EntireFileAtOnce:
-          foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
-            WriteLine($"#{count++}: {token}");
-          break;
-      }
+                switch (mode)
+                {
+                    case Mode.LineByLine:
+                        foreach (var line in File.ReadAllLines(filename).Select(s => s + "\n")) // experiment with removing the \n and using allowing $ instead of \n in tok defs.
+                            foreach (var token in wrapped.Tokenize(line))
+                                WriteLine($"#{count++}: {token}");
+                        break;
+                    case Mode.EntireFileAtOnce:
+                        foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
+                            WriteLine($"#{count++}: {token}");
+                        break;
+                }
 
-      WriteLine($"\n\n---\n\n");
-    }
+                WriteLine($"\n\n---\n\n");
+            }
+        }
   }
 }
 
