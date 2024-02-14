@@ -25,7 +25,7 @@ public static partial class Ae
     MultilineStringBeginning,
     MultilineStringEnd,
     MultilineStringContent,
-    InlineComment,
+    Comment,
     Newline,
     Nil,
     Quote,
@@ -120,7 +120,7 @@ public static partial class Ae
       .Add((Type: TokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""))
       .Add((Type: TokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"))
       .Add((Type: TokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.InlineComment,             Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
+      .Add((Type: TokenType.Comment,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
