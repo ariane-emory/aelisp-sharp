@@ -21,7 +21,7 @@ class Program
 
   //====================================================================================================================
   static bool IsIncludedTokenType(AeToken token) => !ExcludedTokenTypes.Contains(token.TokenType);
-  
+
   //====================================================================================================================
   static void PrintTokens(IEnumerable<AeToken> tokens)
   {
@@ -74,7 +74,7 @@ class Program
     return (null, state!.Value, tokens);
   }
 
-    //====================================================================================================================
+  //====================================================================================================================
   enum Mode { LineByLine, EntireFileAtOnce, };
 
   //====================================================================================================================
@@ -117,32 +117,27 @@ class Program
 
     public int Read(Span<AeToken> buffer)
     {
-      Enqueue(buffer.Length);
-
       var ix = 0;
-      var read_count = Math.Min(buffer.Length, _queued.Count);
-      
-      for (; ix < read_count; ix++)
-        buffer[ix] = _queued.Dequeue();
+
+      for (; ix < buffer.Length; ix++)
+      {
+        var token = Next();
+
+        if (token is not null)
+          buffer[ix] = token;
+      };
 
       return ix;
-        }
+    }
 
-    private void Enqueue(int requested)
+    private AeToken? Next()
     {
-      while (_queued.Count < requested && !string.IsNullOrEmpty(_input))
-      {
-        var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+      var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
 
-        if (newToken is null)
-          throw new ApplicationException($"No token at \"{newInput}\"!");
+      _state = newState;
+      _input = newInput;
 
-        _state = newState;
-        _input = newInput;
-
-        if (_filter is null || _filter(newToken.Value))
-          _queued.Enqueue(newToken.Value);
-      }
+      return newToken;
     }
   }
 
