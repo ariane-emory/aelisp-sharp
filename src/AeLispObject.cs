@@ -329,16 +329,12 @@ public static partial class Ae
             return symbol;
         }
         else
-        {
           throw new InvalidOperationException($"Found non-symbol {pair.Car} in symbols list.");
-        }
 
         current = pair.Cdr;
       }
       else
-      {
         throw new InvalidOperationException($"{nameof(symbolsList)} is not a proper list");
-      }
 
     var newSymbol = new Symbol(key);
 
