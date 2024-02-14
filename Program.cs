@@ -20,12 +20,51 @@ class Program
   };
 
   //====================================================================================================================
+  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
+  TokenizeAndPrintLine(string? input, AeLispTokenizerState? state)
+  {
+    var tokens = new List<AeToken>();
+
+    foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
+    {
+      (input, state) = (leftoverInput, newState);
+
+      if (newToken is not null)
+        tokens.Add(newToken.Value);
+    }
+
+    PrintTokens(tokens);
+
+    return (input, state, tokens);
+  }
+
+  //====================================================================================================================
   static void PrintTokens(IEnumerable<AeToken> tokens)
   {
     foreach (var (token, index) in tokens
              .Where(token => !ExcludedTokenTypes.Contains(token.TokenType))
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
+  }
+
+  //====================================================================================================================
+  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
+  TokenizeAndPrintLines(IEnumerable<string> lines)
+  {
+    var tokens = new List<AeToken>();
+
+    AeLispTokenizerState? state = null;
+
+    foreach (var line in lines)
+    {
+      var (leftoverInput, newState, newTokens) = TokenizeAndPrintLine(line, state);
+
+      state = newState;
+
+      tokens.AddRange(newTokens);
+    }
+
+    return (null, state, tokens);
   }
 
   //====================================================================================================================
@@ -45,6 +84,7 @@ class Program
   //   }
   // }
 
+  //====================================================================================================================
   public class WrappedTokenizer
   {
     private AeLispTokenizerState? _state = null;
@@ -75,42 +115,11 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
-  TokenizeAndPrintLine(string? input, AeLispTokenizerState? state)
+  public class AeLispTokenizerTokenStream : Pidgin.ITokenStream<AeToken>
   {
-    var tokens = new List<AeToken>();
-
-    foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
-    {
-      (input, state) = (leftoverInput, newState);
-
-      if (newToken is not null)
-        tokens.Add(newToken.Value);
-    }
-
-    PrintTokens(tokens);
-
-    return (input, state, tokens);
-  }
-
-  //====================================================================================================================
-  static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
-  TokenizeAndPrintLines(IEnumerable<string> lines)
-  {
-    var tokens = new List<AeToken>();
-
-    AeLispTokenizerState? state = null;
-
-    foreach (var line in lines)
-    {
-      var (leftoverInput, newState, newTokens) = TokenizeAndPrintLine(line, state);
-
-      state = newState;
-
-      tokens.AddRange(newTokens);
-    }
-
-    return (null, state, tokens);
+    public int Read(Span<AeToken> buffer) => 0;
+    public void Return(ReadOnlySpan<AeToken> leftovers) {}
+    public int ChunkSizeHint => 8;
   }
 
   //====================================================================================================================
@@ -121,6 +130,7 @@ class Program
   {
     var filename = "data.lisp";
     var wrapped = new WrappedTokenizer();
+
 
     foreach (var mode in new[] {
         Mode.LineByLine,
