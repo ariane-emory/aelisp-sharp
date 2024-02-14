@@ -175,6 +175,10 @@ public static partial class Ae
       => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
+      ProcTrimLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(0, tup.Token.Text.Length-2), tup.Token.Line, tup.Token.Column));
+    
+    private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcStripCommas(tup);
