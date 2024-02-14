@@ -124,6 +124,10 @@ class Program
   {
     var filename = "data.lisp";
 
+  }
+
+  static void DoTokenizeAndPrintLinesTests(string filename)
+  {
     foreach (var mode in new[] {
         Mode.LineByLine,
         Mode.EntireFileAtOnce
@@ -137,10 +141,6 @@ class Program
       };
 
       WriteLine($"Token count: {tokenizeResult.Tokens.Count}");
-
-      // if (tokenizeResult.Tokens is not null)
-      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
-
       WriteLine($"\n\n---\n\n");
     }
   }
