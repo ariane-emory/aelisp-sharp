@@ -31,8 +31,8 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState State, List<Ae.Token> Tokens)
-  TokenizeAndPrintLine(string? input, AeLispTokenizerState? state = null)
+  static (string? Input, Ae.TokenizerState State, List<Ae.Token> Tokens)
+  TokenizeAndPrintLine(string? input, Ae.TokenizerState? state = null)
   {
     var tokens = new List<Ae.Token>();
 
@@ -54,8 +54,8 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState State, List<Ae.Token> Tokens)
-  TokenizeAndPrintLines(IEnumerable<string> lines, AeLispTokenizerState? state = null)
+  static (string? Input, Ae.TokenizerState State, List<Ae.Token> Tokens)
+  TokenizeAndPrintLines(IEnumerable<string> lines, Ae.TokenizerState? state)
   {
     var tokens = new List<Ae.Token>();
 
