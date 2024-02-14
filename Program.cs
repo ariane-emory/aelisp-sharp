@@ -107,15 +107,24 @@ class Program
         Mode.EntireFileAtOnce
       })
     {
-      var tokenizeResult = mode switch
-      {
-        Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
-        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-      };
+      // var tokenizeResult = mode switch
+      // {
+      //   Mode.LineByLine => TokenizeLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+      //   Mode.EntireFileAtOnce => TokenizeLine(File.ReadAllText(filename), null),
+      //   _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+      // };
 
-      if (tokenizeResult.Tokens is not null)
-        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      // if (tokenizeResult.Tokens is not null)
+      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+
+      switch (mode)
+      {
+        case Mode.LineByLine:
+          break;
+        case Mode.EntireFileAtOnce:
+          break;
+      }
+
 
       WriteLine($"\n\n---\n\n");
     }
