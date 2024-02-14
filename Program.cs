@@ -20,7 +20,8 @@ class Program
   };
 
   //====================================================================================================================
-  static bool IsIncludedTokenType(AeToken token) => !ExcludedTokenTypes.Contains(token.TokenType);
+  static bool IsExcludedTokenType(AeToken token) => ExcludedTokenTypes.Contains(token.TokenType);
+  static bool IsIncludedTokenType(AeToken token) => !IsExcludedTokenType(token);
 
   //====================================================================================================================
   static void PrintTokens(IEnumerable<AeToken> tokens)
@@ -104,14 +105,14 @@ class Program
     public int ChunkSizeHint => 16;
 
     private string? _input;
-    private readonly Func<AeToken, bool>? _filter;
+    private readonly Func<AeToken, bool>? _exclude;
     private AeLispTokenizerState? _state;
     private readonly Queue<AeToken> _queued;
 
-    public AeLispTokenizerTokenStream(string input, Func<AeToken, bool>? filter = null)
+    public AeLispTokenizerTokenStream(string input, Func<AeToken, bool>? exclude = null)
     {
       _input = input;
-      _filter = filter;
+      _exclude = exclude;
       _queued = new Queue<AeToken>();
     }
 
@@ -124,8 +125,8 @@ class Program
         var token = Next();
 
         if (token is null)
-         break;
-         
+          break;
+
         buffer[ix] = token.Value;
       }
 
@@ -134,17 +135,32 @@ class Program
 
     private AeToken? Next()
     {
-      Start:
+    Start:
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
 
-      _state = newState;
-      _input = newInput;
+      (_state, _input) = (newState, newInput);
 
-      if (newToken is not null && _filter is not null && ! _filter(newToken.Value)
-          goto Start;
-          
+      if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
+        goto Start;
+
       return newToken;
     }
+
+    // private AeToken? Next()
+    // {
+    //   while (true)
+    //   {
+    //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+
+    //     (_state, _input) = (newState, newInput);
+
+    //     if (newToken is null)
+    //       return null;
+
+    //     if (_include is null || _include(newToken.Value))
+    //       return newToken;
+    //   }
+    // }
   }
 
   //====================================================================================================================
@@ -152,7 +168,7 @@ class Program
   {
     var filename = "data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new AeLispTokenizerTokenStream(fileText, IsIncludedTokenType);
+    var stream = new AeLispTokenizerTokenStream(fileText, IsExcludedTokenType);
     var ary = new AeToken[8];
     var read = stream.Read(ary);
     PrintTokens(ary.Take(read));
