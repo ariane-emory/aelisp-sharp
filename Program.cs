@@ -134,11 +134,15 @@ class Program
 
     private AeToken? Next()
     {
+      Start:
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
 
       _state = newState;
       _input = newInput;
 
+      if (newToken is not null && _filter is not null && ! _filter(newToken.Value)
+          goto Start;
+          
       return newToken;
     }
   }
