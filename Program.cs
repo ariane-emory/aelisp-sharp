@@ -137,7 +137,6 @@ class Program
     {
     Next:
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-
       (_state, _input) = (newState, newInput);
 
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
@@ -151,13 +150,9 @@ class Program
     //   while (true)
     //   {
     //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-
     //     (_state, _input) = (newState, newInput);
 
-    //     if (newToken is null)
-    //       return null;
-
-    //     if (_include is null || _include(newToken.Value))
+    //     if (newToken is null || (_exclude is not null && !_exclude(newToken.Value)))
     //       return newToken;
     //   }
     // }
