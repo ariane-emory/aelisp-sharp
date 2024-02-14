@@ -66,8 +66,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
   public (string? Input, TTokenizeState State, TToken? Token)
   NextToken(string? input, TTokenizeState? state)
   {
-    if (state is null)
-      state = _createTokenizerState();
+    state ??= _createTokenizerState();
 
     if (!string.IsNullOrEmpty(input))
       foreach (var definition in _tokenDefinitions)
