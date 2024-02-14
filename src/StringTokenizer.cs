@@ -63,14 +63,14 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public IEnumerable<(TToken? Token, string? Input, TTokenizeState? State)> Tokenize(string? input, TTokenizeState? state = null)
+  public IEnumerable<(string? Input, TTokenizeState? State, TToken? Token)> Tokenize(string? input, TTokenizeState? state = null)
   {
     if (state is null)
       state = _createTokenizerState();
 
     if (string.IsNullOrEmpty(input))
     {
-      yield return (null, input, state);
+      yield return (input, state, null);
       yield break;
     }
 
@@ -99,7 +99,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
 
           input = input.Substring(match.Length);
 
-          yield return (token, input, state);
+          yield return (input, state, token);
           
           break;
         }
