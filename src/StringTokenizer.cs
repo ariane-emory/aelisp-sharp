@@ -63,7 +63,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public IEnumerable<(string? Input, TTokenizeState? State, TToken? Token)> Tokenize(string? input, TTokenizeState? state = null)
+  public IEnumerable<(string? Input, TTokenizeState? State, TToken? Token)>
+  Tokenize(string? input, TTokenizeState? state = null)
   {
     if (state is null)
       state = _createTokenizerState();
