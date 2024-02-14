@@ -98,71 +98,11 @@ class Program
   }
 
   //====================================================================================================================
-  public class AeLispTokenizerTokenStream : Pidgin.ITokenStream<AeToken>
-  {
-    public void Return(ReadOnlySpan<AeToken> leftovers) { }
-    public int ChunkSizeHint => 16;
-
-    private string? _input;
-    private readonly Func<AeToken, bool>? _exclude;
-    private AeLispTokenizerState? _state;
-    private readonly Queue<AeToken> _queued;
-
-    public AeLispTokenizerTokenStream(string input, Func<AeToken, bool>? exclude = null)
-    {
-      _input = input;
-      _exclude = exclude;
-      _queued = new Queue<AeToken>();
-    }
-
-    public int Read(Span<AeToken> buffer)
-    {
-      var ix = 0;
-
-      for (; ix < buffer.Length; ix++)
-      {
-        var token = Next();
-
-        if (token is null)
-          break;
-
-        buffer[ix] = token.Value;
-      }
-
-      return ix;
-    }
-
-    private AeToken? Next()
-    {
-      Next:
-      var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-      (_state, _input) = (newState, newInput);
-
-      if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
-        goto Next;
-
-      return newToken;
-    }
-
-    // private AeToken? Next()
-    // {
-    //   while (true)
-    //   {
-    //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-    //     (_state, _input) = (newState, newInput);
-
-    //     if (newToken is null || (_exclude is not null && !_exclude(newToken.Value)))
-    //       return newToken;
-    //   }
-    // }
-  }
-
-  //====================================================================================================================
   static void Main()
   {
     var filename = "data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new AeLispTokenizerTokenStream(fileText, IsExcludedTokenType);
+    var stream = new Ae.TokenizerTokenStream(fileText, IsExcludedTokenType);
     var take = 32;
     var ary = new AeToken[take];
     var read = stream.Read(ary);

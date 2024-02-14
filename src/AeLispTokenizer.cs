@@ -264,8 +264,7 @@ public static partial class Ae
     //==================================================================================================================
     // Token callbacks (multiline strings)
     //==================================================================================================================
-    private static (AeLispTokenizerState, PositionedToken<TokenType>)
-      ProcBeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+    private static (AeLispTokenizerState, PositionedToken<TokenType>) ProcBeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcTrimFirst(UnescapeChars(ProcCountLine(tup)));
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineString;
@@ -345,4 +344,66 @@ public static partial class Ae
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
     private const string StringContent = @"(?:(?:\\[abfnrtv\\""])|[^\""\n\\])*"; // Keep this in sync with EscapedChars.
   }
+
+  //====================================================================================================================
+  public class TokenizerTokenStream : Pidgin.ITokenStream<PositionedToken<TokenType>>
+  {
+    public void Return(ReadOnlySpan<PositionedToken<TokenType>> leftovers) { }
+    public int ChunkSizeHint => 16;
+
+    private string? _input;
+    private readonly Func<PositionedToken<TokenType>, bool>? _exclude;
+    private AeLispTokenizerState? _state;
+    private readonly Queue<PositionedToken<TokenType>> _queued;
+
+    public TokenizerTokenStream(string input, Func<PositionedToken<TokenType>, bool>? exclude = null)
+    {
+      _input = input;
+      _exclude = exclude;
+      _queued = new Queue<PositionedToken<TokenType>>();
+    }
+
+    public int Read(Span<PositionedToken<TokenType>> buffer)
+    {
+      var ix = 0;
+
+      for (; ix < buffer.Length; ix++)
+      {
+        var token = Next();
+
+        if (token is null)
+          break;
+
+        buffer[ix] = token.Value;
+      }
+
+      return ix;
+    }
+
+    private PositionedToken<TokenType>? Next()
+    {
+      Next:
+      var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+      (_state, _input) = (newState, newInput);
+
+      if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
+        goto Next;
+
+      return newToken;
+    }
+
+    // private PositionedToken<TokenType>? Next()
+    // {
+    //   while (true)
+    //   {
+    //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+    //     (_state, _input) = (newState, newInput);
+
+    //     if (newToken is null || (_exclude is not null && !_exclude(newToken.Value)))
+    //       return newToken;
+    //   }
+    // }
+  }
+
+
 }
