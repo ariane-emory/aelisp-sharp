@@ -261,6 +261,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       BeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
+      tup = ProcUnescapeChars(CountLine(tup));
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineString;
       
       return CountLine(tup);
@@ -269,6 +270,7 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       EndMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
+      tup = ProcUnescapeChars(CountLine(tup));
       tup.State.Mode = AeLispTokenizerStateMode.Normal;
       
       return tup;
