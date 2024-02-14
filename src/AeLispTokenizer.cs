@@ -175,7 +175,7 @@ public static partial class Ae
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       TrimLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(0, tup.Token.Text.Length-2), tup.Token.Line, tup.Token.Column));
+      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(0, tup.Token.Text.Length-1), tup.Token.Line, tup.Token.Column));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
