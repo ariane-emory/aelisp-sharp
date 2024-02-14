@@ -64,7 +64,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
   }
 
   //====================================================================================================================
-  public IEnumerable<(string? Input, TTokenizeState? State, TToken? Token)>
+  public IEnumerable<(string? Input, TTokenizeState State, TToken? Token)>
   Tokenize(string? input, TTokenizeState? state = null)
   {
     if (state is null)
@@ -72,7 +72,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
 
     if (string.IsNullOrEmpty(input))
     {
-      yield return (input, state, null);
+      yield return (input, state.Value, null);
       yield break;
     }
 
@@ -101,7 +101,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
 
           input = input.Substring(match.Length);
 
-          yield return (input, state, token);
+          yield return (input, state.Value, token);
 
           break;
         }
@@ -111,6 +111,6 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
         yield break;
     }
 
-    yield return (input, state, null);
+    yield return (input, state.Value, null);
   }
 }
