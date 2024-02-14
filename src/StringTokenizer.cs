@@ -63,108 +63,41 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  // //====================================================================================================================
-  // public IEnumerable<(string? Input, TTokenizeState State, TToken? Token)>
-  // Tokenize(string? input, TTokenizeState? state = null)
-  // {
-  //   if (state is null)
-  //     state = _createTokenizerState();
-
-  //   if (string.IsNullOrEmpty(input))
-  //   {
-  //     yield return (input, state.Value, null);
-  //     yield break;
-  //   }
-
-  //   while (!string.IsNullOrEmpty(input))
-  //   {
-  //     var foundMatch = false;
-
-  //     foreach (var definition in _tokenDefinitions)
-  //     {
-  //       if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
-  //         continue;
-
-  //       var match = definition.Pattern.Match(input);
-
-  //       if (match.Success)
-  //       {
-  //         if (match.Length == 0)
-  //           throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
-
-  //         foundMatch = true;
-
-  //         var token = _createToken(definition.Type, match.Value);
-
-  //         if (definition.ProcessToken is not null)
-  //           (state, token) = definition.ProcessToken((state.Value, token));
-
-  //         input = input.Substring(match.Length);
-
-  //         yield return (input, state.Value, token);
-
-  //         break;
-  //       }
-  //     }
-
-  //     if (!foundMatch)
-  //       yield break;
-  //   }
-
-  //   yield return (input, state.Value, null);
-  // }
-
-  public record struct TokenizeData(string? Input, List<TToken>? Tokens, TTokenizeState? State) { };
-
-  public TokenizeData Tokenize(string? Input, List<TToken>? Tokens = null, TTokenizeState? State = null) =>
-    Tokenize(new TokenizeData(Input, Tokens, State));
-
-  public TokenizeData Tokenize(TokenizeData tokenizeData)
+  public (string? Input, TTokenizeState State, TToken? Token)
+  Tokenize(string? input, TTokenizeState? state)
   {
-    if (tokenizeData.State is null)
-      tokenizeData.State = _createTokenizerState();
+    if (state is null)
+      state = _createTokenizerState();
 
-    if (tokenizeData.Tokens is null)
-      tokenizeData.Tokens = new List<TToken>();
+    if (string.IsNullOrEmpty(input))
+      goto ReturnNoToken;
 
-    if (tokenizeData.Input is null)
-      return tokenizeData;
-
-    while (!string.IsNullOrEmpty(tokenizeData.Input))
+    foreach (var definition in _tokenDefinitions)
     {
-      var foundMatch = false;
+      if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
+        continue;
 
-      foreach (var definition in _tokenDefinitions)
+      var match = definition.Pattern.Match(input);
+
+      if (match.Success)
       {
-        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(tokenizeData.State.Value))
-          continue;
+        if (match.Length == 0)
+          throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
 
-        var match = definition.Pattern.Match(tokenizeData.Input);
+        var token = _createToken(definition.Type, match.Value);
 
-        if (match.Success)
-        {
-          if (match.Length == 0)
-            throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
+        if (definition.ProcessToken is not null)
+          (state, token) = definition.ProcessToken((state.Value, token));
 
-          foundMatch = true;
+        input = input.Substring(match.Length);
 
-          var token = _createToken(definition.Type, match.Value);
-
-          if (definition.ProcessToken is not null)
-            (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
-
-          tokenizeData.Tokens.Add(token);
-          tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
-
-          break;
-        }
+        return (input, state.Value, token);
       }
-
-      if (!foundMatch)
-        break;
     }
-
-    return tokenizeData;
+    
+    ReturnNoToken:
+    return (input, state.Value, null);
   }
-  
+
 }
+

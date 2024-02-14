@@ -29,114 +29,32 @@ class Program
   }
 
   //====================================================================================================================
-  // static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
-  // TokenizeAndPrintLine(string? input, AeLispTokenizerState? state)
-  // {
-  //   var tokens = new List<AeToken>();
+  static (string? Input, AeLispTokenizerState State, AeToken? Token) TokenizeAndPrintLine(string? input, AeLispTokenizerState? state = null)
+  { 
+    var (newInput, newState, newToken) = Tokenizer.Get().Tokenize(input, null);
 
-  //   foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
-  //   {
-  //     (input, state) = (leftoverInput, newState);
+    if (newToken is not null)
+      PrintTokens(new [] { newToken.Value}.AsEnumerable());
 
-  //     if (newToken is not null)
-  //       tokens.Add(newToken.Value);
-  //   }
-
-  //   PrintTokens(tokens);
-
-  //   return (input, state, tokens);
-  // }
-
-  static Tokenizer.TokenizeData TokenizeAndPrintLine(Tokenizer.TokenizeData tokenizeData)
-  {
-    tokenizeData = Tokenizer.Get().Tokenize(tokenizeData);
-
-    if (tokenizeData.Tokens is not null)
-      PrintTokens(tokenizeData.Tokens);
-
-    return tokenizeData;
+    return (newInput, newState, newToken);
   }
 
   //====================================================================================================================
-  // static (string? Input, AeLispTokenizerState? State, List<AeToken> Tokens)
-  // TokenizeAndPrintLines(IEnumerable<string> lines)
+  // static Tokenizer.TokenizeData TokenizeAndPrintLines(IEnumerable<string> lines)
   // {
-  //   var tokens = new List<AeToken>();
-
-  //   AeLispTokenizerState? state = null;
+  //   var (input, state, token) = Tokenizer.Get().Tokenize(input, null);
+  //   var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
 
   //   foreach (var line in lines)
   //   {
-  //     var (leftoverInput, newState, newTokens) = TokenizeAndPrintLine(line, state);
+  //     tokenizeData.Input = line;
+  //     tokenizeData = TokenizeAndPrintLine(tokenizeData);
 
-  //     state = newState;
-
-  //     tokens.AddRange(newTokens);
+  //     if (!string.IsNullOrEmpty(tokenizeData.Input))
+  //       break;
   //   }
 
-  //   return (null, state, tokens);
-  // }
-  static Tokenizer.TokenizeData TokenizeAndPrintLines(IEnumerable<string> lines)
-  {
-    var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
-
-    foreach (var line in lines)
-    {
-      tokenizeData.Input = line;
-      tokenizeData = TokenizeAndPrintLine(tokenizeData);
-
-      if (!string.IsNullOrEmpty(tokenizeData.Input))
-        break;
-    }
-
-    return tokenizeData;
-  }
-
-  //====================================================================================================================
-  // // GPT's idea:
-  // public class WrappedTokenizer
-  // {
-  //   public IEnumerable<AeToken> Tokenize(string input, ref AeLispTokenizerState? state)
-  //   {
-  //     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
-  //     {
-  //       state = newState;
-  //       if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
-  //         yield break;
-  //       else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
-  //         yield return newToken.Value;
-  //     }
-  //   }
-  // }
-
-  // //====================================================================================================================
-  // public class WrappedTokenizer
-  // {
-  //   private AeLispTokenizerState? _state = null;
-
-  //   public void Reset()
-  //   {
-  //     _state = null;
-  //   }
-
-  //   public IEnumerable<AeToken> Tokenize(string input)
-  //   {
-  //     var state = _state;
-
-  //     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
-  //     {
-  //       state = newState;
-
-  //       if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
-  //         yield break;
-  //       else if (newToken is null)
-  //         break;
-  //       else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
-  //         yield return newToken.Value;
-  //     }
-
-  //     _state = state;
-  //   }
+  //   return tokenizeData;
   // }
 
   //====================================================================================================================
@@ -180,19 +98,19 @@ class Program
     var filename = "data.lisp";
 
     foreach (var mode in new[] {
-        Mode.LineByLine,
+//        Mode.LineByLine,
         Mode.EntireFileAtOnce
       })
     {
       var tokenizeResult = mode switch
       {
-        Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-        Mode.EntireFileAtOnce => TokenizeAndPrintLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null, null)),
+        // Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+        Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
 
-      if (tokenizeResult.Tokens is not null)
-        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      // if (tokenizeResult.Tokens is not null)
+      //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
       WriteLine($"\n\n---\n\n");
     }
