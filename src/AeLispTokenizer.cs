@@ -127,27 +127,6 @@ public static partial class Ae
       .Add((Type: TokenType.MultilineCommentContent,    Discrete: false, Process: CountLine,         IsActive: InMultilineComment,   Pattern: @"[^\n]*\n"))
       .Add((Type: TokenType.Garbage,                    Discrete: false, Process: null,              IsActive: null,                 Pattern: @".+"));
 
-    private const string StringContent = @"(?:\\\""|[^\""\n])*";
-    private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
-    private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
-    private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$|(?:#\|))";
-    private const string Integer = @"(?:(?:[1-9]\d*)|0)";
-    private const string MathOp = @"(?:[+\-%/\*\^]|" + ShiftLeft + @"|" + ShiftRight + @")";
-    private const string MaybePunctuationSuffix = @"(?:[\?\!\*\+]|\!\!)?";
-    private const string MaybeSigned = @"(?:" + Sign + @")?";
-    private const string MaybeSymLeader = @"(?:[\-+:&!%#])?";
-    private const string MaybeZeroPadding = @"(?:0+)?";
-    private const string Rational = MaybeSigned + DigitSeparatedInteger + @"\/" + DigitSeparatedInteger;
-    private const string ShiftLeft = @"(?:\<\<)";
-    private const string ShiftRight = @"(?:\>\>)";
-    private const string Sign = @"(?:[\-+])";
-    private const string SymBody = @"(?:" + MaybeSymLeader + SymFirstWord + @"(?:" + SymSeparator + SymWord + @")*" + MaybePunctuationSuffix + @")";
-    private const string SymFirstWord = @"(?:[a-zA-Z]" + SymWordChar + @"*)";
-    private const string SymSeparator = @"(?:(?:\-+)|(?:_+)|(?:\:+)|(?:/+))";
-    private const string SymWord = @"(?:" + SymWordChar + @"+)";
-    private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
-    private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
-
     private static readonly ImmutableList<(string, string)> EscapedChars = ImmutableList.Create(
       (@"\a", "\a"),
       (@"\b", "\b"),
@@ -332,5 +311,31 @@ public static partial class Ae
     private static bool Normal(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool NotInMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool Always(AeLispTokenizerState state) => true;
+
+    
+    //==================================================================================================================
+    // Patterns are down here since they confuse csharp-mode's indentation logic:
+    //==================================================================================================================
+    private const string StringContent = @"(?:\\\""|[^\""\n])*";
+    private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
+    private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
+    private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$|(?:#\|))";
+    private const string Integer = @"(?:(?:[1-9]\d*)|0)";
+    private const string MathOp = @"(?:[+\-%/\*\^]|" + ShiftLeft + @"|" + ShiftRight + @")";
+    private const string MaybePunctuationSuffix = @"(?:[\?\!\*\+]|\!\!)?";
+    private const string MaybeSigned = @"(?:" + Sign + @")?";
+    private const string MaybeSymLeader = @"(?:[\-+:&!%#])?";
+    private const string MaybeZeroPadding = @"(?:0+)?";
+    private const string Rational = MaybeSigned + DigitSeparatedInteger + @"\/" + DigitSeparatedInteger;
+    private const string ShiftLeft = @"(?:\<\<)";
+    private const string ShiftRight = @"(?:\>\>)";
+    private const string Sign = @"(?:[\-+])";
+    private const string SymBody = @"(?:" + MaybeSymLeader + SymFirstWord + @"(?:" + SymSeparator + SymWord + @")*" + MaybePunctuationSuffix + @")";
+    private const string SymFirstWord = @"(?:[a-zA-Z]" + SymWordChar + @"*)";
+    private const string SymSeparator = @"(?:(?:\-+)|(?:_+)|(?:\:+)|(?:/+))";
+    private const string SymWord = @"(?:" + SymWordChar + @"+)";
+    private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
+    private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
+
   }
 }
