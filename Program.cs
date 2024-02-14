@@ -106,10 +106,12 @@ class Program
     private readonly Queue<AeToken> _queued;
     private string? _input;
     private AeLispTokenizerState? _state;
+    private Func<AeToken, bool>? _filter;
 
-    public AeLispTokenizerTokenStream(string input)
+    public AeLispTokenizerTokenStream(string input, Func<AeToken, bool>? filter = null)
     {
       _input = input;
+      _filter = filter;
       _queued = new Queue<AeToken>();
     }
 
