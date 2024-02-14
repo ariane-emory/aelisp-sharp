@@ -9,11 +9,10 @@ class Program
   {
     TokenType.Whitespace,
     TokenType.LineComment,
-    TokenType.MultilineCommentB,
-    TokenType.MultilineCommentC,
-    TokenType.MultilineCommentE,
-    TokenType.MultilineCommentN,
-    TokenType.MultilineCommentS,
+    TokenType.MultilineCommentBeginning,
+    TokenType.MultilineCommentContent,
+    TokenType.MultilineCommentContentEnd,
+    TokenType.InlineComment,
     TokenType.Newline,
   };
 
