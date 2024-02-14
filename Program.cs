@@ -29,20 +29,30 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, AeLispTokenizerState State, AeToken? Token) TokenizeAndPrintLine(string? input, AeLispTokenizerState? state = null)
+  static (string? Input, AeLispTokenizerState State, List<AeToken> Tokens) 
+  TokenizeAndPrintLine(string? input, AeLispTokenizerState? state = null)
   { 
-    var (newInput, newState, newToken) = Tokenizer.Get().Tokenize(input, null);
+      var tokens = new List<AeToken>();
 
-    if (newToken is not null)
-      PrintTokens(new [] { newToken.Value}.AsEnumerable());
+      while (!string.IsNullOrEmpty(input)) {
+         var (newInput, newState, newToken) = Tokenizer.Get().NextToken(input, state);
+         (input, state) = (newInput, newState);
 
-    return (newInput, newState, newToken);
+         if (newToken is not null) {
+            PrintTokens(new [] { newToken.Value}.AsEnumerable());
+            
+            tokens.Add(newToken.Value);
+         }
+
+      }
+
+       return (input, state.Value, tokens);
   }
 
   //====================================================================================================================
   // static Tokenizer.TokenizeData TokenizeAndPrintLines(IEnumerable<string> lines)
   // {
-  //   var (input, state, token) = Tokenizer.Get().Tokenize(input, null);
+  //   var (input, state, token) = Tokenizer.Get().NextToken(input, null);
   //   var tokenizeData = new Tokenizer.TokenizeData(null, null, null);
 
   //   foreach (var line in lines)

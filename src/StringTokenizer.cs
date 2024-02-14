@@ -64,7 +64,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
   }
 
   public (string? Input, TTokenizeState State, TToken? Token)
-  Tokenize(string? input, TTokenizeState? state)
+  NextToken(string? input, TTokenizeState? state)
   {
     if (state is null)
       state = _createTokenizerState();
@@ -94,8 +94,8 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
         return (input, state.Value, token);
       }
     }
-    
-    ReturnNoToken:
+
+  ReturnNoToken:
     return (input, state.Value, null);
   }
 
