@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using System.Collections.Immutable;
+using static System.Console;
 using static Ae;
 using static Utility;
 using Pidgin;
@@ -8,16 +9,14 @@ using AeToken = Ae.PositionedToken<Ae.TokenType>;
 
 class Program
 {
-  static readonly List<TokenType> ExcludedTokenTypes = new List<TokenType>
-  {
-    TokenType.Whitespace,
-    TokenType.LineComment,
-    TokenType.MultilineCommentBeginning,
-    TokenType.MultilineCommentContent,
-    TokenType.MultilineCommentEnd,
-    TokenType.Comment,
-    TokenType.Newline,
-  };
+    static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
+      TokenType.Whitespace,
+      TokenType.LineComment,
+      TokenType.MultilineCommentBeginning,
+      TokenType.MultilineCommentContent,
+      TokenType.MultilineCommentEnd,
+      TokenType.Comment,
+      TokenType.Newline);
 
   //====================================================================================================================
   static bool IsExcludedTokenType(AeToken token) => ExcludedTokenTypes.Contains(token.TokenType);
@@ -135,7 +134,7 @@ class Program
 
     private AeToken? Next()
     {
-    Next:
+      Next:
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 
