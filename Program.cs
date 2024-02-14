@@ -28,21 +28,6 @@ class Program
 
   //====================================================================================================================
   static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
-  TokenizeLines(IEnumerable<string> lines)
-  {
-    (string? input, AeLispTokenizerState? state, List<PositionedToken<TokenType>> tokens) = (null, null, new List<PositionedToken<TokenType>>());
-
-    foreach (var line in lines)
-    {
-      (input, state, tokens) = TokenizeLine(line, state);
-      tokens.AddRange(tokens);
-    }
-
-    return (input, state, tokens);
-  }
-
-  //====================================================================================================================
-  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
   TokenizeLine(string? input, AeLispTokenizerState? state)
   {
     var tokens = new List<PositionedToken<TokenType>>();
@@ -56,6 +41,23 @@ class Program
     }
 
     PrintTokens(tokens);
+
+    return (input, state, tokens);
+  }
+
+
+  //====================================================================================================================
+  static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
+  TokenizeLines(IEnumerable<string> lines)
+  {
+    (string? input, AeLispTokenizerState? state, List<PositionedToken<TokenType>> tokens) = (null, null, new List<PositionedToken<TokenType>>());
+
+    foreach (var line in lines)
+    {
+      (input, state, tokens) = TokenizeLine(line, state);
+
+      tokens.AddRange(tokens);
+    }
 
     return (input, state, tokens);
   }
