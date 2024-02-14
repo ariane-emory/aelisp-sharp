@@ -45,7 +45,6 @@ class Program
     return (input, state, tokens);
   }
 
-
   //====================================================================================================================
   static (string? Input, AeLispTokenizerState? State, List<PositionedToken<TokenType>> Tokens)
   TokenizeLines(IEnumerable<string> lines)
