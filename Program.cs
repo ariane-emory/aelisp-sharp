@@ -1,10 +1,9 @@
-﻿using static Utility;
+﻿using static System.Console;
 using static Ae;
-using static System.Console;
+using static Utility;
 using Pidgin;
 using static Pidgin.Parser;
-using static Pidgin.Parser<char>;
-
+using static Pidgin.Parser<Ae.PositionedToken<Ae.TokenType>>; // no error
 using AeToken = Ae.PositionedToken<Ae.TokenType>;
 
 class Program
