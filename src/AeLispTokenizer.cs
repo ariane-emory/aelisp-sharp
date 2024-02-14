@@ -242,6 +242,9 @@ public static partial class Ae
       return tup;
     }
     
+    //==================================================================================================================
+    // Token callbacks (multiline comments)
+    //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       BeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
@@ -257,7 +260,10 @@ public static partial class Ae
       
       return tup;
     }
-    
+
+    //==================================================================================================================
+    // Token callbacks (multiline strings)
+    //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       BeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
