@@ -46,7 +46,7 @@ class Program
 
   //   return (input, state, tokens);
   // }
-  
+
   static Tokenizer.TokenizeData TokenizeAndPrintLine(Tokenizer.TokenizeData tokenizeData)
   {
     tokenizeData = Tokenizer.Get().Tokenize(tokenizeData);
@@ -91,7 +91,7 @@ class Program
 
     return tokenizeData;
   }
-  
+
   //====================================================================================================================
   // // GPT's idea:
   // public class WrappedTokenizer
@@ -151,7 +151,7 @@ class Program
 #pragma warning disable CS0169
     private AeLispTokenizerState? _state;
 #pragma warning restore CS0169
-    
+
     public AeLispTokenizerTokenStream(string input)
     {
       _input = input;
@@ -184,43 +184,17 @@ class Program
         Mode.EntireFileAtOnce
       })
     {
-#pragma warning disable CS0162
-            if (true)
-            {
-                var tokenizeResult = mode switch
-                {
-                    Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
-                    Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
-                    _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-                };
+      var tokenizeResult = mode switch
+      {
+        Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n")),
+        Mode.EntireFileAtOnce => TokenizeAndPrintLine(new Tokenizer.TokenizeData(File.ReadAllText(filename), null, null)),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+      };
 
-                if (tokenizeResult.Tokens is not null)
-                    WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
+      if (tokenizeResult.Tokens is not null)
+        WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
 
-                WriteLine($"\n\n---\n\n");
-            }
-            // else
-            // {
-            //     int count = 0;
-
-            //     wrapped.Reset();
-
-            //     switch (mode)
-            //     {
-            //         case Mode.LineByLine:
-            //             foreach (var line in File.ReadAllLines(filename).Select(s => s + "\n")) // experiment with removing the \n and using allowing $ instead of \n in tok defs.
-            //                 foreach (var token in wrapped.Tokenize(line))
-            //                     WriteLine($"#{count++}: {token}");
-            //             break;
-            //         case Mode.EntireFileAtOnce:
-            //             foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
-            //                 WriteLine($"#{count++}: {token}");
-            //             break;
-            //     }
-
-            //     WriteLine($"\n\n---\n\n");
-            // }
-#pragma warning restore CS0162
+      WriteLine($"\n\n---\n\n");
     }
   }
 }
