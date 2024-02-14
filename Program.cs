@@ -20,10 +20,13 @@ class Program
   };
 
   //====================================================================================================================
+  static bool IsIncludedTokenType(AeToken token) => !ExcludedTokenTypes.Contains(token.TokenType);
+  
+  //====================================================================================================================
   static void PrintTokens(IEnumerable<AeToken> tokens)
   {
     foreach (var (token, index) in tokens
-             .Where(token => !ExcludedTokenTypes.Contains(token.TokenType))
+             .Where(IsIncludedTokenType)
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
@@ -71,6 +74,29 @@ class Program
     return (null, state!.Value, tokens);
   }
 
+    //====================================================================================================================
+  enum Mode { LineByLine, EntireFileAtOnce, };
+
+  //====================================================================================================================
+  static void DoTokenizeAndPrintLinesTests(string filename)
+  {
+    foreach (var mode in new[] {
+        Mode.LineByLine,
+        Mode.EntireFileAtOnce
+      })
+    {
+      var tokenizeResult = mode switch
+      {
+        Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n"), null),
+        Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+      };
+
+      WriteLine($"Token count: {tokenizeResult.Tokens.Count}");
+      WriteLine($"\n\n---\n\n");
+    }
+  }
+
   //====================================================================================================================
   public class AeLispTokenizerTokenStream : Pidgin.ITokenStream<AeToken>
   {
@@ -111,31 +137,10 @@ class Program
           throw new ApplicationException($"No token at \"{newInput}\"!");
 
         _state = newState;
+        _input = newInput;
+
         _queued.Enqueue(newToken.Value);
       }
-    }
-  }
-
-  //====================================================================================================================
-  enum Mode { LineByLine, EntireFileAtOnce, };
-
-  //====================================================================================================================
-  static void DoTokenizeAndPrintLinesTests(string filename)
-  {
-    foreach (var mode in new[] {
-        Mode.LineByLine,
-        Mode.EntireFileAtOnce
-      })
-    {
-      var tokenizeResult = mode switch
-      {
-        Mode.LineByLine => TokenizeAndPrintLines(File.ReadAllLines(filename).Select(s => s + "\n"), null),
-        Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
-        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-      };
-
-      WriteLine($"Token count: {tokenizeResult.Tokens.Count}");
-      WriteLine($"\n\n---\n\n");
     }
   }
 
@@ -143,7 +148,11 @@ class Program
   static void Main()
   {
     var filename = "data.lisp";
-
+    var fileText = File.ReadAllText(filename);
+    var stream = new AeLispTokenizerTokenStream(fileText);
+    var ary = new AeToken[16];
+    stream.Read(ary);
+    PrintTokens(ary);
   }
 
   //====================================================================================================================
