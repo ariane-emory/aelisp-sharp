@@ -156,8 +156,8 @@ class Program
     var fileText = File.ReadAllText(filename);
     var stream = new AeLispTokenizerTokenStream(fileText, IsIncludedTokenType);
     var ary = new AeToken[8];
-    stream.Read(ary);
-    PrintTokens(ary);
+    var read = stream.Read(ary);
+    PrintTokens(new Span<AeToken>(ary, 0, read);
   }
 
   //====================================================================================================================
