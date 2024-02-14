@@ -122,8 +122,11 @@ class Program
 
     private readonly List<AeToken> _waiting;
     private string? _input;
-    private AeLispTokenizerState? _state;
 
+#pragma warning disable CS0169
+    private AeLispTokenizerState? _state;
+#pragma warning restore CS0169
+    
     public AeLispTokenizerTokenStream(string input)
     {
       _input = input;
@@ -158,7 +161,7 @@ class Program
         Mode.EntireFileAtOnce
       })
     {
-
+#pragma warning disable CS0162
             if (true)
             {
                 var tokenizeResult = mode switch
@@ -194,7 +197,8 @@ class Program
 
                 WriteLine($"\n\n---\n\n");
             }
-        }
+#pragma warning restore CS0162
+    }
   }
 }
 
