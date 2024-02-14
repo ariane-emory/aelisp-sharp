@@ -77,38 +77,31 @@ class Program
     public void Return(ReadOnlySpan<AeToken> leftovers) { }
     public int ChunkSizeHint => 16;
 
-    private readonly Queue<AeToken> _waiting;
+    private readonly Queue<AeToken> _queued;
     private string? _input;
     private AeLispTokenizerState? _state;
 
     public AeLispTokenizerTokenStream(string input)
     {
       _input = input;
-      _waiting = new Queue<AeToken>();
+      _queued = new Queue<AeToken>();
     }
 
     public int Read(Span<AeToken> buffer)
     {
       var requested = buffer.Length;
 
-      while (_waiting.Count < requested
-             && !string.IsNullOrEmpty(_input))
-      {
-        var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+      Enqueue(requested);
 
-        if (newToken is null)
-          throw new ApplicationException($"No token at \"{newInput}\"!");
-
-        _state = newState;
-        _waiting.Enqueue(newToken.Value);
-      }
-
+      for (int ix = 0; ix < requested; ix++)
+        buffer[ix] = _queued.Dequeue();
+      
       return 0;
     }
 
-    private void Fill(int requested)
+    private void Enqueue(int requested)
     {
-      while (_waiting.Count < requested
+      while (_queued.Count < requested
    && !string.IsNullOrEmpty(_input))
       {
         var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
@@ -117,9 +110,8 @@ class Program
           throw new ApplicationException($"No token at \"{newInput}\"!");
 
         _state = newState;
-        _waiting.Enqueue(newToken.Value);
+        _queued.Enqueue(newToken.Value);
       }
-
     }
   }
 
