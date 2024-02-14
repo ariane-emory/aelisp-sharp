@@ -57,7 +57,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
   {
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
-    
+
     pattern = "(?:" + pattern + ")";
 
     _tokenDefinitions = _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
@@ -69,33 +69,30 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     if (state is null)
       state = _createTokenizerState();
 
-    if (string.IsNullOrEmpty(input))
-      goto ReturnNoToken;
-
-    foreach (var definition in _tokenDefinitions)
-    {
-      if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
-        continue;
-
-      var match = definition.Pattern.Match(input);
-
-      if (match.Success)
+    if (!string.IsNullOrEmpty(input))
+      foreach (var definition in _tokenDefinitions)
       {
-        if (match.Length == 0)
-          throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
+        if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(state.Value))
+          continue;
 
-        var token = _createToken(definition.Type, match.Value);
+        var match = definition.Pattern.Match(input);
 
-        if (definition.ProcessToken is not null)
-          (state, token) = definition.ProcessToken((state.Value, token));
+        if (match.Success)
+        {
+          if (match.Length == 0)
+            throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
 
-        input = input.Substring(match.Length);
+          var token = _createToken(definition.Type, match.Value);
 
-        return (input, state.Value, token);
+          if (definition.ProcessToken is not null)
+            (state, token) = definition.ProcessToken((state.Value, token));
+
+          input = input.Substring(match.Length);
+
+          return (input, state.Value, token);
+        }
       }
-    }
 
-  ReturnNoToken:
     return (input, state.Value, null);
   }
 

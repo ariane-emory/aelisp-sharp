@@ -161,9 +161,9 @@ public static partial class Ae
       ProcStringLike((TokenizerState State, Token Token) tup)
       => UnescapeChars((tup.State,
                             new Token(tup.Token.TokenType,
-                                                           tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                                           tup.Token.Line,
-                                                           tup.Token.Column)));
+                                      tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                      tup.Token.Line,
+                                      tup.Token.Column)));
     
     private static (TokenizerState, Token)
       ProcLispStyleChar((TokenizerState State, Token Token) tup)
