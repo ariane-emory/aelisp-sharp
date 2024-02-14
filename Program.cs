@@ -26,7 +26,7 @@ class Program
   static void PrintTokens(IEnumerable<AeToken> tokens)
   {
     foreach (var (token, index) in tokens
-             .Where(IsIncludedTokenType)
+             //.Where(IsIncludedTokenType)
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
@@ -123,9 +123,11 @@ class Program
       {
         var token = Next();
 
-        if (token is not null)
-          buffer[ix] = token;
-      };
+        if (token is null)
+         break;
+         
+        buffer[ix] = token.Value;
+      }
 
       return ix;
     }
