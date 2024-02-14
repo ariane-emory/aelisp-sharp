@@ -34,7 +34,7 @@ class Program
   {
     var tokens = new List<AeToken>();
 
-    while (!string.IsNullOrEmpty(input))
+    while (!string.IsNullOrEmpty(input)) // infinite loop risk, fix!
     {
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(input, state);
       (input, state) = (newInput, newState);
@@ -119,6 +119,8 @@ class Program
         Mode.EntireFileAtOnce => TokenizeAndPrintLine(File.ReadAllText(filename), null),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
       };
+
+      WriteLine($"Token count: {tokenizeResult.Tokens.Count}");
 
       // if (tokenizeResult.Tokens is not null)
       //   WriteLine($"Token count: {tokenizeResult.Tokens.Count}.");
