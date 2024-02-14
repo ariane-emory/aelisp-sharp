@@ -117,9 +117,30 @@ class Program
   //====================================================================================================================
   public class AeLispTokenizerTokenStream : Pidgin.ITokenStream<AeToken>
   {
-    public int Read(Span<AeToken> buffer) => 0;
-    public void Return(ReadOnlySpan<AeToken> leftovers) {}
-    public int ChunkSizeHint => 8;
+    public void Return(ReadOnlySpan<AeToken> leftovers) { }
+    public int ChunkSizeHint => 16;
+
+    private readonly List<AeToken> _waiting;
+    private string? _input;
+    private AeLispTokenizerState? _state;
+
+    public AeLispTokenizerTokenStream(string input)
+    {
+      _input = input;
+      _waiting = new List<AeToken>();
+    }
+
+    public int Read(Span<AeToken> buffer)
+    {
+      var requested = buffer.Length;
+
+      while (_waiting.Count < requested)
+      {
+        /* do stuff */
+      }
+
+      return 0;
+    }
   }
 
   //====================================================================================================================
