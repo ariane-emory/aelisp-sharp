@@ -123,8 +123,8 @@ public static partial class Ae
       .Add((Type: TokenType.InlineComment,             Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
-      .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"))
-      .Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
+      .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
+      //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     private static readonly ImmutableList<(string, string)> EscapedChars = ImmutableList.Create(
       (@"\a", "\a"),

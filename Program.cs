@@ -105,7 +105,7 @@ class Program
 
     foreach (var mode in new[] {
         Mode.LineByLine,
-        // Mode.EntireFileAtOnce
+        Mode.EntireFileAtOnce
       })
     {
       // var tokenizeResult = mode switch
@@ -121,14 +121,24 @@ class Program
       switch (mode)
       {
         case Mode.LineByLine:
-          foreach (var line in File.ReadAllLines(filename))
-            foreach (var token in wrapped.Tokenize(line))
-              WriteLine(token);
-          break;
+          {
+            int count = 0;
+
+            foreach (var line in File.ReadAllLines(filename).Select(s => s + "\n")) // experiment with removing the \n and using allowing $ instead of \n in tok defs.
+              foreach (var token in wrapped.Tokenize(line))
+                WriteLine($"#{count++}: {token}");
+
+            break;
+          }
         case Mode.EntireFileAtOnce:
-          foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
-            WriteLine(token);
-          break;
+          {
+            int count = 0;
+
+            foreach (var token in wrapped.Tokenize(File.ReadAllText(filename)))
+              WriteLine($"#{count++}: {token}");
+
+            break;
+          }
       }
 
 

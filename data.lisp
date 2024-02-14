@@ -20,8 +20,7 @@ one two#|three
 four
 five|#six
 ?a ?\\ ?\n a#|b|#c
-"normal \n \\ \a \" string"
-"one embedded\"quote\" word
-two embedded\"quote\" word
-three embedded\"quote\" word" four
+"one embedded\"quote
+two embedded\"quote
+three embedded\"quote" four
 
