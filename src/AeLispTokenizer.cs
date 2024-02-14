@@ -301,11 +301,6 @@ public static partial class Ae
     //==================================================================================================================
     // 'Is active?' callbacks
     //==================================================================================================================
-    // private static bool NotInMultilineComment(AeLispTokenizerState state)
-    // {
-    //   return !InMultilineComment(state);
-    // }
-
     private static bool InMultilineComment(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.InMultilineComment;
     private static bool InMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.InMultilineString;
     private static bool Normal(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
