@@ -37,6 +37,10 @@ class Program
     while (!string.IsNullOrEmpty(input)) // infinite loop risk, fix!
     {
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(input, state);
+
+      if (newToken is null)
+        throw new ApplicationException($"No token at \"{newInput}\"!");
+
       (input, state) = (newInput, newState);
 
       if (newToken is not null)
