@@ -33,11 +33,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
                          Regex Pattern,
                          ProcesTokenFun? ProcessToken,
                          TokenDefinitionIsActiveFun? DefinitionIsActive)>
-  _tokenDefinitions =
-    ImmutableArray<(TTokenType Type,
-                    Regex Pattern,
-                    ProcesTokenFun? ProcessToken,
-                    TokenDefinitionIsActiveFun? DefinitionIsActive)>.Empty;
+  _tokenDefinitions = ImmutableArray<(TTokenType Type,
+                                      Regex Pattern,
+                                      ProcesTokenFun? ProcessToken,
+                                      TokenDefinitionIsActiveFun? DefinitionIsActive)>.Empty;
 
   //====================================================================================================================
   // Constructor
@@ -56,10 +55,10 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
                      ProcesTokenFun? processToken = null,
                      TokenDefinitionIsActiveFun? definitionIsActive = null)
   {
-    pattern = "(?:" + pattern + ")";
-
     if (!pattern.StartsWith("^"))
       pattern = "^" + pattern;
+    
+    pattern = "(?:" + pattern + ")";
 
     _tokenDefinitions = _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }

@@ -42,13 +42,13 @@ public static partial class Ae
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
   }
 
-  public enum TokenizerStateMode {
+  public enum TokenizerMode {
     Normal,
     InMultilineComment,
     InMultilineString,
   };
   
-  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerStateMode Mode = TokenizerStateMode.Normal);
+  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
 
   public class Tokenizer : StringTokenizer<TokenType, Token, TokenizerState>
   {
@@ -248,7 +248,7 @@ public static partial class Ae
     private static (TokenizerState, Token)
       ProcBeginMLC((TokenizerState State, Token Token) tup)
     {
-      tup.State.Mode = TokenizerStateMode.InMultilineComment;
+      tup.State.Mode = TokenizerMode.InMultilineComment;
 
       return ProcCountLine(tup);
     }
@@ -256,7 +256,7 @@ public static partial class Ae
     private static (TokenizerState, Token)
       ProcEndMLC((TokenizerState State, Token Token) tup)
     {
-      tup.State.Mode = TokenizerStateMode.Normal;
+      tup.State.Mode = TokenizerMode.Normal;
       
       return tup;
     }
@@ -267,7 +267,7 @@ public static partial class Ae
     private static (TokenizerState, Token) ProcBeginMLS((TokenizerState State, Token Token) tup)
     {
       tup = ProcTrimFirst(UnescapeChars(ProcCountLine(tup)));
-      tup.State.Mode = TokenizerStateMode.InMultilineString;
+      tup.State.Mode = TokenizerMode.InMultilineString;
       
       return tup;
     }
@@ -276,7 +276,7 @@ public static partial class Ae
       ProcEndMLS((TokenizerState State, Token Token) tup)
     {
       tup = TrimLast(UnescapeChars(tup));
-      tup.State.Mode = TokenizerStateMode.Normal;
+      tup.State.Mode = TokenizerMode.Normal;
       
       return tup;
     }
@@ -316,9 +316,9 @@ public static partial class Ae
     //==================================================================================================================
     // 'Is active?' callbacks
     //==================================================================================================================
-    private static bool InMultilineComment(TokenizerState state) => state.Mode == TokenizerStateMode.InMultilineComment;
-    private static bool InMultilineString(TokenizerState state) => state.Mode == TokenizerStateMode.InMultilineString;
-    private static bool Normal(TokenizerState state) => state.Mode == TokenizerStateMode.Normal;
+    private static bool InMultilineComment(TokenizerState state) => state.Mode == TokenizerMode.InMultilineComment;
+    private static bool InMultilineString(TokenizerState state) => state.Mode == TokenizerMode.InMultilineString;
+    private static bool Normal(TokenizerState state) => state.Mode == TokenizerMode.Normal;
     
     //==================================================================================================================
     // Patterns are down here since they confuse csharp-mode's indentation logic:
@@ -348,7 +348,7 @@ public static partial class Ae
   //====================================================================================================================
   public class TokenizerTokenStream : Pidgin.ITokenStream<Token>
   {
-    public void Return(ReadOnlySpan<Token> leftovers) { }
+    public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
     public int ChunkSizeHint => 16;
 
     private string? _input;
