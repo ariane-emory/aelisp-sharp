@@ -116,11 +116,11 @@ public static partial class Ae
       .Add((Type: TokenType.Symbol,                     Discrete: true,  Process: null,              IsActive: null,                 Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
       .Add((Type: TokenType.LispStyleChar,              Discrete: true,  Process: ProcLispStyleChar, IsActive: null,                 Pattern: @"\?\\?."))
       .Add((Type: TokenType.LineComment,                Discrete: false, Process: ProcTrimFirst,     IsActive: null,                 Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.String,                     Discrete: true,  Process: ProcStringLike,    IsActive: null,                 Pattern: @"\""(\\\""|[^\""])*\"""))
-      // .Add((Type: TokenType.String,                     Discrete: true,  Process: ProcString,        IsActive: NotInMultilineString, Pattern: @"\""(\\\""|[^\""\n])*\"""))
-      .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: BeginMLS,          IsActive: null,                 Pattern: @"\"".*\n"))
-      .Add((Type: TokenType.MultilineStringContent,     Discrete: false, Process: null,              IsActive: InMultilineString,    Pattern: @".*\n"))
-      .Add((Type: TokenType.MultilineStringEnd,         Discrete: false, Process: EndMLS,            IsActive: InMultilineString,    Pattern: @".*\"""))
+//      .Add((Type: TokenType.String,                     Discrete: true,  Process: ProcStringLike,    IsActive: null,                 Pattern: @"\""(\\\""|[^\""])*\"""))
+      .Add((Type: TokenType.String,                     Discrete: true,  Process: null,              IsActive: NotInMultilineString, Pattern: @"\""(\\\""|[^\""\n])*\"""))
+      .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: BeginMLS,          IsActive: NotInMultilineString, Pattern: @"\""[^\""]*\n"))
+      .Add((Type: TokenType.MultilineStringEnd,         Discrete: false, Process: EndMLS,            IsActive: InMultilineString,    Pattern: @"(?:(?!\\"").)*\"""))
+      .Add((Type: TokenType.MultilineStringContent,     Discrete: false, Process: null,              IsActive: InMultilineString,    Pattern: @"(?:(?!\\"").)*\n"))
       .Add((Type: TokenType.InlineComment,              Discrete: false, Process: null,              IsActive: null,                 Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning,  Discrete: false, Process: BeginMLC,          IsActive: null,                 Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,        Discrete: false, Process: EndMLC,            IsActive: InMultilineComment,   Pattern: @"[\S \t\f\v]*\|#"))
@@ -329,6 +329,7 @@ public static partial class Ae
     private static bool InMultilineComment(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.InMultilineComment;
     private static bool InMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.InMultilineString;
     private static bool Normal(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
+    private static bool NotInMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool Always(AeLispTokenizerState state) => true;
   }
 }
