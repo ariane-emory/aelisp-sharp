@@ -26,6 +26,22 @@ class Program
   }
 
   //====================================================================================================================
+  // // GPT's idea:
+  // public class WrappedTokenizer
+  // {
+  //   public IEnumerable<PositionedToken<TokenType>> Tokenize(string input, ref AeLispTokenizerState? state)
+  //   {
+  //     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
+  //     {
+  //       state = newState;
+  //       if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
+  //         yield break;
+  //       else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
+  //         yield return newToken.Value;
+  //     }
+  //   }
+  // }
+
   public class WrappedTokenizer
   {
     private AeLispTokenizerState? _state = null;
@@ -34,22 +50,6 @@ class Program
     {
       _state = null;
     }
-
-    // // GPT's idea:
-    // public class WrappedTokenizer
-    // {
-    //   public IEnumerable<PositionedToken<TokenType>> Tokenize(string input, ref AeLispTokenizerState? state)
-    //   {
-    //     foreach (var (leftoverInput, newState, newToken) in Tokenizer.Get().Tokenize(input, state))
-    //     {
-    //       state = newState;
-    //       if (newToken is null && !string.IsNullOrEmpty(leftoverInput))
-    //         yield break;
-    //       else if (newToken is not null && !ExcludedTokenTypes.Contains(newToken.Value.TokenType))
-    //         yield return newToken.Value;
-    //     }
-    //   }
-    // }
 
     public IEnumerable<PositionedToken<TokenType>> Tokenize(string input)
     {
