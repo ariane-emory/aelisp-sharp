@@ -146,72 +146,72 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcUnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcUnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
-
+      
       foreach (var (escaped, unescaped) in EscapedChars)
         str = str.Replace(escaped, unescaped);
-
+      
       tup.Token.Text = str;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => ProcUnescapeChars((tup.State,
-                        new PositionedToken<TokenType>(tup.Token.TokenType,
-                                                       tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                                       tup.Token.Line,
-                                                       tup.Token.Column)));
-  
+                            new PositionedToken<TokenType>(tup.Token.TokenType,
+                                                           tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
+                                                           tup.Token.Line,
+                                                           tup.Token.Column)));
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => ProcUnescapeChars(ProcTrimFirst(tup));
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcTrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-     => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
-  
+      ProcTrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcNumber((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcStripCommas(tup);
-
+      
       var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+)?)$";
       var match = Regex.Match(tup.Token.Text, pattern);
       var sign = match.Groups[1].Value;
       var number = match.Groups[2].Value;
-
+      
       tup.Token.Text = (string.IsNullOrEmpty(number) || number == "0")
         ? "0"
         : sign + number;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcFloat((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcNumber(tup);
       
       var pattern = @"^(.*?\.\d*?)0*?$";
       var replacement = "$1";
-
+      
       tup.Token.Text = Regex.Replace(tup.Token.Text, pattern, replacement);
-       
+      
       if (tup.Token.Text.StartsWith("."))
         tup.Token.Text = "0" + tup.Token.Text;
-
+      
       if (tup.Token.Text.EndsWith("."))
         tup.Token.Text += "0";
-
+      
       return tup;
     }
-  
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcRational((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = ProcStripCommas(tup);
       
@@ -229,75 +229,75 @@ public static partial class Ae
       
       return tup;
     }
-  
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    ProcStripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcStripCommas((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
       
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    BeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      BeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineComment;
-
+      
       return CountLine(tup);
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    EndMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      EndMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Mode = AeLispTokenizerStateMode.Normal;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    BeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      BeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineString;
-
+      
       return CountLine(tup);
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    EndMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      EndMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Mode = AeLispTokenizerStateMode.Normal;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Line++;
       tup.State.Column = 0;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      CountColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
-
+      
       tup.State.Column += tup.Token.Text.Length;
-
+      
       return tup;
     }
-
+    
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-    SetTokenLinesAndColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      SetTokenLinesAndColumns((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.Token.Line = tup.State.Line;
       tup.Token.Column = tup.State.Column;
-
+      
       return tup;
     }
-
+    
     //==================================================================================================================
     // 'Is active?' callbacks
     //==================================================================================================================
@@ -306,11 +306,10 @@ public static partial class Ae
     private static bool Normal(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool NotInMultilineString(AeLispTokenizerState state) => state.Mode == AeLispTokenizerStateMode.Normal;
     private static bool Always(AeLispTokenizerState state) => true;
-
+    
     //==================================================================================================================
     // Patterns are down here since they confuse csharp-mode's indentation logic:
     //==================================================================================================================
-    private const string StringContent = @"(?:\\\""|[^\""\n])*";
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
     private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$|(?:#\|))";
@@ -330,6 +329,6 @@ public static partial class Ae
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
-
+    private const string StringContent = @"(?:\\\""|[^\""\n])*";                                                 
   }
 }
