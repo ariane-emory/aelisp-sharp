@@ -63,26 +63,18 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
   }
 
-  public record struct TokenizeData(string? Input, TTokenizeState? State) { };
-
-  public IEnumerable<(TToken?, TokenizeData)> Tokenize(string? Input, TTokenizeState? State = null) =>
-    Tokenize(new TokenizeData(Input, State));
-
-  public IEnumerable<(TToken?, TokenizeData)> Tokenize(TokenizeData tokenizeData)
+  public IEnumerable<(TToken? Token, string? Input, TTokenizeState? State)> Tokenize(string? input, TTokenizeState? state = null)
   {
-    if (tokenizeData.State is null)
-      tokenizeData.State = _createTokenizerState();
+    if (state is null)
+      state = _createTokenizerState();
 
-    // if (tokenizeData.Tokens is null)
-    //   tokenizeData.Tokens = new List<TToken>();
-
-    if (string.IsNullOrEmpty(tokenizeData.Input))
+    if (string.IsNullOrEmpty(input))
     {
-      yield return (null, tokenizeData);
+      yield return (null, input, state);
       yield break;
     }
 
-    while (!string.IsNullOrEmpty(tokenizeData.Input))
+    while (!string.IsNullOrEmpty(input))
     {
       var foundMatch = false;
 
@@ -91,7 +83,7 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
         if (definition.DefinitionIsActive is not null && !definition.DefinitionIsActive(tokenizeData.State.Value))
           continue;
 
-        var match = definition.Pattern.Match(tokenizeData.Input);
+        var match = definition.Pattern.Match(input);
 
         if (match.Success)
         {
@@ -103,11 +95,11 @@ public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
           var token = _createToken(definition.Type, match.Value);
 
           if (definition.ProcessToken is not null)
-            (tokenizeData.State, token) = definition.ProcessToken((tokenizeData.State.Value, token));
+            (state, token) = definition.ProcessToken((state.Value, token));
 
-          tokenizeData.Input = tokenizeData.Input.Substring(match.Length);
+          input = input.Substring(match.Length);
 
-          yield return (token, tokenizeData);
+          yield return (token, input, state);
           
           break;
         }
