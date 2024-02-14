@@ -77,29 +77,49 @@ class Program
     public void Return(ReadOnlySpan<AeToken> leftovers) { }
     public int ChunkSizeHint => 16;
 
-    private readonly List<AeToken> _waiting;
+    private readonly Queue<AeToken> _waiting;
     private string? _input;
-
-#pragma warning disable CS0169
     private AeLispTokenizerState? _state;
-#pragma warning restore CS0169
 
     public AeLispTokenizerTokenStream(string input)
     {
       _input = input;
-      _waiting = new List<AeToken>();
+      _waiting = new Queue<AeToken>();
     }
 
     public int Read(Span<AeToken> buffer)
     {
       var requested = buffer.Length;
 
-      while (_waiting.Count < requested)
+      while (_waiting.Count < requested
+             && !string.IsNullOrEmpty(_input))
       {
-        /* do stuff */
+        var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+
+        if (newToken is null)
+          throw new ApplicationException($"No token at \"{newInput}\"!");
+
+        _state = newState;
+        _waiting.Enqueue(newToken.Value);
       }
 
       return 0;
+    }
+
+    private void Fill(int requested)
+    {
+      while (_waiting.Count < requested
+   && !string.IsNullOrEmpty(_input))
+      {
+        var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+
+        if (newToken is null)
+          throw new ApplicationException($"No token at \"{newInput}\"!");
+
+        _state = newState;
+        _waiting.Enqueue(newToken.Value);
+      }
+
     }
   }
 
