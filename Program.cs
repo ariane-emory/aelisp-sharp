@@ -151,44 +151,8 @@ class Program
           break;
       }
 
-
       WriteLine($"\n\n---\n\n");
     }
   }
-
-  // Die(0, $"Tokenized all input, {totalTokens} tokens.");
-
-  // Pair properList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
-  // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
-
-  // WriteLine(properList);
-  // WriteLine(Write(properList));
-
-  // foreach (var obj in properList)
-  //   WriteLine(obj);
-
-  // WriteLine(improperList);
-  // WriteLine(Write(improperList));
-
-  // foreach (var obj in improperList)
-  //   WriteLine(obj);
-
-  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-  // WriteLine(Write(new Lambda(Nil, Nil, Nil)));
-
-  // WriteLine("Done.");
-
-  // Ae.Object symbolsList = Cons(new Symbol("one"), Cons(new Symbol("two"), Cons(new Symbol("three"), Nil)));
-
-  // Intern(ref symbolsList, "two");
-  // WriteLine(symbolsList);
-  // Intern(ref symbolsList, "four");
-  // WriteLine(symbolsList);
-  // Intern(ref symbolsList, "two");
-  // WriteLine(symbolsList);
-  // Intern(ref symbolsList, "four");
-  // WriteLine(symbolsList);
-  // }
 }
 
