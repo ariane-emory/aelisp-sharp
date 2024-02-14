@@ -88,7 +88,7 @@ public static partial class Ae
                                            TokenDefinitionIsActiveFun? IsActive,
                                            string Pattern)> Tokens =
       ImmutableList<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
-      .Add((Type: TokenType.Newline,                    Discrete: false, Process: CountLine,         IsActive: null,                 Pattern: @"\r?\n"))
+      .Add((Type: TokenType.Newline,                    Discrete: false, Process: ProcCountLine,     IsActive: null,                 Pattern: @"\r?\n"))
       .Add((Type: TokenType.Whitespace,                 Discrete: false, Process: null,              IsActive: null,                 Pattern: @"[ \t\f\v]+"))
       .Add((Type: TokenType.LParen,                     Discrete: false, Process: null,              IsActive: null,                 Pattern: @"\("))
       .Add((Type: TokenType.RParen,                     Discrete: true,  Process: null,              IsActive: null,                 Pattern: @"\)"))
@@ -116,7 +116,6 @@ public static partial class Ae
       .Add((Type: TokenType.Symbol,                     Discrete: true,  Process: null,              IsActive: null,                 Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
       .Add((Type: TokenType.LispStyleChar,              Discrete: true,  Process: ProcLispStyleChar, IsActive: null,                 Pattern: @"\?\\?."))
       .Add((Type: TokenType.LineComment,                Discrete: false, Process: ProcTrimFirst,     IsActive: null,                 Pattern: @";[^\n]*"))
-//      .Add((Type: TokenType.String,                     Discrete: true,  Process: ProcStringLike,    IsActive: null,                 Pattern: @"\""(\\\""|[^\""])*\"""))
       .Add((Type: TokenType.String,                     Discrete: true,  Process: null,              IsActive: null,                 Pattern: @"\""" + StringContent+ @"\"""))
       .Add((Type: TokenType.MultilineStringBeginning,   Discrete: false, Process: ProcBeginMLS,      IsActive: null,                 Pattern: @"\""" + StringContent+ @"\n"))
       .Add((Type: TokenType.MultilineStringEnd,         Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,    Pattern: StringContent + @"\"""))
@@ -124,7 +123,7 @@ public static partial class Ae
       .Add((Type: TokenType.InlineComment,              Discrete: false, Process: null,              IsActive: null,                 Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning,  Discrete: false, Process: ProcBeginMLC,      IsActive: null,                 Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,        Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment,   Pattern: @"[\S \t\f\v]*\|#"))
-      .Add((Type: TokenType.MultilineCommentContent,    Discrete: false, Process: CountLine,         IsActive: InMultilineComment,   Pattern: @"[^\n]*\n"))
+      .Add((Type: TokenType.MultilineCommentContent,    Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment,   Pattern: @"[^\n]*\n"))
       .Add((Type: TokenType.Garbage,                    Discrete: false, Process: null,              IsActive: null,                 Pattern: @".+"));
 
     private static readonly ImmutableList<(string, string)> EscapedChars = ImmutableList.Create(
@@ -146,7 +145,7 @@ public static partial class Ae
     // Token callbacks
     //==================================================================================================================
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-      ProcUnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      UnescapeChars((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       var str = tup.Token.Text;
       
@@ -160,7 +159,7 @@ public static partial class Ae
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcStringLike((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => ProcUnescapeChars((tup.State,
+      => UnescapeChars((tup.State,
                             new PositionedToken<TokenType>(tup.Token.TokenType,
                                                            tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                                            tup.Token.Line,
@@ -168,14 +167,14 @@ public static partial class Ae
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcLispStyleChar((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => ProcUnescapeChars(ProcTrimFirst(tup));
+      => UnescapeChars(ProcTrimFirst(tup));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcTrimFirst((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-      ProcTrimLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      TrimLast((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
       => (tup.State, new PositionedToken<TokenType>(tup.Token.TokenType, tup.Token.Text.Substring(0, tup.Token.Text.Length-2), tup.Token.Line, tup.Token.Column));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
@@ -249,8 +248,8 @@ public static partial class Ae
       ProcBeginMLC((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineComment;
-      
-      return CountLine(tup);
+
+      return ProcCountLine(tup);
     }
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
@@ -267,16 +266,16 @@ public static partial class Ae
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcBeginMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = ProcTrimFirst(ProcUnescapeChars(CountLine(tup)));
+      tup = ProcTrimFirst(UnescapeChars(ProcCountLine(tup)));
       tup.State.Mode = AeLispTokenizerStateMode.InMultilineString;
       
-      return CountLine(tup);
+      return tup;
     }
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcEndMLS((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
-      tup = ProcTrimLast(ProcUnescapeChars(CountLine(tup)));
+      tup = TrimLast(UnescapeChars(ProcCountLine(tup)));
       tup.State.Mode = AeLispTokenizerStateMode.Normal;
       
       return tup;
@@ -284,10 +283,10 @@ public static partial class Ae
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
       ProcMLSContent((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
-      => ProcUnescapeChars(CountLine(tup));
+      => UnescapeChars(ProcCountLine(tup));
     
     private static (AeLispTokenizerState, PositionedToken<TokenType>)
-      CountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
+      ProcCountLine((AeLispTokenizerState State, PositionedToken<TokenType> Token) tup)
     {
       tup.State.Line++;
       tup.State.Column = 0;
