@@ -6,6 +6,7 @@ public static partial class Ae
 {
   public enum TokenType
   {
+    UninitializedToken,
     At,
     Backtick,
     CStyleChar,

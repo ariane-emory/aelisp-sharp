@@ -103,10 +103,10 @@ class Program
     public void Return(ReadOnlySpan<AeToken> leftovers) { }
     public int ChunkSizeHint => 16;
 
-    private readonly Queue<AeToken> _queued;
     private string? _input;
+    private readonly Func<AeToken, bool>? _filter;
     private AeLispTokenizerState? _state;
-    private Func<AeToken, bool>? _filter;
+    private readonly Queue<AeToken> _queued;
 
     public AeLispTokenizerTokenStream(string input, Func<AeToken, bool>? filter = null)
     {
@@ -123,6 +123,8 @@ class Program
 
       var ix = 0;
 
+      requested = Math.Min(requested, _queued.Count);
+      
       for (; ix < requested; ix++)
         buffer[ix] = _queued.Dequeue();
 
@@ -153,7 +155,7 @@ class Program
     var filename = "data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new AeLispTokenizerTokenStream(fileText, IsIncludedTokenType);
-    var ary = new AeToken[16];
+    var ary = new AeToken[8];
     stream.Read(ary);
     PrintTokens(ary);
   }
