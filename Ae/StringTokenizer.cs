@@ -70,31 +70,39 @@ static partial class Ae
     {
       state ??= _createTokenizerState();
 
-      if (!string.IsNullOrEmpty(input))
-        foreach (var definition in _tokenDefinitions)
+      if (string.IsNullOrEmpty(input))
+      {
+        WriteLine("StringTokenizer: No input, retun no token");
+        goto ReturnNoToken;
+      }
+      
+      WriteLine($"StringTokenizer:   Get token at: \"{input.Trim()}\".");
+      
+      foreach (var definition in _tokenDefinitions)
+      {
+        if (definition.DefinitionIsActive is not null
+            && !definition.DefinitionIsActive(state.Value))
+          continue;
+
+        var match = definition.Pattern.Match(input);
+
+        if (match.Success)
         {
-          if (definition.DefinitionIsActive is not null
-              && !definition.DefinitionIsActive(state.Value))
-            continue;
+          if (match.Length == 0)
+            throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
 
-          var match = definition.Pattern.Match(input);
+          var token = _createToken(definition.Type, match.Value);
 
-          if (match.Success)
-          {
-            if (match.Length == 0)
-              throw new Exception($"Zero-length match found: \"{match.Value}\", which could lead to an infinite loop.");
+          if (definition.ProcessToken is not null)
+            (state, token) = definition.ProcessToken((state.Value, token));
 
-            var token = _createToken(definition.Type, match.Value);
+          input = input.Substring(match.Length);
 
-            if (definition.ProcessToken is not null)
-              (state, token) = definition.ProcessToken((state.Value, token));
-
-            input = input.Substring(match.Length);
-
-            return (input, state.Value, token);
-          }
+          return (input, state.Value, token);
         }
+      }
 
+    ReturnNoToken:
       return (input, state.Value, null);
     }
 
