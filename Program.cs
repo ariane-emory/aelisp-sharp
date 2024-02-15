@@ -19,11 +19,14 @@ class Program
     WriteLine($"");
     ary.Take(read).Print();
 
+    var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBeginning, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
+    
     Func<Token, bool> isMultilineCommentBegin = t => t.TokenType == TokenType.MultilineCommentBeginning;
     Func<Token, bool> isMultilineCommentContent = t => t.TokenType == Ae.TokenType.MultilineCommentContent;
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
-    Func<Token, bool> isSomeOtherToken = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
-    
+    Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
+
+
         // var multilineCommentParser =
         //   from begin in multilineCommentBegin
         //   from contents in multilineCommentContent.Many()
