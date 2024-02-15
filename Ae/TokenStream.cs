@@ -70,7 +70,7 @@ static partial class Ae
       if (_input is null)
         return null;
 
-      WriteLine($"\nStream: Get token at \"{_input.Trim()}\".");
+      WriteLine($"\nStream: Get token at: \"{_input.Trim()}\".");
       
       Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
