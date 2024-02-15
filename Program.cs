@@ -25,7 +25,7 @@ class Program
     Func<Token, bool> isSomeOtherToken = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
 
     var s = "hello\nworld\n\n";
-    WriteLine($"'{s.ReplaceTrailingNewlinesWithEscaped()}'");
+    WriteLine($"'{s.ReplaceNewlinesWithEscaped()}'");
  
     // var multilineCommentParser =
     //   from begin in multilineCommentBegin
