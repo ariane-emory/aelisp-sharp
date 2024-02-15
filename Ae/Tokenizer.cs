@@ -59,27 +59,31 @@ static partial class Ae
   }
 
   //==================================================================================================================================================
-  // Ae's extension method
+  // Ae's extension methods
   //==================================================================================================================================================
-  public static void Print(this IEnumerable<Token> tokens, int countOffset = 0)
+  public static void Print(this IEnumerable<Token> self, int countOffset = 0)
   {
-    foreach (var (token, index) in tokens
+    foreach (var (token, index) in self
              //.Where(TokenHasInterestingTokenType)
              .Select((value, index) => (value, index + countOffset)))
       WriteLine($"#{index}: {token}");
   }
 
   //==================================================================================================================================================
+  public static IEnumerable<Token> WhereInteresting(this IEnumerable<Token> self) => self.Where(TokenHasInterestingTokenType);
+  public static IEnumerable<Token> WhereUninteresting(this IEnumerable<Token> self) => self.Where(TokenHasUninterestingTokenType);
+
+  //==================================================================================================================================================
   // Ae's static field
   //==================================================================================================================================================
   private static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
-    TokenType.Whitespace,
-    TokenType.LineComment,
-    TokenType.MultilineCommentBeginning,
-    TokenType.MultilineCommentContent,
-    TokenType.MultilineCommentEnd,
-    TokenType.Comment,
-    TokenType.Newline);
+  TokenType.Whitespace,
+  TokenType.LineComment,
+  TokenType.MultilineCommentBeginning,
+  TokenType.MultilineCommentContent,
+  TokenType.MultilineCommentEnd,
+  TokenType.Comment,
+  TokenType.Newline);
 
   //==================================================================================================================================================
   // Ae's static methods
