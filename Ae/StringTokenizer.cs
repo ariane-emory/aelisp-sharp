@@ -54,10 +54,10 @@ static partial class Ae
                        ProcesTokenFun? processToken = null,
                        TokenDefinitionIsActiveFun? definitionIsActive = null)
     {
+      pattern = "(?:" + pattern + ")";
+
       if (!pattern.StartsWith("^"))
         pattern = "^" + pattern;
-
-      pattern = "(?:" + pattern + ")";
 
       _tokenDefinitions =
         _tokenDefinitions.Add((type,
