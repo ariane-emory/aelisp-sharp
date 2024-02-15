@@ -55,7 +55,7 @@ static partial class Ae
         else
           WriteLine($"\nStream._input               \"{_input.ReplaceTrailingNewlinesWithEscaped()}\"");
         
-        WriteLine($"\nStream.Read:                Try to set slot #{ix}.");
+        WriteLine($"Stream.Read:                Try to set slot #{ix}.");
 
         var token = Next();
 
