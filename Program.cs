@@ -26,25 +26,29 @@ class Program
 
     var s = "hello\nworld\n\n";
     WriteLine($"'{s.ReplaceNewlinesWithEscaped()}'");
- 
-    // var multilineCommentParser =
-    //   from begin in multilineCommentBegin
-    //   from contents in multilineCommentContent.Many()
-    //   from end in multilineCommentEnd
-    //   select new Ae.PositionedToken<Ae.TokenType>(
-    //     Ae.TokenType.Comment,
-    //     string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
-    //     begin.Line,
-    //     begin.Column
-    //     );
 
-    // Example usage
-    // Assuming you have a method to convert your IEnumerable<AeToken> into a parser's input stream
-    // var tokens = ... // Your token stream here
-    // var result = multilineStringParser.ParseOrFallback(tokens, fallbackValue);
-    // var commentResult = multilineCommentParser.ParseOrFallback(tokens, fallbackValue);
+    var re1 = new Regex(@"^(?:abc)", RegexOptions.Singleline);
+    var re2 = new Regex(@"(?:^abc)", RegexOptions.Singleline);
 
-  }
+    
+        // var multilineCommentParser =
+        //   from begin in multilineCommentBegin
+        //   from contents in multilineCommentContent.Many()
+        //   from end in multilineCommentEnd
+        //   select new Ae.PositionedToken<Ae.TokenType>(
+        //     Ae.TokenType.Comment,
+        //     string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
+        //     begin.Line,
+        //     begin.Column
+        //     );
+
+        // Example usage
+        // Assuming you have a method to convert your IEnumerable<AeToken> into a parser's input stream
+        // var tokens = ... // Your token stream here
+        // var result = multilineStringParser.ParseOrFallback(tokens, fallbackValue);
+        // var commentResult = multilineCommentParser.ParseOrFallback(tokens, fallbackValue);
+
+    }
 
   //====================================================================================================================
 }
