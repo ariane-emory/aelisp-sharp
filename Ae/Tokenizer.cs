@@ -131,7 +131,7 @@ static partial class Ae
     //================================================================================================================================================
     // Private constructor
     //================================================================================================================================================
-    private Tokenizer() : base(createToken: (tokenType, text) => new Token(tokenType, text, 0, 0),
+    private Tokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0),
                                createTokenizerStateFun: () => new())
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
