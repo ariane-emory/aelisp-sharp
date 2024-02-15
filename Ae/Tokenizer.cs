@@ -306,6 +306,7 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcBeginMLC((TokenizerState State, Token Token) tup)
     {
+      tup.Token.Text = tup.Token.Text.Substring(2);
       tup.State.Mode = TokenizerMode.InMultilineComment;
 
       return ProcCountLine(tup);
@@ -315,6 +316,7 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcEndMLC((TokenizerState State, Token Token) tup)
     {
+      tup.Token.Text = tup.Token.Text.Substring(0, tup.Token.Text.Length - 2);
       tup.State.Mode = TokenizerMode.Normal;
 
       return tup;
