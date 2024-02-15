@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using static System.Console;
 using static Ae;
-using static Utility;
 using TokenParser = Pidgin.Parser<Ae.Token, Ae.Token>;
 
 //======================================================================================================================
