@@ -61,11 +61,11 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's extension method
   //==================================================================================================================================================
-  public static void Print(this IEnumerable<Token> tokens)
+  public static void Print(this IEnumerable<Token> tokens, int countOffset = 0)
   {
     foreach (var (token, index) in tokens
              //.Where(TokenHasInterestingTokenType)
-             .Select((value, index) => (value, index)))
+             .Select((value, index) => (value, index + countOffset)))
       WriteLine($"#{index}: {token}");
   }
 
