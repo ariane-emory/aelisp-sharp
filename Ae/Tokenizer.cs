@@ -61,7 +61,7 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static field
   //==================================================================================================================================================
-  public static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
+  private static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
     TokenType.Whitespace,
     TokenType.LineComment,
     TokenType.MultilineCommentBeginning,
