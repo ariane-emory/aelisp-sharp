@@ -11,7 +11,7 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new QueueingTokenStream(fileText, exclude: Ae.IsUninterestingToken);
+    var stream = new TokenStream(fileText); // , exclude: Ae.IsUninterestingToken);
     var take = 32;
     var ary = new Token[take];
     var read = stream.Read(ary);

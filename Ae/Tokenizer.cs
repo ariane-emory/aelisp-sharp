@@ -70,17 +70,17 @@ static partial class Ae
   TokenType.Comment,
   TokenType.Newline);
 
-  //==================================================================================================================================================
-  // Ae's static methods
-  //==================================================================================================================================================
-  public static bool IsUninterestingToken(this Token token) => !IsInterestingToken(token);
-  public static bool IsInterestingToken(this Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
+  // //==================================================================================================================================================
+  // // Ae's static methods
+  // //==================================================================================================================================================
+  // public static bool IsUninterestingToken(this Token token) => !IsInterestingToken(token);
+  // public static bool IsInterestingToken(this Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
 
-  //==================================================================================================================================================
-  // Ae's extension methods
-  //==================================================================================================================================================
-  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInterestingToken());
-  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninterestingToken());
+  // //==================================================================================================================================================
+  // // Ae's extension methods
+  // //==================================================================================================================================================
+  // public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInterestingToken());
+  // public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninterestingToken());
 
   //==================================================================================================================================================
   public static void Print(this IEnumerable<Token> self, int countOffset = 0)
