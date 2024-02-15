@@ -46,27 +46,27 @@ static partial class Ae
     {
       var ix = 0;
 
-      WriteLine($"\nStream.Read:                Fill {buffer.Length} slots.");
+      DebugWrite($"\nStream.Read:                Fill {buffer.Length} slots.");
 
       for (; ix < buffer.Length; ix++)
       {
         if (_input is null)
-          WriteLine($"\nStream._input               null");
+          DebugWrite($"\nStream._input               null");
         else
-          WriteLine($"\nStream._input               \"{_input.ReplaceNewlinesWithEscaped()}\"");
+          DebugWrite($"\nStream._input               \"{_input.ReplaceNewlinesWithEscaped()}\"");
         
-        WriteLine($"Stream.Read:                Try to set slot #{ix}.");
+        DebugWrite($"Stream.Read:                Try to set slot #{ix}.");
 
         var token = Next();
 
         if (token is null)
         {
-          WriteLine($"\nStream.Read:                Got null from Next(), breaking after filling {ix} elements!");
+          DebugWrite($"\nStream.Read:                Got null from Next(), breaking after filling {ix} elements!");
           break;
         }
 
         buffer[ix] = token.Value;
-        WriteLine($"Stream.Read:                Set slot #{ix} to {token.Value}.");
+        DebugWrite($"Stream.Read:                Set slot #{ix} to {token.Value}.");
       }
 
       return ix;
@@ -82,11 +82,11 @@ static partial class Ae
     {
       if (_input is null)
       {
-        WriteLine($"Stream.Next:                Input is null, not getting token!");
+        DebugWrite($"Stream.Next:                Input is null, not getting token!");
         return null;
       }
 
-      WriteLine($"Stream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
+      DebugWrite($"Stream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
 
     Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
@@ -94,14 +94,14 @@ static partial class Ae
 
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
       {
-        WriteLine($"Stream.Next:                Got excluded token: {newToken}, try again!");
+        DebugWrite($"Stream.Next:                Got excluded token: {newToken}, try again!");
         goto Next;
       }
 
       if (newToken is not null)
-        WriteLine($"Stream.Next:                Return token:  {newToken}.");
+        DebugWrite($"Stream.Next:                Return token:  {newToken}.");
       else
-        WriteLine($"Stream.Next:                Return no token!");
+        DebugWrite($"Stream.Next:                Return no token!");
 
       return newToken;
     }

@@ -97,11 +97,11 @@ static partial class Ae
   //==================================================================================================================================================
   private static readonly ImmutableArray<TokenType> UninterestingTokenTypes = ImmutableArray.Create(
   TokenType.Whitespace,
-  TokenType.LineComment,
-  TokenType.MultilineCommentBeginning,
-  TokenType.MultilineCommentContent,
-  TokenType.MultilineCommentEnd,
-  TokenType.Comment,
+  // TokenType.LineComment,
+  // TokenType.MultilineCommentBeginning,
+  // TokenType.MultilineCommentContent,
+  // TokenType.MultilineCommentEnd,
+  // TokenType.Comment,
   TokenType.Newline);
 
   //==================================================================================================================================================
