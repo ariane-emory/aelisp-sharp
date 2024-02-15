@@ -73,14 +73,14 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static methods
   //==================================================================================================================================================
-  public static bool IsUninteresting(this Token token) => !IsInteresting(token);
-  public static bool IsInteresting(this Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
+  public static bool IsUninterestingToken(this Token token) => !IsInterestingToken(token);
+  public static bool IsInterestingToken(this Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
 
   //==================================================================================================================================================
   // Ae's extension methods
   //==================================================================================================================================================
-  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInteresting());
-  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninteresting());
+  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInterestingToken());
+  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninterestingToken());
 
   //==================================================================================================================================================
   public static void Print(this IEnumerable<Token> self, int countOffset = 0)
