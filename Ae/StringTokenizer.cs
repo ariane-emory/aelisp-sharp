@@ -76,7 +76,7 @@ static partial class Ae
         goto ReturnNoToken;
       }
       
-      WriteLine($"StringTokenizer.NextToken:  Get token at: \"{input.TrimEnd('\n')}\".");
+      WriteLine($"StringTokenizer.NextToken:  Get token at: \"{input.ReplaceTrailingNewlinesWithEscaped()}\".");
       
       foreach (var definition in _tokenDefinitions)
       {
