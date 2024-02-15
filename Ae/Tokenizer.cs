@@ -132,7 +132,7 @@ static partial class Ae
     // Private constructor
     //================================================================================================================================================
     private Tokenizer() : base(createToken: (tokenType, text) => new Token(tokenType, text, 0, 0),
-                               createTokenizerStateFun: () => new TokenizerState())
+                               createTokenizerStateFun: () => new())
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
@@ -192,9 +192,9 @@ static partial class Ae
       //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     //================================================================================================================================================
-    public static Tokenizer Instance { get; } = new Tokenizer();
+    public static Tokenizer Instance { get; } = new();
 
-    //================================================================================================================================================
+    //=========================================================== =====================================================================================
     // Token callbacks
     //================================================================================================================================================
     private static (TokenizerState, Token)
