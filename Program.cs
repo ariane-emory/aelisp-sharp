@@ -7,30 +7,6 @@ using TokenParser = Pidgin.Parser<Ae.Token, Ae.Token>;
 //======================================================================================================================
 class Program
 {
-  public static string ReplaceTrailingNewlinesWithEscaped(string input)
-  {
-    // Match trailing newlines
-    var match = Regex.Match(input, @"\n+$");
-    if (!match.Success)
-    {
-      return input; // No trailing newlines to replace
-    }
-
-    // Count the number of trailing newlines
-    int trailingNewlineCount = match.Value.Length;
-
-    // Remove trailing newlines
-    string result = input.TrimEnd('\n');
-
-    // Append escaped newlines
-    for (int i = 0; i < trailingNewlineCount; i++)
-    {
-      result += "\\n";
-    }
-
-    return result;
-  }
-
   //====================================================================================================================
   static void Main()
   {
@@ -49,8 +25,8 @@ class Program
     Func<Token, bool> isSomeOtherToken = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
 
     var s = "hello\nworld\n\n";
-    WriteLine($"'{ReplaceTrailingNewlinesWithEscaped(s)}'");
-
+    WriteLine($"'{s.ReplaceTrailingNewlinesWithEscaped()}'");
+ 
     // var multilineCommentParser =
     //   from begin in multilineCommentBegin
     //   from contents in multilineCommentContent.Many()
