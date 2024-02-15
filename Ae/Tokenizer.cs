@@ -50,13 +50,24 @@ static partial class Ae
   };
 
   //==================================================================================================================================================
+  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
+
+  //==================================================================================================================================================
   public record struct Token(TokenType TokenType, string Text, int Line, int Column)
   {
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
   }
 
   //==================================================================================================================================================
-  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
+  // Ae's extension method
+  //==================================================================================================================================================
+  public static void Print(this IEnumerable<Token> tokens)
+  {
+    foreach (var (token, index) in tokens
+             //.Where(TokenHasInterestingTokenType)
+             .Select((value, index) => (value, index)))
+      WriteLine($"#{index}: {token}");
+  }
 
   //==================================================================================================================================================
   // Ae's static field
@@ -75,15 +86,6 @@ static partial class Ae
   //==================================================================================================================================================
   public static bool TokenHasUninterestingTokenType(Token token) => InterestingTokenTypes.Contains(token.TokenType);
   public static bool TokenHasInterestingTokenType(Token token) => !TokenHasUninterestingTokenType(token);
-
-  //====================================================================================================================
-  public static void Print(this IEnumerable<Token> tokens)
-  {
-    foreach (var (token, index) in tokens
-             //.Where(TokenHasInterestingTokenType)
-             .Select((value, index) => (value, index)))
-      WriteLine($"#{index}: {token}");
-  }
 
   //==================================================================================================================================================
   // Tokenizer class
