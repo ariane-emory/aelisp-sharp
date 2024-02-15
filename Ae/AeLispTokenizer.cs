@@ -2,7 +2,7 @@ using static System.Console;
 using System.Text.RegularExpressions;
 using System.Collections.Immutable;
 
-public static partial class Ae
+static partial class Ae
 {
   public enum TokenType
   {

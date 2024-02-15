@@ -2,7 +2,7 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 
-public static partial class Ae
+static partial class Ae
 {
   //================================================================================================
   // Base object abstract class
