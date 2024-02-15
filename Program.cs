@@ -7,10 +7,10 @@ using static Utility;
 class Program
 {
   //====================================================================================================================
-  static (string? Input, Ae.TokenizerState State, List<Ae.Token> Tokens)
-  TokenizeAndPrintLine(string? input, Ae.TokenizerState? state = null)
+  static (string? Input, TokenizerState State, List<Token> Tokens)
+  TokenizeAndPrintLine(string? input, TokenizerState? state = null)
   {
-    var tokens = new List<Ae.Token>();
+    var tokens = new List<Token>();
 
     while (!string.IsNullOrEmpty(input)) // infinite loop risk, fix!
     {
@@ -30,10 +30,10 @@ class Program
   }
 
   //====================================================================================================================
-  static (string? Input, Ae.TokenizerState State, List<Ae.Token> Tokens)
-  TokenizeAndPrintLines(IEnumerable<string> lines, Ae.TokenizerState? state)
+  static (string? Input, TokenizerState State, List<Token> Tokens)
+  TokenizeAndPrintLines(IEnumerable<string> lines, TokenizerState? state)
   {
-    var tokens = new List<Ae.Token>();
+    var tokens = new List<Token>();
 
     foreach (var line in lines)
     {
@@ -77,9 +77,9 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new Ae.QueueingTokenStream(fileText, TokenHasUninterestingTokenType);
+    var stream = new QueueingTokenStream(fileText, TokenHasUninterestingTokenType);
     var take = 32;
-    var ary = new Ae.Token[take];
+    var ary = new Token[take];
     var read = stream.Read(ary);
     ary.Take(read).Print();
   }
