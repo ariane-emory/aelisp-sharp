@@ -15,8 +15,8 @@ class Program
     var take = 32;
     var ary = new Token[take];
     var read = stream.Read(ary);
+    WriteLine($"\n");
     ary.Take(read).Print();
-
 
     Func<Token, bool> isMultilineCommentBegin = t => t.TokenType == TokenType.MultilineCommentBeginning;
     Func<Token, bool> isMultilineCommentContent = t => t.TokenType == Ae.TokenType.MultilineCommentContent;

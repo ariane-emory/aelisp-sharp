@@ -67,8 +67,10 @@ static partial class Ae
     
     protected virtual Token? Next()
     {
-      if (_input is not null)
-        WriteLine($"\nGet token at \"{_input.Trim()}\"...");
+      if (_input is null)
+        return null;
+
+      WriteLine($"\nStream: Get token at \"{_input.Trim()}\".");
       
       Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
@@ -78,9 +80,9 @@ static partial class Ae
         goto Next;
 
       if (newToken is not null && newToken.Value.TokenType != TokenType.Whitespace && newToken.Value.TokenType != TokenType.Newline)
-        WriteLine($"Got token \"{newToken}\".");
-      else
-        WriteLine($"No token found at \"{_input}\".");
+        WriteLine($"Stream: Got token: {newToken}.");
+      else 
+        WriteLine($"Stream: No token found!");
       
       return newToken;
     }
