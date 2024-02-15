@@ -5,12 +5,18 @@ using static Pidgin.Parser<Ae.Token>;
 static partial class Ae
 {
   //====================================================================================================================
+  // TokenStream class
+  //====================================================================================================================
   public class TokenStream : Pidgin.ITokenStream<Token>
   {
     //==================================================================================================================
+    // Protected fields
+    //==================================================================================================================
+    protected string? _input;
+
+    //==================================================================================================================
     // Private fields
     //==================================================================================================================
-    private string? _input;
     private readonly Func<Token, bool>? _exclude;
     private TokenizerState? _state;
 
@@ -20,9 +26,9 @@ static partial class Ae
     public int ChunkSizeHint => 16;
 
     //==================================================================================================================
-    // Constructer
+    // Constructor
     //==================================================================================================================
-    public TokenStream(string input, Func<Token, bool>? exclude = null)
+    public TokenStream(string? input, Func<Token, bool>? exclude = null)
     {
       _input = input;
       _exclude = exclude;
@@ -32,7 +38,7 @@ static partial class Ae
     // Public instance methods
     //==================================================================================================================
     public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
-    
+
     public int Read(Span<Token> buffer)
     {
       var ix = 0;
@@ -50,7 +56,10 @@ static partial class Ae
       return ix;
     }
 
-    private Token? Next()
+    //==================================================================================================================
+    // Protected instance methods
+    //==================================================================================================================
+    protected virtual Token? Next()
     {
     Next:
       var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
@@ -60,6 +69,41 @@ static partial class Ae
         goto Next;
 
       return newToken;
+    }
+  }
+
+  //====================================================================================================================
+  // QueueinngTokenStream class
+  //====================================================================================================================
+  public class QueueingTokenStream : TokenStream
+  {
+    //==================================================================================================================
+    // Private fields
+    //==================================================================================================================
+    private readonly Queue<string> _queuedInputs = new();
+
+    //==================================================================================================================
+    // Constructor
+    //==================================================================================================================
+    public QueueingTokenStream(string input, Func<Token, bool>? exclude = null) : base(null, exclude)
+    {
+      _queuedInputs.Enqueue(input);
+    }
+
+    //==================================================================================================================
+    // Protected instance methods
+    //==================================================================================================================
+    protected override Token? Next()
+    {
+      if (string.IsNullOrEmpty(_input))
+      {
+        if (_queuedInputs.Count == 0)
+          return null;
+
+        _input = _queuedInputs.Dequeue();
+      }
+
+      return base.Next();
     }
   }
 }

@@ -40,17 +40,17 @@ static partial class Ae
     Whitespace,
   };
 
-  public record struct Token(TokenType TokenType, string Text, int Line, int Column)
-  {
-    public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
-  }
-
   public enum TokenizerMode
   {
     Normal,
     InMultilineComment,
     InMultilineString,
   };
+
+  public record struct Token(TokenType TokenType, string Text, int Line, int Column)
+  {
+    public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
+  }
 
   public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
 
