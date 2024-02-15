@@ -76,6 +76,15 @@ static partial class Ae
   public static bool TokenHasUninterestingTokenType(Ae.Token token) => InterestingTokenTypes.Contains(token.TokenType);
   public static bool TokenHasInterestingTokenType(Ae.Token token) => !TokenHasUninterestingTokenType(token);
 
+  //====================================================================================================================
+  public static void Print(this IEnumerable<Ae.Token> tokens)
+  {
+    foreach (var (token, index) in tokens
+             //.Where(TokenHasInterestingTokenType)
+             .Select((value, index) => (value, index)))
+      WriteLine($"#{index}: {token}");
+  }
+
   //==================================================================================================================================================
   // Tokenizer class
   //==================================================================================================================================================

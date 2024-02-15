@@ -7,15 +7,6 @@ using static Utility;
 class Program
 {
   //====================================================================================================================
-  static void PrintTokens(IEnumerable<Ae.Token> tokens)
-  {
-    foreach (var (token, index) in tokens
-             //.Where(TokenHasInterestingTokenType)
-             .Select((value, index) => (value, index)))
-      WriteLine($"#{index}: {token}");
-  }
-
-  //====================================================================================================================
   static (string? Input, Ae.TokenizerState State, List<Ae.Token> Tokens)
   TokenizeAndPrintLine(string? input, Ae.TokenizerState? state = null)
   {
@@ -33,7 +24,7 @@ class Program
       tokens.Add(newToken.Value);
     }
 
-    PrintTokens(tokens);
+    tokens.Print();
 
     return (input, state!.Value, tokens);
   }
@@ -90,7 +81,7 @@ class Program
     var take = 32;
     var ary = new Ae.Token[take];
     var read = stream.Read(ary);
-    PrintTokens(ary.Take(read));
+    ary.Take(read).Print();
   }
 
   //====================================================================================================================
