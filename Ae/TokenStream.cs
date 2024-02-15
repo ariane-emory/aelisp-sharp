@@ -50,6 +50,11 @@ static partial class Ae
 
       for (; ix < buffer.Length; ix++)
       {
+        if (_input is null)
+          WriteLine($"\nStream._input               null");
+        else
+          WriteLine($"\nStream._input               \"{_input.TrimEnd()}\"");
+        
         WriteLine($"\nStream.Read:                Try to set slot #{ix}.");
 
         var token = Next();
@@ -61,6 +66,7 @@ static partial class Ae
         }
 
         buffer[ix] = token.Value;
+        WriteLine($"Stream.Read:                Set slot #{ix} to {token.Value}.");
       }
 
       return ix;
@@ -80,7 +86,7 @@ static partial class Ae
         return null;
       }
 
-      WriteLine($"Stream.Next:                Get token at: \"{_input.Trim()}\".");
+      WriteLine($"Stream.Next:                Get token at: \"{_input.TrimEnd()}\".");
 
     Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
