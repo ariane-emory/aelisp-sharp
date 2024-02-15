@@ -99,7 +99,7 @@ class Program
   //====================================================================================================================
   static void Main()
   {
-    var filename = "data.lisp";
+    var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new Ae.TokenizerTokenStream(fileText, IsExcludedTokenType);
     var take = 32;
