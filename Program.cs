@@ -98,7 +98,7 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new Ae.TokenizerTokenStream(fileText, IsExcludedTokenType);
+    var stream = new Ae.TokenStream(fileText, IsExcludedTokenType);
     var take = 32;
     var ary = new Ae.Token[take];
     var read = stream.Read(ary);
