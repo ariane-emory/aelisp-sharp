@@ -93,9 +93,9 @@ static partial class Ae
       }
 
       if (newToken is not null)
-        WriteLine($"Stream.Next:                Got token: {newToken}.");
+        WriteLine($"Stream.Next:                Return token: {newToken}.");
       else
-        WriteLine($"Stream.Next:                No token found!");
+        WriteLine($"Stream.Next:                Return no token!");
 
       return newToken;
     }
