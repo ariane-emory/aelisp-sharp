@@ -3,8 +3,10 @@ using static System.Console;
 using static Ae;
 using static Utility;
 
+//======================================================================================================================
 class Program
 {
+  //====================================================================================================================
   static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
     TokenType.Whitespace,
     TokenType.LineComment,

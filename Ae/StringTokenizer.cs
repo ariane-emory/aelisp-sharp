@@ -2,27 +2,28 @@ using System.Collections.Immutable;
 using static System.Console;
 using System.Text.RegularExpressions;
 
+//======================================================================================================================
 static partial class Ae
 {
-  //======================================================================================================================
+  //====================================================================================================================
   // StringTokenizer class
-  //=====================================================================================================================
+  //====================================================================================================================
   public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
     where TTokenType : struct
     where TToken : struct
     where TTokenizeState : struct
   {
-    //====================================================================================================================
+    //==================================================================================================================
     // Delegates 
-    //====================================================================================================================
+    //==================================================================================================================
     protected delegate TToken CreateTokenFun(TTokenType type, string text);
     protected delegate TTokenizeState CreateTokenizerStateFun();
     protected delegate (TTokenizeState, TToken) ProcesTokenFun((TTokenizeState State, TToken Token) tup);
     protected delegate bool TokenDefinitionIsActiveFun(TTokenizeState state);
 
-    //====================================================================================================================
+    //==================================================================================================================
     // Private fields
-    //====================================================================================================================
+    //==================================================================================================================
     private readonly CreateTokenFun _createToken;
     private readonly CreateTokenizerStateFun _createTokenizerState;
 
@@ -36,18 +37,18 @@ static partial class Ae
                                         ProcesTokenFun? ProcessToken,
                                         TokenDefinitionIsActiveFun? DefinitionIsActive)>.Empty;
 
-    //====================================================================================================================
+    //==================================================================================================================
     // Constructor
-    //====================================================================================================================
+    //==================================================================================================================
     protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
     {
       _createToken = createToken;
       _createTokenizerState = createTokenizerStateFun;
     }
 
-    //====================================================================================================================
+    //==================================================================================================================
     // Instance methods
-    //====================================================================================================================
+    //==================================================================================================================
     protected void Add(TTokenType type,
                        string pattern,
                        ProcesTokenFun? processToken = null,
@@ -58,7 +59,9 @@ static partial class Ae
 
       pattern = "(?:" + pattern + ")";
 
-      _tokenDefinitions = _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
+      _tokenDefinitions =
+        _tokenDefinitions.Add((type,
+                               new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
     }
 
     //==================================================================================================================
