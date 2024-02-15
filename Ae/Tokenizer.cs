@@ -77,15 +77,13 @@ static partial class Ae
   //==================================================================================================================================================
   public static void Print(this IEnumerable<Token> self, int countOffset = 0)
   {
-    foreach (var (token, index) in self
-             //.Where(TokenHasInterestingTokenType)
-             .Select((value, index) => (value, index + countOffset)))
+    foreach (var (token, index) in self.Select((value, index) => (value, index + countOffset)))
       WriteLine($"#{index}: {token}");
   }
 
   //==================================================================================================================================================
-  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(TokenHasInterestingTokenType);
-  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(TokenHasUninterestingTokenType);
+  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInteresting());
+  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninteresting());
 
   //==================================================================================================================================================
   // Ae's static methods
