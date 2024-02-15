@@ -73,11 +73,11 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static methods
   //==================================================================================================================================================
-  public static bool TokenHasUninterestingTokenType(Ae.Token token) => InterestingTokenTypes.Contains(token.TokenType);
-  public static bool TokenHasInterestingTokenType(Ae.Token token) => !TokenHasUninterestingTokenType(token);
+  public static bool TokenHasUninterestingTokenType(Token token) => InterestingTokenTypes.Contains(token.TokenType);
+  public static bool TokenHasInterestingTokenType(Token token) => !TokenHasUninterestingTokenType(token);
 
   //====================================================================================================================
-  public static void Print(this IEnumerable<Ae.Token> tokens)
+  public static void Print(this IEnumerable<Token> tokens)
   {
     foreach (var (token, index) in tokens
              //.Where(TokenHasInterestingTokenType)
