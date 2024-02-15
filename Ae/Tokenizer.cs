@@ -56,14 +56,12 @@ static partial class Ae
   public record struct Token(TokenType TokenType, string Text, int Line, int Column)
   {
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
-    public bool IsUninteresting() => InterestingTokenTypes.Contains(TokenType);
-    public bool IsInteresting() => !IsInteresting();
-    }
+  }
 
   //==================================================================================================================================================
   // Ae's static field
   //==================================================================================================================================================
-  private static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
+  private static readonly ImmutableArray<TokenType> UninterestingTokenTypes = ImmutableArray.Create(
   TokenType.Whitespace,
   TokenType.LineComment,
   TokenType.MultilineCommentBeginning,
@@ -73,23 +71,23 @@ static partial class Ae
   TokenType.Newline);
 
   //==================================================================================================================================================
+  // Ae's static methods
+  //==================================================================================================================================================
+  public static bool IsUninteresting(this Token token) => !IsInteresting(token);
+  public static bool IsInteresting(this Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
+
+  //==================================================================================================================================================
   // Ae's extension methods
+  //==================================================================================================================================================
+  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInteresting());
+  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninteresting());
+
   //==================================================================================================================================================
   public static void Print(this IEnumerable<Token> self, int countOffset = 0)
   {
     foreach (var (token, index) in self.Select((value, index) => (value, index + countOffset)))
       WriteLine($"#{index}: {token}");
   }
-
-  //==================================================================================================================================================
-  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(t => t.IsInteresting());
-  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(t => t.IsUninteresting());
-
-  //==================================================================================================================================================
-  // Ae's static methods
-  //==================================================================================================================================================
-  public static bool TokenHasUninterestingTokenType(Token token) => InterestingTokenTypes.Contains(token.TokenType);
-  public static bool TokenHasInterestingTokenType(Token token) => !TokenHasUninterestingTokenType(token);
 
   //==================================================================================================================================================
   // Tokenizer class
