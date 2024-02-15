@@ -53,7 +53,7 @@ static partial class Ae
         if (_input is null)
           WriteLine($"\nStream._input               null");
         else
-          WriteLine($"\nStream._input               \"{_input.TrimEnd()}\"");
+          WriteLine($"\nStream._input               \"{_input.TrimEnd('\n')}\"");
         
         WriteLine($"\nStream.Read:                Try to set slot #{ix}.");
 
@@ -86,7 +86,7 @@ static partial class Ae
         return null;
       }
 
-      WriteLine($"Stream.Next:                Get token at: \"{_input.TrimEnd()}\".");
+      WriteLine($"Stream.Next:                Get token at: \"{_input.TrimEnd('\n')}\".");
 
     Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
