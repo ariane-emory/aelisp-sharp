@@ -185,7 +185,7 @@ static partial class Ae
       .Add((Type: TokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""))
       .Add((Type: TokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"))
       .Add((Type: TokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.Comment,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
+      .Add((Type: TokenType.Comment,                   Discrete: false, Process: ProcComment,       IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
       .Add((Type: TokenType.MultilineCommentBeginning, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
@@ -298,6 +298,14 @@ static partial class Ae
       tup.Token.Text = tup.Token.Text.Replace(",", "");
 
       return tup;
+    }
+
+    private static (TokenizerState, Token)
+      ProcComment((TokenizerState State, Token Token) tup)
+    {
+      tup.Token.Text = tup.Token.Text.Substring(2, tup.Token.Text.Length - 4);
+
+      return ProcCountLine(tup);
     }
 
     //================================================================================================================================================
