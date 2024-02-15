@@ -46,17 +46,17 @@ static partial class Ae
     {
       var ix = 0;
 
-      WriteLine($"\nStream:            Fill {buffer.Length} slots.");
+      WriteLine($"\nStream.Read:                Fill {buffer.Length} slots.");
 
       for (; ix < buffer.Length; ix++)
       {
-        WriteLine($"\nStream:            Try to set slot #{ix}.");
+        WriteLine($"\nStream.Read:                Try to set slot #{ix}.");
 
         var token = Next();
 
         if (token is null)
         {
-          WriteLine($"\nStream:            Got null from Next(), breaking!");
+          WriteLine($"\nStream.Read:                Got null from Next(), breaking after filling {ix} elements!");
           break;
         }
 
@@ -76,24 +76,26 @@ static partial class Ae
     {
       if (_input is null)
       {
-        WriteLine($"Stream: Input is null, not getting token!");
-
+        WriteLine($"Stream.Next:                Input is null, not getting token!");
         return null;
       }
 
-      WriteLine($"Stream:            Get token at: \"{_input.Trim()}\".");
+      WriteLine($"Stream.Next:                Get token at: \"{_input.Trim()}\".");
 
     Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
+      {
+        WriteLine($"Stream.Next:                Got excluded token: {newToken}, try again!");
         goto Next;
+      }
 
-      if (newToken is not null) // && newToken.Value.TokenType != TokenType.Whitespace && newToken.Value.TokenType != TokenType.Newline)
-        WriteLine($"Stream:            Got token: {newToken}.");
+      if (newToken is not null)
+        WriteLine($"Stream.Next:                Got token: {newToken}.");
       else
-        WriteLine($"Stream:            No token found!");
+        WriteLine($"Stream.Next:                No token found!");
 
       return newToken;
     }
