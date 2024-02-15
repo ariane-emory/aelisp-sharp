@@ -59,6 +59,24 @@ static partial class Ae
   public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
 
   //==================================================================================================================================================
+  // Ae's static field
+  //==================================================================================================================================================
+  public static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
+    TokenType.Whitespace,
+    TokenType.LineComment,
+    TokenType.MultilineCommentBeginning,
+    TokenType.MultilineCommentContent,
+    TokenType.MultilineCommentEnd,
+    TokenType.Comment,
+    TokenType.Newline);
+
+  //==================================================================================================================================================
+  // Ae's static methods
+  //==================================================================================================================================================
+  public static bool IsExcludedTokenType(Ae.Token token) => ExcludedTokenTypes.Contains(token.TokenType);
+  public static bool IsIncludedTokenType(Ae.Token token) => !IsExcludedTokenType(token);
+
+  //==================================================================================================================================================
   // Tokenizer class
   //==================================================================================================================================================
   public class Tokenizer : StringTokenizer<TokenType, Token, TokenizerState>

@@ -7,20 +7,6 @@ using static Utility;
 class Program
 {
   //====================================================================================================================
-  static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
-    TokenType.Whitespace,
-    TokenType.LineComment,
-    TokenType.MultilineCommentBeginning,
-    TokenType.MultilineCommentContent,
-    TokenType.MultilineCommentEnd,
-    TokenType.Comment,
-    TokenType.Newline);
-
-  //====================================================================================================================
-  static bool IsExcludedTokenType(Ae.Token token) => ExcludedTokenTypes.Contains(token.TokenType);
-  static bool IsIncludedTokenType(Ae.Token token) => !IsExcludedTokenType(token);
-
-  //====================================================================================================================
   static void PrintTokens(IEnumerable<Ae.Token> tokens)
   {
     foreach (var (token, index) in tokens
