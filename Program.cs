@@ -2,9 +2,6 @@
 using static System.Console;
 using static Ae;
 using static Utility;
-using Pidgin;
-using static Pidgin.Parser;
-using static Pidgin.Parser<Ae.Token>;
 
 class Program
 {
