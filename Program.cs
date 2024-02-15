@@ -12,11 +12,12 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new TokenStream(fileText); // , exclude: Ae.IsUninterestingToken);
+    var stream = new TokenStream(fileText, exclude: Ae.IsUninterestingToken);
     var take = 32;
     var ary = new Token[take];
     var read = stream.Read(ary);
-    WriteLine($"\n");
+
+    WriteLine($"");
     ary.Take(read).Print();
 
     Func<Token, bool> isMultilineCommentBegin = t => t.TokenType == TokenType.MultilineCommentBeginning;
