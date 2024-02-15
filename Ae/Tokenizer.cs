@@ -157,7 +157,8 @@ static partial class Ae
 
       return tup;
     }
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcStringLike((TokenizerState State, Token Token) tup)
       => UnescapeChars((tup.State,
@@ -165,22 +166,26 @@ static partial class Ae
                                   tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                   tup.Token.Line,
                                   tup.Token.Column)));
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcLispStyleChar((TokenizerState State, Token Token) tup)
       => UnescapeChars(ProcTrimFirst(tup));
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcTrimFirst((TokenizerState State, Token Token) tup)
       => (tup.State,
           new Token(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       TrimLast((TokenizerState State, Token Token) tup)
       => (tup.State,
           new Token(tup.Token.TokenType,
                     tup.Token.Text.Substring(0, tup.Token.Text.Length - 1), tup.Token.Line, tup.Token.Column));
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcNumber((TokenizerState State, Token Token) tup)
     {
@@ -197,7 +202,8 @@ static partial class Ae
 
       return tup;
     }
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcFloat((TokenizerState State, Token Token) tup)
     {
@@ -216,7 +222,8 @@ static partial class Ae
 
       return tup;
     }
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcRational((TokenizerState State, Token Token) tup)
     {
@@ -237,6 +244,7 @@ static partial class Ae
       return tup;
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcStripCommas((TokenizerState State, Token Token) tup)
     {
@@ -256,6 +264,7 @@ static partial class Ae
       return ProcCountLine(tup);
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcEndMLC((TokenizerState State, Token Token) tup)
     {
@@ -275,6 +284,7 @@ static partial class Ae
       return tup;
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcEndMLS((TokenizerState State, Token Token) tup)
     {
@@ -284,10 +294,12 @@ static partial class Ae
       return tup;
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcMLSContent((TokenizerState State, Token Token) tup)
       => UnescapeChars(ProcCountLine(tup));
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcCountLine((TokenizerState State, Token Token) tup)
     {
@@ -296,7 +308,8 @@ static partial class Ae
 
       return tup;
     }
-
+    
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       CountColumns((TokenizerState State, Token Token) tup)
     {
@@ -307,6 +320,7 @@ static partial class Ae
       return tup;
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       SetTokenLinesAndColumns((TokenizerState State, Token Token) tup)
     {
@@ -346,5 +360,7 @@ static partial class Ae
     private const string SymWordChar = @"[a-zA-Z0-9\'\.]";
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
     private const string StringContent = @"(?:(?:\\[abfnrtv\\""])|[^\""\n\\])*"; // Keep this in sync with EscapedChars.
+
+    //================================================================================================================================================
   }
 }
