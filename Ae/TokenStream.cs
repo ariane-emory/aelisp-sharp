@@ -8,7 +8,7 @@ static partial class Ae
   public class TokenStream : Pidgin.ITokenStream<Token>
   {
     //==================================================================================================================
-    // Constructur
+    // Constructer
     //==================================================================================================================
     public TokenStream(string input, Func<Token, bool>? exclude = null)
     {
