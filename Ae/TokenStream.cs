@@ -90,7 +90,7 @@ static partial class Ae
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
         goto Next;
 
-      if (newToken is not null && newToken.Value.TokenType != TokenType.Whitespace && newToken.Value.TokenType != TokenType.Newline)
+      if (newToken is not null) // && newToken.Value.TokenType != TokenType.Whitespace && newToken.Value.TokenType != TokenType.Newline)
         WriteLine($"Stream:            Got token: {newToken}.");
       else
         WriteLine($"Stream:            No token found!");
