@@ -342,63 +342,61 @@ static partial class Ae
     private const string StringContent = @"(?:(?:\\[abfnrtv\\""])|[^\""\n\\])*"; // Keep this in sync with EscapedChars.
   }
 
-  //====================================================================================================================
-  public class TokenizerTokenStream : Pidgin.ITokenStream<Token>
-  {
-    public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
-    public int ChunkSizeHint => 16;
-
-    private string? _input;
-    private readonly Func<Token, bool>? _exclude;
-    private TokenizerState? _state;
-
-    public TokenizerTokenStream(string input, Func<Token, bool>? exclude = null)
+    //====================================================================================================================
+    public class TokenizerTokenStream : Pidgin.ITokenStream<Token>
     {
-      _input = input;
-      _exclude = exclude;
+        public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
+        public int ChunkSizeHint => 16;
+
+        private string? _input;
+        private readonly Func<Token, bool>? _exclude;
+        private TokenizerState? _state;
+
+        public TokenizerTokenStream(string input, Func<Token, bool>? exclude = null)
+        {
+            _input = input;
+            _exclude = exclude;
+        }
+
+        public int Read(Span<Token> buffer)
+        {
+            var ix = 0;
+
+            for (; ix < buffer.Length; ix++)
+            {
+                var token = Next();
+
+                if (token is null)
+                    break;
+
+                buffer[ix] = token.Value;
+            }
+
+            return ix;
+        }
+
+        private Token? Next()
+        {
+        Next:
+            var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+            (_state, _input) = (newState, newInput);
+
+            if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
+                goto Next;
+
+            return newToken;
+        }
+
+        // private Token? Next()
+        // {
+        //   while (true)
+        //   {
+        //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
+        //     (_state, _input) = (newState, newInput);
+
+        //     if (newToken is null || (_exclude is not null && !_exclude(newToken.Value)))
+        //       return newToken;
+        //   }
+        // }
     }
-
-    public int Read(Span<Token> buffer)
-    {
-      var ix = 0;
-
-      for (; ix < buffer.Length; ix++)
-      {
-        var token = Next();
-
-        if (token is null)
-          break;
-
-        buffer[ix] = token.Value;
-      }
-
-      return ix;
-    }
-
-    private Token? Next()
-    {
-      Next:
-      var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-      (_state, _input) = (newState, newInput);
-
-      if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
-        goto Next;
-
-      return newToken;
-    }
-
-    // private Token? Next()
-    // {
-    //   while (true)
-    //   {
-    //     var (newInput, newState, newToken) = Tokenizer.Get().NextToken(_input, _state);
-    //     (_state, _input) = (newState, newInput);
-
-    //     if (newToken is null || (_exclude is not null && !_exclude(newToken.Value)))
-    //       return newToken;
-    //   }
-    // }
-  }
-
-
 }
