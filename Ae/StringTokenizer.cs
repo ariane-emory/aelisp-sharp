@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using static System.Console;
 using System.Text.RegularExpressions;
 
-public static partial class Ae
+static partial class Ae
 {
   //======================================================================================================================
   // Token class
