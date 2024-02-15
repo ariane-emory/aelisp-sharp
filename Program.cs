@@ -10,7 +10,7 @@ class Program
   static void PrintTokens(IEnumerable<Ae.Token> tokens)
   {
     foreach (var (token, index) in tokens
-             //.Where(IsInterestingTokenType)
+             //.Where(TokenHasInterestingTokenType)
              .Select((value, index) => (value, index)))
       WriteLine($"#{index}: {token}");
   }
@@ -86,7 +86,7 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new Ae.QueueingTokenStream(fileText, IsUninterestingTokenType);
+    var stream = new Ae.QueueingTokenStream(fileText, TokenHasUninterestingTokenType);
     var take = 32;
     var ary = new Ae.Token[take];
     var read = stream.Read(ary);

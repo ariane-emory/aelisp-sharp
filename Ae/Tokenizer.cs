@@ -73,8 +73,8 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static methods
   //==================================================================================================================================================
-  public static bool IsUninterestingTokenType(Ae.Token token) => InterestingTokenTypes.Contains(token.TokenType);
-  public static bool IsInterestingTokenType(Ae.Token token) => !IsUninterestingTokenType(token);
+  public static bool TokenHasUninterestingTokenType(Ae.Token token) => InterestingTokenTypes.Contains(token.TokenType);
+  public static bool TokenHasInterestingTokenType(Ae.Token token) => !TokenHasUninterestingTokenType(token);
 
   //==================================================================================================================================================
   // Tokenizer class
