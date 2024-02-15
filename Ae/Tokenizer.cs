@@ -61,7 +61,7 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static field
   //==================================================================================================================================================
-  public static readonly ImmutableArray<TokenType> ExcludedTokenTypes = ImmutableArray.Create(
+  public static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
     TokenType.Whitespace,
     TokenType.LineComment,
     TokenType.MultilineCommentBeginning,
@@ -73,8 +73,8 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static methods
   //==================================================================================================================================================
-  public static bool IsExcludedTokenType(Ae.Token token) => ExcludedTokenTypes.Contains(token.TokenType);
-  public static bool IsIncludedTokenType(Ae.Token token) => !IsExcludedTokenType(token);
+  public static bool IsUninterestingTokenType(Ae.Token token) => InterestingTokenTypes.Contains(token.TokenType);
+  public static bool IsInterestingTokenType(Ae.Token token) => !IsUninterestingTokenType(token);
 
   //==================================================================================================================================================
   // Tokenizer class
