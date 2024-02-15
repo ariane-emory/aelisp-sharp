@@ -61,7 +61,7 @@ static partial class Ae
 
       _tokenDefinitions =
         _tokenDefinitions.Add((type,
-                               new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
+                               new(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
     }
 
     //==================================================================================================================
