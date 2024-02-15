@@ -23,13 +23,6 @@ class Program
     Func<Token, bool> isMultilineCommentContent = t => t.TokenType == Ae.TokenType.MultilineCommentContent;
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
-
-    var s = "hello\nworld\n\n";
-    WriteLine($"'{s.ReplaceNewlinesWithEscaped()}'");
-
-    var re1 = new Regex(@"^(?:abc)", RegexOptions.Singleline);
-    var re2 = new Regex(@"(?:^abc)", RegexOptions.Singleline);
-
     
         // var multilineCommentParser =
         //   from begin in multilineCommentBegin

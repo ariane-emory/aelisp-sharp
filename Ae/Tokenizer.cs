@@ -5,7 +5,41 @@ using System.Collections.Immutable;
 //====================================================================================================================================================
 static partial class Ae
 {
-  //==================================================================================================================================================
+  //================================================================================================================================================
+  private static readonly ImmutableArray<(string, string)> EscapedChars = ImmutableArray.Create(
+    (@"\a", "\a"),
+    (@"\b", "\b"),
+    (@"\f", "\f"),
+    (@"\n", "\n"),
+    (@"\r", "\r"),
+    (@"\t", "\t"),
+    (@"\v", "\v"),
+    (@"\\", "\\"),
+    // (@"\'", "\'"),
+    (@"\""", "\"")
+    );
+
+  //================================================================================================================================================
+  // Escaping helper
+  //================================================================================================================================================
+  private static string UnescapeChars(this string self)
+  {
+    foreach (var (escaped, unescaped) in EscapedChars)
+      self = self.Replace(escaped, unescaped);
+
+    return self;
+  }
+
+
+  private static string EscapeChars(this string self)
+  {
+    foreach (var (escaped, unescaped) in EscapedChars)
+      self = self.Replace(unescaped, escaped);
+
+    return self;
+  }
+
+//==================================================================================================================================================
   // Ae's public types
   //==================================================================================================================================================
   public enum TokenType
@@ -158,34 +192,15 @@ static partial class Ae
       //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     //================================================================================================================================================
-    private static readonly ImmutableArray<(string, string)> EscapedChars = ImmutableArray.Create(
-      (@"\a", "\a"),
-      (@"\b", "\b"),
-      (@"\f", "\f"),
-      (@"\n", "\n"),
-      (@"\r", "\r"),
-      (@"\t", "\t"),
-      (@"\v", "\v"),
-      (@"\\", "\\"),
-      // (@"\'", "\'"),
-      (@"\""", "\"")
-      );
-
-    //================================================================================================================================================
     public static Tokenizer Instance { get; } = new Tokenizer();
 
     //================================================================================================================================================
     // Token callbacks
     //================================================================================================================================================
     private static (TokenizerState, Token)
-      UnescapeChars((TokenizerState State, Token Token) tup)
+      ProcUnescapeChars((TokenizerState State, Token Token) tup)
     {
-      var str = tup.Token.Text;
-
-      foreach (var (escaped, unescaped) in EscapedChars)
-        str = str.Replace(escaped, unescaped);
-
-      tup.Token.Text = str;
+      tup.Token.Text = tup.Token.Text.UnescapeChars();
 
       return tup;
     }
@@ -193,7 +208,7 @@ static partial class Ae
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcStringLike((TokenizerState State, Token Token) tup)
-      => UnescapeChars((tup.State,
+      => ProcUnescapeChars((tup.State,
                         new Token(tup.Token.TokenType,
                                   tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                   tup.Token.Line,
@@ -202,7 +217,7 @@ static partial class Ae
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcLispStyleChar((TokenizerState State, Token Token) tup)
-      => UnescapeChars(ProcTrimFirst(tup));
+      => ProcUnescapeChars(ProcTrimFirst(tup));
     
     //================================================================================================================================================
     private static (TokenizerState, Token)
@@ -310,7 +325,7 @@ static partial class Ae
     //================================================================================================================================================
     private static (TokenizerState, Token) ProcBeginMLS((TokenizerState State, Token Token) tup)
     {
-      tup = ProcTrimFirst(UnescapeChars(ProcCountLine(tup)));
+      tup = ProcTrimFirst(ProcUnescapeChars(ProcCountLine(tup)));
       tup.State.Mode = TokenizerMode.InMultilineString;
 
       return tup;
@@ -320,7 +335,7 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcEndMLS((TokenizerState State, Token Token) tup)
     {
-      tup = TrimLast(UnescapeChars(tup));
+      tup = TrimLast(ProcUnescapeChars(tup));
       tup.State.Mode = TokenizerMode.Normal;
 
       return tup;
@@ -329,7 +344,7 @@ static partial class Ae
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcMLSContent((TokenizerState State, Token Token) tup)
-      => UnescapeChars(ProcCountLine(tup));
+      => ProcUnescapeChars(ProcCountLine(tup));
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
