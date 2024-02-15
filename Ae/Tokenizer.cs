@@ -56,7 +56,21 @@ static partial class Ae
   public record struct Token(TokenType TokenType, string Text, int Line, int Column)
   {
     public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
-  }
+    public bool IsUninteresting() => InterestingTokenTypes.Contains(TokenType);
+    public bool IsInteresting() => !IsInteresting();
+    }
+
+  //==================================================================================================================================================
+  // Ae's static field
+  //==================================================================================================================================================
+  private static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
+  TokenType.Whitespace,
+  TokenType.LineComment,
+  TokenType.MultilineCommentBeginning,
+  TokenType.MultilineCommentContent,
+  TokenType.MultilineCommentEnd,
+  TokenType.Comment,
+  TokenType.Newline);
 
   //==================================================================================================================================================
   // Ae's extension methods
@@ -70,20 +84,8 @@ static partial class Ae
   }
 
   //==================================================================================================================================================
-  public static IEnumerable<Token> WhereInteresting(this IEnumerable<Token> self) => self.Where(TokenHasInterestingTokenType);
-  public static IEnumerable<Token> WhereUninteresting(this IEnumerable<Token> self) => self.Where(TokenHasUninterestingTokenType);
-
-  //==================================================================================================================================================
-  // Ae's static field
-  //==================================================================================================================================================
-  private static readonly ImmutableArray<TokenType> InterestingTokenTypes = ImmutableArray.Create(
-  TokenType.Whitespace,
-  TokenType.LineComment,
-  TokenType.MultilineCommentBeginning,
-  TokenType.MultilineCommentContent,
-  TokenType.MultilineCommentEnd,
-  TokenType.Comment,
-  TokenType.Newline);
+  public static IEnumerable<Token> Interesting(this IEnumerable<Token> self) => self.Where(TokenHasInterestingTokenType);
+  public static IEnumerable<Token> Uninteresting(this IEnumerable<Token> self) => self.Where(TokenHasUninterestingTokenType);
 
   //==================================================================================================================================================
   // Ae's static methods
