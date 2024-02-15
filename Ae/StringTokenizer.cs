@@ -26,6 +26,7 @@ static partial class Ae
     private readonly CreateTokenFun _createToken;
     private readonly CreateTokenizerStateFun _createTokenizerState;
 
+    //==================================================================================================================
     private ImmutableArray<(TTokenType Type,
                            Regex Pattern,
                            ProcesTokenFun? ProcessToken,
@@ -60,6 +61,7 @@ static partial class Ae
       _tokenDefinitions = _tokenDefinitions.Add((type, new Regex(pattern, RegexOptions.Singleline), processToken, definitionIsActive));
     }
 
+    //==================================================================================================================
     public (string? Input, TTokenizeState State, TToken? Token)
     NextToken(string? input, TTokenizeState? state)
     {
@@ -92,5 +94,7 @@ static partial class Ae
 
       return (input, state.Value, null);
     }
+
+    //==================================================================================================================
   }
 }
