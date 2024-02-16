@@ -2,9 +2,6 @@
 using static Ae;
 using static Ae.Parser;
 using Pidgin;
-using static Pidgin.Parser;
-using static Pidgin.Parser<Ae.Token>;
-// using TokenParser = Pidgin.Parser<Ae.Token>;
 
 //================================================================================================================================
 class Program
@@ -17,10 +14,11 @@ class Program
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
+
     var tokens = stream.ReadAll();
 
     WriteLine("\nBefore parse: ");
-    tokens.Print(); // tokens are printed correctly..
+    tokens.Print();
 
     var mergedResult = MergeMultilineTokens.ParseOrThrow(tokens);
 
