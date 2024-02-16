@@ -42,6 +42,21 @@ static partial class Ae
     public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
 
     //==================================================================================================================
+    public  List<Token> ReadAll()
+    {
+      var list = new List<Token>();
+      Token? token = Next();
+
+      while (token is not null)
+      {
+        list.Add(token.Value);
+        token = Next();
+      }
+      
+      return list;
+    }
+        
+    //==================================================================================================================
     public int Read(Span<Token> buffer)
     {
       var ix = 0;
@@ -78,6 +93,7 @@ static partial class Ae
       _state = null;
     }
 
+    //==================================================================================================================
     protected virtual Token? Next()
     {
       if (_input is null)

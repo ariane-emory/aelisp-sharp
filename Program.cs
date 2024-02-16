@@ -50,11 +50,15 @@ class Program
         begin.Column
         );
 
-    // Example usage
-    // Assuming you have a method to convert your IEnumerable<Token> into a parser's input stream
-    // var tokens = ... // Your token stream here
-    // var result = multilineStringParser.ParseOrFallback(tokens, fallbackValue);
-    // var commentResult = multilineCommentParser.ParseOrFallback(tokens, fallbackValue);
+    WriteLine("\nHere: ");
+    
+    // Recreate the stream.
+    stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
+    var tokens = stream.ReadAll();
+    tokens.Print();
+
+    // This method doesn't exist:
+    //    var commentResult = multilineCommentParser.Parse(
   }
 
   //====================================================================================================================
