@@ -47,9 +47,8 @@ static partial class Ae
     // Public Parsers
     //======================================================================================================================================
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
-      OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
-                  && (!MultilineStringTokenTypes.Contains(t.Type))),
-            MergeSequence(TokenType.Comment,
+      OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type)) && (!MultilineStringTokenTypes.Contains(t.Type))),
+            MergeSequence( TokenType.Comment,
                           TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
             MergeSequence(TokenType.String,
                           TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
