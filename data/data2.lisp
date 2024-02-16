@@ -1,3 +1,11 @@
+one two #|three|# four
+five #|this is
+a multiline
+comment |#six 
+seven "a string" eight "a multiline
+string" nine
+(+ 1 (* 2 3))
+
 one two #|three |# four
 three (123 457 *bingo*
        <boop> nil (789 nil))

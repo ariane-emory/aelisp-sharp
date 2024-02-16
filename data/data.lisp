@@ -1,7 +1,1 @@
-one two #|three|# four
-five #|this is
-a multiline
-comment |#six 
-seven "a string" eight "a multiline
-string" nine
-(+ 1 (* 2 3))
+1 2.00 3/1 nil higgy boson #|comment!|#yoyo + ?a 'b' "hello world"

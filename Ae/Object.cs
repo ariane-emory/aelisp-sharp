@@ -289,7 +289,6 @@ static partial class Ae
         if (currentCons.Cdr is Pair)
         {
           sb.Append(" ");
-
           current = currentCons.Cdr;
         }
         else if (currentCons.Cdr != Nil)
