@@ -14,7 +14,7 @@ class Program
   {
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
-    var stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
+    var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
     var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
@@ -34,7 +34,7 @@ class Program
       from contents in multilineCommentContent.Many()
       from end in multilineCommentEnd
       select new Token(
-        Ae.TokenType.Comment,
+        TokenType.Comment,
         string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
         begin.Line,
         begin.Column
@@ -45,14 +45,14 @@ class Program
       from contents in multilineStringContent.Many()
       from end in multilineStringEnd
       select new Token(
-        Ae.TokenType.String,
+        TokenType.String,
         string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
         begin.Line,
         begin.Column
         );
 
     // Recreate the stream.
-    stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
+    stream = new TokenStream(fileText, exclude: IsUninterestingToken);
     List<Token> tokens = stream.ReadAll();
 
     WriteLine("\nBefore parse: ");
