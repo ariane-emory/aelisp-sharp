@@ -23,24 +23,24 @@ class Program
     WriteLine(fileText);
     WriteLine("EOF");
 
-    var tokens = stream.ReadAll();
+    IEnumerable<Token> tokens = stream.ReadAll();
     WriteLine("\nSTEP 1 - Before parse: ");
     tokens.Print();
 
-    var mergedResult = MergeMultilineTokens.ParseOrThrow(tokens);
+    tokens = MergeMultilineTokens.ParseOrThrow(tokens);
     WriteLine("\nSTEP 2 - Result after merging: ");
-    mergedResult.Print();
+    tokens.Print();
 
-    var resultExcludingComments = mergedResult.ExcludingComments();
+    var tokensExcludingComments = tokens.ExcludingComments();
     WriteLine("\nSTEP 3 - Result after excluding comments: ");
-    resultExcludingComments.Print();
+    tokensExcludingComments.Print();
 
     WriteLine("\nSTEP 4 - Parse objects: ");
 
     try
     {
       var completeParser = ParseAtom.Many().Then(End, (objects, end) => objects);
-      var objects = completeParser.ParseOrThrow(resultExcludingComments);
+      var objects = completeParser.ParseOrThrow(tokensExcludingComments);
 
       if (objects.Count() == 0)
         Die(1, "No objects!");
@@ -58,9 +58,9 @@ class Program
         // ParseException reports 1-based index, convert it to 0-based
         var ix = int.Parse(match.Groups[1].Value) - 1;
 
-        if (ix >= 0 && ix < resultExcludingComments.Count())
+        if (ix >= 0 && ix < tokensExcludingComments.Count())
         {
-          var tok = resultExcludingComments.ElementAt(ix);
+          var tok = tokensExcludingComments.ElementAt(ix);
           WriteLine($"ERROR: Unexpected token at line {tok.Line}, column {tok.Column}: {tok}.");
         }
         else
