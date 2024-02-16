@@ -154,12 +154,12 @@ static partial class Ae
                       TokenDefinitionIsActiveFun? IsActive,
                       string Pattern)> Tokens =
       ImmutableArray<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
-       .Add((Type: TokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
+      .Add((Type: TokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
       .Add((Type: TokenType.Whitespace,                Discrete: false, Process: null,              IsActive: null,               Pattern: @"[ \t\f\v]+"))
-      .Add((Type: TokenType.LParen,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @"\("))
-      .Add((Type: TokenType.RParen,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\)"))
-      .Add((Type: TokenType.Nil,                       Discrete: true,  Process: ProcLParen,        IsActive: null,               Pattern: @"nil"))
-      .Add((Type: TokenType.Dot,                       Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\."))
+      .Add((Type: TokenType.LParen,                    Discrete: false, Process: ProcLParen,        IsActive: null,               Pattern: @"\("))
+      .Add((Type: TokenType.RParen,                    Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\)"))
+      .Add((Type: TokenType.Nil,                       Discrete: true,  Process: null,              IsActive: null,               Pattern: @"nil"))
+      .Add((Type: TokenType.Dot,                       Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\."))
       .Add((Type: TokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"))
       .Add((Type: TokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"))
       .Add((Type: TokenType.Float,                     Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float))
