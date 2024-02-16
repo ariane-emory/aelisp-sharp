@@ -66,6 +66,9 @@ static partial class Ae
     public static readonly Parser<Token, Ae.Object> ParseSymbol =
       TypedToken(TokenType.Symbol).Select(t => (Ae.Object)new Ae.Symbol(t.Text));
 
+    public static readonly Parser<Token, Ae.Object> ParseNil =
+      TypedToken(TokenType.Nil).Select(t => (Ae.Object)Nil);
+
     public static readonly Parser<Token, Ae.Object> ParseInteger =
       TypedToken(TokenType.Integer).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
 
@@ -85,6 +88,7 @@ static partial class Ae
     public static readonly Parser<Token, Ae.Object> ParseAtom =
       OneOf(
         ParseSymbol,
+        ParseNil,
         ParseInteger,
         ParseString,
         ParseFloat,
