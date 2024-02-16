@@ -41,13 +41,11 @@ static partial class Ae
   //====================================================================================================================
   public static string ExpandTilde(this string path)
   {
-    if (!string.IsNullOrEmpty(path) && path.StartsWith("~"))
-    {
-      var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-      return Path.Combine(homeDirectory, path.TrimStart('~').TrimStart('/', '\\'));
-    }
+    if (string.IsNullOrEmpty(path) || !path.StartsWith("~"))
+      return path;
 
-    return path;
+    var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    return Path.Combine(homeDirectory, path.TrimStart('~').TrimStart('/', '\\'));
   }
   
   //====================================================================================================================
