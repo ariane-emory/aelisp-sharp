@@ -53,7 +53,7 @@ static partial class Ae
   public record struct LispTokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal, int ParenDepth = 0);
 
   //==================================================================================================================================================
-  public record struct LispToken(LispTokenType Type, string Text, int Line, int Column, int ParenDepth)
+  public record struct LispToken(LispTokenType Type, string? Text, int Line, int Column, int ParenDepth)
   {
     public override string ToString() => $"{Type} [{Text}] @ {Line},{Column},{ParenDepth}";
   }
@@ -166,7 +166,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcUnescapeChars((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.UnescapeChars();
+      tup.Token.Text = tup.Token.Text!.UnescapeChars();
       return tup;
     }
 
@@ -191,7 +191,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcStringLike((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = UnescapeChars(tup.Token.Text.Substring(1, tup.Token.Text.Length - 2));
+      tup.Token.Text = UnescapeChars(tup.Token.Text!.Substring(1, tup.Token.Text.Length - 2));
       return tup;
     }
         
@@ -204,7 +204,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcTrimFirst((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Substring(1);
+      tup.Token.Text = tup.Token.Text!.Substring(1);
       return tup;
     }
 
@@ -212,7 +212,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       TrimLast((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Substring(0, tup.Token.Text.Length - 1);
+      tup.Token.Text = tup.Token.Text!.Substring(0, tup.Token.Text.Length - 1);
       return tup;
     }
 
@@ -223,7 +223,7 @@ static partial class Ae
       tup = ProcStripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d*(?:\.\d+)?)$";
-      var match = Regex.Match(tup.Token.Text, pattern);
+      var match = Regex.Match(tup.Token.Text!, pattern);
       var sign = match.Groups[1].Value;
       var number = match.Groups[2].Value;
 
@@ -243,7 +243,7 @@ static partial class Ae
       var pattern = @"^(.*?\.\d*?)0*?$";
       var replacement = "$1";
 
-      tup.Token.Text = Regex.Replace(tup.Token.Text, pattern, replacement);
+      tup.Token.Text = Regex.Replace(tup.Token.Text!, pattern, replacement);
 
       if (tup.Token.Text.StartsWith("."))
         tup.Token.Text = "0" + tup.Token.Text;
@@ -261,7 +261,7 @@ static partial class Ae
       tup = ProcStripCommas(tup);
 
       var pattern = @"^([+-]?)(?:0*)(\d+)\/(?:0*)(\d+)$";
-      var match = Regex.Match(tup.Token.Text, pattern);
+      var match = Regex.Match(tup.Token.Text!, pattern);
       var sign = match.Groups[1].Value;
       var numer = match.Groups[2].Value;
       var denom = match.Groups[3].Value;
@@ -279,7 +279,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcStripCommas((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Replace(",", "");
+      tup.Token.Text = tup.Token.Text!.Replace(",", "");
       return tup;
     }
 
@@ -287,7 +287,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcComment((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Substring(2, tup.Token.Text.Length - 4);
+      tup.Token.Text = tup.Token.Text!.Substring(2, tup.Token.Text.Length - 4);
 
       return ProcCountLine(tup);
     }
@@ -298,7 +298,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcBeginMLC((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Substring(2);
+      tup.Token.Text = tup.Token.Text!.Substring(2);
       tup.State.Mode = TokenizerMode.InMultilineComment;
 
       return ProcCountLine(tup);
@@ -308,7 +308,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcEndMLC((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text.Substring(0, tup.Token.Text.Length - 2);
+      tup.Token.Text = tup.Token.Text!.Substring(0, tup.Token.Text.Length - 2);
       tup.State.Mode = TokenizerMode.Normal;
       return tup;
     }
@@ -360,7 +360,7 @@ static partial class Ae
       CountColumns((LispTokenizerState State, LispToken Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
-      tup.State.Column += tup.Token.Text.Length;
+      tup.State.Column += tup.Token.Text!.Length;
       return tup;
     }
 
@@ -378,7 +378,7 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcDiscardText((LispTokenizerState State, LispToken Token) tup)
     {
-      // tup.Token.Text = null;
+      tup.Token.Text = null;
       return tup;
     }
 

@@ -55,31 +55,31 @@ static partial class Ae
       .Many();
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseCStyleChar =
-      TypedToken(LispTokenType.CStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text[0]));
+      TypedToken(LispTokenType.CStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text![0]));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseLispStyleChar =
-      TypedToken(LispTokenType.LispStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text[0]));
+      TypedToken(LispTokenType.LispStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text![0]));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseString =
-      TypedToken(LispTokenType.String).Select(t => (Ae.LispObject)new Ae.String(t.Text));
+      TypedToken(LispTokenType.String).Select(t => (Ae.LispObject)new Ae.String(t.Text!));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseSymbol =
-      TypedToken(LispTokenType.Symbol).Select(t => (Ae.LispObject)new Ae.Symbol(t.Text));
+      TypedToken(LispTokenType.Symbol).Select(t => (Ae.LispObject)new Ae.Symbol(t.Text!));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseNil =
       TypedToken(LispTokenType.Nil).Select(t => (Ae.LispObject)Nil);
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseInteger =
-      TypedToken(LispTokenType.Integer).Select(t => (Ae.LispObject)new Ae.Integer(int.Parse(t.Text)));
+      TypedToken(LispTokenType.Integer).Select(t => (Ae.LispObject)new Ae.Integer(int.Parse(t.Text!)));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseFloat =
-      TypedToken(LispTokenType.Float).Select(t => (Ae.LispObject)new Ae.Float(float.Parse(t.Text)));
+      TypedToken(LispTokenType.Float).Select(t => (Ae.LispObject)new Ae.Float(float.Parse(t.Text!)));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseRational =
       TypedToken(LispTokenType.Rational).Select(t =>
       {
         // We trust the tokenizer and assume that t.Text will contain the expected format.
-        var parts = t.Text.Split('/');
+        var parts = t.Text!.Split('/');
         var numerator = int.Parse(parts[0]);
         var denominator = int.Parse(parts[1]);
         return (Ae.LispObject)new Ae.Rational(numerator, denominator);
