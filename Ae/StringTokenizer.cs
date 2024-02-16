@@ -76,7 +76,7 @@ static partial class Ae
         goto ReturnNoToken;
       }
       
-      DebugWrite($"StringTokenizer.NextToken:  Get token at: \"{input.ReplaceNewlinesWithEscaped()}\".");
+      DebugWrite($"StringTokenizer.NextToken:  Get token at: \"{input.FirstLine()}\".");
       
       foreach (var definition in _tokenDefinitions)
       {

@@ -105,7 +105,7 @@ static partial class Ae
         return null;
       }
 
-      DebugWrite($"Stream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
+      DebugWrite($"Stream.Next:                Get token at: \"{_input.FirstLine()}\".");
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 

@@ -27,5 +27,16 @@ static partial class Ae
     return input.Substring(0, newlineIndex);
   }
 
+  public static string Expand(this string path)
+  {
+    if (!string.IsNullOrEmpty(path) && path.StartsWith("~"))
+    {
+      var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+      return Path.Combine(homeDirectory, path.TrimStart('~').TrimStart('/', '\\'));
+    }
+
+    return path;
+  }
+  
   //====================================================================================================================
 }

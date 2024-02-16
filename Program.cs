@@ -9,24 +9,23 @@ class Program
   //==============================================================================================================================
   static void Main()
   {
-    EnableDebugWrite = true;
-    var filename = "data/data.lisp";
-    var fileText = File.ReadAllText(filename);
+    // EnableDebugWrite = true;
+
+    var path = "~/lib.lisp"; // "data/data.lisp";
+    var expandedPath = path.Expand();
+    var fileText = File.ReadAllText(expandedPath);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
 
     var tokens = stream.ReadAll();
-
-    WriteLine("\nBefore parse: ");
+    WriteLine("\nSTEP 1 - Before parse: ");
     tokens.Print();
 
     var mergedResult = MergeMultilineTokens.ParseOrThrow(tokens);
-
-    WriteLine("\nResult after merging: ");
+    WriteLine("\nSTEP 2 - Result after merging: ");
     mergedResult.Print();
 
     var resultExcludingComments = mergedResult.ExcludingComments();
-
-    WriteLine("\nResult after excluding comments: ");
+    WriteLine("\nSTEP 3 - Result after excluding comments: ");
     resultExcludingComments.Print();
   }
 
