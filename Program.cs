@@ -4,6 +4,7 @@ using static Ae.Parser;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.Token>;
+using System.Text.RegularExpressions;
 
 //================================================================================================================================
 class Program
@@ -36,14 +37,36 @@ class Program
 
     WriteLine("\nSTEP 4 - Parse objects: ");
 
-    var completeParser = ParseAtom.Many().Then(End, (objects, end) => objects);
-    var objects = completeParser.ParseOrThrow(resultExcludingComments);
+    try
+    {
+      var completeParser = ParseAtom.Many().Then(End, (objects, end) => objects);
+      var objects = completeParser.ParseOrThrow(resultExcludingComments);
 
-    if (objects.Count() == 0)
-      Die(1, "No objects!");
-    
-    foreach (var obj in objects)
-      WriteLine(obj);
+      if (objects.Count() == 0)
+        Die(1, "No objects!");
+
+      foreach (var obj in objects)
+        WriteLine(obj);
+    }
+    catch (ParseException e)
+    {
+      var re = new Regex(@"^\s+at line \d+, col (\d+)", RegexOptions.Multiline);
+      var match = re.Match(e.Message);
+
+      if (match.Success)
+      {
+        var ix = int.Parse(match.Groups[1].Value) - 1;
+        var tok = resultExcludingComments.ToList()[ix];
+
+        WriteLine($"Error at line {tok.Line}, column {tok.Column} at token: {tok}.");
+        Die(2, "Parse error!");
+      }
+      else
+      {
+        Die(2, $"Parse error: {e}");
+      }
+
+    }
   }
 
   //==============================================================================================================================
