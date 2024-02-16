@@ -14,21 +14,23 @@ class Program
   static Parser<Token, Token> TokenWithTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
   //====================================================================================================================
+  static readonly ImmutableArray<TokenType> multilineCommentTokenTypes =
+    ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
+  static readonly ImmutableArray<TokenType> multilineStringTokenTypes =
+    ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
+
+  static readonly Parser<Token, Token> multilineCommentBegin = TokenWithTokenType(TokenType.MultilineCommentBegin);
+  static readonly Parser<Token, Token> multilineCommentContent = TokenWithTokenType(TokenType.MultilineCommentContent);
+  static readonly Parser<Token, Token> multilineCommentEnd = TokenWithTokenType(TokenType.MultilineCommentEnd);
+  static readonly Parser<Token, Token> multilineStringBegin = TokenWithTokenType(TokenType.MultilineStringBegin);
+  static readonly Parser<Token, Token> multilineStringContent = TokenWithTokenType(TokenType.MultilineStringContent);
+  static readonly Parser<Token, Token> multilineStringEnd = TokenWithTokenType(TokenType.MultilineStringEnd);
+  static readonly Parser<Token, Token> someOtherToken = Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType))
+                                                              && (!multilineStringTokenTypes.Contains(t.TokenType)));
+  
+  //====================================================================================================================
   static void Main()
   {
-    ImmutableArray<TokenType> multilineCommentTokenTypes =
-      ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
-    ImmutableArray<TokenType> multilineStringTokenTypes =
-      ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
-
-    Parser<Token, Token> multilineCommentBegin = TokenWithTokenType(TokenType.MultilineCommentBegin);
-    Parser<Token, Token> multilineCommentContent = TokenWithTokenType(TokenType.MultilineCommentContent);
-    Parser<Token, Token> multilineCommentEnd = TokenWithTokenType(TokenType.MultilineCommentEnd);
-    Parser<Token, Token> multilineStringBegin = TokenWithTokenType(TokenType.MultilineStringBegin);
-    Parser<Token, Token> multilineStringContent = TokenWithTokenType(TokenType.MultilineStringContent);
-    Parser<Token, Token> multilineStringEnd = TokenWithTokenType(TokenType.MultilineStringEnd);
-    Parser<Token, Token> someOtherToken = Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType))
-                                                && (!multilineStringTokenTypes.Contains(t.TokenType)));
 
     var multilineComment =
       from begin in multilineCommentBegin
