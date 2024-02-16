@@ -7,18 +7,19 @@ using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.Token>;
 // using TokenParser = Pidgin.Parser<Ae.Token>;
 
-//======================================================================================================================
+//================================================================================================================================
 class Program
 {
-  //====================================================================================================================
+  //==============================================================================================================================
   static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
-  //====================================================================================================================
+  //==============================================================================================================================
   static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
     ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
   static readonly ImmutableArray<TokenType> MultilineStringTokenTypes =
     ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
+  //==============================================================================================================================
   static readonly Parser<Token, Token> MultilineCommentBegin = TokenWithType(TokenType.MultilineCommentBegin);
   static readonly Parser<Token, Token> MultilineCommentContent = TokenWithType(TokenType.MultilineCommentContent);
   static readonly Parser<Token, Token> MultilineCommentEnd = TokenWithType(TokenType.MultilineCommentEnd);
@@ -53,10 +54,10 @@ class Program
   static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
     OneOf(NotAMultilineToken, MergeMultilineComment, MergeMultilineString).Many();
 
-  //====================================================================================================================
+  //==============================================================================================================================
   static void Main()
   {
-    //==================================================================================================================
+    //============================================================================================================================
 
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
@@ -72,5 +73,5 @@ class Program
     result.Print();
   }
 
-  //====================================================================================================================
+  //==============================================================================================================================
 }
