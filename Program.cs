@@ -12,7 +12,7 @@ class Program
     // EnableDebugWrite = true;
 
     var path = "data/data.lisp"; // "~/lib.lisp";
-    var expandedPath = path.Expand();
+    var expandedPath = path.ExpandTilde();
     var fileText = File.ReadAllText(expandedPath);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
 
