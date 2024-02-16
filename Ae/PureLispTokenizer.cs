@@ -375,6 +375,14 @@ static partial class Ae
     }
 
     //================================================================================================================================================
+    private static (LispTokenizerState, LispToken)
+      ProcDiscardText((LispTokenizerState State, LispToken Token) tup)
+    {
+      // tup.Token.Text = null;
+      return tup;
+    }
+
+    //================================================================================================================================================
     // 'Is active?' callbacks
     //================================================================================================================================================
     private static bool InMultilineComment(LispTokenizerState state) => state.Mode == TokenizerMode.InMultilineComment;

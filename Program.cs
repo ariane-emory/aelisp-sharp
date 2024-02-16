@@ -21,8 +21,8 @@ class Program
     WriteLine("File contents:");
     WriteLine(fileText);
     WriteLine("EOF");
-    
-    var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsUninterestingToken);
+
+    var tokenizer = new QueueingLispTokenizer(fileText); // , exclude: IsUninterestingToken);
 
     WriteLine("\nSTEP 1 - Raw tokens: ");
     IEnumerable<LispToken> tokens = tokenizer.ReadAll();
