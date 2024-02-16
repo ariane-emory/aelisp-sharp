@@ -11,7 +11,7 @@ using static Pidgin.Parser<Ae.Token>;
 class Program
 {
   //==============================================================================================================================
-  static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
+  static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
 
   //==============================================================================================================================
   static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
@@ -26,8 +26,8 @@ class Program
   static readonly Parser<Token, Token> MultilineStringBegin = TokenWithType(TokenType.MultilineStringBegin);
   static readonly Parser<Token, Token> MultilineStringContent = TokenWithType(TokenType.MultilineStringContent);
   static readonly Parser<Token, Token> MultilineStringEnd = TokenWithType(TokenType.MultilineStringEnd);
-  static readonly Parser<Token, Token> NotAMultilineToken = Token(t => (!MultilineCommentTokenTypes.Contains(t.TokenType))
-                                                              && (!MultilineStringTokenTypes.Contains(t.TokenType)));
+  static readonly Parser<Token, Token> NotAMultilineToken = Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
+                                                              && (!MultilineStringTokenTypes.Contains(t.Type)));
 
   static readonly Parser<Token, Token> MergeMultilineComment =
     from begin in MultilineCommentBegin

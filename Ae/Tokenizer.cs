@@ -87,9 +87,9 @@ static partial class Ae
   public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
 
   //==================================================================================================================================================
-  public record struct Token(TokenType TokenType, string Text, int Line, int Column)
+  public record struct Token(TokenType Type, string Text, int Line, int Column)
   {
-    public override string ToString() => $"{TokenType} [{Text}] @ {Line},{Column}";
+    public override string ToString() => $"{Type} [{Text}] @ {Line},{Column}";
   }
 
   //==================================================================================================================================================
@@ -108,7 +108,7 @@ static partial class Ae
   // Ae's static methods
   //==================================================================================================================================================
   public static bool IsUninterestingToken(Token token) => !IsInterestingToken(token);
-  public static bool IsInterestingToken(Token token) => !UninterestingTokenTypes.Contains(token.TokenType);
+  public static bool IsInterestingToken(Token token) => !UninterestingTokenTypes.Contains(token.Type);
 
   //==================================================================================================================================================
   // Ae's extension methods
@@ -209,7 +209,7 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcStringLike((TokenizerState State, Token Token) tup)
       => ProcUnescapeChars((tup.State,
-                            new(tup.Token.TokenType,
+                            new(tup.Token.Type,
                                 tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                 tup.Token.Line,
                                 tup.Token.Column)));
@@ -223,13 +223,13 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcTrimFirst((TokenizerState State, Token Token) tup)
       => (tup.State,
-          new(tup.Token.TokenType, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
+          new(tup.Token.Type, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
       TrimLast((TokenizerState State, Token Token) tup)
       => (tup.State,
-          new(tup.Token.TokenType,
+          new(tup.Token.Type,
               tup.Token.Text.Substring(0, tup.Token.Text.Length - 1), tup.Token.Line, tup.Token.Column));
     
     //================================================================================================================================================
