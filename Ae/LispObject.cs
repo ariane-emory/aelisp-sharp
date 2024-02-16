@@ -8,28 +8,28 @@ static partial class Ae
   //====================================================================================================================
   // Base object abstract class
   //====================================================================================================================
-  public abstract class Object
+  public abstract class LispObject
   {
-    public Object Properties { get; set; } = Nil;
+    public LispObject Properties { get; set; } = Nil;
     public abstract override string ToString();
     public abstract string Write();
     protected string TypeName => GetType().Name;
   }
 
   //====================================================================================================================
-  // ObjectWithStringValue abstract class
+  // LispObjectWithStringValue abstract class
   //====================================================================================================================
-  public abstract class ObjectWithStringValue : Object
+  public abstract class LispObjectWithStringValue : LispObject
   {
     public string Value { get; }
-    public ObjectWithStringValue(string value) => Value = value;
+    public LispObjectWithStringValue(string value) => Value = value;
     public override string ToString() => $"{TypeName}(\"{Value}\")";
   }
 
   //====================================================================================================================
   // Symbol class
   //====================================================================================================================
-  public class Symbol : ObjectWithStringValue
+  public class Symbol : LispObjectWithStringValue
   {
     //==================================================================================================================
     // Constructor
@@ -50,7 +50,7 @@ static partial class Ae
   //====================================================================================================================
   // String class
   //====================================================================================================================
-  public class String : ObjectWithStringValue
+  public class String : LispObjectWithStringValue
   {
     public String(string value) : base(value) { }
     public override string Write() => $"\"{Value}\"";
@@ -60,7 +60,7 @@ static partial class Ae
   // Error class
   //====================================================================================================================
 
-  public class Error : ObjectWithStringValue
+  public class Error : LispObjectWithStringValue
   {
     public Error(string value) : base(value) { }
     public override string Write() => ToString();
@@ -69,7 +69,7 @@ static partial class Ae
   //====================================================================================================================
   // Char class
   //====================================================================================================================
-  public class Char : Object
+  public class Char : LispObject
   {
     public char Value { get; }
     public Char(char value) => Value = value;
@@ -80,7 +80,7 @@ static partial class Ae
   //====================================================================================================================
   // Integer class
   //====================================================================================================================
-  public class Integer : Object
+  public class Integer : LispObject
   {
     public int Value { get; }
     public Integer(int value) => Value = value;
@@ -91,7 +91,7 @@ static partial class Ae
   //====================================================================================================================
   // Float class
   //====================================================================================================================
-  public class Float : Object
+  public class Float : LispObject
   {
     public double Value { get; }
     public Float(double value) => Value = value;
@@ -102,7 +102,7 @@ static partial class Ae
   //====================================================================================================================
   // Rational class
   //====================================================================================================================
-  public class Rational : Object
+  public class Rational : LispObject
   {
     //==================================================================================================================
     // Public properties
@@ -129,19 +129,19 @@ static partial class Ae
   //====================================================================================================================
   // Environment frame class
   //====================================================================================================================
-  public class Env : Object
+  public class Env : LispObject
   {
     //==================================================================================================================
     // Public properties
     //==================================================================================================================
-    public Object Parent { get; }
+    public LispObject Parent { get; }
     public Pair Symbols { get; }
     public Pair Values { get; }
 
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public Env(Object parent, Pair symbols, Pair values)
+    public Env(LispObject parent, Pair symbols, Pair values)
     {
       Parent = parent;
       Symbols = symbols;
@@ -158,12 +158,12 @@ static partial class Ae
   //====================================================================================================================
   // Core function delegate
   //====================================================================================================================
-  public delegate Object CoreFunc(Object arg1, Object arg2, int arg3); // ???
+  public delegate LispObject CoreFunc(LispObject arg1, LispObject arg2, int arg3); // ???
 
   //====================================================================================================================
   // Core function class
   //====================================================================================================================
-  public class CoreFunction : Object
+  public class CoreFunction : LispObject
   {
     //==================================================================================================================
     // Public properties
@@ -195,14 +195,14 @@ static partial class Ae
   //====================================================================================================================
   // User function class
   //====================================================================================================================
-  public abstract class UserFunction : Object
+  public abstract class UserFunction : LispObject
   {
     //==================================================================================================================
     // Public properties
     //==================================================================================================================
-    public Object Parameters { get; }
-    public Object Body { get; }
-    public Object Env { get; }
+    public LispObject Parameters { get; }
+    public LispObject Body { get; }
+    public LispObject Env { get; }
 
     //==================================================================================================================
     // Private properties
@@ -217,7 +217,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public UserFunction(Object parameters, Object body, Object env)
+    public UserFunction(LispObject parameters, LispObject body, LispObject env)
     {
       Parameters = parameters;
       Body = body;
@@ -238,7 +238,7 @@ static partial class Ae
   //====================================================================================================================
   public class Lambda : UserFunction
   {
-    public Lambda(Object parameters, Object body, Object env) : base(parameters, body, env) { }
+    public Lambda(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
   }
 
   //====================================================================================================================
@@ -246,24 +246,24 @@ static partial class Ae
   //====================================================================================================================
   public class Macro : UserFunction
   {
-    public Macro(Object parameters, Object body, Object env) : base(parameters, body, env) { }
+    public Macro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
   }
 
   //====================================================================================================================
   // Pair class
   //====================================================================================================================
-  public class Pair : Object, IEnumerable<Object>
+  public class Pair : LispObject, IEnumerable<LispObject>
   {
     //==================================================================================================================
     // Public properties
     //==================================================================================================================
-    public Object Car { get; }
-    public Object Cdr { get; }
+    public LispObject Car { get; }
+    public LispObject Cdr { get; }
 
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public Pair(Object car, Object cdr)
+    public Pair(LispObject car, LispObject cdr)
     {
       Car = car;
       Cdr = cdr;
@@ -281,7 +281,7 @@ static partial class Ae
 
       sb.Append("(");
 
-      Object current = this;
+      LispObject current = this;
 
       while (current is Pair currentCons)
       {
@@ -312,9 +312,9 @@ static partial class Ae
     }
 
     //==================================================================================================================
-    public IEnumerator<Object> GetEnumerator()
+    public IEnumerator<LispObject> GetEnumerator()
     {
-      Object current = this;
+      LispObject current = this;
 
       while (current != Nil)
         if (current is Pair pair)
@@ -341,7 +341,7 @@ static partial class Ae
   //====================================================================================================================
   public static readonly Symbol Nil = new Symbol("nil");
   public static readonly Symbol True = new Symbol("t");
-  public static Object SymbolsList = Nil;
+  public static LispObject SymbolsList = Nil;
 
   //====================================================================================================================
   // Ae's static constructor
@@ -355,13 +355,13 @@ static partial class Ae
   //====================================================================================================================
   // Ae's static methods
   //====================================================================================================================
-  public static string Write(Object obj) => obj.Write();
-  public static Pair Cons(Object car, Object cdr) => new Pair(car, cdr);
+  public static string Write(LispObject obj) => obj.Write();
+  public static Pair Cons(LispObject car, LispObject cdr) => new Pair(car, cdr);
 
   //====================================================================================================================
-  public static bool ProperListP(Object obj)
+  public static bool ProperListP(LispObject obj)
   {
-    Object current = obj;
+    LispObject current = obj;
 
     while (current is Pair cons)
     {
@@ -375,11 +375,11 @@ static partial class Ae
   }
 
   //====================================================================================================================
-  public static bool ListP(Object obj) => obj == Nil || obj is Pair;
-  public static bool AtomP(Object obj) => !ListP(obj);
+  public static bool ListP(LispObject obj) => obj == Nil || obj is Pair;
+  public static bool AtomP(LispObject obj) => !ListP(obj);
 
   //====================================================================================================================
-  public static Object Intern(ref Ae.Object symbolsList, string key)
+  public static LispObject Intern(ref Ae.LispObject symbolsList, string key)
   {
     if (!ListP(symbolsList))
       throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");

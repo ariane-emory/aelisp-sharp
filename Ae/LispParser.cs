@@ -54,38 +54,38 @@ static partial class Ae
                           LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
       .Many();
 
-    public static readonly Parser<Token, Ae.Object> ParseCStyleChar =
-      TypedToken(LispTokenType.CStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
+    public static readonly Parser<Token, Ae.LispObject> ParseCStyleChar =
+      TypedToken(LispTokenType.CStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text[0]));
 
-    public static readonly Parser<Token, Ae.Object> ParseLispStyleChar =
-      TypedToken(LispTokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
+    public static readonly Parser<Token, Ae.LispObject> ParseLispStyleChar =
+      TypedToken(LispTokenType.LispStyleChar).Select(t => (Ae.LispObject)new Ae.Char(t.Text[0]));
 
-    public static readonly Parser<Token, Ae.Object> ParseString =
-      TypedToken(LispTokenType.String).Select(t => (Ae.Object)new Ae.String(t.Text));
+    public static readonly Parser<Token, Ae.LispObject> ParseString =
+      TypedToken(LispTokenType.String).Select(t => (Ae.LispObject)new Ae.String(t.Text));
 
-    public static readonly Parser<Token, Ae.Object> ParseSymbol =
-      TypedToken(LispTokenType.Symbol).Select(t => (Ae.Object)new Ae.Symbol(t.Text));
+    public static readonly Parser<Token, Ae.LispObject> ParseSymbol =
+      TypedToken(LispTokenType.Symbol).Select(t => (Ae.LispObject)new Ae.Symbol(t.Text));
 
-    public static readonly Parser<Token, Ae.Object> ParseNil =
-      TypedToken(LispTokenType.Nil).Select(t => (Ae.Object)Nil);
+    public static readonly Parser<Token, Ae.LispObject> ParseNil =
+      TypedToken(LispTokenType.Nil).Select(t => (Ae.LispObject)Nil);
 
-    public static readonly Parser<Token, Ae.Object> ParseInteger =
-      TypedToken(LispTokenType.Integer).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
+    public static readonly Parser<Token, Ae.LispObject> ParseInteger =
+      TypedToken(LispTokenType.Integer).Select(t => (Ae.LispObject)new Ae.Integer(int.Parse(t.Text)));
 
-    public static readonly Parser<Token, Ae.Object> ParseFloat =
-      TypedToken(LispTokenType.Float).Select(t => (Ae.Object)new Ae.Float(float.Parse(t.Text)));
+    public static readonly Parser<Token, Ae.LispObject> ParseFloat =
+      TypedToken(LispTokenType.Float).Select(t => (Ae.LispObject)new Ae.Float(float.Parse(t.Text)));
 
-    public static readonly Parser<Token, Ae.Object> ParseRational =
+    public static readonly Parser<Token, Ae.LispObject> ParseRational =
       TypedToken(LispTokenType.Rational).Select(t =>
       {
         // We trust the tokenizer and assume that t.Text will contain the expected format.
         var parts = t.Text.Split('/');
         var numerator = int.Parse(parts[0]);
         var denominator = int.Parse(parts[1]);
-        return (Ae.Object)new Ae.Rational(numerator, denominator);
+        return (Ae.LispObject)new Ae.Rational(numerator, denominator);
       });
 
-    public static readonly Parser<Token, Ae.Object> ParseAtom =
+    public static readonly Parser<Token, Ae.LispObject> ParseAtom =
       OneOf(
         ParseSymbol,
         ParseNil,
