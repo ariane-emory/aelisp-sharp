@@ -103,11 +103,36 @@ static partial class Ae
         ParseList!
     ));
 
-    public static readonly Parser<LispToken, LispObject> ParseList =
-      TypedToken(LispTokenType.LParen)
-      .Then(ParseSExp!.Many(), (lp, exprs) => exprs.Reverse().Aggregate((LispObject)Nil, (acc, expr) => (LispObject)Cons(expr, acc)))
-      .Before(TypedToken(LispTokenType.RParen));
+    public static readonly Parser<LispToken, LispToken> ParseDot =
+        TypedToken(LispTokenType.Dot);
 
+    public static readonly Parser<LispToken, LispObject> ParseListElements = Rec<LispToken, LispObject>(() =>
+        ParseSExp.Many()
+        .Then(
+            ParseDot.Then(ParseSExp, (_, expr) => expr) // We're only interested in the expression after the dot.
+            .Optional(),
+            (exprs, optionalTailExpr) =>
+            {
+              LispObject list = Nil;
+              // If there's a tail expression, it's the final part of an improper list.
+              if (optionalTailExpr.HasValue)
+              {
+                list = optionalTailExpr.Value;
+              }
+              // Reverse because Aggregate processes in reverse order.
+              foreach (var expr in exprs.Reverse())
+              {
+                list = Cons(expr, list);
+              }
+              return list;
+            }
+        )
+    );
+
+    public static readonly Parser<LispToken, LispObject> ParseList =
+        TypedToken(LispTokenType.LParen)
+        .Then(ParseListElements)
+        .Before(TypedToken(LispTokenType.RParen));
 
     //======================================================================================================================================
   }
