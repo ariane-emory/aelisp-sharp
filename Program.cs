@@ -24,19 +24,19 @@ class Program
     
     var tokenizer = new QueueingStatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
 
-    WriteLine("\nSTEP 1 - Before parse: ");
+    WriteLine("\nSTEP 1 - Raw tokens: ");
     IEnumerable<Token> tokens = tokenizer.ReadAll();
     tokens.Print();
 
-    WriteLine("\nSTEP 2 - Result after merging: ");
+    WriteLine("\nSTEP 2 - Tokens after merging multiline tokens: ");
     tokens = MergeMultilineTokens.ParseOrThrow(tokens);
     tokens.Print();
 
-    WriteLine("\nSTEP 3 - Result after excluding comments: ");
+    WriteLine("\nSTEP 3 - Tokens after excluding comments: ");
     tokens = tokens.ExcludingComments();
     tokens.Print();
 
-    WriteLine("\nSTEP 4 - Parse objects: ");
+    WriteLine("\nSTEP 4 - Parsed objects: ");
     try
     {
       var objects = ParseAtom.Many().Then(End, (objects, end) => objects).ParseOrThrow(tokens);
