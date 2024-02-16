@@ -9,8 +9,7 @@ class Program
   //==============================================================================================================================
   static void Main()
   {
-    //============================================================================================================================
-
+    EnableDebugWrite = true;
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
@@ -26,10 +25,10 @@ class Program
     mergedResult.Print();
 
     var resultExcludingComments = mergedResult.ExcludingComments();
-    
+
     WriteLine("\nResult after excluding comments: ");
     resultExcludingComments.Print();
-}
+  }
 
   //==============================================================================================================================
 }
