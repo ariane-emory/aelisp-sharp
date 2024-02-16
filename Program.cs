@@ -15,15 +15,9 @@ class Program
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
-    // var take_count = 16;
-    // var ary = new Ae.Token[take_count];
-    // var read_count = stream.Read(ary);
-    // ary.Take(read_count).Print();
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
     var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
-
-    // Func<Token, bool> isSomeOtherToken = ;
 
     static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
