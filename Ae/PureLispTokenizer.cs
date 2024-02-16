@@ -55,7 +55,7 @@ static partial class Ae
   //==================================================================================================================================================
   public record struct LispToken(LispTokenType Type, string? Text, int Line, int Column, int ParenDepth)
   {
-    public override string ToString() => $"{Type} [{Text}] @ {Line},{Column},{ParenDepth}";
+    public override string ToString() => (Text is null ? Type : $"{Type} [{Text}]") + $" @ {Line},{Column},{ParenDepth}";
   }
 
   //==================================================================================================================================================
@@ -119,23 +119,23 @@ static partial class Ae
                       TokenDefinitionIsActiveFun? IsActive,
                       string Pattern)> Tokens =
       ImmutableArray<(LispTokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
-      .Add((Type: LispTokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
-      .Add((Type: LispTokenType.Whitespace,                Discrete: false, Process: null,              IsActive: null,               Pattern: @"[ \t\f\v]+"))
+      .Add((Type: LispTokenType.Newline,                   Discrete: false, Process: ProcNewline,       IsActive: null,               Pattern: @"\r?\n"))
+      .Add((Type: LispTokenType.Whitespace,                Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"[ \t\f\v]+"))
       .Add((Type: LispTokenType.LParen,                    Discrete: false, Process: ProcLParen,        IsActive: null,               Pattern: @"\("))
       .Add((Type: LispTokenType.RParen,                    Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\)"))
-      .Add((Type: LispTokenType.Nil,                       Discrete: true,  Process: null,              IsActive: null,               Pattern: @"nil"))
-      .Add((Type: LispTokenType.Dot,                       Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\."))
+      .Add((Type: LispTokenType.Nil,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"nil"))
+      .Add((Type: LispTokenType.Dot,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"\."))
       .Add((Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"))
       .Add((Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"))
       .Add((Type: LispTokenType.Float,                     Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float))
       .Add((Type: LispTokenType.Rational,                  Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational))
       .Add((Type: LispTokenType.Integer,                   Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger))
-      .Add((Type: LispTokenType.Quote,                     Discrete: false, Process: null,              IsActive: null,               Pattern: @"'"))
-      .Add((Type: LispTokenType.Backtick,                  Discrete: false, Process: null,              IsActive: null,               Pattern: @"`"))
-      .Add((Type: LispTokenType.CommaAt,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @",@"))
-      .Add((Type: LispTokenType.Comma,                     Discrete: false, Process: null,              IsActive: null,               Pattern: @","))
-      .Add((Type: LispTokenType.At,                        Discrete: false, Process: null,              IsActive: null,               Pattern: @"@"))
-      .Add((Type: LispTokenType.Dollar,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @"\$"))
+      .Add((Type: LispTokenType.Quote,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"'"))
+      .Add((Type: LispTokenType.Backtick,                  Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"`"))
+      .Add((Type: LispTokenType.CommaAt,                   Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @",@"))
+      .Add((Type: LispTokenType.Comma,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @","))
+      .Add((Type: LispTokenType.At,                        Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"@"))
+      .Add((Type: LispTokenType.Dollar,                    Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"\$"))
       .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: Integer + @"?" + MathOp))
       .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: MathOp + Integer))
       .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"[\?]{3}"))
@@ -340,11 +340,7 @@ static partial class Ae
     //================================================================================================================================================
     private static (LispTokenizerState, LispToken)
       ProcNewline((LispTokenizerState State, LispToken Token) tup)
-    {
-      tup = ProcCountLine(tup);
-      tup.Token.Text = "\\n";
-      return tup;
-    }
+      => ProcDiscardText(ProcCountLine(tup));
 
     //================================================================================================================================================
     private static (LispTokenizerState, LispToken)
