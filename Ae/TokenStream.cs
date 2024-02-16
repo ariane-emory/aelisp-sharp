@@ -117,11 +117,10 @@ static partial class Ae
       if (newToken is null)
       {
         DebugWrite($"Stream.Next:                Return no token!");
-
-        throw new ApplicationException($"Encountered bad input on line {_state.Value.Line}, "
+        throw new ApplicationException($"Bad input on line {_state.Value.Line}, "
                                        + $"column {_state.Value.Column} at \""
                                        + _input!.FirstLine()
-                                       + "\"!");
+                                       + "\".");
       }
       else
       {
