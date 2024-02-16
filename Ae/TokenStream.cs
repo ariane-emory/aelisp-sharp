@@ -98,11 +98,11 @@ static partial class Ae
     {
       if (_input is null)
       {
-        DebugWrite($"Stream.Next:                Input is null, not getting token!");
+        DebugWrite($"\nStream.Next:                Input is null, not getting token!");
         return null;
       }
 
-      DebugWrite($"Stream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
+      DebugWrite($"\nStream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
 
     Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
@@ -114,10 +114,10 @@ static partial class Ae
         goto Next;
       }
 
-      if (newToken is not null)
-        DebugWrite($"Stream.Next:                Return token:  {newToken}.");
-      else
+      if (newToken is null)
         DebugWrite($"Stream.Next:                Return no token!");
+      else
+        DebugWrite($"Stream.Next:                Return token:  {newToken}.");
 
       return newToken;
     }
