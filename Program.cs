@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using static System.Console;
 using static Ae;
+using static Ae.Parser;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.Token>;
