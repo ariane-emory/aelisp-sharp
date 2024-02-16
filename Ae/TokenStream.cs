@@ -96,15 +96,15 @@ static partial class Ae
     //==================================================================================================================
     protected virtual Token? Next()
     {
+      DebugWrite($"\nStream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
+
+    Next:
       if (string.IsNullOrEmpty(_input))
       {
         DebugWrite($"\nStream.Next:                Input is null, not getting token!");
         return null;
       }
 
-      DebugWrite($"\nStream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
-
-    Next:
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 
