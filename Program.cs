@@ -3,7 +3,8 @@ using static System.Console;
 using static Ae;
 using Pidgin;
 using static Pidgin.Parser;
-using TokenParser = Pidgin.Parser<Ae.Token, Ae.Token>;
+using static Pidgin.Parser<Ae.Token>;
+using TokenParser = Pidgin.Parser<Ae.Token>;
 using AeToken = Ae.Token; // If 'using static Ae;' is applied
 
 //======================================================================================================================
@@ -21,18 +22,21 @@ class Program
     ary.Take(read_count).Print();
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBeginning, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
-    
+
     Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == TokenType.MultilineCommentBeginning;
     Func<Token, bool> isMultilineCommentContent = t => t.TokenType == Ae.TokenType.MultilineCommentContent;
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
 
     static Parser<AeToken, AeToken> IsTokenType(TokenType tokenType) => Parser<AeToken>.Token(t => t.TokenType == tokenType);
-    
+
+    var p = Parser<Ae.Token>.Token(t => true);
+    List<string> x = new();
+
     // var multilineCommentBeginningParser = Parser.Token<Token>(isMultilineCommentBeginning);
     // var multilineCommentContentParser = Parser.Token<Token>(isMultilineCommentContent);
     // var multilineCommentEndParser = Parser.Token<Token>(isMultilineCommentEnd);
-    
+
     // var multilineCommentParser =
     //   from begin in multilineCommentBegin
     //   from contents in multilineCommentContent.Many()
@@ -49,7 +53,7 @@ class Program
     // var tokens = ... // Your token stream here
     // var result = multilineStringParser.ParseOrFallback(tokens, fallbackValue);
     // var commentResult = multilineCommentParser.ParseOrFallback(tokens, fallbackValue);
-    }
+  }
 
   //====================================================================================================================
 }
