@@ -39,7 +39,7 @@ static partial class Ae
     return self;
   }
 
-//==================================================================================================================================================
+  //==================================================================================================================================================
   // Ae's public types
   //==================================================================================================================================================
   public enum TokenType
@@ -181,12 +181,12 @@ static partial class Ae
       .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
       .Add((Type: TokenType.LispStyleChar,             Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\?."))
       .Add((Type: TokenType.String,                    Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""" + StringContent+ @"\"""))
-      .Add((Type: TokenType.MultilineStringBegin,  Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"))
+      .Add((Type: TokenType.MultilineStringBegin,      Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"))
       .Add((Type: TokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""))
       .Add((Type: TokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"))
       .Add((Type: TokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
       .Add((Type: TokenType.Comment,                   Discrete: false, Process: ProcComment,       IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
-      .Add((Type: TokenType.MultilineCommentBegin, Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
+      .Add((Type: TokenType.MultilineCommentBegin,     Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
       .Add((Type: TokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
       .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
       //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
