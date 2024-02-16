@@ -202,7 +202,6 @@ static partial class Ae
       ProcUnescapeChars((TokenizerState State, Token Token) tup)
     {
       tup.Token.Text = tup.Token.Text.UnescapeChars();
-
       return tup;
     }
 
@@ -211,7 +210,6 @@ static partial class Ae
       ProcLParen((TokenizerState State, Token Token) tup)
     {
       tup.State.ParenDepth += 1;
-
       return tup;
     }
 
@@ -220,20 +218,17 @@ static partial class Ae
       ProcRParen((TokenizerState State, Token Token) tup)
     {
       tup.State.ParenDepth -= 1;
-
       return tup;
     }
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcStringLike((TokenizerState State, Token Token) tup)
-      => ProcUnescapeChars((tup.State,
-                            new(tup.Token.Type,
-                                tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
-                                tup.Token.Line,
-                                tup.Token.Column,
-                                tup.Token.ParenDepth)));
-
+    {
+      tup.Token.Text = UnescapeChars(tup.Token.Text.Substring(1, tup.Token.Text.Length - 2));
+      return tup;
+    }
+        
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcLispStyleChar((TokenizerState State, Token Token) tup)
@@ -316,7 +311,6 @@ static partial class Ae
       ProcStripCommas((TokenizerState State, Token Token) tup)
     {
       tup.Token.Text = tup.Token.Text.Replace(",", "");
-
       return tup;
     }
 
@@ -346,7 +340,6 @@ static partial class Ae
     {
       tup.Token.Text = tup.Token.Text.Substring(0, tup.Token.Text.Length - 2);
       tup.State.Mode = TokenizerMode.Normal;
-
       return tup;
     }
 
@@ -357,7 +350,6 @@ static partial class Ae
     {
       tup = ProcTrimFirst(ProcUnescapeChars(ProcCountLine(tup)));
       tup.State.Mode = TokenizerMode.InMultilineString;
-
       return tup;
     }
 
@@ -367,7 +359,6 @@ static partial class Ae
     {
       tup = TrimLast(ProcUnescapeChars(tup));
       tup.State.Mode = TokenizerMode.Normal;
-
       return tup;
     }
 
@@ -382,7 +373,6 @@ static partial class Ae
     {
       tup = ProcCountLine(tup);
       tup.Token.Text = "\\n";
-
       return tup;
     }
 
@@ -392,7 +382,6 @@ static partial class Ae
     {
       tup.State.Line++;
       tup.State.Column = 0;
-
       return tup;
     }
 
@@ -401,9 +390,7 @@ static partial class Ae
       CountColumns((TokenizerState State, Token Token) tup)
     {
       tup = SetTokenLinesAndColumns(tup);
-
       tup.State.Column += tup.Token.Text.Length;
-
       return tup;
     }
 
@@ -414,7 +401,6 @@ static partial class Ae
       tup.Token.Line = tup.State.Line;
       tup.Token.Column = tup.State.Column;
       tup.Token.ParenDepth = tup.State.ParenDepth;
-
       return tup;
     }
 
