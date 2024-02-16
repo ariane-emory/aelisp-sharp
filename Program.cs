@@ -15,10 +15,10 @@ class Program
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
-    var take_count = 16;
-    var ary = new Ae.Token[take_count];
-    var read_count = stream.Read(ary);
-    ary.Take(read_count).Print();
+    // var take_count = 16;
+    // var ary = new Ae.Token[take_count];
+    // var read_count = stream.Read(ary);
+    // ary.Take(read_count).Print();
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
 
@@ -50,16 +50,19 @@ class Program
         begin.Column
         );
 
-    WriteLine("\nHere: ");
-
     // Recreate the stream.
     stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
     List<Token> tokens = stream.ReadAll();
 
+    WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
 
-    var result = someOtherToken.Or(multilineCommentParser).ParseOrThrow(tokens);
-    }
+    var result = someOtherToken.Or(multilineCommentParser).Many().ParseOrThrow(tokens);
+
+    WriteLine("\nResult of parse: ");
+    result.Print();
+
+  }
 
   //====================================================================================================================
 }
