@@ -85,7 +85,7 @@ static partial class Ae
   };
 
   //==================================================================================================================================================
-  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal);
+  public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal, int ParenDepth = 0);
 
   //==================================================================================================================================================
   public record struct Token(TokenType Type, string Text, int Line, int Column)
@@ -154,43 +154,43 @@ static partial class Ae
                       TokenDefinitionIsActiveFun? IsActive,
                       string Pattern)> Tokens =
       ImmutableArray<(TokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
-      .Add((Type: TokenType.Newline, Discrete: false, Process: ProcNewline, IsActive: null, Pattern: @"\r?\n"))
-      .Add((Type: TokenType.Whitespace, Discrete: false, Process: null, IsActive: null, Pattern: @"[ \t\f\v]+"))
-      .Add((Type: TokenType.LParen, Discrete: false, Process: null, IsActive: null, Pattern: @"\("))
-      .Add((Type: TokenType.RParen, Discrete: true, Process: null, IsActive: null, Pattern: @"\)"))
-      .Add((Type: TokenType.Nil, Discrete: true, Process: null, IsActive: null, Pattern: @"nil"))
-      .Add((Type: TokenType.Dot, Discrete: true, Process: null, IsActive: null, Pattern: @"\."))
-      .Add((Type: TokenType.CStyleChar, Discrete: true, Process: ProcStringLike, IsActive: null, Pattern: @"'[^']'"))
-      .Add((Type: TokenType.CStyleChar, Discrete: true, Process: ProcStringLike, IsActive: null, Pattern: @"'\\.'"))
-      .Add((Type: TokenType.Float, Discrete: true, Process: ProcFloat, IsActive: null, Pattern: Float))
-      .Add((Type: TokenType.Rational, Discrete: true, Process: ProcRational, IsActive: null, Pattern: Rational))
-      .Add((Type: TokenType.Integer, Discrete: true, Process: ProcNumber, IsActive: null, Pattern: MaybeSigned + DigitSeparatedInteger))
-      .Add((Type: TokenType.Quote, Discrete: false, Process: null, IsActive: null, Pattern: @"'"))
-      .Add((Type: TokenType.Backtick, Discrete: false, Process: null, IsActive: null, Pattern: @"`"))
-      .Add((Type: TokenType.CommaAt, Discrete: false, Process: null, IsActive: null, Pattern: @",@"))
-      .Add((Type: TokenType.Comma, Discrete: false, Process: null, IsActive: null, Pattern: @","))
-      .Add((Type: TokenType.At, Discrete: false, Process: null, IsActive: null, Pattern: @"@"))
-      .Add((Type: TokenType.Dollar, Discrete: false, Process: null, IsActive: null, Pattern: @"\$"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: Integer + @"?" + MathOp))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: MathOp + Integer))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"[\?]{3}"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: SymBody))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"<" + SymBody + @">"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"\*" + SymBody + @"\*"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"))
-      .Add((Type: TokenType.Symbol, Discrete: true, Process: null, IsActive: null, Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
-      .Add((Type: TokenType.LispStyleChar, Discrete: true, Process: ProcLispStyleChar, IsActive: null, Pattern: @"\?\\?."))
-      .Add((Type: TokenType.String, Discrete: true, Process: ProcStringLike, IsActive: null, Pattern: @"\""" + StringContent + @"\"""))
-      .Add((Type: TokenType.MultilineStringBegin, Discrete: false, Process: ProcBeginMLS, IsActive: null, Pattern: @"\""" + StringContent + @"\n"))
-      .Add((Type: TokenType.MultilineStringEnd, Discrete: true, Process: ProcEndMLS, IsActive: InMultilineString, Pattern: StringContent + @"\"""))
-      .Add((Type: TokenType.MultilineStringContent, Discrete: false, Process: ProcMLSContent, IsActive: InMultilineString, Pattern: StringContent + @"\n"))
-      .Add((Type: TokenType.Comment, Discrete: false, Process: ProcTrimFirst, IsActive: null, Pattern: @";[^\n]*"))
-      .Add((Type: TokenType.Comment, Discrete: false, Process: ProcComment, IsActive: null, Pattern: @"#\|[^\n]*\|#"))
-      .Add((Type: TokenType.MultilineCommentBegin, Discrete: false, Process: ProcBeginMLC, IsActive: null, Pattern: @"#\|[^\n]*\n"))
-      .Add((Type: TokenType.MultilineCommentEnd, Discrete: false, Process: ProcEndMLC, IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
-      .Add((Type: TokenType.MultilineCommentContent, Discrete: false, Process: ProcCountLine, IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
-    //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
+       .Add((Type: TokenType.Newline,                   Discrete: false, Process: ProcCountLine,     IsActive: null,               Pattern: @"\r?\n"))
+      .Add((Type: TokenType.Whitespace,                Discrete: false, Process: null,              IsActive: null,               Pattern: @"[ \t\f\v]+"))
+      .Add((Type: TokenType.LParen,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @"\("))
+      .Add((Type: TokenType.RParen,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\)"))
+      .Add((Type: TokenType.Nil,                       Discrete: true,  Process: ProcLParen,        IsActive: null,               Pattern: @"nil"))
+      .Add((Type: TokenType.Dot,                       Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\."))
+      .Add((Type: TokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"))
+      .Add((Type: TokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"))
+      .Add((Type: TokenType.Float,                     Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float))
+      .Add((Type: TokenType.Rational,                  Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational))
+      .Add((Type: TokenType.Integer,                   Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger))
+      .Add((Type: TokenType.Quote,                     Discrete: false, Process: null,              IsActive: null,               Pattern: @"'"))
+      .Add((Type: TokenType.Backtick,                  Discrete: false, Process: null,              IsActive: null,               Pattern: @"`"))
+      .Add((Type: TokenType.CommaAt,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @",@"))
+      .Add((Type: TokenType.Comma,                     Discrete: false, Process: null,              IsActive: null,               Pattern: @","))
+      .Add((Type: TokenType.At,                        Discrete: false, Process: null,              IsActive: null,               Pattern: @"@"))
+      .Add((Type: TokenType.Dollar,                    Discrete: false, Process: null,              IsActive: null,               Pattern: @"\$"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: Integer + @"?" + MathOp))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: MathOp + Integer))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"[\?]{3}"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: SymBody))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"<"  + SymBody + @">"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\*" + SymBody + @"\*"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"))
+      .Add((Type: TokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
+      .Add((Type: TokenType.LispStyleChar,             Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\?."))
+      .Add((Type: TokenType.String,                    Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""" + StringContent+ @"\"""))
+      .Add((Type: TokenType.MultilineStringBegin,      Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"))
+      .Add((Type: TokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""))
+      .Add((Type: TokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"))
+      .Add((Type: TokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
+      .Add((Type: TokenType.Comment,                   Discrete: false, Process: ProcComment,       IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
+      .Add((Type: TokenType.MultilineCommentBegin,     Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
+      .Add((Type: TokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
+      .Add((Type: TokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
+      //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     //================================================================================================================================================
     public static Tokenizer Instance { get; } = new();
@@ -202,6 +202,24 @@ static partial class Ae
       ProcUnescapeChars((TokenizerState State, Token Token) tup)
     {
       tup.Token.Text = tup.Token.Text.UnescapeChars();
+
+      return tup;
+    }
+
+    //================================================================================================================================================
+    private static (TokenizerState, Token)
+      ProcLParen((TokenizerState State, Token Token) tup)
+    {
+      tup.State.ParenDepth += 1;
+
+      return tup;
+    }
+
+    //================================================================================================================================================
+    private static (TokenizerState, Token)
+      ProcRParen((TokenizerState State, Token Token) tup)
+    {
+      tup.State.ParenDepth -= 1;
 
       return tup;
     }
