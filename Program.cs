@@ -73,8 +73,7 @@ class Program
         WriteLine($"ERROR: Parse error: {e.Message}");
       }
 
-      Die(2, "Parse error encountered, dying.");
-
+      Die(2, "Dying due to parse error.");
     }
   }
 
