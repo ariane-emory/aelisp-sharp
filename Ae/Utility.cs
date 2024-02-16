@@ -6,7 +6,7 @@ static partial class Ae
   //====================================================================================================================
   // Private static fields
   //====================================================================================================================
-  private static readonly ImmutableArray<(string, string)> EscapedChars = ImmutableArray.Create(
+  private static readonly ImmutableArray<(string Escaped, string Unescaped)> EscapedChars = ImmutableArray.Create(
     (@"\a", "\a"),
     (@"\b", "\b"),
     (@"\f", "\f"),
@@ -14,9 +14,9 @@ static partial class Ae
     (@"\r", "\r"),
     (@"\t", "\t"),
     (@"\v", "\v"),
-    (@"\\", "\\"),
     // (@"\'", "\'"),
     (@"\""", "\"")
+//    (@"\\", "\\")
     );
 
   //====================================================================================================================
