@@ -218,6 +218,7 @@ static partial class Ae
       ProcRParen((TokenizerState State, Token Token) tup)
     {
       tup.State.ParenDepth -= 1;
+      // tup.Token.ParenDepth -= 1; // Dunno if we should do this or not.
       return tup;
     }
 
