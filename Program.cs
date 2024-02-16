@@ -64,7 +64,12 @@ class Program
     WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
 
-    var result = someOtherToken.Or(multilineCommentParser).Or(multilineStringParser).Many().ParseOrThrow(tokens);
+    //var result = someOtherToken.Or(multilineCommentParser).Or(multilineStringParser).Many().ParseOrThrow(tokens);
+    var result = OneOf(
+        someOtherToken,
+        multilineCommentParser,
+        multilineStringParser
+    ).Many().ParseOrThrow(tokens);
 
     WriteLine("\nResult of parse: ");
     result.Print();
