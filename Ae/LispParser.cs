@@ -100,12 +100,12 @@ static partial class Ae
 
     public static Parser<LispToken, LispObject> ParseSExp = Rec(() => OneOf(
         ParseAtom,
-        ParseList
+        ParseList!
     ));
 
     public static readonly Parser<LispToken, LispObject> ParseList =
       TypedToken(LispTokenType.LParen)
-      .Then(ParseSExp!.Many(), (lp, exprs) => exprs.Aggregate((LispObject)Nil, (acc, expr) => (LispObject)Cons(expr, acc)))
+      .Then(ParseSExp!.Many(), (lp, exprs) => exprs.Reverse().Aggregate((LispObject)Nil, (acc, expr) => (LispObject)Cons(expr, acc)))
       .Before(TypedToken(LispTokenType.RParen));
 
 

@@ -39,9 +39,11 @@ class Program
     WriteLine("\nSTEP 4 - Parsed objects: ");
     try
     {
+      var list = ParseList.ParseOrThrow(tokens);
+      WriteLine($"list.toString(): {list}");
+      WriteLine($"list.Write(): {list.Write()}");
+
       // var objects = ParseAtom.Many().Then(End, (objects, end) => objects).ParseOrThrow(tokens);
-      var objects = ParseList.ParseOrThrow(tokens);
-      WriteLine(objects);
       
       // if (objects.Count() == 0)
       //   Die(1, "No objects!");
