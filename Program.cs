@@ -55,16 +55,25 @@ class Program
 
       if (match.Success)
       {
+        // ParseException reports 1-based index, convert it to 0-based
         var ix = int.Parse(match.Groups[1].Value) - 1;
-        var tok = resultExcludingComments.ToList()[ix];
 
-        WriteLine($"Error at line {tok.Line}, column {tok.Column} at token: {tok}.");
-        Die(2, "Parse error!");
+        if (ix >= 0 && ix < resultExcludingComments.Count())
+        {
+          var tok = resultExcludingComments.ElementAt(ix);
+          WriteLine($"Error at line {tok.Line}, column {tok.Column} at token: {tok}.");
+        }
+        else
+        {
+          WriteLine($"Error at a position that could not be directly mapped to a token: {e.Message}");
+        }
       }
       else
       {
-        Die(2, $"Parse error: {e}");
+        WriteLine($"Parse error: {e.Message}");
       }
+
+      Die(2, "Parse error encountered.");
 
     }
   }
