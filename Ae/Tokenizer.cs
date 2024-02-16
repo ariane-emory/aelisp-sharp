@@ -90,7 +90,7 @@ static partial class Ae
   //==================================================================================================================================================
   public record struct Token(TokenType Type, string Text, int Line, int Column, int ParenDepth)
   {
-    public override string ToString() => $"{Type} [{Text}] @ {Line},{Column}";
+    public override string ToString() => $"{Type} [{Text}] @ {Line},{Column},{ParenDepth}";
   }
 
   //==================================================================================================================================================
@@ -132,7 +132,7 @@ static partial class Ae
     //================================================================================================================================================
     // Private constructor
     //================================================================================================================================================
-    private Tokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0),
+    private Tokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0, 0),
                                createTokenizerStateFun: () => new())
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
@@ -231,7 +231,8 @@ static partial class Ae
                             new(tup.Token.Type,
                                 tup.Token.Text.Substring(1, tup.Token.Text.Length - 2),
                                 tup.Token.Line,
-                                tup.Token.Column)));
+                                tup.Token.Column,
+                                tup.Token.ParenDepth)));
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
@@ -242,14 +243,14 @@ static partial class Ae
     private static (TokenizerState, Token)
       ProcTrimFirst((TokenizerState State, Token Token) tup)
       => (tup.State,
-          new(tup.Token.Type, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column));
+          new(tup.Token.Type, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column, tup.Token.ParenDepth));
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
       TrimLast((TokenizerState State, Token Token) tup)
       => (tup.State,
           new(tup.Token.Type,
-              tup.Token.Text.Substring(0, tup.Token.Text.Length - 1), tup.Token.Line, tup.Token.Column));
+              tup.Token.Text.Substring(0, tup.Token.Text.Length - 1), tup.Token.Line, tup.Token.Column, tup.Token.ParenDepth));
 
     //================================================================================================================================================
     private static (TokenizerState, Token)

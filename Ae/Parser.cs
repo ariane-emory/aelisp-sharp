@@ -40,7 +40,8 @@ static partial class Ae
         mergedType,
         string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => t.Text)),
         beginToken.Line,
-        beginToken.Column);
+        beginToken.Column,
+        beginToken.ParenDepth);
 
     //======================================================================================================================================
     // Public Parsers
