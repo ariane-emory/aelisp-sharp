@@ -10,7 +10,7 @@ using static Pidgin.Parser<Ae.Token>;
 class Program
 {
   //====================================================================================================================
-  static Parser<Token, Token> TokenHasTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
+  static Parser<Token, Token> TokenWithTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
   //====================================================================================================================
   static void Main()
@@ -20,13 +20,14 @@ class Program
     var multilineStringTokenTypes =
       new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
 
-    var multilineCommentBegin = TokenHasTokenType(TokenType.MultilineCommentBegin);
-    var multilineCommentContent = TokenHasTokenType(TokenType.MultilineCommentContent);
-    var multilineCommentEnd = TokenHasTokenType(TokenType.MultilineCommentEnd);
-    var multilineStringBegin = TokenHasTokenType(TokenType.MultilineStringBegin);
-    var multilineStringContent = TokenHasTokenType(TokenType.MultilineStringContent);
-    var multilineStringEnd = TokenHasTokenType(TokenType.MultilineStringEnd);
-    var someOtherToken = Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType)) && (!multilineStringTokenTypes.Contains(t.TokenType)));
+    var multilineCommentBegin = TokenWithTokenType(TokenType.MultilineCommentBegin);
+    var multilineCommentContent = TokenWithTokenType(TokenType.MultilineCommentContent);
+    var multilineCommentEnd = TokenWithTokenType(TokenType.MultilineCommentEnd);
+    var multilineStringBegin = TokenWithTokenType(TokenType.MultilineStringBegin);
+    var multilineStringContent = TokenWithTokenType(TokenType.MultilineStringContent);
+    var multilineStringEnd = TokenWithTokenType(TokenType.MultilineStringEnd);
+    var someOtherToken = Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType))
+                               && (!multilineStringTokenTypes.Contains(t.TokenType)));
 
     var multilineComment =
       from begin in multilineCommentBegin
