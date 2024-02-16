@@ -20,35 +20,35 @@ class Program
     var read_count = stream.Read(ary);
     ary.Take(read_count).Print();
 
-    var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBeginning, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
+    var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
 
-    Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == TokenType.MultilineCommentBeginning;
-    Func<Token, bool> isMultilineCommentContent =  t => t.TokenType == TokenType.MultilineCommentContent;
+    Func<Token, bool> isMultilineCommentBegin = t => t.TokenType == TokenType.MultilineCommentBegin;
+    Func<Token, bool> isMultilineCommentContent = t => t.TokenType == TokenType.MultilineCommentContent;
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
 
-    // var multilineCommentBeginningParser = Parser<Token>.Token(isMultilineCommentBeginning);
+    // var multilineCommentBeginParser = Parser<Token>.Token(isMultilineCommentBegin);
     // var multilineCommentContentParser = Parser<Token>.Token(isMultilineCommentContent);
     // var multilineCommentEndParser = Parser<Token>.Token(isMultilineCommentEnd);
     // var someOtherTokenParser = Parser<Token>.Token(isSomeOtherToken);
 
     static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
-    var multilineCommentBeginning = IsTokenType(TokenType.MultilineCommentBeginning);
+    var multilineCommentBegin = IsTokenType(TokenType.MultilineCommentBegin);
     var multilineCommentContent = IsTokenType(TokenType.MultilineCommentContent);
     var multilineCommentEnd = IsTokenType(TokenType.MultilineCommentEnd);
     var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
 
-    // var multilineCommentParser =
-    //   from begin in multilineCommentBegin
-    //   from contents in multilineCommentContent.Many()
-    //   from end in multilineCommentEnd
-    //   select new Ae.PositionedToken<Ae.TokenType>(
-    //     Ae.TokenType.Comment,
-    //     string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
-    //     begin.Line,
-    //     begin.Column
-    //     );
+    var multilineCommentParser =
+      from begin in multilineCommentBegin
+      from contents in multilineCommentContent.Many()
+      from end in multilineCommentEnd
+      select new Token(
+        Ae.TokenType.Comment,
+        string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
+        begin.Line,
+        begin.Column
+        );
 
     // Example usage
     // Assuming you have a method to convert your IEnumerable<Token> into a parser's input stream
