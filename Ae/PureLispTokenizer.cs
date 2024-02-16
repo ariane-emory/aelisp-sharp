@@ -287,8 +287,8 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcComment((LispTokenizerState State, LispToken Token) tup)
     {
-      tup.Token.Text = tup.Token.Text!.Substring(2, tup.Token.Text.Length - 4);
-
+      tup.Token.Text = tup.Token.Text!.Substring(2, tup.Token.Text.Length - 4).Trim();
+      
       return ProcCountLine(tup);
     }
 

@@ -32,13 +32,13 @@ static partial class Ae
     private static Parser<LispToken, LispToken> TypedToken(LispTokenType tokenType) => Parser<LispToken>.Token(t => t.Type == tokenType);
 
     private static Parser<LispToken, LispToken>
-    MergeSequence(LispTokenType mergedType, LispTokenType beginType, LispTokenType contentType, LispTokenType endType) =>
+    MergeSequence(LispTokenType mergedType, bool trim, LispTokenType beginType, LispTokenType contentType, LispTokenType endType) =>
       from beginToken in TypedToken(beginType)
       from contentsTokens in TypedToken(contentType).Many()
       from endToken in TypedToken(endType)
       select new LispToken(
         mergedType,
-        string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => t.Text)),
+        string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => trim ? t.Text!.Trim() : t.Text)),
         beginToken.Line,
         beginToken.Column,
         beginToken.ParenDepth);
@@ -48,9 +48,9 @@ static partial class Ae
     //======================================================================================================================================
     public static readonly Parser<LispToken, IEnumerable<LispToken>> MergeMultilineTokens =
       OneOf(Token(t => (!MultilineCommentLispTokenTypes.Contains(t.Type)) && (!MultilineStringLispTokenTypes.Contains(t.Type))),
-            MergeSequence(LispTokenType.Comment,
+            MergeSequence(LispTokenType.Comment, true,
                           LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd),
-            MergeSequence(LispTokenType.String,
+            MergeSequence(LispTokenType.String, false,
                           LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
       .Many();
 
