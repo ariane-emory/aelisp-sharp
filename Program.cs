@@ -29,8 +29,8 @@ class Program
     WriteLine("\nResult after merging: ");
     mergedResult.Print();
 
-    var resultExcludingComments = mergedResult.Where(t => t.Type != TokenType.Comment);
-
+    var resultExcludingComments = mergedResult.ExcludingComments();
+    
     WriteLine("\nResult after excluding comments: ");
     resultExcludingComments.Print();
 }
