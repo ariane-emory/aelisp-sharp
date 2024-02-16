@@ -23,10 +23,15 @@ class Program
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBeginning, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
 
-    Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == TokenType.MultilineCommentBeginning;
-    Func<Token, bool> isMultilineCommentContent = t => t.TokenType == Ae.TokenType.MultilineCommentContent;
+    Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == Ae.TokenType.MultilineCommentBeginning;
+    Func<Token, bool> isMultilineCommentContent =  t => t.TokenType == Ae.TokenType.MultilineCommentContent;
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
+
+    var multilineCommentBeginningParser = Parser<Ae.Token>.Token(isMultilineCommentBeginning);
+    var multilineCommentContentParser = Parser<Ae.Token>.Token(isMultilineCommentContent);
+    var multilineCommentEndParser = Parser<Ae.Token>.Token(isMultilineCommentEnd);
+    var someOtherTokenParser = Parser<Ae.Token>.Token(isSomeOtherToken);
 
     static Parser<AeToken, AeToken> IsTokenType(TokenType tokenType) => Parser<AeToken>.Token(t => t.TokenType == tokenType);
 
