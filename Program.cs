@@ -32,23 +32,11 @@ class Program
     ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
   //==============================================================================================================================
-  // static readonly Parser<Token, Token> MultilineCommentBeginToken = TokenWithType(TokenType.MultilineCommentBegin);
-  // static readonly Parser<Token, Token> MultilineCommentContentToken = TokenWithType(TokenType.MultilineCommentContent);
-  // static readonly Parser<Token, Token> MultilineCommentEndToken = TokenWithType(TokenType.MultilineCommentEnd);
-  // static readonly Parser<Token, Token> MultilineStringBeginToken = TokenWithType(TokenType.MultilineStringBegin);
-  // static readonly Parser<Token, Token> MultilineStringContentToken = TokenWithType(TokenType.MultilineStringContent);
-  // static readonly Parser<Token, Token> MultilineStringEndToken = TokenWithType(TokenType.MultilineStringEnd);
-  static readonly Parser<Token, Token> NotAMultilineToken = Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
-                                                              && (!MultilineStringTokenTypes.Contains(t.Type)));
-
-  static readonly Parser<Token, Token> MergeMultilineCommentTokens =
-    MergeMultilineSequence(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
-
-  static readonly Parser<Token, Token> MergeMultilineStringTokens =
-    MergeMultilineSequence(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
-
   static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
-    OneOf(NotAMultilineToken, MergeMultilineCommentTokens, MergeMultilineStringTokens).Many();
+    OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
+                && (!MultilineStringTokenTypes.Contains(t.Type))),
+          MergeMultilineSequence(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
+          MergeMultilineSequence(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd)).Many();
 
   //==============================================================================================================================
   static void Main()
