@@ -119,7 +119,7 @@ static partial class Ae
         DebugWrite($"Stream.Next:                Return no token!");
 
         throw new ApplicationException($"Encountered bad input on line {_state.Value.Line}, "
-                                       + $"column {_state.Value.Column} at \"{_input}\"!");
+                                       + $"column {_state.Value.Column} at \"" + _input + "\"!");
       }
       else
       {
