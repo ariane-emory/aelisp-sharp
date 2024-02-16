@@ -96,7 +96,7 @@ static partial class Ae
     //==================================================================================================================
     protected virtual Token? Next()
     {
-      if (_input is null)
+      if (string.IsNullOrEmpty(_input))
       {
         DebugWrite($"\nStream.Next:                Input is null, not getting token!");
         return null;
