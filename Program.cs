@@ -17,7 +17,7 @@ class Program
     var path = "data/data.lisp"; // "~/lib.lisp";
     var expandedPath = path.ExpandTilde();
     var fileText = File.ReadAllText(expandedPath);
-    var stream = new StatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
+    var stream = new QueueingStatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
 
     WriteLine("File contents:");
     WriteLine(fileText);
