@@ -11,8 +11,18 @@ static partial class Ae
   //========================================================================================================================================
   public static IEnumerable<Token> ExcludingComments(this IEnumerable<Token> self)
   {
-    return self.Where(t => t.Type != TokenType.Comment);
-  }
+    return self.Where(t => (t.Type != TokenType.Comment) && !MultilineCommentTokenTypes.Contains(t.Type));
+    }
+
+  //======================================================================================================================================
+  // Private static fields
+  //======================================================================================================================================
+  private static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
+    ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
+
+  private static readonly ImmutableArray<TokenType> MultilineStringTokenTypes =
+    ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
+
 
   //========================================================================================================================================
   // Parsers
@@ -35,15 +45,6 @@ static partial class Ae
         begin.Line,
         begin.Column
         );
-
-    //======================================================================================================================================
-    // Private static fields
-    //======================================================================================================================================
-    private static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
-      ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
-
-    private static readonly ImmutableArray<TokenType> MultilineStringTokenTypes =
-      ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
     //======================================================================================================================================
     // Public Parsers
