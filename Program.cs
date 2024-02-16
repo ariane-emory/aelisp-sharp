@@ -4,8 +4,7 @@ using static Ae;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.Token>;
-using TokenParser = Pidgin.Parser<Ae.Token>;
-using AeToken = Ae.Token; // If 'using static Ae;' is applied
+// using TokenParser = Pidgin.Parser<Ae.Token>;
 
 //======================================================================================================================
 class Program
@@ -23,17 +22,17 @@ class Program
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBeginning, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
 
-    Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == Ae.TokenType.MultilineCommentBeginning;
-    Func<Token, bool> isMultilineCommentContent =  t => t.TokenType == Ae.TokenType.MultilineCommentContent;
-    Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == Ae.TokenType.MultilineCommentEnd;
+    Func<Token, bool> isMultilineCommentBeginning = t => t.TokenType == TokenType.MultilineCommentBeginning;
+    Func<Token, bool> isMultilineCommentContent =  t => t.TokenType == TokenType.MultilineCommentContent;
+    Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
 
-    var multilineCommentBeginningParser = Parser<Ae.Token>.Token(isMultilineCommentBeginning);
-    var multilineCommentContentParser = Parser<Ae.Token>.Token(isMultilineCommentContent);
-    var multilineCommentEndParser = Parser<Ae.Token>.Token(isMultilineCommentEnd);
-    var someOtherTokenParser = Parser<Ae.Token>.Token(isSomeOtherToken);
+    var multilineCommentBeginningParser = Parser<Token>.Token(isMultilineCommentBeginning);
+    var multilineCommentContentParser = Parser<Token>.Token(isMultilineCommentContent);
+    var multilineCommentEndParser = Parser<Token>.Token(isMultilineCommentEnd);
+    var someOtherTokenParser = Parser<Token>.Token(isSomeOtherToken);
 
-    static Parser<AeToken, AeToken> IsTokenType(TokenType tokenType) => Parser<AeToken>.Token(t => t.TokenType == tokenType);
+    static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
     var p = Parser<Ae.Token>.Token(t => true);
     List<string> x = new();
@@ -54,7 +53,7 @@ class Program
     //     );
 
     // Example usage
-    // Assuming you have a method to convert your IEnumerable<AeToken> into a parser's input stream
+    // Assuming you have a method to convert your IEnumerable<Token> into a parser's input stream
     // var tokens = ... // Your token stream here
     // var result = multilineStringParser.ParseOrFallback(tokens, fallbackValue);
     // var commentResult = multilineCommentParser.ParseOrFallback(tokens, fallbackValue);
