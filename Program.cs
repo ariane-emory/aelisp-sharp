@@ -61,19 +61,19 @@ class Program
         if (ix >= 0 && ix < resultExcludingComments.Count())
         {
           var tok = resultExcludingComments.ElementAt(ix);
-          WriteLine($"Error at line {tok.Line}, column {tok.Column} at token: {tok}.");
+          WriteLine($"ERROR: Unexpected token at line {tok.Line}, column {tok.Column}: {tok}.");
         }
         else
         {
-          WriteLine($"Error at a position that could not be directly mapped to a token: {e.Message}");
+          WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
         }
       }
       else
       {
-        WriteLine($"Parse error: {e.Message}");
+        WriteLine($"ERROR: Parse error: {e.Message}");
       }
 
-      Die(2, "Parse error encountered.");
+      Die(2, "Parse error encountered, dying.");
 
     }
   }
