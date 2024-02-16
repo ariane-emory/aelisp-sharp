@@ -21,16 +21,9 @@ class Program
     // ary.Take(read_count).Print();
 
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
+    var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
 
-    Func<Token, bool> isMultilineCommentBegin = t => t.TokenType == TokenType.MultilineCommentBegin;
-    Func<Token, bool> isMultilineCommentContent = t => t.TokenType == TokenType.MultilineCommentContent;
-    Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == TokenType.MultilineCommentEnd;
-    Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
-
-    // var multilineCommentBeginParser = Parser<Token>.Token(isMultilineCommentBegin);
-    // var multilineCommentContentParser = Parser<Token>.Token(isMultilineCommentContent);
-    // var multilineCommentEndParser = Parser<Token>.Token(isMultilineCommentEnd);
-    // var someOtherTokenParser = Parser<Token>.Token(isSomeOtherToken);
+    Func<Token, bool> isSomeOtherToken = t => (!multilineCommentTokenTypes.Contains(t.TokenType)) && (!multilineStringTokenTypes.Contains(t.TokenType));
 
     static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
@@ -38,6 +31,9 @@ class Program
     var multilineCommentContent = IsTokenType(TokenType.MultilineCommentContent);
     var multilineCommentEnd = IsTokenType(TokenType.MultilineCommentEnd);
     var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
+    var multilineStringBegin = IsTokenType(TokenType.MultilineStringBegin);
+    var multilineStringContent = IsTokenType(TokenType.MultilineStringContent);
+    var multilineStringEnd = IsTokenType(TokenType.MultilineStringEnd);
 
     var multilineCommentParser =
       from begin in multilineCommentBegin
@@ -50,6 +46,17 @@ class Program
         begin.Column
         );
 
+    var multilineStringParser =
+      from begin in multilineStringBegin
+      from contents in multilineStringContent.Many()
+      from end in multilineStringEnd
+      select new Token(
+        Ae.TokenType.String,
+        string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
+        begin.Line,
+        begin.Column
+        );
+
     // Recreate the stream.
     stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
     List<Token> tokens = stream.ReadAll();
@@ -57,7 +64,7 @@ class Program
     WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
 
-    var result = someOtherToken.Or(multilineCommentParser).Many().ParseOrThrow(tokens);
+    var result = someOtherToken.Or(multilineCommentParser).Or(multilineStringParser).Many().ParseOrThrow(tokens);
 
     WriteLine("\nResult of parse: ");
     result.Print();
