@@ -23,7 +23,7 @@ class Program
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
     var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
 
-    Func<Token, bool> isSomeOtherToken = t => (!multilineCommentTokenTypes.Contains(t.TokenType)) && (!multilineStringTokenTypes.Contains(t.TokenType));
+    // Func<Token, bool> isSomeOtherToken = ;
 
     static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
@@ -33,7 +33,7 @@ class Program
     var multilineStringBegin = IsTokenType(TokenType.MultilineStringBegin);
     var multilineStringContent = IsTokenType(TokenType.MultilineStringContent);
     var multilineStringEnd = IsTokenType(TokenType.MultilineStringEnd);
-    var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
+    var someOtherToken = Parser<Token>.Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType)) && (!multilineStringTokenTypes.Contains(t.TokenType)));
 
     var multilineComment =
       from begin in multilineCommentBegin
