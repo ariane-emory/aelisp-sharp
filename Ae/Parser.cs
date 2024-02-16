@@ -52,7 +52,7 @@ static partial class Ae
       .Many();
 
     
-        public static readonly Parser<Token, IEnumerable<Token>> ExcludeComments =
+    public static readonly Parser<Token, IEnumerable<Token>> ExcludeComments =
       NonCommentToken.Many();
     //======================================================================================================================================
   }
