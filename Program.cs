@@ -12,10 +12,6 @@ class Program
   //====================================================================================================================
   static void Main()
   {
-    var filename = "data/data.lisp";
-    var fileText = File.ReadAllText(filename);
-    var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
-
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
     var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
 
@@ -50,6 +46,10 @@ class Program
         begin.Line,
         begin.Column
         );
+
+    var filename = "data/data.lisp";
+    var fileText = File.ReadAllText(filename);
+    var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
 
     List<Token> tokens = stream.ReadAll();
 
