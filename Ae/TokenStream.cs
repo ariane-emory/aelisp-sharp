@@ -45,12 +45,12 @@ static partial class Ae
     public List<Token> ReadAll()
     {
       var list = new List<Token>();
-      Token? token = Next();
+      Token? token = NextToken();
 
       while (token is not null)
       {
         list.Add(token.Value);
-        token = Next();
+        token = NextToken();
       }
 
       return list;
@@ -72,7 +72,7 @@ static partial class Ae
 
         DebugWrite($"Stream.Read:                Try to set slot #{ix}.");
 
-        var token = Next();
+        var token = NextToken();
 
         if (token is null)
         {
@@ -94,17 +94,18 @@ static partial class Ae
     }
 
     //==================================================================================================================
-    protected virtual Token? Next()
+    protected virtual Token? NextToken()
     {
-      DebugWrite($"\nStream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
-
+      DebugWrite($"\nStream.Next:                Get next token...");
+        
     Next:
       if (string.IsNullOrEmpty(_input))
       {
-        DebugWrite($"\nStream.Next:                Input is null, not getting token!");
+        DebugWrite($"Stream.Next:                Input is null, not getting token!");
         return null;
       }
 
+      DebugWrite($"Stream.Next:                Get token at: \"{_input.ReplaceNewlinesWithEscaped()}\".");
       var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 

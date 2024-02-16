@@ -23,12 +23,12 @@ static partial class Ae
     //==================================================================================================================
     // Instance methods
     //==================================================================================================================
-    protected override Token? Next()
+    protected override Token? NextToken()
     {
       if (string.IsNullOrEmpty(_input) && _queuedInputs.Count > 0)
         _input = _queuedInputs.Dequeue();
 
-      return base.Next();
+      return base.NextToken();
     }
 
     //==================================================================================================================
