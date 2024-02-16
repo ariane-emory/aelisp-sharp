@@ -23,7 +23,7 @@ static partial class Ae
   {
     public string Value { get; }
     public LispObjectWithStringValue(string value) => Value = value;
-    public override string ToString() => $"{TypeName}(\"{Value}\")";
+    public override string ToString() => $"{TypeName}(\"{Value.EscapeChars()}\")";
   }
 
   //====================================================================================================================
