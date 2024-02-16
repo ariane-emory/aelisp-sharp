@@ -5,8 +5,8 @@ using static System.Console;
 static class Junk
 {
     //====================================================================================================================
-    static (string? Input, TokenizerState State, List<Token> Tokens)
-    TokenizeAndPrintLine(string? input, TokenizerState? state = null)
+    static (string? Input, LispTokenizerState State, List<Token> Tokens)
+    TokenizeAndPrintLine(string? input, LispTokenizerState? state = null)
     {
         var tokens = new List<Token>();
 
@@ -28,8 +28,8 @@ static class Junk
     }
 
     //====================================================================================================================
-    static (string? Input, TokenizerState State, List<Token> Tokens)
-    TokenizeAndPrintLines(IEnumerable<string> lines, TokenizerState? state)
+    static (string? Input, LispTokenizerState State, List<Token> Tokens)
+    TokenizeAndPrintLines(IEnumerable<string> lines, LispTokenizerState? state)
     {
         var tokens = new List<Token>();
 

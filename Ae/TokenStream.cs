@@ -20,7 +20,7 @@ static partial class Ae
     // Private fields
     //==================================================================================================================
     private readonly Func<Token, bool>? _exclude;
-    private TokenizerState? _state;
+    private LispTokenizerState? _state;
 
     //==================================================================================================================
     // Public properties
