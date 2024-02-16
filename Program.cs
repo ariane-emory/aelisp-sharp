@@ -9,7 +9,7 @@ class Program
   //==============================================================================================================================
   static void Main()
   {
-    EnableDebugWrite = true;
+    //EnableDebugWrite = true;
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);

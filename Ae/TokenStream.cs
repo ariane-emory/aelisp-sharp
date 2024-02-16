@@ -42,7 +42,7 @@ static partial class Ae
     public void Return(ReadOnlySpan<Token> leftovers) { throw new NotImplementedException(); }
 
     //==================================================================================================================
-    public  List<Token> ReadAll()
+    public List<Token> ReadAll()
     {
       var list = new List<Token>();
       Token? token = Next();
@@ -52,10 +52,10 @@ static partial class Ae
         list.Add(token.Value);
         token = Next();
       }
-      
+
       return list;
     }
-        
+
     //==================================================================================================================
     public int Read(Span<Token> buffer)
     {
@@ -69,7 +69,7 @@ static partial class Ae
           DebugWrite($"\nStream._input               null");
         else
           DebugWrite($"\nStream._input               \"{_input.ReplaceNewlinesWithEscaped()}\"");
-        
+
         DebugWrite($"Stream.Read:                Try to set slot #{ix}.");
 
         var token = Next();
@@ -115,9 +115,16 @@ static partial class Ae
       }
 
       if (newToken is null)
+      {
         DebugWrite($"Stream.Next:                Return no token!");
+
+        throw new ApplicationException($"Encountered bad input on line {_state.Value.Line}, "
+                                       + $"column {_state.Value.Column} at \"{_input}\"!");
+      }
       else
+      {
         DebugWrite($"Stream.Next:                Return token:  {newToken}.");
+      }
 
       return newToken;
     }
