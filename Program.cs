@@ -27,33 +27,32 @@ class Program
   static readonly Parser<Token, Token> multilineStringEnd = TokenWithTokenType(TokenType.MultilineStringEnd);
   static readonly Parser<Token, Token> someOtherToken = Token(t => (!multilineCommentTokenTypes.Contains(t.TokenType))
                                                               && (!multilineStringTokenTypes.Contains(t.TokenType)));
-  
+
+  static readonly Parser<Token, Token> multilineComment =
+    from begin in multilineCommentBegin
+    from contents in multilineCommentContent.Many()
+    from end in multilineCommentEnd
+    select new Token(
+      TokenType.Comment,
+      string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
+      begin.Line,
+      begin.Column
+      );
+
+  static readonly Parser<Token, Token> multilineString =
+    from begin in multilineStringBegin
+    from contents in multilineStringContent.Many()
+    from end in multilineStringEnd
+    select new Token(
+      TokenType.String,
+      string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
+      begin.Line,
+      begin.Column
+      );
+
   //====================================================================================================================
   static void Main()
   {
-
-    var multilineComment =
-      from begin in multilineCommentBegin
-      from contents in multilineCommentContent.Many()
-      from end in multilineCommentEnd
-      select new Token(
-        TokenType.Comment,
-        string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
-        begin.Line,
-        begin.Column
-        );
-
-    var multilineString =
-      from begin in multilineStringBegin
-      from contents in multilineStringContent.Many()
-      from end in multilineStringEnd
-      select new Token(
-        TokenType.String,
-        string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
-        begin.Line,
-        begin.Column
-        );
-
     //==================================================================================================================
 
     var filename = "data/data.lisp";
