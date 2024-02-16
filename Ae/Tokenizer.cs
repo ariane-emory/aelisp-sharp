@@ -237,15 +237,18 @@ static partial class Ae
     //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcTrimFirst((TokenizerState State, Token Token) tup)
-      => (tup.State,
-          new(tup.Token.Type, tup.Token.Text.Substring(1), tup.Token.Line, tup.Token.Column, tup.Token.ParenDepth));
+    {
+      tup.Token.Text = tup.Token.Text.Substring(1);
+      return tup;
+    }
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
       TrimLast((TokenizerState State, Token Token) tup)
-      => (tup.State,
-          new(tup.Token.Type,
-              tup.Token.Text.Substring(0, tup.Token.Text.Length - 1), tup.Token.Line, tup.Token.Column, tup.Token.ParenDepth));
+    {
+      tup.Token.Text = tup.Token.Text.Substring(0, tup.Token.Text.Length - 1);
+      return tup;
+    }
 
     //================================================================================================================================================
     private static (TokenizerState, Token)
@@ -314,6 +317,7 @@ static partial class Ae
       return tup;
     }
 
+    //================================================================================================================================================
     private static (TokenizerState, Token)
       ProcComment((TokenizerState State, Token Token) tup)
     {
