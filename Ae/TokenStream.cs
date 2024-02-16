@@ -7,9 +7,9 @@ using static System.Console;
 static partial class Ae
 {
   //====================================================================================================================
-  // TokenStream class
+  // StatefulLispTokenizer class
   //====================================================================================================================
-  public class TokenStream
+  public class StatefulLispTokenizer
   {
     //==================================================================================================================
     // Protected fields
@@ -30,7 +30,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public TokenStream(string? input, Func<Token, bool>? exclude = null)
+    public StatefulLispTokenizer(string? input, Func<Token, bool>? exclude = null)
     {
       _input = input;
       _exclude = exclude;

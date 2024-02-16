@@ -2,9 +2,9 @@
 static partial class Ae
 {
   //====================================================================================================================
-  // QueueingTokenStream class
+  // QueueingStatefulLispTokenizer class
   //====================================================================================================================
-  public class QueueingTokenStream : TokenStream
+  public class QueueingStatefulLispTokenizer : StatefulLispTokenizer
   {
     //==================================================================================================================
     // Private fields
@@ -14,7 +14,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public QueueingTokenStream(string? input, Func<Token, bool>? exclude = null) : base(null, exclude)
+    public QueueingStatefulLispTokenizer(string? input, Func<Token, bool>? exclude = null) : base(null, exclude)
     {
       if (input is not null)
         _queuedInputs.Enqueue(input);
