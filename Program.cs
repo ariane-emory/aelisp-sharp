@@ -27,19 +27,17 @@ class Program
     Func<Token, bool> isMultilineCommentEnd = t => t.TokenType == TokenType.MultilineCommentEnd;
     Func<Token, bool> isSomeOtherToken = t => !multilineCommentTokenTypes.Contains(t.TokenType);
 
-    var multilineCommentBeginningParser = Parser<Token>.Token(isMultilineCommentBeginning);
-    var multilineCommentContentParser = Parser<Token>.Token(isMultilineCommentContent);
-    var multilineCommentEndParser = Parser<Token>.Token(isMultilineCommentEnd);
-    var someOtherTokenParser = Parser<Token>.Token(isSomeOtherToken);
+    // var multilineCommentBeginningParser = Parser<Token>.Token(isMultilineCommentBeginning);
+    // var multilineCommentContentParser = Parser<Token>.Token(isMultilineCommentContent);
+    // var multilineCommentEndParser = Parser<Token>.Token(isMultilineCommentEnd);
+    // var someOtherTokenParser = Parser<Token>.Token(isSomeOtherToken);
 
     static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
-    var p = Parser<Ae.Token>.Token(t => true);
-    List<string> x = new();
-
-    // var multilineCommentBeginningParser = Parser.Token<Token>(isMultilineCommentBeginning);
-    // var multilineCommentContentParser = Parser.Token<Token>(isMultilineCommentContent);
-    // var multilineCommentEndParser = Parser.Token<Token>(isMultilineCommentEnd);
+    var multilineCommentBeginning = IsTokenType(TokenType.MultilineCommentBeginning);
+    var multilineCommentContent = IsTokenType(TokenType.MultilineCommentContent);
+    var multilineCommentEnd = IsTokenType(TokenType.MultilineCommentEnd);
+    var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
 
     // var multilineCommentParser =
     //   from begin in multilineCommentBegin
