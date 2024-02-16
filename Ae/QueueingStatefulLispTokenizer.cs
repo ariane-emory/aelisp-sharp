@@ -14,7 +14,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public QueueingStatefulLispTokenizer(string? input, Func<Token, bool>? exclude = null) : base(null, exclude)
+    public QueueingStatefulLispTokenizer(string? input, Func<LispToken, bool>? exclude = null) : base(null, exclude)
     {
       if (input is not null)
         _queuedInputs.Enqueue(input);
@@ -23,7 +23,7 @@ static partial class Ae
     //==================================================================================================================
     // Instance methods
     //==================================================================================================================
-    protected override Token? NextToken()
+    protected override LispToken? NextToken()
     {
       if (string.IsNullOrEmpty(_input) && _queuedInputs.Count > 0)
         _input = _queuedInputs.Dequeue();

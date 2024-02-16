@@ -1,6 +1,6 @@
 using Pidgin;
 using static Pidgin.Parser;
-using static Pidgin.Parser<Ae.Token>;
+using static Pidgin.Parser<Ae.LispToken>;
 using static System.Console;
 
 //======================================================================================================================
@@ -19,7 +19,7 @@ static partial class Ae
     //==================================================================================================================
     // Private fields
     //==================================================================================================================
-    private readonly Func<Token, bool>? _exclude;
+    private readonly Func<LispToken, bool>? _exclude;
     private LispTokenizerState? _state;
 
     //==================================================================================================================
@@ -30,7 +30,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    public StatefulLispTokenizer(string? input, Func<Token, bool>? exclude = null)
+    public StatefulLispTokenizer(string? input, Func<LispToken, bool>? exclude = null)
     {
       _input = input;
       _exclude = exclude;
@@ -39,10 +39,10 @@ static partial class Ae
     //==================================================================================================================
     // Instance methods
     //==================================================================================================================
-    public List<Token> ReadAll()
+    public List<LispToken> ReadAll()
     {
-      var list = new List<Token>();
-      Token? token = NextToken();
+      var list = new List<LispToken>();
+      LispToken? token = NextToken();
 
       while (token is not null)
       {
@@ -54,7 +54,7 @@ static partial class Ae
     }
 
     //==================================================================================================================
-    public int Read(Span<Token> buffer)
+    public int Read(Span<LispToken> buffer)
     {
       var ix = 0;
 
@@ -91,7 +91,7 @@ static partial class Ae
     }
 
     //==================================================================================================================
-    protected virtual Token? NextToken()
+    protected virtual LispToken? NextToken()
     {
       DebugWrite($"\nStream.Next:                Get next token...");
         

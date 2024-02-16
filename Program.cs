@@ -3,7 +3,7 @@ using static Ae;
 using static Ae.LispParser;
 using Pidgin;
 using static Pidgin.Parser;
-using static Pidgin.Parser<Ae.Token>;
+using static Pidgin.Parser<Ae.LispToken>;
 using System.Text.RegularExpressions;
 
 //================================================================================================================================
@@ -25,7 +25,7 @@ class Program
     var tokenizer = new QueueingStatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
 
     WriteLine("\nSTEP 1 - Raw tokens: ");
-    IEnumerable<Token> tokens = tokenizer.ReadAll();
+    IEnumerable<LispToken> tokens = tokenizer.ReadAll();
     tokens.Print();
 
     WriteLine("\nSTEP 2 - Tokens after merging multiline tokens: ");

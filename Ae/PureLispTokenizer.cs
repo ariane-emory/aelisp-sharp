@@ -88,7 +88,7 @@ static partial class Ae
   public record struct LispTokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal, int ParenDepth = 0);
 
   //==================================================================================================================================================
-  public record struct Token(LispTokenType Type, string Text, int Line, int Column, int ParenDepth)
+  public record struct LispToken(LispTokenType Type, string Text, int Line, int Column, int ParenDepth)
   {
     public override string ToString() => $"{Type} [{Text}] @ {Line},{Column},{ParenDepth}";
   }
