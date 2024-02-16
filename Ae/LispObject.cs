@@ -379,7 +379,9 @@ static partial class Ae
   public static bool AtomP(LispObject obj) => !ListP(obj);
 
   //====================================================================================================================
-  public static LispObject Intern(ref Ae.LispObject symbolsList, string key)
+  public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
+  //====================================================================================================================
+  public static LispObject Intern(string symbolName, ref Ae.LispObject symbolsList)
   {
     if (!ListP(symbolsList))
       throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
@@ -391,7 +393,7 @@ static partial class Ae
       {
         if (pair.Car is Symbol symbol)
         {
-          if (symbol.Value == key)
+          if (symbol.Value == symbolName)
             return symbol;
         }
         else
@@ -402,7 +404,7 @@ static partial class Ae
       else
         throw new InvalidOperationException($"{nameof(symbolsList)} is not a proper list");
 
-    var newSymbol = new Symbol(key);
+    var newSymbol = new Symbol(symbolName);
 
     symbolsList = Cons(newSymbol, symbolsList);
 

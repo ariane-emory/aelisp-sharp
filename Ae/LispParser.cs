@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.LispToken>;
+using static Ae;
 
 //==========================================================================================================================================
 static partial class Ae
@@ -64,7 +65,7 @@ static partial class Ae
       TypedToken(LispTokenType.String).Select(t => (Ae.LispObject)new Ae.String(t.Text!));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseSymbol =
-      TypedToken(LispTokenType.Symbol).Select(t => (Ae.LispObject)new Ae.Symbol(t.Text!));
+      TypedToken(LispTokenType.Symbol).Select(t => (Ae.LispObject)Intern(t.Text!));
 
     public static readonly Parser<LispToken, Ae.LispObject> ParseNil =
       TypedToken(LispTokenType.Nil).Select(t => (Ae.LispObject)Nil);
