@@ -51,16 +51,15 @@ class Program
         );
 
     WriteLine("\nHere: ");
-    
+
     // Recreate the stream.
     stream = new Ae.TokenStream(fileText, exclude: Ae.IsUninterestingToken);
-    var tokens = stream.ReadAll();
-    tokens.Print();
+    List<Token> tokens = stream.ReadAll();
 
-    // This method doesn't exist:
-    //    var commentResult = multilineCommentParser.Parse(
-  }
+    tokens.Print(); // tokens are printed correctly..
+
+    var result = someOtherToken.Or(multilineCommentParser).ParseOrThrow(tokens);
+    }
 
   //====================================================================================================================
 }
-
