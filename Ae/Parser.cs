@@ -29,13 +29,13 @@ static partial class Ae
     //======================================================================================================================================
     // Private static methods
     //======================================================================================================================================
-    private static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
+    private static Parser<Token, Token> TypedToken(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
 
     private static Parser<Token, Token>
     MergeSequence(TokenType mergedType, TokenType beginType, TokenType contentType, TokenType endType) =>
-      from beginToken in TokenWithType(beginType)
-      from contentsTokens in TokenWithType(contentType).Many()
-      from endToken in TokenWithType(endType)
+      from beginToken in TypedToken(beginType)
+      from contentsTokens in TypedToken(contentType).Many()
+      from endToken in TypedToken(endType)
       select new Token(
         mergedType,
         string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => t.Text)),
@@ -53,6 +53,23 @@ static partial class Ae
             MergeSequence(TokenType.String,
                           TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
+
+    public static readonly Parser<Token, Ae.Object> ParseInteger =
+      TypedToken(TokenType.Float).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
+
+    public static readonly Parser<Token, Ae.Object> ParseFloat =
+      TypedToken(TokenType.Float).Select(t => (Ae.Object)new Ae.Float(float.Parse(t.Text)));
+
+    public static readonly Parser<Token, Ae.Object> ParseRational =
+      TypedToken(TokenType.Rational).Select(t =>
+      {
+        // We trust the tokenizer and assume that t.Text will contain the expected format.
+        var parts = t.Text.Split('/');
+        var numerator = int.Parse(parts[0]);
+        var denominator = int.Parse(parts[1]);
+        return (Ae.Object)new Ae.Rational(numerator, denominator);
+      });
+
     //======================================================================================================================================
   }
   //========================================================================================================================================
