@@ -9,10 +9,8 @@ static partial class Ae
   //========================================================================================================================================
   // Extension methods
   //========================================================================================================================================
-  public static IEnumerable<Token> ExcludingComments(this IEnumerable<Token> self)
-  {
-    return self.Where(t => (t.Type != TokenType.Comment) && !MultilineCommentTokenTypes.Contains(t.Type));
-    }
+  public static IEnumerable<Token> ExcludingComments(this IEnumerable<Token> self) => 
+    self.Where(t => (t.Type != TokenType.Comment) && !MultilineCommentTokenTypes.Contains(t.Type));
 
   //======================================================================================================================================
   // Private static fields
@@ -22,7 +20,6 @@ static partial class Ae
 
   private static readonly ImmutableArray<TokenType> MultilineStringTokenTypes =
     ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
-
 
   //========================================================================================================================================
   // Parsers
@@ -35,7 +32,7 @@ static partial class Ae
     private static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
 
     private static Parser<Token, Token>
-    MergeMultilineSequence(TokenType outToken, TokenType beginToken, TokenType contentToken, TokenType endToken) =>
+    MergeSequence(TokenType outToken, TokenType beginToken, TokenType contentToken, TokenType endToken) =>
       from begin in TokenWithType(beginToken)
       from contents in TokenWithType(contentToken).Many()
       from end in TokenWithType(endToken)
@@ -52,10 +49,10 @@ static partial class Ae
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
       OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
                   && (!MultilineStringTokenTypes.Contains(t.Type))),
-            MergeMultilineSequence(TokenType.Comment,
-                                   TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
-            MergeMultilineSequence(TokenType.String,
-                                   TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
+            MergeSequence(TokenType.Comment,
+                          TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
+            MergeSequence(TokenType.String,
+                          TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
     //======================================================================================================================================
   }
