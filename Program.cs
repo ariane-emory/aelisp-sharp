@@ -28,7 +28,7 @@ class Program
   static readonly Parser<Token, Token> SomeOtherToken = Token(t => (!MultilineCommentTokenTypes.Contains(t.TokenType))
                                                               && (!MultilineStringTokenTypes.Contains(t.TokenType)));
 
-  static readonly Parser<Token, Token> MultilineComment =
+  static readonly Parser<Token, Token> ConsolidateMultilineComment =
     from begin in MultilineCommentBegin
     from contents in MultilineCommentContent.Many()
     from end in MultilineCommentEnd
@@ -39,7 +39,7 @@ class Program
       begin.Column
       );
 
-  static readonly Parser<Token, Token> MultilineString =
+  static readonly Parser<Token, Token> ConsolidateMultilineString =
     from begin in MultilineStringBegin
     from contents in MultilineStringContent.Many()
     from end in MultilineStringEnd
@@ -50,11 +50,8 @@ class Program
       begin.Column
       );
 
-  static readonly Parser<Token, IEnumerable<Token>> ConsolidateMultilineTokens = OneOf(
-    SomeOtherToken,
-    MultilineComment,
-    MultilineString
-    ).Many();
+  static readonly Parser<Token, IEnumerable<Token>> ConsolidateMultilineTokens =
+    OneOf(SomeOtherToken, ConsolidateMultilineComment, ConsolidateMultilineString).Many();
   
   //====================================================================================================================
   static void Main()
