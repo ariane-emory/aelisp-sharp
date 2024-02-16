@@ -106,7 +106,7 @@ static partial class Ae
       }
 
       DebugWrite($"Stream.Next:                Get token at: \"{_input.FirstLine()}\".");
-      var (newInput, newState, newToken) = Tokenizer.Instance.NextToken(_input, _state);
+      var (newInput, newState, newToken) = PureLispTokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))

@@ -193,7 +193,7 @@ static partial class Ae
       //.Add((Type: TokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
     //================================================================================================================================================
-    public static Tokenizer Instance { get; } = new();
+    public static PureLispTokenizer Instance { get; } = new();
 
     //=========================================================== =====================================================================================
     // Token callbacks
