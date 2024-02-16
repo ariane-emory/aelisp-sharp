@@ -2,6 +2,8 @@
 using static Ae;
 using static Ae.Parser;
 using Pidgin;
+using static Pidgin.Parser;
+using static Pidgin.Parser<Ae.Token>;
 
 //================================================================================================================================
 class Program
@@ -33,7 +35,9 @@ class Program
     resultExcludingComments.Print();
 
     WriteLine("\nSTEP 4 - Parse objects: ");
-    var objects = ParseAtom.Many().ParseOrThrow(resultExcludingComments);
+
+    var completeParser = ParseAtom.Many().Then(End, (objects, end) => objects);
+    var objects = completeParser.ParseOrThrow(resultExcludingComments);
 
     if (objects.Count() == 0)
       Die(1, "No objects!");
