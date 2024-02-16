@@ -30,12 +30,12 @@ class Program
     var multilineCommentBegin = IsTokenType(TokenType.MultilineCommentBegin);
     var multilineCommentContent = IsTokenType(TokenType.MultilineCommentContent);
     var multilineCommentEnd = IsTokenType(TokenType.MultilineCommentEnd);
-    var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
     var multilineStringBegin = IsTokenType(TokenType.MultilineStringBegin);
     var multilineStringContent = IsTokenType(TokenType.MultilineStringContent);
     var multilineStringEnd = IsTokenType(TokenType.MultilineStringEnd);
+    var someOtherToken = Parser<Token>.Token(isSomeOtherToken);
 
-    var multilineCommentParser =
+    var multilineComment =
       from begin in multilineCommentBegin
       from contents in multilineCommentContent.Many()
       from end in multilineCommentEnd
@@ -46,7 +46,7 @@ class Program
         begin.Column
         );
 
-    var multilineStringParser =
+    var multilineString =
       from begin in multilineStringBegin
       from contents in multilineStringContent.Many()
       from end in multilineStringEnd
@@ -64,11 +64,10 @@ class Program
     WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
 
-    //var result = someOtherToken.Or(multilineCommentParser).Or(multilineStringParser).Many().ParseOrThrow(tokens);
     var result = OneOf(
-        someOtherToken,
-        multilineCommentParser,
-        multilineStringParser
+      someOtherToken,
+      multilineComment,
+      multilineString
     ).Many().ParseOrThrow(tokens);
 
     WriteLine("\nResult of parse: ");
