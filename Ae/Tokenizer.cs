@@ -88,7 +88,7 @@ static partial class Ae
   public record struct TokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal, int ParenDepth = 0);
 
   //==================================================================================================================================================
-  public record struct Token(TokenType Type, string Text, int Line, int Column)
+  public record struct Token(TokenType Type, string Text, int Line, int Column, int ParenDepth)
   {
     public override string ToString() => $"{Type} [{Text}] @ {Line},{Column}";
   }
@@ -412,6 +412,7 @@ static partial class Ae
     {
       tup.Token.Line = tup.State.Line;
       tup.Token.Column = tup.State.Column;
+      tup.Token.ParenDepth = tup.State.ParenDepth;
 
       return tup;
     }
