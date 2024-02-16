@@ -20,19 +20,19 @@ class Program
     ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
   //==============================================================================================================================
-  static readonly Parser<Token, Token> MultilineCommentBegin = TokenWithType(TokenType.MultilineCommentBegin);
-  static readonly Parser<Token, Token> MultilineCommentContent = TokenWithType(TokenType.MultilineCommentContent);
-  static readonly Parser<Token, Token> MultilineCommentEnd = TokenWithType(TokenType.MultilineCommentEnd);
-  static readonly Parser<Token, Token> MultilineStringBegin = TokenWithType(TokenType.MultilineStringBegin);
-  static readonly Parser<Token, Token> MultilineStringContent = TokenWithType(TokenType.MultilineStringContent);
-  static readonly Parser<Token, Token> MultilineStringEnd = TokenWithType(TokenType.MultilineStringEnd);
+  static readonly Parser<Token, Token> MultilineCommentBeginToken = TokenWithType(TokenType.MultilineCommentBegin);
+  static readonly Parser<Token, Token> MultilineCommentContentToken = TokenWithType(TokenType.MultilineCommentContent);
+  static readonly Parser<Token, Token> MultilineCommentEndToken = TokenWithType(TokenType.MultilineCommentEnd);
+  static readonly Parser<Token, Token> MultilineStringBeginToken = TokenWithType(TokenType.MultilineStringBegin);
+  static readonly Parser<Token, Token> MultilineStringContentToken = TokenWithType(TokenType.MultilineStringContent);
+  static readonly Parser<Token, Token> MultilineStringEndToken = TokenWithType(TokenType.MultilineStringEnd);
   static readonly Parser<Token, Token> NotAMultilineToken = Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
                                                               && (!MultilineStringTokenTypes.Contains(t.Type)));
 
-  static readonly Parser<Token, Token> MergeMultilineComment =
-    from begin in MultilineCommentBegin
-    from contents in MultilineCommentContent.Many()
-    from end in MultilineCommentEnd
+  static readonly Parser<Token, Token> MergeMultilineCommentTokens =
+    from begin in MultilineCommentBeginToken
+    from contents in MultilineCommentContentToken.Many()
+    from end in MultilineCommentEndToken
     select new Token(
       TokenType.Comment,
       string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
@@ -40,10 +40,10 @@ class Program
       begin.Column
       );
 
-  static readonly Parser<Token, Token> MergeMultilineString =
-    from begin in MultilineStringBegin
-    from contents in MultilineStringContent.Many()
-    from end in MultilineStringEnd
+  static readonly Parser<Token, Token> MergeMultilineStringTokens =
+    from begin in MultilineStringBeginToken
+    from contents in MultilineStringContentToken.Many()
+    from end in MultilineStringEndToken
     select new Token(
       TokenType.String,
       string.Join("", new[] { begin }.Concat(contents).Append(end).Select(t => t.Text)),
@@ -52,7 +52,7 @@ class Program
       );
 
   static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
-    OneOf(NotAMultilineToken, MergeMultilineComment, MergeMultilineString).Many();
+    OneOf(NotAMultilineToken, MergeMultilineCommentTokens, MergeMultilineStringTokens).Many();
 
   //==============================================================================================================================
   static void Main()
