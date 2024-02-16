@@ -27,6 +27,15 @@ class Program
     var resultExcludingComments = mergedResult.ExcludingComments();
     WriteLine("\nSTEP 3 - Result after excluding comments: ");
     resultExcludingComments.Print();
+
+    WriteLine("\nSTEP 4 - Parse objects: ");
+    var objects = ParseAtom.Many().ParseOrThrow(resultExcludingComments);
+
+    if (objects.Count() == 0)
+      Die(1, "No objects!");
+    
+    foreach (var obj in objects)
+      WriteLine(obj);
   }
 
   //==============================================================================================================================

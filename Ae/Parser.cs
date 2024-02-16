@@ -54,8 +54,20 @@ static partial class Ae
                           TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
 
+    public static readonly Parser<Token, Ae.Object> ParseCStyleChar =
+      TypedToken(TokenType.CStyleChar).Select(t => (Ae.Object)new Ae.String(t.Text));
+
+    public static readonly Parser<Token, Ae.Object> ParseLispStyleChar =
+      TypedToken(TokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.String(t.Text));
+
+    public static readonly Parser<Token, Ae.Object> ParseString =
+      TypedToken(TokenType.String).Select(t => (Ae.Object)new Ae.String(t.Text));
+
+    public static readonly Parser<Token, Ae.Object> ParseSymbol =
+      TypedToken(TokenType.Symbol).Select(t => (Ae.Object)new Ae.Symbol(t.Text));
+
     public static readonly Parser<Token, Ae.Object> ParseInteger =
-      TypedToken(TokenType.Float).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
+      TypedToken(TokenType.Integer).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
 
     public static readonly Parser<Token, Ae.Object> ParseFloat =
       TypedToken(TokenType.Float).Select(t => (Ae.Object)new Ae.Float(float.Parse(t.Text)));
@@ -69,6 +81,18 @@ static partial class Ae
         var denominator = int.Parse(parts[1]);
         return (Ae.Object)new Ae.Rational(numerator, denominator);
       });
+
+    public static readonly Parser<Token, Ae.Object> ParseAtom =
+      OneOf(
+        ParseSymbol,
+        ParseInteger,
+        ParseString,
+        ParseFloat,
+        ParseRational,
+        ParseCStyleChar,
+        ParseLispStyleChar
+        );
+
 
     //======================================================================================================================================
   }
