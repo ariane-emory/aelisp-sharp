@@ -6,9 +6,17 @@ using static Pidgin.Parser<Ae.Token>;
 //==========================================================================================================================================
 static partial class Ae
 {
-  //======================================================================================================================================
+  //========================================================================================================================================
+  // Extension methods
+  //========================================================================================================================================
+  public static IEnumerable<Token> ExcludingComments(this IEnumerable<Token> self)
+  {
+    return self.Where(t => t.Type != TokenType.Comment);
+  }
+
+  //========================================================================================================================================
   // Parsers
-  //======================================================================================================================================
+  //========================================================================================================================================
   public static class Parser
   {
     //======================================================================================================================================
@@ -43,10 +51,12 @@ static partial class Ae
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
       OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
                   && (!MultilineStringTokenTypes.Contains(t.Type))),
-            MergeMultilineSequence(TokenType.Comment, TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
-            MergeMultilineSequence(TokenType.String, TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
+            MergeMultilineSequence(TokenType.Comment,
+                                   TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
+            MergeMultilineSequence(TokenType.String,
+                                   TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
     //======================================================================================================================================
-    }
+  }
   //========================================================================================================================================
 }
