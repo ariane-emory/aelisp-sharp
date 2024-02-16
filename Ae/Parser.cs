@@ -37,11 +37,6 @@ static partial class Ae
       ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
     //======================================================================================================================================
-    // Private Parsers
-    //======================================================================================================================================
-    private static Parser<Token, Token> NonCommentToken => Parser<Token>.Token(t => t.Type != TokenType.Comment);
-    
-    //======================================================================================================================================
     // Public Parsers
     //======================================================================================================================================
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
@@ -50,11 +45,7 @@ static partial class Ae
             MergeMultilineSequence(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
             MergeMultilineSequence(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
-
-    
-    public static readonly Parser<Token, IEnumerable<Token>> ExcludeComments =
-      NonCommentToken.Many();
     //======================================================================================================================================
-  }
+    }
   //========================================================================================================================================
 }

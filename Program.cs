@@ -24,11 +24,16 @@ class Program
     WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
 
-    var result = MergeMultilineTokens.ParseOrThrow(tokens);
+    var mergedResult = MergeMultilineTokens.ParseOrThrow(tokens);
 
-    WriteLine("\nResult of parse: ");
-    result.Print();
-  }
+    WriteLine("\nResult after merging: ");
+    mergedResult.Print();
+
+    var resultExcludingComments = mergedResult.Where(t => t.Type != TokenType.Comment);
+
+    WriteLine("\nResult after excluding comments: ");
+    resultExcludingComments.Print();
+}
 
   //==============================================================================================================================
 }
