@@ -28,7 +28,7 @@ static partial class Ae
         );
 
     //======================================================================================================================================
-    // Private parsers
+    // Private static fields
     //======================================================================================================================================
     private static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
       ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
@@ -37,7 +37,12 @@ static partial class Ae
       ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
 
     //======================================================================================================================================
-    // Public parsers
+    // Private Parsers
+    //======================================================================================================================================
+    private static Parser<Token, Token> NonCommentToken => Parser<Token>.Token(t => t.Type != TokenType.Comment);
+    
+    //======================================================================================================================================
+    // Public Parsers
     //======================================================================================================================================
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
       OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type))
@@ -46,6 +51,9 @@ static partial class Ae
             MergeMultilineSequence(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
       .Many();
 
+    
+        public static readonly Parser<Token, IEnumerable<Token>> ExcludeComments =
+      NonCommentToken.Many();
     //======================================================================================================================================
   }
   //========================================================================================================================================
