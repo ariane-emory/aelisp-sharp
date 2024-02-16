@@ -51,8 +51,6 @@ class Program
         begin.Column
         );
 
-    // Recreate the stream.
-    stream = new TokenStream(fileText, exclude: IsUninterestingToken);
     List<Token> tokens = stream.ReadAll();
 
     WriteLine("\nBefore parse: ");
