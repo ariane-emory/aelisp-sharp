@@ -125,15 +125,15 @@ static partial class Ae
   }
 
   //==================================================================================================================================================
-  // Tokenizer class
+  // PureLispTokenizer class
   //==================================================================================================================================================
-  public class Tokenizer : PureStringTokenizer<TokenType, Token, TokenizerState>
+  public class PureLispTokenizer : PureStringTokenizer<TokenType, Token, TokenizerState>
   {
     //================================================================================================================================================
     // Private constructor
     //================================================================================================================================================
-    private Tokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0, 0),
-                               createTokenizerStateFun: () => new())
+    private PureLispTokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0, 0),
+                                       createTokenizerStateFun: () => new())
     {
       foreach (var (tokenType, discrete, process, active, pattern) in Tokens)
         Add(tokenType,
