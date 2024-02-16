@@ -10,12 +10,13 @@ using static Pidgin.Parser<Ae.Token>;
 class Program
 {
   //====================================================================================================================
+  static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
+
+  //====================================================================================================================
   static void Main()
   {
     var multilineCommentTokenTypes = new[] { TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd };
     var multilineStringTokenTypes = new[] { TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd };
-
-    static Parser<Token, Token> IsTokenType(TokenType tokenType) => Parser<Token>.Token(t => t.TokenType == tokenType);
 
     var multilineCommentBegin = IsTokenType(TokenType.MultilineCommentBegin);
     var multilineCommentContent = IsTokenType(TokenType.MultilineCommentContent);
@@ -47,11 +48,12 @@ class Program
         begin.Column
         );
 
+    //==================================================================================================================
+
     var filename = "data/data.lisp";
     var fileText = File.ReadAllText(filename);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
-
-    List<Token> tokens = stream.ReadAll();
+    var tokens = stream.ReadAll();
 
     WriteLine("\nBefore parse: ");
     tokens.Print(); // tokens are printed correctly..
