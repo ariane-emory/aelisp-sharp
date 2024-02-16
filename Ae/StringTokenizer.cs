@@ -6,9 +6,9 @@ using System.Text.RegularExpressions;
 static partial class Ae
 {
   //====================================================================================================================
-  // StringTokenizer class
+  // PureStringTokenizer class
   //====================================================================================================================
-  public abstract class StringTokenizer<TTokenType, TToken, TTokenizeState>
+  public abstract class PureStringTokenizer<TTokenType, TToken, TTokenizeState>
     where TTokenType : struct
     where TToken : struct
     where TTokenizeState : struct
@@ -40,7 +40,7 @@ static partial class Ae
     //==================================================================================================================
     // Constructor
     //==================================================================================================================
-    protected StringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
+    protected PureStringTokenizer(CreateTokenFun createToken, CreateTokenizerStateFun createTokenizerStateFun)
     {
       _createToken = createToken;
       _createTokenizerState = createTokenizerStateFun;
@@ -72,11 +72,11 @@ static partial class Ae
 
       if (string.IsNullOrEmpty(input))
       {
-        DebugWrite("StringTokenizer.NextToken:   No input, retun no token");
+        DebugWrite("PureStringTokenizer.NextToken:   No input, retun no token");
         goto ReturnNoToken;
       }
       
-      DebugWrite($"StringTokenizer.NextToken:  Get token at: \"{input.FirstLine()}\".");
+      DebugWrite($"PureStringTokenizer.NextToken:  Get token at: \"{input.FirstLine()}\".");
       
       foreach (var definition in _tokenDefinitions)
       {
