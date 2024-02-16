@@ -1,6 +1,6 @@
 ﻿using static System.Console;
 using static Ae;
-using static Ae.Parser;
+using static Ae.LispParser;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.Token>;
