@@ -38,7 +38,7 @@ static partial class Ae
       from endToken in TypedToken(endType)
       select new LispToken(
         mergedType,
-        string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => trim ? t.Text!.Trim() : t.Text)),
+        string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => t.Text)).Trim(trim),
         beginToken.Line,
         beginToken.Column,
         beginToken.ParenDepth);

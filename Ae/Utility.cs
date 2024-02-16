@@ -63,6 +63,9 @@ static partial class Ae
   private static string ReplaceNewlinesWithEscaped(this string input) => input.Replace("\n", "\\n");
 
   //====================================================================================================================
+  private static string Trim(this string input, bool trim) => trim ? input.Trim() : input;
+
+  //====================================================================================================================
   private static string FirstLine(this string input)
   {
     var newlineIndex = input.IndexOf('\n');
