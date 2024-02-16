@@ -16,6 +16,10 @@ class Program
     var fileText = File.ReadAllText(expandedPath);
     var stream = new TokenStream(fileText, exclude: IsUninterestingToken);
 
+    WriteLine("File contents:");
+    WriteLine(fileText);
+    WriteLine("EOF");
+
     var tokens = stream.ReadAll();
     WriteLine("\nSTEP 1 - Before parse: ");
     tokens.Print();

@@ -55,10 +55,10 @@ static partial class Ae
       .Many();
 
     public static readonly Parser<Token, Ae.Object> ParseCStyleChar =
-      TypedToken(TokenType.CStyleChar).Select(t => (Ae.Object)new Ae.String(t.Text));
+      TypedToken(TokenType.CStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
 
     public static readonly Parser<Token, Ae.Object> ParseLispStyleChar =
-      TypedToken(TokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.String(t.Text));
+      TypedToken(TokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
 
     public static readonly Parser<Token, Ae.Object> ParseString =
       TypedToken(TokenType.String).Select(t => (Ae.Object)new Ae.String(t.Text));
@@ -90,7 +90,7 @@ static partial class Ae
         ParseSymbol,
         ParseNil,
         ParseInteger,
-        // ParseString,
+        ParseString,
         ParseFloat,
         ParseRational,
         ParseCStyleChar,
