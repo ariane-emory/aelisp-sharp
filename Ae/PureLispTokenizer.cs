@@ -55,7 +55,7 @@ static partial class Ae
   //==================================================================================================================================================
   public record struct LispToken(LispTokenType Type, string? Text, int Line, int Column, int ParenDepth)
   {
-    public override string ToString() => (Text is null ? Type : $"{Type} [{Text}]") + $" @ {Line},{Column},{ParenDepth}";
+    public override string ToString() => (Text is null ? Type : $"{Type} [{Text.EscapeChars()}]") + $" @ {Line},{Column},{ParenDepth}";
   }
 
   //==================================================================================================================================================
