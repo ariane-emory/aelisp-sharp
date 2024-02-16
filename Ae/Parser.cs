@@ -9,17 +9,17 @@ static partial class Ae
   //==================================================================================================================================================
   // Ae's static fields
   //==================================================================================================================================================
-  private static readonly ImmutableArray<TokenType> MultilineCommentTokenTypes =
-    ImmutableArray.Create(TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd);
+  private static readonly ImmutableArray<LispTokenType> MultilineCommentLispTokenTypes =
+    ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
 
-  private static readonly ImmutableArray<TokenType> MultilineStringTokenTypes =
-    ImmutableArray.Create(TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd);
+  private static readonly ImmutableArray<LispTokenType> MultilineStringLispTokenTypes =
+    ImmutableArray.Create(LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd);
 
   //========================================================================================================================================
   // Extension methods
   //========================================================================================================================================
   public static IEnumerable<Token> ExcludingComments(this IEnumerable<Token> self) =>
-    self.Where(t => (t.Type != TokenType.Comment) && !MultilineCommentTokenTypes.Contains(t.Type));
+    self.Where(t => (t.Type != LispTokenType.Comment) && !MultilineCommentLispTokenTypes.Contains(t.Type));
 
   //========================================================================================================================================
   // Parsers
@@ -29,10 +29,10 @@ static partial class Ae
     //======================================================================================================================================
     // Private static methods
     //======================================================================================================================================
-    private static Parser<Token, Token> TypedToken(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
+    private static Parser<Token, Token> TypedToken(LispTokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
 
     private static Parser<Token, Token>
-    MergeSequence(TokenType mergedType, TokenType beginType, TokenType contentType, TokenType endType) =>
+    MergeSequence(LispTokenType mergedType, LispTokenType beginType, LispTokenType contentType, LispTokenType endType) =>
       from beginToken in TypedToken(beginType)
       from contentsTokens in TypedToken(contentType).Many()
       from endToken in TypedToken(endType)
@@ -47,36 +47,36 @@ static partial class Ae
     // Public Parsers
     //======================================================================================================================================
     public static readonly Parser<Token, IEnumerable<Token>> MergeMultilineTokens =
-      OneOf(Token(t => (!MultilineCommentTokenTypes.Contains(t.Type)) && (!MultilineStringTokenTypes.Contains(t.Type))),
-            MergeSequence(TokenType.Comment,
-                          TokenType.MultilineCommentBegin, TokenType.MultilineCommentContent, TokenType.MultilineCommentEnd),
-            MergeSequence(TokenType.String,
-                          TokenType.MultilineStringBegin, TokenType.MultilineStringContent, TokenType.MultilineStringEnd))
+      OneOf(Token(t => (!MultilineCommentLispTokenTypes.Contains(t.Type)) && (!MultilineStringLispTokenTypes.Contains(t.Type))),
+            MergeSequence(LispTokenType.Comment,
+                          LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd),
+            MergeSequence(LispTokenType.String,
+                          LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
       .Many();
 
     public static readonly Parser<Token, Ae.Object> ParseCStyleChar =
-      TypedToken(TokenType.CStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
+      TypedToken(LispTokenType.CStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
 
     public static readonly Parser<Token, Ae.Object> ParseLispStyleChar =
-      TypedToken(TokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
+      TypedToken(LispTokenType.LispStyleChar).Select(t => (Ae.Object)new Ae.Char(t.Text[0]));
 
     public static readonly Parser<Token, Ae.Object> ParseString =
-      TypedToken(TokenType.String).Select(t => (Ae.Object)new Ae.String(t.Text));
+      TypedToken(LispTokenType.String).Select(t => (Ae.Object)new Ae.String(t.Text));
 
     public static readonly Parser<Token, Ae.Object> ParseSymbol =
-      TypedToken(TokenType.Symbol).Select(t => (Ae.Object)new Ae.Symbol(t.Text));
+      TypedToken(LispTokenType.Symbol).Select(t => (Ae.Object)new Ae.Symbol(t.Text));
 
     public static readonly Parser<Token, Ae.Object> ParseNil =
-      TypedToken(TokenType.Nil).Select(t => (Ae.Object)Nil);
+      TypedToken(LispTokenType.Nil).Select(t => (Ae.Object)Nil);
 
     public static readonly Parser<Token, Ae.Object> ParseInteger =
-      TypedToken(TokenType.Integer).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
+      TypedToken(LispTokenType.Integer).Select(t => (Ae.Object)new Ae.Integer(int.Parse(t.Text)));
 
     public static readonly Parser<Token, Ae.Object> ParseFloat =
-      TypedToken(TokenType.Float).Select(t => (Ae.Object)new Ae.Float(float.Parse(t.Text)));
+      TypedToken(LispTokenType.Float).Select(t => (Ae.Object)new Ae.Float(float.Parse(t.Text)));
 
     public static readonly Parser<Token, Ae.Object> ParseRational =
-      TypedToken(TokenType.Rational).Select(t =>
+      TypedToken(LispTokenType.Rational).Select(t =>
       {
         // We trust the tokenizer and assume that t.Text will contain the expected format.
         var parts = t.Text.Split('/');
