@@ -17,30 +17,29 @@ class Program
     var path = "data/data.lisp"; // "~/lib.lisp";
     var expandedPath = path.ExpandTilde();
     var fileText = File.ReadAllText(expandedPath);
-    var stream = new QueueingStatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
 
     WriteLine("File contents:");
     WriteLine(fileText);
     WriteLine("EOF");
+    
+    var tokenizer = new QueueingStatefulLispTokenizer(fileText, exclude: IsUninterestingToken);
 
-    IEnumerable<Token> tokens = stream.ReadAll();
     WriteLine("\nSTEP 1 - Before parse: ");
+    IEnumerable<Token> tokens = tokenizer.ReadAll();
     tokens.Print();
 
-    tokens = MergeMultilineTokens.ParseOrThrow(tokens);
     WriteLine("\nSTEP 2 - Result after merging: ");
+    tokens = MergeMultilineTokens.ParseOrThrow(tokens);
     tokens.Print();
 
-    var tokensExcludingComments = tokens.ExcludingComments();
     WriteLine("\nSTEP 3 - Result after excluding comments: ");
-    tokensExcludingComments.Print();
+    tokens = tokens.ExcludingComments();
+    tokens.Print();
 
     WriteLine("\nSTEP 4 - Parse objects: ");
-
     try
     {
-      var completeParser = ParseAtom.Many().Then(End, (objects, end) => objects);
-      var objects = completeParser.ParseOrThrow(tokensExcludingComments);
+      var objects = ParseAtom.Many().Then(End, (objects, end) => objects).ParseOrThrow(tokens);
 
       if (objects.Count() == 0)
         Die(1, "No objects!");
@@ -58,9 +57,9 @@ class Program
         // ParseException reports 1-based index, convert it to 0-based
         var ix = int.Parse(match.Groups[1].Value) - 1;
 
-        if (ix >= 0 && ix < tokensExcludingComments.Count())
+        if (ix >= 0 && ix < tokens.Count())
         {
-          var tok = tokensExcludingComments.ElementAt(ix);
+          var tok = tokens.ElementAt(ix);
           WriteLine($"ERROR: Unexpected token at line {tok.Line}, column {tok.Column}: {tok}.");
         }
         else
