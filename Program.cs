@@ -50,7 +50,7 @@ class Program
     }
     catch (ParseException e)
     {
-      var re = new Regex(@"^\s+at line \d+, col (\d+)", RegexOptions.Multiline);
+      var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
       var match = re.Match(e.Message);
 
       if (match.Success)
