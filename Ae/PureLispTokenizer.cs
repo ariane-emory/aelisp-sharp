@@ -174,7 +174,9 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcLParen((LispTokenizerState State, LispToken Token) tup)
     {
+      tup = ProcDiscardText(tup);
       tup.State.ParenDepth += 1;
+      tup.Token.ParenDepth = tup.State.ParenDepth;
       return tup;
     }
 
@@ -182,8 +184,9 @@ static partial class Ae
     private static (LispTokenizerState, LispToken)
       ProcRParen((LispTokenizerState State, LispToken Token) tup)
     {
+      tup = ProcDiscardText(tup);
       tup.State.ParenDepth -= 1;
-      // tup.Token.ParenDepth -= 1; // Dunno if we should do this or not.
+      // tup.Token.ParenDepth = tup.State.ParenDepth; // Dunno if we should do this or not.
       return tup;
     }
 
