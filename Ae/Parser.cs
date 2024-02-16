@@ -32,12 +32,12 @@ static partial class Ae
     private static Parser<Token, Token> TokenWithType(TokenType tokenType) => Parser<Token>.Token(t => t.Type == tokenType);
 
     private static Parser<Token, Token>
-    MergeSequence(TokenType merged, TokenType begin, TokenType content, TokenType end) =>
-      from beginToken in TokenWithType(begin)
-      from contentsTokens in TokenWithType(content).Many()
-      from endToken in TokenWithType(end)
+    MergeSequence(TokenType mergedType, TokenType beginType, TokenType contentType, TokenType endType) =>
+      from beginToken in TokenWithType(beginType)
+      from contentsTokens in TokenWithType(contentType).Many()
+      from endToken in TokenWithType(endType)
       select new Token(
-        merged,
+        mergedType,
         string.Join("", new[] { beginToken }.Concat(contentsTokens).Append(endToken).Select(t => t.Text)),
         beginToken.Line,
         beginToken.Column);
