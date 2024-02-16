@@ -49,7 +49,7 @@ static partial class Ae
     public static readonly Parser<LispToken, IEnumerable<LispToken>> MergeMultilineTokens =
       OneOf(Token(t => (!MultilineCommentLispTokenTypes.Contains(t.Type)) && (!MultilineStringLispTokenTypes.Contains(t.Type))),
             MergeSequence(LispTokenType.Comment,
-                          LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispLispTokenType.MultilineCommentEnd),
+                          LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd),
             MergeSequence(LispTokenType.String,
                           LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
       .Many();
