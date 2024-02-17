@@ -379,9 +379,9 @@ static partial class Ae
   public static bool AtomP(LispObject obj) => !ListP(obj);
 
   //====================================================================================================================
-  public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
+  public static LispObject Intern(string symbol) => Intern2(symbol, ref SymbolsList);
   //====================================================================================================================
-  public static LispObject Intern(string symbolName, ref Ae.LispObject symbolsList)
+  public static LispObject Intern2(string symbolName, ref Ae.LispObject symbolsList)
   {
     if (!ListP(symbolsList))
       throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
