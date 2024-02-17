@@ -90,22 +90,22 @@ class Program
 
       WriteLine(env.Write());
 
-      var (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("x"));
+      var (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("x"));
       WriteLine($"found: {found}, fobj: {fobj}");
 
-      (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("y"));
+      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("y"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("z"));
+      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("z"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("xx"));
+      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("xx"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("nil"));
+      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("nil"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("t"));
+      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("t"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
       WriteLine("Stop.");

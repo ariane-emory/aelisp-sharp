@@ -9,9 +9,9 @@ static partial class Ae
       //================================================================================================================
       // Public types
       //================================================================================================================
-      public enum LookupMode { Local, Global };
-      public enum SetMode { Local, Global, Nearest, };
-      
+      public enum LookupMode { Local, Nearest, Global };
+      // public enum SetMode { Local, Nearest, Global, };
+
       //================================================================================================================
       // Public static properties
       //================================================================================================================
@@ -73,7 +73,7 @@ static partial class Ae
       //================================================================================================================
       public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
       {
-         DebugWrite($"Looking up {symbol} in {this}...");
+         DebugWrite($"\nLooking up {symbol} in {this}...");
 
          if (symbol.IsKeyword || symbol == Nil || symbol == True)
             return (true, symbol);
@@ -87,6 +87,9 @@ static partial class Ae
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
+               DebugWrite($"syms: {symPair}");
+               DebugWrite($"vals: {valPair}");
+
                if (symbol == symPair.Car)
                {
                   DebugWrite($"Found {symbol} -> {valPair.Car}");
