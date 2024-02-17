@@ -14,6 +14,10 @@ static partial class Ae
       public abstract override string ToString();
       public abstract string Write();
       protected string TypeName => GetType().Name;
+
+      //====================================================================================================================
+      public bool IsList() => this == Nil || this is Pair;
+      public bool IsAtom() => !IsList();
    }
 
    //====================================================================================================================
@@ -272,7 +276,7 @@ static partial class Ae
    public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
 
    //====================================================================================================================
-   public static bool ProperListP(LispObject obj)
+   public static bool ProperIsList(LispObject obj)
    {
       LispObject current = obj;
 
@@ -288,16 +292,12 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   public static bool ListP(LispObject obj) => obj == Nil || obj is Pair;
-   public static bool AtomP(LispObject obj) => !ListP(obj);
-
-   //====================================================================================================================
    public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
 
    //====================================================================================================================
    public static LispObject Intern(string symbolName, ref Ae.LispObject symbolsList)
    {
-      if (!ListP(symbolsList))
+      if (!symbolsList.IsList())
          throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
 
       if (symbolName == "nil")
