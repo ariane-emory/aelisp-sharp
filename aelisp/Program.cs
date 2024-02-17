@@ -171,7 +171,6 @@ class Program
       
       WriteLine(obj1);
       WriteLine(obj2);
-
       
       WriteLine("\nStop.");
    }
