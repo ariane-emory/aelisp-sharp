@@ -16,23 +16,26 @@ static partial class Ae
       protected string TypeName => GetType().Name;
 
       //================================================================================================================
-      public bool IsList() => this == Nil || this is Pair;
-      public bool IsAtom() => !IsList();
+      public bool IsList => this == Nil || this is Pair;
+      public bool IsAtom => !IsList;
 
       //================================================================================================================
-      public bool IsProperList()
+      public bool IsProperList
       {
-         LispObject current = this;
-
-         while (current is Pair cons)
+         get
          {
-            if (cons.Cdr == Ae.Nil)
-               return true;
+            LispObject current = this;
 
-            current = cons.Cdr;
+            while (current is Pair cons)
+            {
+               if (cons.Cdr == Ae.Nil)
+                  return true;
+
+               current = cons.Cdr;
+            }
+
+            return current == Ae.Nil;
          }
-
-         return current == Ae.Nil;
       }
 
       //================================================================================================================
@@ -66,10 +69,10 @@ static partial class Ae
       //================================================================================================================
       public override string ToString() => this == Nil ? "Nil" : $"{TypeName}({Value})";
       public override string Write() => Value;
-      
+
       public bool IsKeyword => Value[0] == ':';
       public bool IsSelfEvaluting => IsKeyword || this == Nil || this == True;
-    }
+   }
 
    //===================================================================================================================
    // String class

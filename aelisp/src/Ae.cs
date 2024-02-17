@@ -32,7 +32,7 @@ static partial class Ae
    //====================================================================================================================
    public static LispObject Intern(string symbolName, ref Ae.LispObject symbolsList)
    {
-      if (!symbolsList.IsList())
+      if (!symbolsList.IsList)
          throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
 
       if (symbolName == "nil")

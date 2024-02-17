@@ -40,10 +40,10 @@ static partial class Ae
          if (!((parent is Env) || parent == Nil))
             throw new ArgumentException("Parent must be an Env or Nil");
 
-         if (!(symbols.IsProperList()))
+         if (!(symbols.IsProperList))
             throw new ArgumentException("Symbols must be a proper list");
 
-         if (!(values.IsProperList()))
+         if (!(values.IsProperList))
             throw new ArgumentException("Values must be a proper list");
 
          Parent = parent;
