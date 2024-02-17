@@ -74,6 +74,9 @@ static partial class Ae
       {
          DebugWrite($"Looking up {symbol} in {this}...");
 
+         if (symbol.IsKeyword || symbol == Nil || symbol == True)
+            throw new ArgumentException("Cannot look up a keyword.");
+         
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
          while (true)
@@ -125,21 +128,21 @@ static partial class Ae
 
          while (true)
          {
-            var symbolsList = current.Symbols;
-            var valuesList = current.Values;
+            var symbols = current.Symbols;
+            var values = current.Values;
 
-            while (symbolsList is Pair symbolsPair && valuesList is Pair valuesPair)
+            while (symbols is Pair symbolsPair && values is Pair valuesPair)
             {
                if (Equals(symbol, symbolsPair.Car))
                {
                   // Update existing symbol value
-                  ((Pair)valuesList).Car = value;
+                  ((Pair)values).Car = value;
                   DebugWrite($"Updated {symbol} with value {value}.");
                   return;
                }
 
-               symbolsList = symbolsPair.Cdr;
-               valuesList = valuesPair.Cdr;
+               symbols = symbolsPair.Cdr;
+               values = valuesPair.Cdr;
             }
 
             // If not found and either in LOCAL mode or at the root, add new symbol-value pair
