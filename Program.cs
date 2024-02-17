@@ -43,15 +43,15 @@ class Program
       WriteLine($"obj.toString(): {obj}");
       WriteLine($"obj.Write(): {obj.Write()}");
 
-      // (1 2 3 4)
-      var list = new Pair(new Integer(1), new Pair(new Integer(2), new Pair(new Integer(3), new Pair(new Integer(4), Nil))));
-      WriteLine($"list.toString(): {list}");
-      WriteLine($"list.Write(): {list.Write()}");
+      // // (1 2 3 4)
+      // var list = new Pair(new Integer(1), new Pair(new Integer(2), new Pair(new Integer(3), new Pair(new Integer(4), Nil))));
+      // WriteLine($"list.toString(): {list}");
+      // WriteLine($"list.Write(): {list.Write()}");
 
-      // (1 2 3 . 4)
-      var improper_list = new Pair(new Integer(1), new Pair(new Integer(2), new Pair(new Integer(3), new Integer(4))));
-      WriteLine($"improper_list.toString(): {improper_list}");
-      WriteLine($"improper_list.Write(): {improper_list.Write()}");
+      // // (1 2 3 . 4)
+      // var improper_list = new Pair(new Integer(1), new Pair(new Integer(2), new Pair(new Integer(3), new Integer(4))));
+      // WriteLine($"improper_list.toString(): {improper_list}");
+      // WriteLine($"improper_list.Write(): {improper_list.Write()}");
 
       // var objects = ParseAtom.Many().Then(End, (objects, end) => objects).ParseOrThrow(tokens);
       

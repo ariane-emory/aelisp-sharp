@@ -109,21 +109,18 @@ static partial class Ae
     public static readonly Parser<LispToken, LispObject> ParseListElements = Rec<LispToken, LispObject>(() =>
         ParseSExp.Many()
         .Then(
-            ParseDot.Then(ParseSExp, (_, expr) => expr) // We're only interested in the expression after the dot.
-            .Optional(),
+            ParseDot.Then(ParseSExp, (_, expr) => expr).Optional(),
             (exprs, optionalTailExpr) =>
             {
               LispObject list = Nil;
+
               // If there's a tail expression, it's the final part of an improper list.
               if (optionalTailExpr.HasValue)
-              {
                 list = optionalTailExpr.Value;
-              }
-              // Reverse because Aggregate processes in reverse order.
+
               foreach (var expr in exprs.Reverse())
-              {
                 list = Cons(expr, list);
-              }
+
               return list;
             }
         )
