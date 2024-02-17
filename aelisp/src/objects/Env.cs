@@ -79,9 +79,13 @@ static partial class Ae
 
          DebugWrite($"Added {symbol} with value {value}.");
       }
+ 
       //================================================================================================================
       public (bool Found, LispObject PairOrNil) Lookup(LookupMode mode, LispObject symbol)
       {
+         if (symbol is not Symbol)
+            throw new ArgumentException($"{nameof(symbol)} must be a Symbol, got: {symbol}.");
+
          return Lookup(mode, (Symbol)symbol);
       }
 
@@ -159,6 +163,9 @@ static partial class Ae
       //================================================================================================================
       public void Set(LookupMode mode, LispObject symbol, LispObject value)
       {
+         if (symbol is not Symbol)
+            throw new ArgumentException($"{nameof(symbol)} must be a Symbol, got: {symbol}.");
+
          Set(mode, (Symbol)symbol, value);
       }
 

@@ -140,7 +140,9 @@ class Program
       WriteLine("");
       WriteLine($"root:   {root_env}");
       WriteLine($"parent: {parent_env}");
-      WriteLine($"child:  {child_env}"); 
+      WriteLine($"child:  {child_env}");
+
+      WriteLine(child_env.Lookup(Env.LookupMode.Nearest, Intern("xx")));
       
       WriteLine("\nStop.");
    }
