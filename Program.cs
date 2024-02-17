@@ -14,7 +14,7 @@ class Program
    {
       // EnableDebugWrite = true;
 
-      var path = "~/lib.lisp"; // "data/data.lisp"; // "~/lib.lisp";
+      var path = "data/data.lisp"; // "~/lib.lisp";
       var expandedPath = path.ExpandTilde();
       var fileText = File.ReadAllText(expandedPath);
 
