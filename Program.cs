@@ -30,9 +30,9 @@ class Program
 
     // WriteLine("\nSTEP 2 - Tokens after merging multiline tokens: ");
     tokens = MergeMultilineTokens.ParseOrThrow(tokens);
-    tokens.Print();
+    //tokens.Print();
 
-    // WriteLine("\nSTEP 3 - Tokens after excluding comments: ");
+    WriteLine("\nSTEP 3 - Tokens after excluding comments: ");
     tokens = tokens.ExcludingComments();
     tokens.Print();
 
