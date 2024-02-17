@@ -14,7 +14,7 @@ static partial class Ae
       //================================================================================================================
       // Public static properties
       //================================================================================================================
-      public static bool EnableDebugWrite { get; set; } = false; 
+      public static bool EnableDebugWrite { get; set; } = false;
 
       //================================================================================================================
       // Public static methods
@@ -78,6 +78,11 @@ static partial class Ae
          Values = Cons(value, Values);
 
          DebugWrite($"Added {symbol} with value {value}.");
+      }
+      //================================================================================================================
+      public (bool Found, LispObject PairOrNil) Lookup(LookupMode mode, LispObject symbol)
+      {
+         return Lookup(mode, (Symbol)symbol);
       }
 
       //================================================================================================================
@@ -151,21 +156,27 @@ static partial class Ae
       }
 
       //================================================================================================================
+      public void Set(LookupMode mode, LispObject symbol, LispObject value)
+      {
+         Set(mode, (LispObject)symbol, value);
+      }
+      
+      //================================================================================================================
       public void Set(LookupMode mode, Symbol symbol, LispObject value)
       {
          // Self-evaluating symbols (nil, t and keywords) cannot be set.
          ThrowIfSymbolIsSelfEvaluating(symbol);
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
-         
+
          var (found, pairOrNil) = current.LookupPair(mode, symbol);
 
          if (found)
             ((Pair)pairOrNil).Car = value;
          else if (mode == LookupMode.Nearest)
             Add(symbol, value);
-         else 
-            current.Add(symbol, value);          
+         else
+            current.Add(symbol, value);
       }
 
       //================================================================================================================
