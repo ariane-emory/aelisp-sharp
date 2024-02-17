@@ -95,47 +95,47 @@ class Program
 
       WriteLine(child_env.Write());
 
-      var (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("x"));
+      var (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("x"));
       WriteLine($"found: {found}, fobj: {fobj}");
 
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("y"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("y"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("z"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("z"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("xx"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("xx"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("nil"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("nil"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("t"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("t"));
       WriteLine($"found: {found}, fobj: {fobj}");
 
-      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("yyy"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("yyy"));
       WriteLine($"found: {found}, fobj: {fobj}");
-
-      WriteLine("");
-      WriteLine($"root:   {root_env}");
-      WriteLine($"parent: {parent_env}");
-      WriteLine($"child:  {child_env}");
-      
-      child_env.Set(Env.LookupMode.Global, (Symbol)Intern("xx"), new Integer(9999));
-
-      WriteLine("");
-      WriteLine($"root:   {root_env}");
-      WriteLine($"parent: {parent_env}");
-      WriteLine($"child:  {child_env}");
-
-      child_env.Set(Env.LookupMode.Nearest, (Symbol)Intern("xx"), new Integer(3333));
 
       WriteLine("");
       WriteLine($"root:   {root_env}");
       WriteLine($"parent: {parent_env}");
       WriteLine($"child:  {child_env}");
       
-      child_env.Set(Env.LookupMode.Local, (Symbol)Intern("xx"), new Integer(6666));
+      child_env.Set(Env.LookupMode.Global, Intern("xx"), new Integer(9999));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+
+      child_env.Set(Env.LookupMode.Nearest, Intern("xx"), new Integer(3333));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+      
+      child_env.Set(Env.LookupMode.Local, Intern("xx"), new Integer(6666));
 
       WriteLine("");
       WriteLine($"root:   {root_env}");

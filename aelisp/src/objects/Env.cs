@@ -155,12 +155,13 @@ static partial class Ae
             throw new ArgumentException($"Cannot set self-evaluating symbol {this}.");
       }
 
+
       //================================================================================================================
       public void Set(LookupMode mode, LispObject symbol, LispObject value)
       {
-         Set(mode, (LispObject)symbol, value);
+         Set(mode, (Symbol)symbol, value);
       }
-      
+
       //================================================================================================================
       public void Set(LookupMode mode, Symbol symbol, LispObject value)
       {
