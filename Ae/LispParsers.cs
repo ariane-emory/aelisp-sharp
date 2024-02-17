@@ -33,11 +33,11 @@ static partial class Ae
       //================================================================================================================================================
       // Private static methods
       //================================================================================================================================================
-      private static Parser<LispToken, LispToken> TypedToken(LispTokenType tokenType) =>
+      private static LispTokenParser TypedToken(LispTokenType tokenType) =>
          Parser<LispToken>.Token(t => t.Type == tokenType);
 
       //================================================================================================================================================
-      private static Parser<LispToken, LispToken>
+      private static LispTokenParser
       MergeSequence(LispTokenType mergedType, bool trim, LispTokenType beginType, LispTokenType contentType, LispTokenType endType) =>
         from beginToken in TypedToken(beginType)
         from contentsTokens in TypedToken(contentType).Many()
