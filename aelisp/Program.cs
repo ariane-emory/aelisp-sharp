@@ -78,8 +78,13 @@ class Program
          Die(2, "Dying due to parse error.");
       }
 
-      var env = new Env(
+      var root_env = new Env(
          Nil,
+         Cons(Intern("xx"), Cons(Intern("yy"), Cons(Intern("zz"), Nil))),
+         Cons(new Integer(11), Cons(new Integer(22), Cons(new Integer(33), Nil))));
+
+      var env = new Env(
+         root_env,
          Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
          Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
 
