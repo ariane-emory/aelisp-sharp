@@ -123,45 +123,45 @@ static partial class Ae
                         bool Discrete,
                         ProcesTokenFun? Process,
                         TokenDefinitionIsActiveFun? IsActive,
-                        string Pattern)> Tokens =
-        ImmutableArray<(LispTokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
-        .Add((Type: LispTokenType.Newline,                   Discrete: false, Process: ProcNewline,       IsActive: null,               Pattern: @"\r?\n"))
-        .Add((Type: LispTokenType.Whitespace,                Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"[ \t\f\v]+"))
-        .Add((Type: LispTokenType.LParen,                    Discrete: false, Process: ProcLParen,        IsActive: null,               Pattern: @"\("))
-        .Add((Type: LispTokenType.RParen,                    Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\)"))
-        .Add((Type: LispTokenType.Nil,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"nil"))
-        .Add((Type: LispTokenType.Dot,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"\."))
-        .Add((Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"))
-        .Add((Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"))
-        .Add((Type: LispTokenType.Float,                     Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float))
-        .Add((Type: LispTokenType.Rational,                  Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational))
-        .Add((Type: LispTokenType.Integer,                   Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger))
-        .Add((Type: LispTokenType.Quote,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"'"))
-        .Add((Type: LispTokenType.Backtick,                  Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"`"))
-        .Add((Type: LispTokenType.CommaAt,                   Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @",@"))
-        .Add((Type: LispTokenType.Comma,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @","))
-        .Add((Type: LispTokenType.At,                        Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"@"))
-        .Add((Type: LispTokenType.Dollar,                    Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"\$"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: Integer + @"?" + MathOp))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: MathOp + Integer))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"[\?]{3}"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: SymBody))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"<"  + SymBody + @">"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\*" + SymBody + @"\*"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
-        .Add((Type: LispTokenType.String,                    Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""" + StringContent+ @"\"""))
-        .Add((Type: LispTokenType.LispStyleChar,             Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\?."))
-        .Add((Type: LispTokenType.MultilineStringBegin,      Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"))
-        .Add((Type: LispTokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""))
-        .Add((Type: LispTokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"))
-        .Add((Type: LispTokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"))
-        .Add((Type: LispTokenType.Comment,                   Discrete: false, Process: ProcComment,       IsActive: null,               Pattern: @"#\|[^\n]*\|#"))
-        .Add((Type: LispTokenType.MultilineCommentBegin,     Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"))
-        .Add((Type: LispTokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"))
-        .Add((Type: LispTokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
-        //.Add((Type: LispTokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
+                        string Pattern)> Tokens = [
+         //        ImmutableArray<(LispTokenType Type, bool Discrete, ProcesTokenFun? Process, TokenDefinitionIsActiveFun? IsActive, string Pattern)>.Empty
+         (Type: LispTokenType.Newline,                   Discrete: false, Process: ProcNewline,       IsActive: null,               Pattern: @"\r?\n"),
+         (Type: LispTokenType.Whitespace,                Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"[ \t\f\v]+"),
+         (Type: LispTokenType.LParen,                    Discrete: false, Process: ProcLParen,        IsActive: null,               Pattern: @"\("),
+         (Type: LispTokenType.RParen,                    Discrete: true,  Process: ProcRParen,        IsActive: null,               Pattern: @"\)"),
+         (Type: LispTokenType.Nil,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"nil"),
+         (Type: LispTokenType.Dot,                       Discrete: true,  Process: ProcDiscardText,   IsActive: null,               Pattern: @"\."),
+         (Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'[^']'"),
+         (Type: LispTokenType.CStyleChar,                Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"'\\.'"),
+         (Type: LispTokenType.Float,                     Discrete: true,  Process: ProcFloat,         IsActive: null,               Pattern: Float),
+         (Type: LispTokenType.Rational,                  Discrete: true,  Process: ProcRational,      IsActive: null,               Pattern: Rational),
+         (Type: LispTokenType.Integer,                   Discrete: true,  Process: ProcNumber,        IsActive: null,               Pattern: MaybeSigned + DigitSeparatedInteger),
+         (Type: LispTokenType.Quote,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"'"),
+         (Type: LispTokenType.Backtick,                  Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"`"),
+         (Type: LispTokenType.CommaAt,                   Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @",@"),
+         (Type: LispTokenType.Comma,                     Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @","),
+         (Type: LispTokenType.At,                        Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"@"),
+         (Type: LispTokenType.Dollar,                    Discrete: false, Process: ProcDiscardText,   IsActive: null,               Pattern: @"\$"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: Integer + @"?" + MathOp),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: MathOp + Integer),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"[\?]{3}"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: SymBody),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"<"  + SymBody + @">"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\*" + SymBody + @"\*"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"),
+         (Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"),
+         (Type: LispTokenType.String,                    Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""" + StringContent+ @"\"""),
+         (Type: LispTokenType.LispStyleChar,             Discrete: true,  Process: ProcLispStyleChar, IsActive: null,               Pattern: @"\?\\?."),
+         (Type: LispTokenType.MultilineStringBegin,      Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"),
+         (Type: LispTokenType.MultilineStringEnd,        Discrete: true,  Process: ProcEndMLS,        IsActive: InMultilineString,  Pattern: StringContent + @"\"""),
+         (Type: LispTokenType.MultilineStringContent,    Discrete: false, Process: ProcMLSContent,    IsActive: InMultilineString,  Pattern: StringContent + @"\n"),
+         (Type: LispTokenType.LineComment,               Discrete: false, Process: ProcTrimFirst,     IsActive: null,               Pattern: @";[^\n]*"),
+         (Type: LispTokenType.Comment,                   Discrete: false, Process: ProcComment,       IsActive: null,               Pattern: @"#\|[^\n]*\|#"),
+         (Type: LispTokenType.MultilineCommentBegin,     Discrete: false, Process: ProcBeginMLC,      IsActive: null,               Pattern: @"#\|[^\n]*\n"),
+         (Type: LispTokenType.MultilineCommentEnd,       Discrete: false, Process: ProcEndMLC,        IsActive: InMultilineComment, Pattern: @"[\S \t\f\v]*\|#"),
+         (Type: LispTokenType.MultilineCommentContent,   Discrete: false, Process: ProcCountLine,     IsActive: InMultilineComment, Pattern: @"[^\n]*\n")),
+         (Type: LispTokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+") ];
 
       //==============================================================================================================================================
       public static PureLispTokenizer Instance { get; } = new();
