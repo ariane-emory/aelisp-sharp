@@ -33,6 +33,7 @@ static partial class Ae
     //======================================================================================================================================
     private static Parser<LispToken, LispToken> TypedToken(LispTokenType tokenType) => Parser<LispToken>.Token(t => t.Type == tokenType);
 
+    //======================================================================================================================================
     private static Parser<LispToken, LispToken>
     MergeSequence(LispTokenType mergedType, bool trim, LispTokenType beginType, LispTokenType contentType, LispTokenType endType) =>
       from beginToken in TypedToken(beginType)
@@ -69,6 +70,7 @@ static partial class Ae
     private static readonly Parser<LispToken, LispObject> ParseFloat =
       TypedToken(LispTokenType.Float).Select(t => (LispObject)new Float(float.Parse(t.Text!)));
 
+    //======================================================================================================================================
     private static readonly Parser<LispToken, LispObject> ParseRational =
       TypedToken(LispTokenType.Rational).Select(t =>
       {
@@ -103,6 +105,7 @@ static partial class Ae
                           LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
       .Many();
 
+    //======================================================================================================================================
     public static Parser<LispToken, LispObject> ParseSExp = Rec(() => OneOf(
         ParseAtom,
         ParseList!,
@@ -113,22 +116,15 @@ static partial class Ae
         ParseLitListSExp!
     ));
 
-    // public static readonly Parser<LispToken, LispObject> ParseProgram =
-    //   ParseSExp.Many() // Parse zero or more s-expressions
-    //   .Select(sexps => new Pair((LispObject)Intern("progn"), sexps.Aggregate(Nil, (acc, sexp) => new Pair(sexp, acc))));
-
+    //======================================================================================================================================
     public static readonly Parser<LispToken, LispObject> ParseProgram =
-        ParseSExp.Many() // Parse zero or more s-expressions
+        ParseSExp.Many()
         .Select(sexps =>
         {
-          // Ensure Intern("progn") is treated as LispObject
           LispObject progn = Intern("progn");
+          LispObject list = sexps.Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc));
 
-          // Explicitly type the aggregate's seed as LispObject to avoid type inference issues
-          LispObject list = sexps.Aggregate((LispObject)Nil, (acc, sexp) => new Pair(sexp, acc));
-
-          // Now, we explicitly create a Pair with 'progn' and the aggregated list, which should be free of type mismatch issues
-          return (LispObject)new Pair(progn, list);
+          return (LispObject)Cons(progn, list);
         });
     
     //======================================================================================================================================
