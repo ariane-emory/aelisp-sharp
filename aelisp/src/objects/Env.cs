@@ -71,8 +71,22 @@ static partial class Ae
       }
 
       //================================================================================================================
+      private void Add(Symbol symbol, LispObject value)
+      {
+         ThrowUnlessSymbolIsSettable(symbol);
+
+         Symbols = Cons(symbol, Symbols);
+         Values = Cons(value, Values);
+
+         DebugWrite($"Added {symbol} with value {value}.");
+      }
+
+      //================================================================================================================
       public (bool Found, LispObject PairOrNil) Lookup(LookupMode mode, Symbol symbol)
       {
+         if (symbol.IsKeyword || symbol == Nil || symbol == True)
+            return (true, symbol);
+
          (bool found, LispObject pairOrNil) = LookupPair(mode, symbol);
 
          if (!found)
@@ -83,17 +97,14 @@ static partial class Ae
 
          if (pairOrNil == Nil)
             return (found, Nil);
-         
+
          return (true, ((Pair)pairOrNil).Car);
       }
-      
+
       //================================================================================================================
       private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"\nLooking up {symbol} in {this}...");
-
-         if (symbol.IsKeyword || symbol == Nil || symbol == True)
-            return (true, symbol);
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
@@ -184,17 +195,6 @@ static partial class Ae
                break;
             }
          }
-      }
-
-      //================================================================================================================
-      private void Add(Symbol symbol, LispObject value)
-      {
-         ThrowUnlessSymbolIsSettable(symbol);
-
-         Symbols = Cons(symbol, Symbols);
-         Values = Cons(value, Values);
-
-         DebugWrite($"Added {symbol} with value {value}.");
       }
 
       //================================================================================================================
