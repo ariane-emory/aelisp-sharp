@@ -118,6 +118,10 @@ static partial class Ae
             // Expecting a dot followed by an S-expression or a quoted S-expression
             ParseDot.Then(OneOf(
                             QuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                            QuasiQuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                            UnquotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                            SplicedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                            LitListSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
                             ParseSExp), (_, tailExpr) => tailExpr).Optional(),
             (exprs, optionalTailExpr) =>
             {
