@@ -117,6 +117,9 @@ class Program
       WriteLine($"found: {found}, fobj: {fobj}");
 
       WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
 
       WriteLine("\nStop.");
    }
