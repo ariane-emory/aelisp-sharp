@@ -62,7 +62,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string ToString() => $"{TypeName}({Parent})";
+      public override string ToString() => $"{TypeName}({Parent}, {Symbols.Write()}, {Values.Write()})";
       public override string Write() => ToString();
 
       //================================================================================================================
