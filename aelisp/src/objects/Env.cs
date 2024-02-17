@@ -54,6 +54,8 @@ static partial class Ae
       //================================================================================================================
       public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
       {
+         DebugWrite($"Looking up {symbol} in {this}...");
+         
          return (false, Nil); ;
       }
 
