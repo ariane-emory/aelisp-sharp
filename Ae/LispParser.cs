@@ -111,8 +111,8 @@ static partial class Ae
     public static readonly Parser<LispToken, LispToken> ParseDot =
         TypedToken(LispTokenType.Dot);
 
-
-    public static Parser<LispToken, LispObject> ParseListElements = Rec<LispToken, LispObject>(() =>
+    public static Parser<LispToken, LispObject> ParseListElements =
+      Rec(() =>
         ParseSExp.Many()
         .Then(
             // Expecting a dot followed by an S-expression or a quoted S-expression
@@ -139,6 +139,9 @@ static partial class Ae
         TypedToken(LispTokenType.LParen)
         .Then(ParseListElements)
         .Before(TypedToken(LispTokenType.RParen));
+
+
+
 
     static Parser<LispToken, LispObject> QuotedSExp =
         TypedToken(LispTokenType.Quote)
