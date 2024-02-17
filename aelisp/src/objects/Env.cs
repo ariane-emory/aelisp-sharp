@@ -113,10 +113,16 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public void Set(LookupMode mode, Symbol symbol, LispObject value)
+      private void AssertSymbolIsNotKeyword(Symbol symbol)
       {
          if (symbol.IsKeyword)
             throw new ArgumentException("Cannot set a keyword.");
+      }
+
+      //================================================================================================================
+      public void Set(LookupMode mode, Symbol symbol, LispObject value)
+      {
+         AssertSymbolIsNotKeyword(symbol);
 
          // Start from the current environment or root depending on the mode.
          Env current = mode == LookupMode.Global ? GetRoot() : this;
@@ -160,12 +166,10 @@ static partial class Ae
          }
       }
 
-
       //================================================================================================================
-      public void Add(Symbol symbol, LispObject value)
+      private void Add(Symbol symbol, LispObject value)
       {
-         if (symbol.IsKeyword())
-            throw new ArgumentException("Cannot add a keyword as a symbol.");
+         AssertSymbolIsNotKeyword(symbol);
 
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
