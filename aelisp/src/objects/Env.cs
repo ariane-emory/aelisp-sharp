@@ -75,8 +75,8 @@ static partial class Ae
          DebugWrite($"Looking up {symbol} in {this}...");
 
          if (symbol.IsKeyword || symbol == Nil || symbol == True)
-            throw new ArgumentException("Cannot look up a keyword.");
-         
+            return (true, symbol);
+
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
          while (true)
@@ -113,16 +113,16 @@ static partial class Ae
       }
 
       //================================================================================================================
-      private void AssertSymbolIsNotKeyword(Symbol symbol)
+      private void ThrowUnlessSymbolIsSettable(Symbol symbol)
       {
          if (symbol.IsKeyword)
-            throw new ArgumentException("Cannot set a keyword.");
+            throw new ArgumentException($"Cannot set a {this}.");
       }
 
       //================================================================================================================
       public void Set(LookupMode mode, Symbol symbol, LispObject value)
       {
-         AssertSymbolIsNotKeyword(symbol);
+         ThrowUnlessSymbolIsSettable(symbol);
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
@@ -168,7 +168,7 @@ static partial class Ae
       //================================================================================================================
       private void Add(Symbol symbol, LispObject value)
       {
-         AssertSymbolIsNotKeyword(symbol);
+         ThrowUnlessSymbolIsSettable(symbol);
 
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
