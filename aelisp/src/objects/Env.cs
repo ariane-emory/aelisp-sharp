@@ -37,13 +37,13 @@ static partial class Ae
       //================================================================================================================
       public Env(LispObject parent, LispObject symbols, LispObject values)
       {
-         if (! ((parent is Env) || parent == Nil))
+         if (!((parent is Env) || parent == Nil))
             throw new ArgumentException("Parent must be an Env or Nil");
 
-         if (! (symbols.IsProperList()))
+         if (!(symbols.IsProperList()))
             throw new ArgumentException("Symbols must be a proper list");
 
-         if (! (values.IsProperList()))
+         if (!(values.IsProperList()))
             throw new ArgumentException("Values must be a proper list");
 
          Parent = parent;
@@ -52,28 +52,58 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public Env(LispObject parent, Pair symbols, Pair values)
-      {
-         Parent = parent;
-         Symbols = symbols;
-         Values = values;
-      }
- 
-      //================================================================================================================
       // Instance methods
       //================================================================================================================
       public override string ToString() => $"{TypeName}({Parent}, {Symbols.Write()}, {Values.Write()})";
       public override string Write() => ToString();
-
-      //================================================================================================================
-      public bool IsRoot => Parent == Nil;
+      public bool IsRoot() => Parent == Nil;
 
       //================================================================================================================
       public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"Looking up {symbol} in {this}...");
 
-         return (false, Nil); ;
+         if (symbol.IsKeyword() || symbol == Nil || symbol == True)
+            return (true, symbol);
+
+         Env currentEnv = this;
+
+         // If mode is Global, move directly to the root environment
+         if (mode == LookupMode.Global)
+            while (!currentEnv.IsRoot())
+               currentEnv = (Env)currentEnv.Parent;
+
+         while (true)
+         {
+            LispObject symbols = currentEnv.Symbols;
+            LispObject values = currentEnv.Values;
+
+            while (symbols is Pair symPair && values is Pair valPair)
+            {
+               if (symbol == symPair.Car)
+               {
+                  DebugWrite($"Found {symbol} -> {valPair.Car}");
+                  return (true, valPair.Car);
+               }
+
+               symbols = symPair.Cdr;
+               values = valPair.Cdr;
+            }
+
+            // Check for the special case where the symbols list consists of a single symbol to which all values are bound.
+            if (symbols == symbol)
+               return (true, values);
+
+            if (mode == LookupMode.Local || currentEnv.Parent == Nil)
+               break;
+
+            if (mode == LookupMode.Global || mode == LookupMode.Nearest)
+               currentEnv = (Env)currentEnv.Parent;
+         }
+
+         DebugWrite("Did not find it!");
+
+         return (false, Nil);
       }
 
       //================================================================================================================
