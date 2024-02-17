@@ -42,7 +42,7 @@ static partial class Ae
    };
 
    //==================================================================================================================================================
-   public enum TokenizerMode
+   public enum LispTokenizerMode
    {
       Normal,
       InMultilineComment,
@@ -50,7 +50,7 @@ static partial class Ae
    };
 
    //==================================================================================================================================================
-   public record struct LispTokenizerState(int Line = 0, int Column = 0, TokenizerMode Mode = TokenizerMode.Normal, int ParenDepth = 0);
+   public record struct LispTokenizerState(int Line = 0, int Column = 0, LispTokenizerMode Mode = LispTokenizerMode.Normal, int ParenDepth = 0);
 
    //==================================================================================================================================================
    public record struct LispToken(LispTokenType Type, string? Text, int Line, int Column, int ParenDepth)
@@ -313,7 +313,7 @@ static partial class Ae
         ProcBeginMLC((LispTokenizerState State, LispToken Token) tup)
       {
          tup.Token.Text = tup.Token.Text!.Substring(2);
-         tup.State.Mode = TokenizerMode.InMultilineComment;
+         tup.State.Mode = LispTokenizerMode.InMultilineComment;
 
          return ProcCountLine(tup);
       }
@@ -323,7 +323,7 @@ static partial class Ae
         ProcEndMLC((LispTokenizerState State, LispToken Token) tup)
       {
          tup.Token.Text = tup.Token.Text!.Substring(0, tup.Token.Text.Length - 2);
-         tup.State.Mode = TokenizerMode.Normal;
+         tup.State.Mode = LispTokenizerMode.Normal;
          return tup;
       }
 
@@ -333,7 +333,7 @@ static partial class Ae
       private static (LispTokenizerState, LispToken) ProcBeginMLS((LispTokenizerState State, LispToken Token) tup)
       {
          tup = ProcTrimFirst(ProcUnescapeChars(ProcCountLine(tup)));
-         tup.State.Mode = TokenizerMode.InMultilineString;
+         tup.State.Mode = LispTokenizerMode.InMultilineString;
          return tup;
       }
 
@@ -342,7 +342,7 @@ static partial class Ae
         ProcEndMLS((LispTokenizerState State, LispToken Token) tup)
       {
          tup = TrimLast(ProcUnescapeChars(tup));
-         tup.State.Mode = TokenizerMode.Normal;
+         tup.State.Mode = LispTokenizerMode.Normal;
          return tup;
       }
 
@@ -395,9 +395,9 @@ static partial class Ae
       //================================================================================================================================================
       // 'Is active?' callbacks
       //================================================================================================================================================
-      private static bool InMultilineComment(LispTokenizerState state) => state.Mode == TokenizerMode.InMultilineComment;
-      private static bool InMultilineString(LispTokenizerState state) => state.Mode == TokenizerMode.InMultilineString;
-      private static bool Normal(LispTokenizerState state) => state.Mode == TokenizerMode.Normal;
+      private static bool InMultilineComment(LispTokenizerState state) => state.Mode == LispTokenizerMode.InMultilineComment;
+      private static bool InMultilineString(LispTokenizerState state) => state.Mode == LispTokenizerMode.InMultilineString;
+      private static bool Normal(LispTokenizerState state) => state.Mode == LispTokenizerMode.Normal;
 
       //================================================================================================================================================
       // Patterns are down here since they confuse csharp-mode's indentation logic:
