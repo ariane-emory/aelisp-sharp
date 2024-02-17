@@ -112,30 +112,28 @@ static partial class Ae
         TypedToken(LispTokenType.Dot);
 
 
-    public static readonly Parser<LispToken, LispObject> ParseListElements =
-      Rec(() =>
-          ParseSExp.Many()
-          .Then(
-            ParseDot.Then(
-              OneOf(
-                QuotedSExp!, // Ensure quoted expressions are correctly handled as potential tails
-                ParseSExp
-                ), (_, tailExpr) => tailExpr).Optional(),
+    public static Parser<LispToken, LispObject> ParseListElements = Rec<LispToken, LispObject>(() =>
+        ParseSExp.Many()
+        .Then(
+            // Expecting a dot followed by an S-expression or a quoted S-expression
+            ParseDot.Then(OneOf(
+                QuotedSExp!,
+                ParseSExp), (_, tailExpr) => tailExpr).Optional(),
             (exprs, optionalTailExpr) =>
             {
               LispObject list = Nil;
-              
+
+              // If there's a tail expression, it's the final part of an improper list.
               if (optionalTailExpr.HasValue)
-              {
-                // This tail expression is directly used as the tail of the list without wrapping in Cons
                 list = optionalTailExpr.Value;
-              }
-              
-              // Construct the list from exprs, reversing to maintain order
-              return exprs.Reverse().Aggregate(list, (acc, expr) => Cons(expr, acc));
+
+              foreach (var expr in exprs.Reverse())
+                list = Cons(expr, list);
+
+              return list;
             }
-            )
-        );
+        )
+    );
 
     public static readonly Parser<LispToken, LispObject> ParseList =
         TypedToken(LispTokenType.LParen)
