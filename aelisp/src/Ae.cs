@@ -27,22 +27,6 @@ static partial class Ae
    public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
 
    //====================================================================================================================
-   public static bool ProperIsList(LispObject obj)
-   {
-      LispObject current = obj;
-
-      while (current is Pair cons)
-      {
-         if (cons.Cdr == Ae.Nil)
-            return true;
-
-         current = cons.Cdr;
-      }
-
-      return current == Ae.Nil;
-   }
-
-   //====================================================================================================================
    public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
 
    //====================================================================================================================

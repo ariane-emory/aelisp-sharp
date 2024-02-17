@@ -35,13 +35,30 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
+      public Env(LispObject parent, LispObject symbolsObj, LispObject valuesObs)
+      {
+         if (! ((parent is Env) || parent == Nil))
+            throw new ArgumentException("Parent must be an Env or Nil");
+
+         if (! (symbolsObj is Pair))
+            throw new ArgumentException("Symbols must be a Pair");
+
+         if (! (valuesObs is Pair))
+            throw new ArgumentException("Values must be a Pair");
+
+         Parent = parent;
+         Symbols = (Pair)symbolsObj;
+         Values = (Pair)valuesObs;
+      }
+
+      //================================================================================================================
       public Env(LispObject parent, Pair symbols, Pair values)
       {
          Parent = parent;
          Symbols = symbols;
          Values = values;
       }
-
+ 
       //================================================================================================================
       // Instance methods
       //================================================================================================================
@@ -55,7 +72,7 @@ static partial class Ae
       public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"Looking up {symbol} in {this}...");
-         
+
          return (false, Nil); ;
       }
 

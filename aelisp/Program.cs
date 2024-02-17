@@ -76,7 +76,12 @@ class Program
          }
 
          Die(2, "Dying due to parse error.");
-      }
+
+            var env = new Env(
+               Nil,
+               Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
+               Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
+        }
    }
 
    //==============================================================================================================================
