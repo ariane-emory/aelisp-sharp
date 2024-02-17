@@ -90,6 +90,28 @@ static partial class Ae
 
       //==================================================================================================================
       IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+      //==================================================================================================================
+      public int Length()
+      {
+         int length = 0;
+         LispObject current = this;
+
+         while (current is Pair pair)
+         {
+            length += 1; // Count the current element
+            current = pair.Cdr; // Move to the next element
+
+            // If we encounter a non-Pair object in the Cdr (indicating an improper list),
+            // we stop counting further, treating it as the end of the list for length purposes.
+            if (!(current is Pair) && current != Nil)
+            {
+               break;
+            }
+         }
+
+         return length;
+      }
    }
 
    //====================================================================================================================

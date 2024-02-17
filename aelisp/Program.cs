@@ -172,7 +172,23 @@ class Program
       WriteLine(obj2);
 
       WriteLine("\nStop.");
-   }
+ 
+      var proper = (Pair)Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), Cons(new Integer(4), Nil))));
+      var improper = (Pair)Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), new Integer(4))));
+
+      int len = 0;
+      foreach (var o in proper)
+         len++;
+
+      int len2 = 0;
+      foreach (var o in improper)
+         len2++;
+
+      WriteLine(len);
+      WriteLine(len2);
+      WriteLine(proper.Length());
+      WriteLine(improper.Length());        
+    }
 
    //==============================================================================================================================
 }
