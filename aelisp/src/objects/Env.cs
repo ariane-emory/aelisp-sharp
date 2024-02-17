@@ -9,8 +9,9 @@ static partial class Ae
       //================================================================================================================
       // Public types
       //================================================================================================================
-      public enum LookupMode { Local, Global, Nearest, };
-
+      public enum LookupMode { Local, Global };
+      public enum SetMode { Local, Global, Nearest, };
+      
       //================================================================================================================
       // Public static properties
       //================================================================================================================
@@ -96,15 +97,15 @@ static partial class Ae
                values = valPair.Cdr;
             }
 
-            // // Check for the special case where the symbols list consists of a single symbol to which all values are bound.
-            // if (symbols == symbol)
-            //    return (true, values);
+            if (symbols != Nil || values != Nil)
+               throw new InvalidOperationException(
+                  "Symbols and values are not the same length, something has gone seriously wrong! "
+                  + $"symbols: {symbols}, values: {values}");
 
             if (mode == LookupMode.Local || current.IsRoot)
                break;
 
-            if (mode == LookupMode.Global || mode == LookupMode.Nearest)
-               current = (Env)current.Parent;
+            current = (Env)current.Parent;
          }
 
          DebugWrite("Did not find it!");
