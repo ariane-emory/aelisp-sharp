@@ -86,7 +86,7 @@ static partial class Ae
           ParseSymbol,
           ParseNil,
           ParseInteger,
-          ParseString,
+          // ParseString,
           ParseFloat,
           ParseRational,
           ParseCStyleChar,
