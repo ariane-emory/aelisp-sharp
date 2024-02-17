@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Reflection;
 using System.Text;
-using static Ae;
 
 //======================================================================================================================
 static partial class Ae
