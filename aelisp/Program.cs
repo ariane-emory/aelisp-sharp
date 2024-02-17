@@ -142,12 +142,34 @@ class Program
       WriteLine($"parent: {parent_env}");
       WriteLine($"child:  {child_env}");
 
+      child_env.Set(Env.LookupMode.Local, Intern("xxyyxx"), new Integer(6666));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+
+      child_env.Set(Env.LookupMode.Local, Intern("yyxxyy"), new Integer(6666));
+
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+
+      child_env.Set(Env.LookupMode.Global, Intern("yyxxyy"), new Integer(6666));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+
       Symbol sym1 = (Symbol)Intern("xx");
       LispObject sym2 = Intern("xx");
-
       var (found1, obj1) = child_env.Lookup(Env.LookupMode.Nearest, sym1);
-      WriteLine(obj1);
       var (found2, obj2) = child_env.Lookup(Env.LookupMode.Nearest, sym2);
+      
+      WriteLine(obj1);
       WriteLine(obj2);
 
       
