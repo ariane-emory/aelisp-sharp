@@ -113,6 +113,24 @@ static partial class Ae
         ParseLitListSExp!
     ));
 
+    // public static readonly Parser<LispToken, LispObject> ParseProgram =
+    //   ParseSExp.Many() // Parse zero or more s-expressions
+    //   .Select(sexps => new Pair((LispObject)Intern("progn"), sexps.Aggregate(Nil, (acc, sexp) => new Pair(sexp, acc))));
+
+    public static readonly Parser<LispToken, LispObject> ParseProgram =
+        ParseSExp.Many() // Parse zero or more s-expressions
+        .Select(sexps =>
+        {
+          // Ensure Intern("progn") is treated as LispObject
+          LispObject progn = Intern("progn");
+
+          // Explicitly type the aggregate's seed as LispObject to avoid type inference issues
+          LispObject list = sexps.Aggregate((LispObject)Nil, (acc, sexp) => new Pair(sexp, acc));
+
+          // Now, we explicitly create a Pair with 'progn' and the aggregated list, which should be free of type mismatch issues
+          return (LispObject)new Pair(progn, list);
+        });
+    
     //======================================================================================================================================
     // More private Parsers
     //======================================================================================================================================

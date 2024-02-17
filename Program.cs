@@ -39,7 +39,7 @@ class Program
     WriteLine("\nSTEP 4 - Parsed objects: ");
     try
     {
-      var obj = ParseSExp.ParseOrThrow(tokens);
+      var obj = ParseProgram.ParseOrThrow(tokens);
       WriteLine($"obj.toString(): {obj}");
       WriteLine($"obj.Write(): {obj.Write()}");
 
