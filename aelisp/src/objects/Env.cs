@@ -29,13 +29,13 @@ static partial class Ae
       // Public properties
       //================================================================================================================
       public LispObject Parent { get; }
-      public LispObject Symbols { get; private set;  }
+      public LispObject Symbols { get; private set; }
       public LispObject Values { get; private set; }
 
-        //================================================================================================================
-        // Constructor
-        //================================================================================================================
-        public Env(LispObject parent, LispObject symbols, LispObject values)
+      //================================================================================================================
+      // Constructor
+      //================================================================================================================
+      public Env(LispObject parent, LispObject symbols, LispObject values)
       {
          if (!((parent is Env) || parent == Nil))
             throw new ArgumentException("Parent must be an Env or Nil");
@@ -56,27 +56,33 @@ static partial class Ae
       //================================================================================================================
       public override string ToString() => $"{TypeName}({Parent}, {Symbols.Write()}, {Values.Write()})";
       public override string Write() => ToString();
-      public bool IsRoot() => Parent == Nil;
+      public bool IsRoot => Parent == Nil;
+
+      //================================================================================================================
+      private Env GetRoot()
+      {
+         var current = this;
+
+         while (!current.IsRoot)
+            current = (Env)current.Parent;
+
+         return current;
+      }
 
       //================================================================================================================
       public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"Looking up {symbol} in {this}...");
 
-         if (symbol.IsKeyword() || symbol == Nil || symbol == True)
+         if (symbol.IsKeyword || symbol == Nil || symbol == True)
             return (true, symbol);
 
-         Env currentEnv = this;
-
-         // If mode is Global, move directly to the root environment
-         if (mode == LookupMode.Global)
-            while (!currentEnv.IsRoot())
-               currentEnv = (Env)currentEnv.Parent;
+         Env current = mode == LookupMode.Global ? GetRoot() : this;
 
          while (true)
          {
-            LispObject symbols = currentEnv.Symbols;
-            LispObject values = currentEnv.Values;
+            LispObject symbols = current.Symbols;
+            LispObject values = current.Values;
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
@@ -94,17 +100,66 @@ static partial class Ae
             if (symbols == symbol)
                return (true, values);
 
-            if (mode == LookupMode.Local || currentEnv.Parent == Nil)
+            if (mode == LookupMode.Local || current.IsRoot)
                break;
 
             if (mode == LookupMode.Global || mode == LookupMode.Nearest)
-               currentEnv = (Env)currentEnv.Parent;
+               current = (Env)current.Parent;
          }
 
          DebugWrite("Did not find it!");
 
          return (false, Nil);
       }
+
+      //================================================================================================================
+      public void Set(LookupMode mode, Symbol symbol, LispObject value)
+      {
+         if (symbol.IsKeyword)
+            throw new ArgumentException("Cannot set a keyword.");
+
+         // Start from the current environment or root depending on the mode.
+         Env current = mode == LookupMode.Global ? GetRoot() : this;
+
+         while (!(current is Nil)) // Assuming Nil is a singleton that represents the absence of a value
+         {
+            var symbolsList = current.Symbols;
+            var valuesList = current.Values;
+
+            while (symbolsList is Pair symbolsPair && valuesList is Pair valuesPair)
+            {
+               if (Equals(symbol, symbolsPair.Car))
+               {
+                  // Update existing symbol value
+                  ((Pair)valuesList).Car = value;
+                  DebugWrite($"Updated {symbol} with value {value}.");
+                  return;
+               }
+
+               symbolsList = symbolsPair.Cdr;
+               valuesList = valuesPair.Cdr;
+            }
+
+            // If not found and either in LOCAL mode or at the root, add new symbol-value pair
+            if (mode == LookupMode.Local || current.Parent == Nil)
+            {
+               current.Add(symbol, value);
+               return;
+            }
+
+            // Traverse to the parent environment
+            if (current.Parent is Env parentEnv)
+            {
+               current = parentEnv;
+            }
+            else
+            {
+               // Assuming we hit Nil or an invalid parent type, we stop.
+               break;
+            }
+         }
+      }
+
 
       //================================================================================================================
       public void Add(Symbol symbol, LispObject value)
@@ -117,6 +172,7 @@ static partial class Ae
 
          DebugWrite($"Added {symbol} with value {value}.");
       }
+
       //================================================================================================================
    }
    //===================================================================================================================

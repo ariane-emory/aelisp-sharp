@@ -67,7 +67,7 @@ static partial class Ae
       //================================================================================================================
       public override string Write() => Value;
       public override string ToString() => this == Nil ? "Nil" : $"{TypeName}({Value})";
-      public bool IsKeyword() => Value[0] == ':';
+      public bool IsKeyword => Value[0] == ':';
    }
 
    //===================================================================================================================
