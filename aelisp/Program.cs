@@ -83,32 +83,33 @@ class Program
          Cons(Intern("xx"), Cons(Intern("yy"), Cons(Intern("zz"), Nil))),
          Cons(new Integer(11), Cons(new Integer(22), Cons(new Integer(33), Nil))));
 
-      var env = new Env(
+      var child_env = new Env(
          root_env,
          Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
          Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
 
-      WriteLine(env.Write());
+      WriteLine(child_env.Write());
 
-      var (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("x"));
+      var (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("x"));
       WriteLine($"found: {found}, fobj: {fobj}");
 
-      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("y"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("y"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("z"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("z"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("xx"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("xx"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("nil"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("nil"));
       WriteLine($"found: {found}, fobj: {fobj}");
       
-      (found, fobj) = env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("t"));
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("t"));
       WriteLine($"found: {found}, fobj: {fobj}");
-      
-      WriteLine("Stop.");
+
+      WriteLine("");
+      WriteLine("\nStop.");
    }
 
    //==============================================================================================================================

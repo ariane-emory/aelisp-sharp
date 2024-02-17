@@ -10,12 +10,11 @@ static partial class Ae
       // Public types
       //================================================================================================================
       public enum LookupMode { Local, Nearest, Global };
-      // public enum SetMode { Local, Nearest, Global, };
 
       //================================================================================================================
       // Public static properties
       //================================================================================================================
-      public static bool EnableDebugWrite { get; set; } = true;
+      public static bool EnableDebugWrite { get; set; } = false; 
 
       //================================================================================================================
       // Public static methods
@@ -73,7 +72,7 @@ static partial class Ae
       //================================================================================================================
       private void Add(Symbol symbol, LispObject value)
       {
-         ThrowUnlessSymbolIsSettable(symbol);
+         ThrowIfSymbolIsSelfEvaluating(symbol);
 
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
@@ -145,56 +144,28 @@ static partial class Ae
       }
 
       //================================================================================================================
-      private void ThrowUnlessSymbolIsSettable(Symbol symbol)
+      private void ThrowIfSymbolIsSelfEvaluating(Symbol symbol)
       {
-         if (symbol.IsKeyword)
-            throw new ArgumentException($"Cannot set a {this}.");
+         if (symbol.IsSelfEvaluting)
+            throw new ArgumentException($"Cannot set self-evaluating symbol {this}.");
       }
 
       //================================================================================================================
       public void Set(LookupMode mode, Symbol symbol, LispObject value)
       {
-         ThrowUnlessSymbolIsSettable(symbol);
+         // Self-evaluating symbols (nil, t and keywords) cannot be set.
+         ThrowIfSymbolIsSelfEvaluating(symbol);
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
+         
+         var (found, pairOrNil) = current.LookupPair(mode, symbol);
 
-         while (true)
-         {
-            var symbols = current.Symbols;
-            var values = current.Values;
-
-            while (symbols is Pair symbolsPair && values is Pair valuesPair)
-            {
-               if (Equals(symbol, symbolsPair.Car))
-               {
-                  // Update existing symbol value
-                  ((Pair)values).Car = value;
-                  DebugWrite($"Updated {symbol} with value {value}.");
-                  return;
-               }
-
-               symbols = symbolsPair.Cdr;
-               values = valuesPair.Cdr;
-            }
-
-            // If not found and either in LOCAL mode or at the root, add new symbol-value pair
-            if (mode == LookupMode.Local || current.Parent == Nil)
-            {
-               current.Add(symbol, value);
-               return;
-            }
-
-            // Traverse to the parent environment
-            if (current.Parent is Env parentEnv)
-            {
-               current = parentEnv;
-            }
-            else
-            {
-               // Assuming we hit Nil or an invalid parent type, we stop.
-               break;
-            }
-         }
+         if (found)
+            ((Pair)pairOrNil).Car = value;
+         else if (mode == LookupMode.Nearest)
+            Add(symbol, value);
+         else 
+            current.Add(symbol, value);          
       }
 
       //================================================================================================================
