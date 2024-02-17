@@ -45,7 +45,6 @@ static partial class Ae
    {
       public string Value { get; }
       public LispObjectWithStringValue(string value) => Value = value;
-      public override string ToString() => $"{TypeName}(\"{Value.EscapeChars()}\")";
    }
 
    //===================================================================================================================
@@ -65,8 +64,9 @@ static partial class Ae
       //================================================================================================================
       // Public methods
       //================================================================================================================
-      public override string Write() => Value;
       public override string ToString() => this == Nil ? "Nil" : $"{TypeName}({Value})";
+      public override string Write() => Value;
+      
       public bool IsKeyword => Value[0] == ':';
       public bool IsSelfEvaluting => IsKeyword || this == Nil || this == True;
     }
@@ -77,6 +77,7 @@ static partial class Ae
    public class String : LispObjectWithStringValue
    {
       public String(string value) : base(value) { }
+      public override string ToString() => $"{TypeName}(\"{Value.EscapeChars()}\")";
       public override string Write() => $"\"{Value}\"";
    }
 
@@ -87,6 +88,7 @@ static partial class Ae
    public class Error : LispObjectWithStringValue
    {
       public Error(string value) : base(value) { }
+      public override string ToString() => $"{TypeName}(\"{Value.EscapeChars()}\")";
       public override string Write() => ToString();
    }
 

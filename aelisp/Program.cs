@@ -80,13 +80,18 @@ class Program
 
       var root_env = new Env(
          Nil,
+         Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
+         Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), Nil))));
+
+      var parent_env = new Env(
+         root_env,
          Cons(Intern("xx"), Cons(Intern("yy"), Cons(Intern("zz"), Nil))),
          Cons(new Integer(11), Cons(new Integer(22), Cons(new Integer(33), Nil))));
 
       var child_env = new Env(
-         root_env,
-         Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
-         Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
+         parent_env,
+         Cons(Intern("xxx"), Cons(Intern("yyy"), Cons(Intern("zzz"), Nil))),
+         Cons(new Integer(111), Cons(new Integer(222), Cons(new Integer(333), Nil))));
 
       WriteLine(child_env.Write());
 
@@ -108,7 +113,11 @@ class Program
       (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("t"));
       WriteLine($"found: {found}, fobj: {fobj}");
 
+      (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, (Symbol)Intern("yyy"));
+      WriteLine($"found: {found}, fobj: {fobj}");
+
       WriteLine("");
+
       WriteLine("\nStop.");
    }
 
