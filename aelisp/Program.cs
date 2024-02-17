@@ -151,7 +151,6 @@ class Program
 
       child_env.Set(Env.LookupMode.Local, Intern("yyxxyy"), new Integer(6666));
 
-
       WriteLine("");
       WriteLine($"root:   {root_env}");
       WriteLine($"parent: {parent_env}");
