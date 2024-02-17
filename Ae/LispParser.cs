@@ -121,7 +121,7 @@ static partial class Ae
         ParseSExp.Many()
         .Select(sexps =>
         {
-          LispObject progn = Intern("progn");
+          var  progn = Intern("progn");
           LispObject list = sexps.Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc));
 
           return (LispObject)Cons(progn, list);
