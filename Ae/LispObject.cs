@@ -356,7 +356,7 @@ static partial class Ae
   // Ae's static methods
   //====================================================================================================================
   public static string Write(LispObject obj) => obj.Write();
-  public static Pair Cons(LispObject car, LispObject cdr) => new Pair(car, cdr);
+  public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
 
   //====================================================================================================================
   public static bool ProperListP(LispObject obj)
