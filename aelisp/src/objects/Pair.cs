@@ -81,7 +81,7 @@ static partial class Ae
             }
             else
             {
-               yield return current;
+               // yield return current;
                yield break;
 
                // throw new InvalidOperationException("Enumerated improper list!");
