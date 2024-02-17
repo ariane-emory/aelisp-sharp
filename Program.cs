@@ -20,7 +20,7 @@ class Program
 
     WriteLine("File contents:");
     WriteLine(fileText);
-    WriteLine("EOF\n");
+    WriteLine("EOF");
 
     var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsUninterestingToken);
 
