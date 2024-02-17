@@ -48,18 +48,6 @@ static partial class Ae
     //======================================================================================================================================
     // Private Parsers
     //======================================================================================================================================
-
-    //======================================================================================================================================
-    // Public Parsers
-    //======================================================================================================================================
-    public static readonly Parser<LispToken, IEnumerable<LispToken>> MergeMultilineTokens =
-      OneOf(Token(t => (!MultilineCommentLispTokenTypes.Contains(t.Type)) && (!MultilineStringLispTokenTypes.Contains(t.Type))),
-            MergeSequence(LispTokenType.Comment, true,
-                          LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd),
-            MergeSequence(LispTokenType.String, false,
-                          LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
-      .Many();
-
     private static readonly Parser<LispToken, LispObject> ParseCStyleChar =
       TypedToken(LispTokenType.CStyleChar).Select(t => (LispObject)new Char(t.Text![0]));
 
@@ -102,6 +90,17 @@ static partial class Ae
         ParseCStyleChar,
         ParseLispStyleChar
         );
+
+    //======================================================================================================================================
+    // Public Parsers
+    //======================================================================================================================================
+    public static readonly Parser<LispToken, IEnumerable<LispToken>> MergeMultilineTokens =
+      OneOf(Token(t => (!MultilineCommentLispTokenTypes.Contains(t.Type)) && (!MultilineStringLispTokenTypes.Contains(t.Type))),
+            MergeSequence(LispTokenType.Comment, true,
+                          LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd),
+            MergeSequence(LispTokenType.String, false,
+                          LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd))
+      .Many();
 
     public static Parser<LispToken, LispObject> ParseSExp = Rec(() => OneOf(
         ParseAtom,
