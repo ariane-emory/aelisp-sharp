@@ -10,7 +10,7 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 static partial class Ae
 {
    //=======================================================================================================================================
-   // Parsers
+   // LispParsers
    //=======================================================================================================================================
    public static class LispParsers
    {
@@ -140,6 +140,7 @@ static partial class Ae
              )
          );
 
+      //=====================================================================================================================================
       private static readonly LispObjectParser ParseList =
         TypedToken(LispTokenType.LParen)
         .Then(ParseListElements)
