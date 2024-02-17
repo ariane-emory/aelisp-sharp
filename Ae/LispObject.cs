@@ -340,8 +340,8 @@ static partial class Ae
    // Ae's static variables
    //====================================================================================================================
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
-   public static readonly LispObject True = (LispObject)new Symbol("t");
    public static LispObject SymbolsList = Nil;
+   public static readonly LispObject True = Intern("t");
 
    //====================================================================================================================
    // Ae's static constructor
