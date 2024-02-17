@@ -121,6 +121,11 @@ class Program
       WriteLine($"parent: {parent_env}");
       WriteLine($"child:  {child_env}");
 
+      child_env.Set(Env.LookupMode.Global, (Symbol)Intern("xx"), new Integer(999));
+      child_env.Set(Env.LookupMode.Nearest, (Symbol)Intern("xx"), new Integer(333));
+      child_env.Set(Env.LookupMode.Local, (Symbol)Intern("xx"), new Integer(666));
+      
+      
       WriteLine("\nStop.");
    }
 
