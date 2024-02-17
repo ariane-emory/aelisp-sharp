@@ -74,9 +74,6 @@ static partial class Ae
       {
          DebugWrite($"Looking up {symbol} in {this}...");
 
-         if (symbol.IsKeyword || symbol == Nil || symbol == True)
-            return (true, symbol);
-
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
          while (true)
@@ -124,10 +121,9 @@ static partial class Ae
       {
          AssertSymbolIsNotKeyword(symbol);
 
-         // Start from the current environment or root depending on the mode.
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
-         while (!(current is Nil)) // Assuming Nil is a singleton that represents the absence of a value
+         while (true)
          {
             var symbolsList = current.Symbols;
             var valuesList = current.Values;
