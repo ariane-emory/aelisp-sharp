@@ -387,6 +387,9 @@ static partial class Ae
       if (!ListP(symbolsList))
          throw new InvalidOperationException($"{nameof(symbolsList)} is not a list");
 
+      if (symbolName == "nil")
+         return Nil;
+
       var current = symbolsList;
 
       while (current != Nil)
