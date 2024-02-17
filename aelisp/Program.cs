@@ -120,11 +120,27 @@ class Program
       WriteLine($"root:   {root_env}");
       WriteLine($"parent: {parent_env}");
       WriteLine($"child:  {child_env}");
-
-      child_env.Set(Env.LookupMode.Global, (Symbol)Intern("xx"), new Integer(999));
-      child_env.Set(Env.LookupMode.Nearest, (Symbol)Intern("xx"), new Integer(333));
-      child_env.Set(Env.LookupMode.Local, (Symbol)Intern("xx"), new Integer(666));
       
+      child_env.Set(Env.LookupMode.Global, (Symbol)Intern("xx"), new Integer(9999));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+
+      child_env.Set(Env.LookupMode.Nearest, (Symbol)Intern("xx"), new Integer(3333));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}");
+      
+      child_env.Set(Env.LookupMode.Local, (Symbol)Intern("xx"), new Integer(6666));
+
+      WriteLine("");
+      WriteLine($"root:   {root_env}");
+      WriteLine($"parent: {parent_env}");
+      WriteLine($"child:  {child_env}"); 
       
       WriteLine("\nStop.");
    }
