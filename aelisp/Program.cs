@@ -187,7 +187,8 @@ class Program
       WriteLine(len);
       WriteLine(len2);
       WriteLine(proper.Length);
-      WriteLine(improper.Length); 
+      WriteLine(improper.Length);
+      // WriteLine(proper.Select(x => ((Integer)x).Value * 2).Write());
     }
 
    //==============================================================================================================================
