@@ -92,6 +92,12 @@ static partial class Ae
         ParseLispStyleChar
         );
 
+    private static readonly Parser<LispToken, LispObject> ParseList =
+      TypedToken(LispTokenType.LParen)
+      .Then(ParseListElements!)
+      .Before(TypedToken(LispTokenType.RParen));
+
+
     //======================================================================================================================================
     // Public Parsers
     //======================================================================================================================================
@@ -142,11 +148,6 @@ static partial class Ae
             }
         )
     );
-
-    private static readonly Parser<LispToken, LispObject> ParseList =
-      TypedToken(LispTokenType.LParen)
-      .Then(ParseListElements)
-      .Before(TypedToken(LispTokenType.RParen));
 
     private static readonly Parser<LispToken, LispObject> QuotedSExp =
       TypedToken(LispTokenType.Quote)
