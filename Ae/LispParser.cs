@@ -79,6 +79,7 @@ static partial class Ae
         return (LispObject)new Rational(numerator, denominator);
       });
 
+    //======================================================================================================================================
     private static readonly Parser<LispToken, LispObject> ParseAtom =
       OneOf(
         ParseSymbol,
@@ -115,20 +116,18 @@ static partial class Ae
     //======================================================================================================================================
     // More private Parsers
     //======================================================================================================================================
-    private static readonly Parser<LispToken, LispToken> ParseDot =
-        TypedToken(LispTokenType.Dot);
-
     private static Parser<LispToken, LispObject> ParseListElements =
       Rec(() =>
           ParseSExp.Many()
           .Then(
-            ParseDot.Then(OneOf(
-                            QuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
-                            QuasiQuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
-                            UnquotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
-                            SplicedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
-                            LitListSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
-                            ParseSExp), (_, tailExpr) => tailExpr).Optional(),
+            TypedToken(LispTokenType.Dot)
+            .Then(OneOf(
+                    QuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                    QuasiQuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                    UnquotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                    SplicedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                    LitListSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                    ParseSExp), (_, tailExpr) => tailExpr).Optional(),
             (exprs, optionalTailExpr) =>
             {
               LispObject list = Nil;
@@ -156,11 +155,11 @@ static partial class Ae
     private static readonly Parser<LispToken, LispObject> QuasiQuotedSExp =
       TypedToken(LispTokenType.Backtick)
       .Then(ParseSExp, (_, exp) => (LispObject)Cons(Intern("quasiquote"), Cons(exp, Nil)));
-    
+
     private static readonly Parser<LispToken, LispObject> UnquotedSExp =
       TypedToken(LispTokenType.Comma)
       .Then(ParseSExp, (_, exp) => (LispObject)Cons(Intern("unquote"), Cons(exp, Nil)));
-    
+
     private static readonly Parser<LispToken, LispObject> SplicedSExp =
       TypedToken(LispTokenType.CommaAt)
       .Then(ParseSExp, (_, exp) => (LispObject)Cons(Intern("unquote-splicing"), Cons(exp, Nil)));
