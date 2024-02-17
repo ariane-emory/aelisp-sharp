@@ -48,7 +48,7 @@ class Program
          //    foreach (var o in pair)
          //       WriteLine(o.Write());
          // else
-            WriteLine(obj.Write());
+         WriteLine(obj.Write());
       }
       catch (ParseException e)
       {
@@ -63,7 +63,7 @@ class Program
             if (ix >= 0 && ix < tokens.Count())
             {
                var tok = tokens.ElementAt(ix);
-               WriteLine($"ERROR: Unexpected token at line {tok.Line+1}, column {tok.Column}: {tok}.");
+               WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
             }
             else
             {
@@ -76,12 +76,16 @@ class Program
          }
 
          Die(2, "Dying due to parse error.");
+      }
 
-            var env = new Env(
-               Nil,
-               Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
-               Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
-        }
+      var env = new Env(
+         Nil,
+         Cons(Intern("x"), Cons(Intern("y"), Cons(Intern("z"), Nil))),
+         Cons(new Integer(10), Cons(new Integer(20), Cons(new Integer(30), Nil))));
+
+      WriteLine(env.Write());
+
+      WriteLine("Stop.");
    }
 
    //==============================================================================================================================
