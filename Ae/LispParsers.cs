@@ -68,10 +68,10 @@ static partial class Ae
         TypedToken(LispTokenType.Symbol).Select(t => Intern(t.Text!));
 
       private static readonly LispObjectParser ParseNil =
-        TypedToken(LispTokenType.Nil).Select(t => (LispObject)Nil);
+         TypedToken(LispTokenType.Nil).Select(t => Nil);
 
       private static readonly LispObjectParser ParseInteger =
-        TypedToken(LispTokenType.Integer).Select(t => (LispObject)new Integer(int.Parse(t.Text!)));
+         TypedToken(LispTokenType.Integer).Select(t => (LispObject)new Integer(int.Parse(t.Text!)));
 
       private static readonly LispObjectParser ParseFloat =
         TypedToken(LispTokenType.Float).Select(t => (LispObject)new Float(float.Parse(t.Text!)));
