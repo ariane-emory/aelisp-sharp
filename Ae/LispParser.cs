@@ -3,7 +3,8 @@ using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.LispToken>;
 using static Ae;
-using LispParser = Pidgin.Parser<Ae.LispToken, Ae.LispObject>;
+using LispObjectParser = Pidgin.Parser<Ae.LispToken, Ae.LispObject>;
+using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 
 //====================================================================================================================================================
 static partial class Ae
@@ -51,29 +52,29 @@ static partial class Ae
       //================================================================================================================================================
       // Private Parsers
       //================================================================================================================================================
-      private static readonly LispParser ParseCStyleChar =
+      private static readonly LispObjectParser ParseCStyleChar =
         TypedToken(LispTokenType.CStyleChar).Select(t => (LispObject)new Char(t.Text![0]));
 
-      private static readonly LispParser ParseLispStyleChar =
+      private static readonly LispObjectParser ParseLispStyleChar =
         TypedToken(LispTokenType.LispStyleChar).Select(t => (LispObject)new Char(t.Text![0]));
 
-      private static readonly LispParser ParseString =
+      private static readonly LispObjectParser ParseString =
         TypedToken(LispTokenType.String).Select(t => (LispObject)new String(t.Text!));
 
-      private static readonly LispParser ParseSymbol =
+      private static readonly LispObjectParser ParseSymbol =
         TypedToken(LispTokenType.Symbol).Select(t => Intern(t.Text!));
 
-      private static readonly LispParser ParseNil =
+      private static readonly LispObjectParser ParseNil =
         TypedToken(LispTokenType.Nil).Select(t => (LispObject)Nil);
 
-      private static readonly LispParser ParseInteger =
+      private static readonly LispObjectParser ParseInteger =
         TypedToken(LispTokenType.Integer).Select(t => (LispObject)new Integer(int.Parse(t.Text!)));
 
-      private static readonly LispParser ParseFloat =
+      private static readonly LispObjectParser ParseFloat =
         TypedToken(LispTokenType.Float).Select(t => (LispObject)new Float(float.Parse(t.Text!)));
 
       //================================================================================================================================================
-      private static readonly LispParser ParseRational =
+      private static readonly LispObjectParser ParseRational =
         TypedToken(LispTokenType.Rational).Select(t =>
         {
            // We trust the tokenizer and assume that t.Text will contain the expected format.
@@ -82,7 +83,7 @@ static partial class Ae
         });
 
       //================================================================================================================================================
-      private static readonly LispParser ParseAtom =
+      private static readonly LispObjectParser ParseAtom =
         OneOf(
           ParseSymbol,
           ParseNil,
@@ -106,7 +107,7 @@ static partial class Ae
         .Many();
 
       //================================================================================================================================================
-      public static LispParser ParseSExp = Rec(() => OneOf(
+      public static LispObjectParser ParseSExp = Rec(() => OneOf(
           ParseAtom,
           ParseList!,
           ParseQuotedSExp!,
@@ -117,7 +118,7 @@ static partial class Ae
       ));
 
       //================================================================================================================================================
-      public static readonly LispParser  ParseProgram =
+      public static readonly LispObjectParser  ParseProgram =
          ParseSExp.Many()
          .Select(sexps => Cons(Intern("progn"),
                                (LispObject)sexps.Reverse().Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc))))
@@ -126,7 +127,7 @@ static partial class Ae
       //================================================================================================================================================
       // More private Parsers
       //================================================================================================================================================
-      private static LispParser ParseListElements =
+      private static LispObjectParser ParseListElements =
          Rec(() =>
              ParseSExp.Many()
              .Then(
@@ -154,28 +155,28 @@ static partial class Ae
              )
          );
 
-      private static readonly LispParser ParseList =
+      private static readonly LispObjectParser ParseList =
         TypedToken(LispTokenType.LParen)
         .Then(ParseListElements)
         .Before(TypedToken(LispTokenType.RParen));
 
-      private static readonly LispParser ParseQuotedSExp =
+      private static readonly LispObjectParser ParseQuotedSExp =
         TypedToken(LispTokenType.Quote)
         .Then(ParseSExp, (_, exp) => Cons(Intern("quote"), Cons(exp, Nil)));
 
-      private static readonly LispParser ParseQuasiQuotedSExp =
+      private static readonly LispObjectParser ParseQuasiQuotedSExp =
         TypedToken(LispTokenType.Backtick)
         .Then(ParseSExp, (_, exp) => Cons(Intern("quasiquote"), Cons(exp, Nil)));
 
-      private static readonly LispParser ParseUnquotedSExp =
+      private static readonly LispObjectParser ParseUnquotedSExp =
         TypedToken(LispTokenType.Comma)
         .Then(ParseSExp, (_, exp) => Cons(Intern("unquote"), Cons(exp, Nil)));
 
-      private static readonly LispParser ParseSplicedSExp =
+      private static readonly LispObjectParser ParseSplicedSExp =
         TypedToken(LispTokenType.CommaAt)
         .Then(ParseSExp, (_, exp) => Cons(Intern("unquote-splicing"), Cons(exp, Nil)));
 
-      private static readonly LispParser ParseLitListSExp =
+      private static readonly LispObjectParser ParseLitListSExp =
         TypedToken(LispTokenType.Dollar)
         .Then(ParseSExp, (_, exp) => Cons(Intern("list"), exp));
    }
