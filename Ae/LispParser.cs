@@ -117,8 +117,8 @@ static partial class Ae
         .Then(
             // Expecting a dot followed by an S-expression or a quoted S-expression
             ParseDot.Then(OneOf(
-                QuotedSExp!,
-                ParseSExp), (_, tailExpr) => tailExpr).Optional(),
+                            QuotedSExp!.Select(exp => (LispObject)Cons(exp, Nil)),
+                            ParseSExp), (_, tailExpr) => tailExpr).Optional(),
             (exprs, optionalTailExpr) =>
             {
               LispObject list = Nil;
