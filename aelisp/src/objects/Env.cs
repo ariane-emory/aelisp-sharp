@@ -87,8 +87,8 @@ static partial class Ae
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
-               DebugWrite($"syms: {symPair}");
-               DebugWrite($"vals: {valPair}");
+               DebugWrite($"  syms: {symPair}");
+               DebugWrite($"  vals: {valPair}");
 
                if (symbol == symPair.Car)
                {
