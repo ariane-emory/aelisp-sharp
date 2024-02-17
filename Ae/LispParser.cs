@@ -86,7 +86,7 @@ static partial class Ae
           ParseSymbol,
           ParseNil,
           ParseInteger,
-          // ParseString,
+          ParseString,
           ParseFloat,
           ParseRational,
           ParseCStyleChar,
@@ -118,7 +118,9 @@ static partial class Ae
       //================================================================================================================================================
       public static readonly Parser<LispToken, LispObject> ParseProgram =
          ParseSExp.Many()
-         .Select(sexps => Cons(Intern("progn"), (LispObject)sexps.Reverse().Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc))));
+         .Select(sexps => Cons(Intern("progn"),
+                               (LispObject)sexps.Reverse().Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc))))
+         .Before(End);
 
       //================================================================================================================================================
       // More private Parsers

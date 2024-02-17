@@ -40,12 +40,14 @@ class Program
       try
       {
          var obj = ParseProgram.ParseOrThrow(tokens);
+
          // WriteLine($"obj.toString(): {obj}");
          // WriteLine($"obj.Write(): {obj.Write()}");
-         if (obj is Pair pair)
-            foreach (var o in pair)
-               WriteLine(o.Write());
-         else
+
+         // if (obj is Pair pair)
+         //    foreach (var o in pair)
+         //       WriteLine(o.Write());
+         // else
             WriteLine(obj.Write());
       }
       catch (ParseException e)
@@ -61,7 +63,7 @@ class Program
             if (ix >= 0 && ix < tokens.Count())
             {
                var tok = tokens.ElementAt(ix);
-               WriteLine($"ERROR: Unexpected token at line {tok.Line}, column {tok.Column}: {tok}.");
+               WriteLine($"ERROR: Unexpected token at line {tok.Line+1}, column {tok.Column}: {tok}.");
             }
             else
             {
