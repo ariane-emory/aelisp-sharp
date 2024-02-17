@@ -48,7 +48,7 @@ static partial class Ae
     //======================================================================================================================================
     // Private Parsers
     //======================================================================================================================================
-    private static readonly Parser<LispToken, LispObject> CStyleCharParser =
+    private static readonly Parser<LispToken, LispObject> ParseCStyleChar =
       TypedToken(LispTokenType.CStyleChar).Select(t => (LispObject)new Char(t.Text![0]));
 
     private static readonly Parser<LispToken, LispObject> ParseLispStyleChar =
@@ -88,7 +88,7 @@ static partial class Ae
         ParseString,
         ParseFloat,
         ParseRational,
-        CStyleCharParser,
+        ParseCStyleChar,
         ParseLispStyleChar
         );
 
