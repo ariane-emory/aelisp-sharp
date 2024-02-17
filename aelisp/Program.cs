@@ -142,7 +142,14 @@ class Program
       WriteLine($"parent: {parent_env}");
       WriteLine($"child:  {child_env}");
 
-      WriteLine(child_env.Lookup(Env.LookupMode.Nearest, Intern("xx")));
+      Symbol sym1 = (Symbol)Intern("xx");
+      LispObject sym2 = Intern("xx");
+
+      var (found1, obj1) = child_env.Lookup(Env.LookupMode.Nearest, sym1);
+      WriteLine(obj1);
+      var (found2, obj2) = child_env.Lookup(Env.LookupMode.Nearest, sym2);
+      WriteLine(obj2);
+
       
       WriteLine("\nStop.");
    }
