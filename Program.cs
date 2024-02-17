@@ -42,7 +42,11 @@ class Program
          var obj = ParseProgram.ParseOrThrow(tokens);
          // WriteLine($"obj.toString(): {obj}");
          // WriteLine($"obj.Write(): {obj.Write()}");
-         WriteLine($"{obj.Write()}");
+         if (obj is Pair pair)
+            foreach (var o in pair)
+               WriteLine(o.Write());
+         else
+            WriteLine(obj.Write());
       }
       catch (ParseException e)
       {
