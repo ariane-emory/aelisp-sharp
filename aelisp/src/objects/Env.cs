@@ -71,7 +71,24 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public (bool Found, LispObject Object) Lookup(LookupMode mode, Symbol symbol)
+      public (bool Found, LispObject PairOrNil) Lookup(LookupMode mode, Symbol symbol)
+      {
+         (bool found, LispObject pairOrNil) = LookupPair(mode, symbol);
+
+         if (!found)
+            return (false, Nil);
+
+         if (pairOrNil is not Pair && pairOrNil != Nil)
+            throw new InvalidOperationException($"Expected a pair or nil, got ({found}, {pairOrNil}).");
+
+         if (pairOrNil == Nil)
+            return (found, Nil);
+         
+         return (true, ((Pair)pairOrNil).Car);
+      }
+      
+      //================================================================================================================
+      private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"\nLooking up {symbol} in {this}...");
 
@@ -93,7 +110,7 @@ static partial class Ae
                if (symbol == symPair.Car)
                {
                   DebugWrite($"Found {symbol} -> {valPair.Car}");
-                  return (true, valPair.Car);
+                  return (true, valPair);
                }
 
                symbols = symPair.Cdr;
