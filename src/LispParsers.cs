@@ -10,24 +10,6 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 static partial class Ae
 {
    //=======================================================================================================================================
-   // Ae's static fields
-   //=======================================================================================================================================
-   private static readonly ImmutableArray<LispTokenType> MultilineCommentLispTokenTypes =
-     ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
-
-   private static readonly ImmutableArray<LispTokenType> MultilineStringLispTokenTypes =
-     ImmutableArray.Create(LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd);
-
-   //=======================================================================================================================================
-   // Extension methods
-   //=======================================================================================================================================
-   // This one might belong in another file?
-   public static IEnumerable<LispToken> ExcludingComments(this IEnumerable<LispToken> self) =>
-     self.Where(t => (t.Type != LispTokenType.Comment)
-                && (t.Type != LispTokenType.LineComment)
-                && !MultilineCommentLispTokenTypes.Contains(t.Type));
-
-   //=======================================================================================================================================
    // Parsers
    //=======================================================================================================================================
    public static class LispParsers

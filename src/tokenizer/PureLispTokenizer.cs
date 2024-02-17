@@ -58,23 +58,34 @@ static partial class Ae
     public override string ToString() => (Text is null ? Type : $"{Type} [{Text.EscapeChars()}]") + $" @ {Line},{Column},{ParenDepth}";
   }
 
-  //==================================================================================================================================================
-  // Ae's static field
-  //==================================================================================================================================================
-  private static readonly ImmutableArray<LispTokenType> UninterestingLispTokenTypes = ImmutableArray.Create(
-  LispTokenType.Whitespace,
-  // LispTokenType.LineComment,
-  // LispTokenType.MultilineCommentBegin,
-  // LispTokenType.MultilineCommentContent,
-  // LispTokenType.MultilineCommentEnd,
-  // LispTokenType.Comment,
-  LispTokenType.Newline);
+   //=======================================================================================================================================
+   // Ae's static fields
+   //=======================================================================================================================================
+   private static readonly ImmutableArray<LispTokenType> MultilineCommentLispTokenTypes =
+     ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
 
+   private static readonly ImmutableArray<LispTokenType> MultilineStringLispTokenTypes =
+     ImmutableArray.Create(LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd);
+
+  private static readonly ImmutableArray<LispTokenType> WhitespaceLispTokenTypes =
+     ImmutableArray.Create(LispTokenType.Whitespace, LispTokenType.Newline);
+
+  //=======================================================================================================================================
+  // Ae's extension methods
+  //=======================================================================================================================================
+  // This one might belong in another file?
+  public static IEnumerable<LispToken> ExcludingComments(this IEnumerable<LispToken> self) =>
+    self.Where(t => (t.Type != LispTokenType.Comment)
+               && (t.Type != LispTokenType.LineComment)
+               && !MultilineCommentLispTokenTypes.Contains(t.Type));
+
+
+   
   //==================================================================================================================================================
   // Ae's static methods
   //==================================================================================================================================================
   public static bool IsUninterestingToken(LispToken token) => !IsInterestingToken(token);
-  public static bool IsInterestingToken(LispToken token) => !UninterestingLispTokenTypes.Contains(token.Type);
+  public static bool IsInterestingToken(LispToken token) => !WhitespaceLispTokenTypes.Contains(token.Type);
 
   //==================================================================================================================================================
   // Ae's extension methods
