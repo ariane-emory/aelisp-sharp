@@ -29,26 +29,26 @@ static partial class Ae
       // Public properties
       //================================================================================================================
       public LispObject Parent { get; }
-      public Pair Symbols { get; }
-      public Pair Values { get; }
+      public LispObject Symbols { get; }
+      public LispObject Values { get; }
 
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public Env(LispObject parent, LispObject symbolsObj, LispObject valuesObs)
+      public Env(LispObject parent, LispObject symbols, LispObject values)
       {
          if (! ((parent is Env) || parent == Nil))
             throw new ArgumentException("Parent must be an Env or Nil");
 
-         if (! (symbolsObj is Pair))
-            throw new ArgumentException("Symbols must be a Pair");
+         if (! (symbols.IsProperList()))
+            throw new ArgumentException("Symbols must be a proper list");
 
-         if (! (valuesObs is Pair))
-            throw new ArgumentException("Values must be a Pair");
+         if (! (values.IsProperList()))
+            throw new ArgumentException("Values must be a proper list");
 
          Parent = parent;
-         Symbols = (Pair)symbolsObj;
-         Values = (Pair)valuesObs;
+         Symbols = symbols;
+         Values = values;
       }
 
       //================================================================================================================

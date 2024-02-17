@@ -20,9 +20,9 @@ static partial class Ae
       public bool IsAtom() => !IsList();
 
       //================================================================================================================
-      public bool IsProperList(LispObject obj)
+      public bool IsProperList()
       {
-         LispObject current = obj;
+         LispObject current = this;
 
          while (current is Pair cons)
          {
