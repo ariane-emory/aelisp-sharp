@@ -118,42 +118,39 @@ static partial class Ae
 
     //======================================================================================================================================
     public static readonly Parser<LispToken, LispObject> ParseProgram =
-        ParseSExp.Many()
-        .Select(sexps =>
-        {
-          
-          return Cons(Intern("progn"), (LispObject)sexps.Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc)));
-        });
-    
+      ParseSExp.Many()
+      .Select(sexps => Cons(Intern("progn"), (LispObject)sexps.Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc))));
+
+
     //======================================================================================================================================
     // More private Parsers
     //======================================================================================================================================
     private static Parser<LispToken, LispObject> ParseListElements =
-      Rec(() =>
-          ParseSExp.Many()
-          .Then(
-            TypedToken(LispTokenType.Dot)
-            .Then(OneOf(
-                    ParseQuotedSExp!.Select(exp => Cons(exp, Nil)),
-                    ParseQuasiQuotedSExp!.Select(exp => Cons(exp, Nil)),
-                    ParseUnquotedSExp!.Select(exp => Cons(exp, Nil)),
-                    ParseSplicedSExp!.Select(exp => Cons(exp, Nil)),
-                    ParseLitListSExp!.Select(exp => Cons(exp, Nil)),
-                    ParseSExp), (_, tailExpr) => tailExpr).Optional(),
-            (exprs, optionalTailExpr) =>
-            {
-              LispObject list = Nil;
+  Rec(() =>
+      ParseSExp.Many()
+      .Then(
+        TypedToken(LispTokenType.Dot)
+        .Then(OneOf(
+                ParseQuotedSExp!.Select(exp => Cons(exp, Nil)),
+                ParseQuasiQuotedSExp!.Select(exp => Cons(exp, Nil)),
+                ParseUnquotedSExp!.Select(exp => Cons(exp, Nil)),
+                ParseSplicedSExp!.Select(exp => Cons(exp, Nil)),
+                ParseLitListSExp!.Select(exp => Cons(exp, Nil)),
+                ParseSExp), (_, tailExpr) => tailExpr).Optional(),
+        (exprs, optionalTailExpr) =>
+        {
+          LispObject list = Nil;
 
-              if (optionalTailExpr.HasValue)
-                list = optionalTailExpr.Value;
+          if (optionalTailExpr.HasValue)
+            list = optionalTailExpr.Value;
 
-              foreach (var expr in exprs.Reverse())
-                list = Cons(expr, list);
+          foreach (var expr in exprs.Reverse())
+            list = Cons(expr, list);
 
-              return list;
-            }
-        )
-    );
+          return list;
+        }
+    )
+);
 
     private static readonly Parser<LispToken, LispObject> ParseList =
       TypedToken(LispTokenType.LParen)
