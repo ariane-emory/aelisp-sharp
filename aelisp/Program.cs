@@ -186,8 +186,8 @@ class Program
 
       WriteLine(len);
       WriteLine(len2);
-      WriteLine(proper.Length());
-      WriteLine(improper.Length());        
+      WriteLine(proper.Length);
+      WriteLine(improper.Length); 
     }
 
    //==============================================================================================================================

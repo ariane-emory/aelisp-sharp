@@ -92,22 +92,25 @@ static partial class Ae
       IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
       //==================================================================================================================
-      public int Length => 
-      {
-         int length = 0;
-         LispObject current = this;
-
-         while (current is Pair pair)
+      public int Length
+       {
+         get
          {
-            length++;
-            current = pair.Cdr;
-
-            if (!(current is Pair) && current != Nil)
-               break;
+            int length = 0;
+            LispObject current = this;
+            
+            while (current is Pair pair)
+            {
+               length++;
+               current = pair.Cdr;
+               
+               if (!(current is Pair) && current != Nil)
+                  break;
+            }
+            
+            return length;
          }
-
-         return length;
-      }
+       }
    }
 
    //====================================================================================================================
