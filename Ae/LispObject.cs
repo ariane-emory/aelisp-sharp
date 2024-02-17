@@ -44,7 +44,7 @@ static partial class Ae
     // Public methods
     //==================================================================================================================
     public override string Write() => Value;
-    public override string ToString() => $"{TypeName}({Value})";
+    public override string ToString() => this == Nil ? "nil" : $"{TypeName}({Value})";
   }
 
   //====================================================================================================================
@@ -380,6 +380,7 @@ static partial class Ae
 
   //====================================================================================================================
   public static LispObject Intern(string symbol) => Intern2(symbol, ref SymbolsList);
+  
   //====================================================================================================================
   public static LispObject Intern2(string symbolName, ref Ae.LispObject symbolsList)
   {
