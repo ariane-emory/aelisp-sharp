@@ -44,7 +44,7 @@ static partial class Ae
     // Public methods
     //==================================================================================================================
     public override string Write() => Value;
-    public override string ToString() => this == Nil ? "nil" : $"{TypeName}({Value})";
+    public override string ToString() => this == Nil ? "Nil" : $"{TypeName}({Value})";
   }
 
   //====================================================================================================================
