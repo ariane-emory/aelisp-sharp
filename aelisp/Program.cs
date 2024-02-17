@@ -85,6 +85,12 @@ class Program
 
       WriteLine(env.Write());
 
+      var (found1, obj1) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("x"));
+      WriteLine($"found: {found1}, obj: {obj1}");
+
+      var (found2, obj2) = env.Lookup(Env.LookupMode.Global, (Symbol)Intern("y"));
+      WriteLine($"found: {found2}, obj: {obj2}");
+      
       WriteLine("Stop.");
    }
 
