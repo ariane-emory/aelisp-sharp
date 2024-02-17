@@ -22,7 +22,7 @@ class Program
       // WriteLine(fileText);
       // WriteLine("EOF");
 
-      var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsUninterestingToken);
+      var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsWhitespaceToken);
 
       // WriteLine("\nSTEP 1 - Raw tokens: ");
       IEnumerable<LispToken> tokens = tokenizer.ReadAll();
