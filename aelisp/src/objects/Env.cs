@@ -96,9 +96,9 @@ static partial class Ae
                values = valPair.Cdr;
             }
 
-            // Check for the special case where the symbols list consists of a single symbol to which all values are bound.
-            if (symbols == symbol)
-               return (true, values);
+            // // Check for the special case where the symbols list consists of a single symbol to which all values are bound.
+            // if (symbols == symbol)
+            //    return (true, values);
 
             if (mode == LookupMode.Local || current.IsRoot)
                break;
