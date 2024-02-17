@@ -1,1 +1,2 @@
-`(boop ,beep $(foo bar baz))
+(setq x (+ 1 2))
+(princ x)
