@@ -29,13 +29,13 @@ static partial class Ae
       // Public properties
       //================================================================================================================
       public LispObject Parent { get; }
-      public LispObject Symbols { get; }
-      public LispObject Values { get; }
+      public LispObject Symbols { get; private set;  }
+      public LispObject Values { get; private set; }
 
-      //================================================================================================================
-      // Constructor
-      //================================================================================================================
-      public Env(LispObject parent, LispObject symbols, LispObject values)
+        //================================================================================================================
+        // Constructor
+        //================================================================================================================
+        public Env(LispObject parent, LispObject symbols, LispObject values)
       {
          if (!((parent is Env) || parent == Nil))
             throw new ArgumentException("Parent must be an Env or Nil");
@@ -106,6 +106,17 @@ static partial class Ae
          return (false, Nil);
       }
 
+      //================================================================================================================
+      public void Add(Symbol symbol, LispObject value)
+      {
+         if (symbol.IsKeyword())
+            throw new ArgumentException("Cannot add a keyword as a symbol.");
+
+         Symbols = Cons(symbol, Symbols);
+         Values = Cons(value, Values);
+
+         DebugWrite($"Added {symbol} with value {value}.");
+      }
       //================================================================================================================
    }
    //===================================================================================================================
