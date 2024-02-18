@@ -10,13 +10,28 @@ static partial class Ae
    public static class Core
    {
       //=================================================================================================================
+      // public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
+      // {
+      //    var result = Nil;
+
+      //    if (argsList is Pair argsListPair)
+      //       foreach (var elem in argsListPair)
+      //          result = elem.Eval(env);
+
+      //    return result;
+      // };
+
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
       {
          var result = Nil;
 
-         if (argsList is Pair argsListPair)
-            foreach (var elem in argsListPair)
-               result = elem.Eval(env);
+         while (argsList is Pair argsListPair)
+         {
+            result = argsListPair.Car.Eval(env);
+            argsList = argsListPair.Cdr;
+         }
 
          return result;
       };
@@ -26,31 +41,31 @@ static partial class Ae
       {
          if (argsLength % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
-
+         
          var result = Nil;
-
+         
          while (argsList is Pair currentPair)
          {
             var pairHead = currentPair.Car;
             var valueExpression = ((Pair)currentPair.Cdr).Car;
-
+            
             if (!(pairHead is Symbol sym))
                throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
-
+            
             if (sym.IsKeyword || sym.IsSelfEvaluating)
                throw new ArgumentException($"symbol {sym} may not be set.");
-
+            
             LispObject evaluatedValue = valueExpression.Eval(env);
 
             result = valueExpression.Eval(env);
 
             var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
-
+            
             env.Set(mode, sym, result);
-
+            
             argsList = ((Pair)currentPair.Cdr).Cdr;
          }
-
+         
          return result;
       };
 
@@ -67,7 +82,7 @@ static partial class Ae
 
          return result;
       };
-      
+
       //=================================================================================================================
       public static readonly CoreFun.FuncT While = (env, argsList, argsLength) =>
       {
@@ -100,7 +115,7 @@ static partial class Ae
          LispObject then_branch = ((Pair)argsList).Cdr;
 
          return !if_cond.Eval(env).IsNil
-            ? Progn(env, then_branch, then_branch.Length) 
+            ? Progn(env, then_branch, then_branch.Length)
             : Nil;
       };
 
@@ -295,6 +310,29 @@ static partial class Ae
 
          return new Macro(lambdaList, body, env);
       };
+
+      //================================================================================================================
+      public static LispObject Cond(Env env, LispObject argsList)
+      {
+         while (argsList is Pair condClausePair)
+         {
+            var condClause = condClausePair.Car;
+            if (condClause is Pair condPair)
+            {
+               var condition = condPair.Car;
+               var actions = condPair.Cdr;
+
+               var conditionResult = condition.Equals(Intern("else")) ? True : condition.Eval(env);
+               if (!conditionResult.IsNil)
+               {
+                  return Progn(env, actions, actions.Length);
+               }
+            }
+            argsList = condClausePair.Cdr;
+         }
+
+         return Nil; // No condition was true, and no else clause was found
+      }
 
       //================================================================================================================
    }

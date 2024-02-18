@@ -139,6 +139,7 @@ class Program
       // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
       WriteLine(Eval(child_env, "((lambda (x) (cons x x)) 8)", true).Princ());
       WriteLine(Eval(child_env, "(setq qq 88 ww 77 *ee* 66)", true).Princ());
+      WriteLine(Eval(child_env, "(progn 2 3 4)", true).Princ());
       WriteLine($"\n{root_env}");
       WriteLine($"\n{parent_env}");
       WriteLine($"\n{child_env}");
