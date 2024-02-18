@@ -9,21 +9,21 @@ static partial class Ae
       //================================================================================================================
       // Public instance methods
       //================================================================================================================
-      public LispObject Apply(Env env, LispObject args)
+      public LispObject Apply(Env env, LispObject argsList)
       {
-         if (!args.IsProperList) // for the moment, args must be proper.
-            throw new NotImplementedException($"Using improper lists as {nameof(args)} is not permitted yet!");
+         if (!argsList.IsList)
+            throw new ArgumentException($"{nameof(argsList)} must be a list!");
 
-         if (!args.IsList)
-            throw new ArgumentException($"{nameof(args)} must be a list!");
+         if (!argsList.IsProperList) // for the moment, argsList must be proper.
+            throw new NotImplementedException($"Using improper lists as {nameof(argsList)} is not permitted yet!");
 
-         return ImplApply(env, args);
+         return ImplApply(env, argsList);
       }
 
       //================================================================================================================
       // Protected instance methods
       //================================================================================================================
-      protected abstract LispObject ImplApply(Env env, LispObject args);
+      protected abstract LispObject ImplApply(Env env, LispObject argsList);
    }
 
    //===================================================================================================================
