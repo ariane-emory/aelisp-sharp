@@ -190,6 +190,9 @@ class Program
       WriteLine(improper.Length);
 
       WriteLine(Intern("xx").Eval(child_env));
+      WriteLine(Intern(":xx").Eval(child_env));
+      WriteLine(Intern("nil").Eval(child_env));
+      WriteLine(Nil.Eval(child_env));
     }
 
    //==============================================================================================================================
