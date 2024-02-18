@@ -508,7 +508,6 @@ static partial class Ae
          LispObject current = varlist;
 
          while (!current.IsNil)
-         {
             if (current is Pair currentVarPair)
             {
                if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
@@ -524,9 +523,9 @@ static partial class Ae
             }
             else
             {
-               throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {current}");
+               throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a "
+                                           + $"let-bindable symbol, not {current}");
             }
-         }
 
          if (body.IsImproperList)
             throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
@@ -536,46 +535,43 @@ static partial class Ae
       }
 
       //================================================================================================================
-      private static void BindVarlistInEnv(LispObject current, Env lookupEnv, Env bindEnv)
+      private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
       {
-         while (!current.IsNil)
+         while (!varlist.IsNil)
          {
             var sym = Nil;
             var val = Nil;
 
-            if (current is Pair currentVarPair)
+            if (varlist is Pair varlistVarPair)
             {
-               sym = currentVarPair.Car;
-               val = ((Pair)currentVarPair.Cdr).Car.Eval(lookupEnv);
+               sym = varlistVarPair.Car;
+               val = ((Pair)varlistVarPair.Cdr).Car.Eval(lookupEnv);
             }
-            else if (current is Symbol currentVarSym)
+            else if (varlist is Symbol varlistVarSym)
             {
-               sym = currentVarSym;
+               sym = varlistVarSym;
             }
 
             bindEnv.Set(Env.LookupMode.Local, sym, val);
 
-            current = ((Pair)current).Cdr;
+            varlist = ((Pair)varlist).Cdr;
          }
       }
 
       //================================================================================================================
       public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
       {
-         LispObject dummy = Intern(":dummy");
          var arg0 = ((Pair)argsList).Car;
          var body = ((Pair)argsList).Cdr;
-
          ValidateLetArguments(arg0, body);
-
          var varlist = (Pair)arg0;
-         LispObject current = varlist;
          var newEnv = new Env(env, Nil, Nil);
 
+         LispObject dummy = Intern(":dummy");
          foreach (var varlistElem in varlist)
             newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
 
-         BindVarlistInEnv(current, newEnv, newEnv);
+         BindVarlistInEnv(varlist, newEnv, newEnv);
 
          return Core.Progn(newEnv, body, body.Length);
       };
@@ -585,14 +581,11 @@ static partial class Ae
       {
          var arg0 = ((Pair)argsList).Car;
          var body = ((Pair)argsList).Cdr;
-
          ValidateLetArguments(arg0, body);
-
          var varlist = (Pair)arg0;
-         LispObject current = varlist;
          var newEnv = new Env(env, Nil, Nil);
 
-         BindVarlistInEnv(current, bindInNewEnv ? newEnv : env, newEnv);
+         BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
 
          return Core.Progn(newEnv, body, body.Length);
       }
