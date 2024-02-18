@@ -471,92 +471,91 @@ static partial class Ae
          return Nil; // No matching case found
       };
 
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
+
+         if (!(arg0 is Pair varlist))
+            throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
+
+         if (varlist.IsImproperList)
+            throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
+
+         LispObject current = varlist;
+
+         while (!current.IsNil)
+         {
+            if (current is Pair currentVarPair)
+            {
+               if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
+                  throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
+
+               if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+            }
+            else if (current is Symbol currentVarSym)
+            {
+               if (!currentVarSym.IsLetBindable)
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+            }
+            else
+            {
+               throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {current}");
+            }
+         }
+
+         if (body.IsImproperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
+
+         if (body.IsNil)
+            throw new ArgumentException("body cannot be empty");
+
+         var newEnv = new Env(env, Nil, Nil);
+
+         current = varlist;
+
+         while (!current.IsNil)
+         {
+            var sym = Nil;
+            var val = Nil;
+
+            if (current is Pair currentVarPair)
+            {
+               sym = currentVarPair.Car;
+               val = ((Pair)currentVarPair.Cdr).Car.Eval(env);
+            }
+            else if (current is Symbol currentVarSym)
+            {
+               sym = currentVarSym;
+            }
+
+            newEnv.Set(Env.LookupMode.Local, sym, val);
+         }
+
+         return Core.Progn(newEnv, body, body.Length);
+      };
+
+      //================================================================================================================
+      // private static List<LispObject> ToList(this Pair obj)
+      // {
+      //    var list = new List<LispObject>();
+      //    LispObject current = obj;
+
+      //    while (current is Pair pair)
+      //    {
+      //       list.Add(pair.Car);
+      //       current = pair.Cdr;
+      //    }
+
+      //    if (current != Nil)
+      //       list.Add(current);
+
+      //    return list;
+      // }
+
       //================================================================================================================
    }
-
-   //===================================================================================================================
-   public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
-   {
-      var arg0 = ((Pair)argsList).Car;
-      var body = ((Pair)argsList).Cdr;
-
-      if (!(arg0 is Pair varlist))
-         throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
-      
-      if (varlist.IsImproperList)
-         throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
-      
-      LispObject current = varlist;
-
-      while (!current.IsNil)
-      {
-         if (current is Pair currentVarPair)
-         {
-            if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
-               throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
-
-            if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
-               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
-         }
-         else if (current is Symbol currentVarSym)
-         {
-            if (!currentVarSym.IsLetBindable)
-               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
-         }
-         else
-         {
-            throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {current}");
-         }
-      }
-
-      if (body.IsImproperList)
-         throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
-
-      if (body.IsNil)
-         throw new ArgumentException("body cannot be empty");
-
-      var newEnv = new Env(env, Nil, Nil);
-
-      current = varlist;
-
-      while (!current.IsNil)
-      {
-         var sym = Nil;
-         var val = Nil;
-
-         if (current is Pair currentVarPair)
-         {
-            sym = currentVarPair.Car;
-            val = ((Pair)currentVarPair.Cdr).Car.Eval(env);
-         }
-         else if (current is Symbol currentVarSym)
-         {
-            sym = currentVarSym;
-         }
-
-         newEnv.Set(Env.LookupMode.Local, sym, val);
-      }
-
-      return Core.Progn(newEnv, body, body.Length);
-   };
-
-   //================================================================================================================
-   // private static List<LispObject> ToList(this Pair obj)
-   // {
-   //    var list = new List<LispObject>();
-   //    LispObject current = obj;
-
-   //    while (current is Pair pair)
-   //    {
-   //       list.Add(pair.Car);
-   //       current = pair.Cdr;
-   //    }
-
-   //    if (current != Nil)
-   //       list.Add(current);
-
-   //    return list;
-   // }
-
    //===================================================================================================================
 }
