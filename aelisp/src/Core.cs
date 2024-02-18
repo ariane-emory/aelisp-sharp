@@ -99,27 +99,27 @@ static partial class Ae
          LispObject lambdaList = ((Pair)argsList)[0];
          LispObject body = ((Pair)argsList)[1];
 
-         if (!IsPermittedParamSymbol(lambdaList))
-            throw new ArgumentException("Lambda list must be a list or a symbol!");
+         if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
+            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
 
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
-            throw new ArgumentException($"Can't use {symbol} as a parameter!");
+            throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
 
          if (body is not Pair)
-            throw new ArgumentException("Body argument must be a list!");
+            throw new ArgumentException($"Body argument must be a list, not {body.Princ()}!");
 
          LispObject currentParam = lambdaList;
 
          while (currentParam is Pair currentParamPair)
          {
             if (!IsPermittedParamSymbol(currentParamPair.Car))
-               throw new ArgumentException($"Can't use {currentParamPair.Car} as a parameter!");
+               throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
 
             currentParam = currentParamPair.Cdr;
          }
 
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
-            throw new ArgumentException($"Can't use {currentParam} as a parameter!");
+            throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
 
          return new Lambda(lambdaList, body, env);
       };
