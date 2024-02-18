@@ -115,8 +115,6 @@ static partial class Ae
             if ((this is Rational thisRational) &&
                 (that is Rational thatRational))
             {
-               // TODO: simplify both rationals;
-
                return ((thisRational.Numerator == thatRational.Numerator) &&
                        (thisRational.Denominator == thatRational.Denominator));
             }
@@ -255,8 +253,8 @@ static partial class Ae
       //================================================================================================================
       // Public properties
       //================================================================================================================
-      public int Numerator { get; private set; }
-      public int Denominator { get; private set; }
+      public int Numerator { get; }
+      public int Denominator { get; }
 
       //================================================================================================================
       // Constructor

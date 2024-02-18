@@ -269,6 +269,8 @@ class Program
       (found, fobj) = root_env.Lookup(Env.LookupMode.Global, Intern("cons"));
       var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
       WriteLine(((CoreFunction)fobj).Apply(root_env, args).Princ());
+
+      WriteLine(new Rational(2, 4).Princ());
     }
 
    //==============================================================================================================================
