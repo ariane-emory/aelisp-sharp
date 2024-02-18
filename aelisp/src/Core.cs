@@ -16,6 +16,17 @@ static partial class Ae
       //    //===========================================================================================================
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
+      {
+         var result = Nil;
+
+         if (argsList is Pair argsListPair)
+            foreach (var elem in argsListPair)
+               result = elem.Eval(env);
+
+         return result;
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
@@ -227,17 +238,6 @@ static partial class Ae
          => Truthiness(((Pair)argsList)[0].Eql(((Pair)argsList)[1]));
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
-      {
-         var result = Nil;
-
-         if (argsList is Pair argsListPair)
-            foreach (var elem in argsListPair)
-               result = elem.Eval(env);
-
-         return result;
-      };
-
       private static bool IsPermittedParamSymbol(LispObject obj) =>
            obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
 
