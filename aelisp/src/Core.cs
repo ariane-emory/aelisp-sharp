@@ -473,6 +473,14 @@ static partial class Ae
 
       //===================================================================================================================
       public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
+         LetInternal(env, argsList, argsLength, false);
+
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT LetStar = (env, argsList, argsLength) =>
+         LetInternal(env, argsList, argsLength, true);
+
+      //===================================================================================================================
+      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
       {
          var arg0 = ((Pair)argsList).Car;
          var body = ((Pair)argsList).Cdr;
@@ -524,7 +532,7 @@ static partial class Ae
             if (current is Pair currentVarPair)
             {
                sym = currentVarPair.Car;
-               val = ((Pair)currentVarPair.Cdr).Car.Eval(env);
+               val = ((Pair)currentVarPair.Cdr).Car.Eval(bindInNewEnv ? newEnv : env);
             }
             else if (current is Symbol currentVarSym)
             {
@@ -535,7 +543,7 @@ static partial class Ae
          }
 
          return Core.Progn(newEnv, body, body.Length);
-      };
+      }
 
       //================================================================================================================
       // private static List<LispObject> ToList(this Pair obj)
