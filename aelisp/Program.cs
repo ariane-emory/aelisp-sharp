@@ -4,6 +4,7 @@ using static Ae.LispParsers;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.LispToken>;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using Char = Ae.Char;
 using String = Ae.String;
@@ -206,7 +207,7 @@ class Program
         WriteLine(chr.Princ());
         WriteLine(chr.Print());
 
-        WriteLine("");       
+        WriteLine("");
         WriteLine(improper[0].Princ());
         WriteLine(improper[1].Princ());
         WriteLine(improper[2].Princ());
@@ -221,7 +222,7 @@ class Program
         // improper[4] = new Integer(14);
         // improper[4] = new Integer(15);
 
-        WriteLine("");       
+        WriteLine("");
         WriteLine(improper[0].Princ());
         WriteLine(improper[1].Princ());
         WriteLine(improper[2].Princ());
@@ -229,7 +230,7 @@ class Program
         WriteLine(improper[4].Princ());
         WriteLine(improper[5].Princ());
 
-        WriteLine("");       
+        WriteLine("");
         WriteLine(proper[0].Princ());
         WriteLine(proper[1].Princ());
         WriteLine(proper[2].Princ());
@@ -244,7 +245,7 @@ class Program
         // proper[4] = new Integer(14);
         // proper[4] = new Integer(15);
 
-        WriteLine("");       
+        WriteLine("");
         WriteLine(proper[0].Princ());
         WriteLine(proper[1].Princ());
         WriteLine(proper[2].Princ());
@@ -252,8 +253,14 @@ class Program
         WriteLine(proper[4].Princ());
         WriteLine(proper[5].Princ());
 
+         List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs)> coreFuns = [
+           ("car", Core.Car, 1, 1),
+           ("cdr", Core.Cdr, 1, 1),
+           ("cons", Core.Cons, 1, 1),
+        ];
 
+         
     }
 
-   //==============================================================================================================================
+    //==============================================================================================================================
 }
