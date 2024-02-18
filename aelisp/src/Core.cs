@@ -42,7 +42,7 @@ static partial class Ae
 
             env.Set(mode, sym, result);
 
-            currentPair = (Pair)((Pair)currentPair.Cdr).Cdr;
+            argsList = (Pair)((Pair)currentPair.Cdr).Cdr;
           }
 
          return result;
