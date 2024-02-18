@@ -28,8 +28,8 @@ static partial class Ae
    //====================================================================================================================
    // Ae's static methods
    //====================================================================================================================
-   public static List<LispToken> Read(string input) => new LispTokenizer(input).ReadAll();
-   public static LispObject Parse(string input) => ParseSExp.ParseOrThrow(Read(input));
+   //public static List<LispToken> Read(string input) => ;
+   public static LispObject Parse(string input) => ParseSExp.ParseOrThrow(new LispTokenizer(input).ReadAll());
    public static LispObject Eval(Env env, string input) => Parse(input).Eval(env);
 
    //====================================================================================================================
