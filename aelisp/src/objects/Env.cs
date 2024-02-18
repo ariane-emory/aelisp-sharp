@@ -4,7 +4,7 @@ static partial class Ae
    //===================================================================================================================
    // Environment class
    //===================================================================================================================
-   public class Env : LispObject
+   public class Env : SelfEvaluatingLispObject
    {
       //================================================================================================================
       // Public types
@@ -155,7 +155,7 @@ static partial class Ae
       //================================================================================================================
       private void ThrowIfSymbolIsSelfEvaluating(Symbol symbol)
       {
-         if (symbol.IsSelfEvaluting)
+         if (symbol.IsSelfEvaluating)
             throw new ArgumentException($"Cannot set self-evaluating symbol {this}.");
       }
 
