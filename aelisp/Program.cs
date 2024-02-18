@@ -88,6 +88,8 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("setq   ", Core.Setq, 000000002, 15, true),
+         ("until  ", Core.Until, 00000002, 15, true),
+         ("while  ", Core.While, 00000002, 15, true),
          ("unless ", Core.Unless, 0000002, 15, true),
          ("when   ", Core.When, 000000002, 15, true),
          ("if     ", Core.If, 00000000002, 15, true),
