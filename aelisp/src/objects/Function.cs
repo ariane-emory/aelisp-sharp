@@ -39,8 +39,12 @@ static partial class Ae
          Pair? resultLastPair = null;
          LispObject currentArg = argsList;
 
+         int index = 0;
+            
          while (currentArg is Pair currentArg_pair)
          {
+            WriteLine($"^ Arg #{++index}: {currentArg_pair.Car.Princ()}");
+            
             LispObject evaledArg = currentArg_pair.Car.Eval(env);
             // TO-DO: add return if evaledArg is Error? or stick with Exceptions?
 
