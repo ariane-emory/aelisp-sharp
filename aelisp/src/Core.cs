@@ -18,39 +18,38 @@ static partial class Ae
       //=================================================================================================================
       public static CoreFunction.FuncT Car = (env, argsList, argsLength) =>
       {
-         LispObject arg1 = ((Pair)argsList).Car;
+         LispObject arg0 = ((Pair)argsList)[0];
 
-         if (! arg1.IsList)
+         if (! arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
-
-         if (arg1.IsNil)
+         
+         if (arg0.IsNil)
             return Nil;
 
-         return ((Pair)arg1).Car;
+         return ((Pair)arg0).Car;
       };
       
       //=================================================================================================================
       public static CoreFunction.FuncT Cdr = (env, argsList, argsLength) =>
       {
-         LispObject arg1 = ((Pair)argsList).Car;
+         LispObject arg0 = ((Pair)argsList)[0];
 
-         if (! arg1.IsList)
+         if (! arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
-
-         if (arg1.IsNil)
+         
+         if (arg0.IsNil)
             return Nil;
 
-         return ((Pair)arg1).Cdr;
+         return ((Pair)arg0).Cdr;
       };
       
       //=================================================================================================================
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
-         var list = (Pair)argsList;
-         LispObject arg1 = list[0];
-         LispObject arg2 = list[1];
+         LispObject arg0 = ((Pair)argsList)[0];
+         LispObject arg1 = ((Pair)argsList)[1];
 
-         return Ae.Cons(arg1, arg2);
+         return Ae.Cons(arg0, arg1);
       };
       
    }
