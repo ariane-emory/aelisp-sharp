@@ -24,6 +24,47 @@ static partial class Ae
       // Protected instance methods
       //================================================================================================================
       protected abstract LispObject ImplApply(Env env, LispObject argsList);
+
+      //================================================================================================================
+      protected LispObject EvalArgs(Env env, LispObject argsList)
+      {
+         if (argsList.IsNil)
+            return Nil;
+
+         LispObject result = Nil;
+         Pair? resultLastPair = null;
+         LispObject currentArg = argsList;
+
+         while (currentArg is Pair currentArg_pair)
+         {
+            LispObject evaledArg = currentArg_pair.Car.Eval(env);
+            // TO-DO: add return if evaledArg is Error? or stick with Exceptions?
+
+            if (result.IsNil)
+            {
+               result = Cons(evaledArg, Nil);
+               resultLastPair = (Pair)result;
+            }
+            else
+            {
+               resultLastPair!.Cdr = Cons(evaledArg, Nil);
+               resultLastPair = (Pair)resultLastPair.Cdr;
+            }
+
+            currentArg = currentArg_pair.Cdr;
+         }
+
+         if (!currentArg.IsNil) // dotted tail arg is present.
+         {
+            LispObject evaledArg = currentArg.Eval(env);
+            // TO-DO: add return if evaledArg is Error? or stick with Exceptions?
+
+            resultLastPair!.Cdr = evaledArg;
+         }
+
+         return result;
+      }
+
    }
 
    //===================================================================================================================

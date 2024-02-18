@@ -83,52 +83,9 @@ static partial class Ae
          }
 
          if (!Special)
-            argsList = EvalArgs(env, argsList, argsLength);
+            argsList = EvalArgs(env, argsList);
 
          return Function(env, argsList, argsLength);
-      }
-
-      //================================================================================================================
-      private LispObject EvalArgs(Env env, LispObject argsList, int argsLength)
-      {
-         if (argsList.IsNil)
-            return Nil;
-
-         LispObject result = Nil;
-         Pair? result_tail_pair = null;
-         LispObject current_arg = argsList;
-
-         while (current_arg is Pair current_arg_pair)
-         {
-            LispObject eval_result = current_arg_pair.Car.Eval(env);
-            // TO-DO: add return if errorp? or stick with Exceptions?
-
-            if (result.IsNil)
-            {
-               result = Cons(eval_result, Nil);
-               result_tail_pair = (Pair)result;
-            }
-            else
-            {
-               result_tail_pair!.Cdr = Cons(eval_result, Nil);
-               result_tail_pair = (Pair)result_tail_pair.Cdr;
-            }
-
-            current_arg = current_arg_pair.Cdr;
-         }
-
-         if (!current_arg.IsNil) // dotted tail arg is present.
-         {
-            LispObject eval_result = current_arg.Eval(env);
-            // TO-DO: add return if errorp? or stick with Exceptions?
-
-            if (result.IsNil)
-               result = eval_result;
-            else
-               result_tail_pair!.Cdr = eval_result;
-         }
-
-         return result;
       }
 
       //================================================================================================================
