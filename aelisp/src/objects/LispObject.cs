@@ -61,6 +61,79 @@ static partial class Ae
             return false;
          }
       }
+      //==================================================================================================================
+      public bool Eql(AeObject that)
+      {
+         if (this == that)
+            return true;
+
+         if ((this is Pair thisPair) &&
+             (that is Pair thatPair) &&
+             (thisPair.Car == thatPair.Car) &&
+             (thisPair.Cdr == thatPair.Cdr))
+            return true;
+
+         if ((this is String thisString) &&
+             (that is String thatString) &&
+               (thisString.Value == thatString.Value))
+            return true;
+
+         if ((this is Char thisChar) &&
+             (that is Char thatChar) &&
+             (thisChar.Value == thatChar.Value)
+             return true;
+
+         if ((this is Integer thisInteger) &&
+             (that is Integer thatInteger) &&
+             (thisInteger.Value == thatInteger.Value))
+            return true;
+
+         if ((this is Float thisFloat) &&
+             (that is Float thatFloat) &&
+             (thisFloat.Value == thatFloat.Value))
+            return true;
+
+         if ((this if Integer thisInteger) &&
+             (that is Float thatFloat) &&
+             (thisInteger.Value == thatFloat.Value))
+               return true;
+
+         if ((this is Float thisFloat) &&
+             (that is Integer thatInteger) &&
+             (thisFloat.Value == thatInteger.Value))
+            return true;
+
+         if ((this is Rational thisRational) &&
+             (that is Rational thatRational))
+         {
+            // TODO: simplify both rationals;
+
+            return ((thisRational.Numerator == thatRational.Numerator) &&
+                    (thisRational.Denominator == thatRational.Denominator));
+         }
+
+         if ((this is Rational thisRational) &&
+           (that is Integer thatInteger) &&
+             (thisRational.Numerator / thisRational.Denominator == thatInteger.Value))
+            return true;
+
+         if ((this is Integer thisInteger) &&
+             (that is Rational thatRational) &&
+             (thisInteger.Value == thatRational.Numerator / thatRational.Denominator))
+            return true;
+
+         if ((this is Rational thisRational) &&
+             (that is Float thatFloat) &&
+             (thisRational.Numerator / thisRational.Denominator == thatFloat.Value))
+            return true;
+
+         if ((this is Float thisFloat) &&
+             (that is Rational thatRational) &&
+             (thisFloat.Value == thatRational.Numerator / thatRational.Denominator))
+            return true;
+
+         return false;
+      }
 
       //==================================================================================================================
       // Constructor
