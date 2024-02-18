@@ -87,6 +87,9 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("unless ", Core.Unless, 0000002, 15, true),
+         ("when   ", Core.When, 000000002, 15, true),
+         ("if     ", Core.If, 00000000002, 15, true),
          ("length ", Core.Length, 0000001, 01, false),
          ("tail?  ", Core.TailP, 00000001, 01, false),
          ("nil?   ", Core.NilP, 000000001, 01, false),

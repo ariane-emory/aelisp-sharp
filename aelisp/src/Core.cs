@@ -20,8 +20,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFunction.FuncT Unless = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList)[0];
-         LispObject then_branch = ((Pair)argsList)[1];
+         LispObject if_cond = ((Pair)argsList).Car;
+         LispObject then_branch = ((Pair)argsList).Cdr;
 
          return if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
@@ -31,8 +31,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFunction.FuncT When = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList)[0];
-         LispObject then_branch = ((Pair)argsList)[1];
+         LispObject if_cond = ((Pair)argsList).Car;
+         LispObject then_branch = ((Pair)argsList).Cdr;
 
          return !if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
@@ -42,13 +42,13 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFunction.FuncT If = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList)[0];
-         LispObject then_branch = ((Pair)argsList)[1];
-         LispObject else_branch = ((Pair)argsList)[2];
+         LispObject if_cond = ((Pair)argsList).Car;
+         LispObject then_branch = ((Pair)((Pair)argsList).Cdr).Car;
+         LispObject else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
 
          return !if_cond.Eval(env).IsNil
-            ? then_branch.Eval(env)
-            : else_branch.Eval(env);
+           ? then_branch.Eval(env)
+           : else_branch.Eval(env);
       };
 
       //=================================================================================================================
