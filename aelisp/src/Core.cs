@@ -18,15 +18,46 @@ static partial class Ae
 
 
       //=================================================================================================================
-      public static readonly CoreFunction.FuncT Unless = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Setq = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList).Car;
-         LispObject then_branch = ((Pair)argsList).Cdr;
+         if (argsLength % 2 != 0)
+            throw new ArgumentException("setq requires an even number of arguments!");
 
-         return if_cond.Eval(env).IsNil
-            ? then_branch.Eval(env)
-            : Nil;
+         var result = Nil;
+
+         while (argsList is Pair currentPair)
+         {
+            var pairHead = currentPair.Car;
+            var valueExpression = ((Pair)currentPair.Cdr).Car;
+
+            if (!(pairHead is Symbol sym))
+               throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
+
+            if (sym.IsKeyword || sym.IsSelfEvaluating)
+               throw new ArgumentException($"symbol {sym} may not be set.");
+
+            LispObject evaluatedValue = valueExpression.Eval(env);
+
+            var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
+
+            env.Set(mode, sym, result);
+
+            currentPair = (Pair)((Pair)currentPair.Cdr).Cdr;
+          }
+
+         return result;
       };
+
+      //=================================================================================================================
+      public static readonly CoreFunction.FuncT Unless = (env, argsList, argsLength) =>
+    {
+       LispObject if_cond = ((Pair)argsList).Car;
+       LispObject then_branch = ((Pair)argsList).Cdr;
+
+       return if_cond.Eval(env).IsNil
+          ? then_branch.Eval(env)
+          : Nil;
+    };
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT When = (env, argsList, argsLength) =>
