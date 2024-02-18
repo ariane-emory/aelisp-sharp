@@ -33,7 +33,7 @@ static partial class Ae
       //==================================================================================================================
       // Public instance methods
       //==================================================================================================================
-      public override string Write()
+      public override string SPrinc()
       {
          var sb = new StringBuilder();
 
@@ -43,7 +43,7 @@ static partial class Ae
 
          while (current is Pair currentCons)
          {
-            sb.Append(currentCons.Car.Write());
+            sb.Append(currentCons.Car.SPrinc());
 
             if (currentCons.Cdr is Pair)
             {
@@ -54,7 +54,7 @@ static partial class Ae
             {
 
                sb.Append(" . ");
-               sb.Append(currentCons.Cdr.Write());
+               sb.Append(currentCons.Cdr.SPrinc());
 
                break;
             }

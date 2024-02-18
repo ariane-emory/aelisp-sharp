@@ -19,7 +19,7 @@ static partial class Ae
       //================================================================================================================
       // Public static methods
       //================================================================================================================
-      private static void DebugWrite(string s)
+      private static void DebugSPrinc(string s)
       {
          if (EnableDebugWrite)
             Console.WriteLine(s);
@@ -54,7 +54,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string Write() => ToString();
+      public override string SPrinc() => ToString();
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
@@ -62,9 +62,9 @@ static partial class Ae
       {
          get
          {
-            var parentStr = IsRoot ? $"{Parent.Write()}" : $"#{Parent.Id}";
+            var parentStr = IsRoot ? $"{Parent.SPrinc()}" : $"#{Parent.Id}";
 
-            return $"{parentStr}, {Symbols.Write()}, {Values.Write()}";
+            return $"{parentStr}, {Symbols.SPrinc()}, {Values.SPrinc()}";
          }
       }
 
@@ -87,7 +87,7 @@ static partial class Ae
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
 
-         DebugWrite($"Added {symbol} with value {value}.");
+         DebugSPrinc($"Added {symbol} with value {value}.");
       }
 
       //================================================================================================================
@@ -122,7 +122,7 @@ static partial class Ae
       //================================================================================================================
       private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
-         DebugWrite($"\nLooking up {symbol} in {this}...");
+         DebugSPrinc($"\nLooking up {symbol} in {this}...");
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
@@ -133,12 +133,12 @@ static partial class Ae
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
-               DebugWrite($"  symbs: {symPair}");
-               DebugWrite($"   vals: {valPair}");
+               DebugSPrinc($"  symbs: {symPair}");
+               DebugSPrinc($"   vals: {valPair}");
 
                if (symbol == symPair.Car)
                {
-                  DebugWrite($"Found {symbol} -> {valPair.Car}");
+                  DebugSPrinc($"Found {symbol} -> {valPair.Car}");
                   return (true, valPair);
                }
 
@@ -157,7 +157,7 @@ static partial class Ae
             current = (Env)current.Parent;
          }
 
-         DebugWrite("Did not find it!");
+         DebugSPrinc("Did not find it!");
 
          return (false, Nil);
       }

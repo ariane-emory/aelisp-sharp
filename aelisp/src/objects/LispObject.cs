@@ -56,7 +56,7 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      public abstract string Write();
+      public abstract string SPrinc();
       public virtual LispObject Eval(Env _) => this;
 
         //================================================================================================================
@@ -88,7 +88,7 @@ static partial class Ae
    {
       public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
-      public override string Write() => $"\"{Value}\"";
+      public override string SPrinc() => $"\"{Value}\"";
    }
 
    //===================================================================================================================
@@ -99,7 +99,7 @@ static partial class Ae
    {
       public Error(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
-      public override string Write() => ToString();
+      public override string SPrinc() => ToString();
    }
 
    //===================================================================================================================
@@ -110,7 +110,7 @@ static partial class Ae
       public char Value { get; }
       public Char(char value) => Value = value;
       protected override string? StringRepresentation => $"\'{Value}\'";
-      public override string Write() => $"{Value}";
+      public override string SPrinc() => $"{Value}";
    }
 
    //===================================================================================================================
@@ -121,7 +121,7 @@ static partial class Ae
       public int Value { get; }
       public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
-      public override string Write() => $"{Value}";
+      public override string SPrinc() => $"{Value}";
    }
 
    //===================================================================================================================
@@ -132,7 +132,7 @@ static partial class Ae
       public double Value { get; }
       public Float(double value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
-      public override string Write() => $"{Value}";
+      public override string SPrinc() => $"{Value}";
    }
 
    //===================================================================================================================
@@ -158,8 +158,8 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      protected override string? StringRepresentation => $"{Write()}";
-      public override string Write() => $"{Numerator}/{Denominator}";
+      protected override string? StringRepresentation => $"{SPrinc()}";
+      public override string SPrinc() => $"{Numerator}/{Denominator}";
    }
 
    //===================================================================================================================

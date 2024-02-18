@@ -42,13 +42,13 @@ class Program
          var obj = ParseProgram.ParseOrThrow(tokens);
 
          // WriteLine($"obj.toString(): {obj}");
-         // WriteLine($"obj.Write(): {obj.Write()}");
+         // WriteLine($"obj.SPrinc(): {obj.SPrinc()}");
 
          // if (obj is Pair pair)
          //    foreach (var o in pair)
-         //       WriteLine(o.Write());
+         //       WriteLine(o.SPrinc());
          // else
-         WriteLine(obj.Write());
+         WriteLine(obj.SPrinc());
       }
       catch (ParseException e)
       {
@@ -93,7 +93,7 @@ class Program
          Cons(Intern("xxx"), Cons(Intern("yyy"), Cons(Intern("zzz"), Nil))),
          Cons(new Integer(111), Cons(new Integer(222), Cons(new Integer(333), Nil))));
 
-      WriteLine(child_env.Write());
+      WriteLine(child_env.SPrinc());
 
       var (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("x"));
       WriteLine($"found: {found}, fobj: {fobj}");
