@@ -30,6 +30,9 @@ static partial class Ae
       {
          get
          {
+            if (this == Nil)
+               return true;
+            
             LispObject current = this;
 
             while (current is Pair cons)
@@ -40,7 +43,7 @@ static partial class Ae
                current = cons.Cdr;
             }
 
-            return current == Ae.Nil;
+            return false;
          }
       }
 
