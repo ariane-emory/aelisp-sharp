@@ -1,3 +1,4 @@
+using static System.Console;
 using static Ae;
 using LispObjectParser = Pidgin.Parser<Ae.LispToken, Ae.LispObject>;
 using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
@@ -44,10 +45,15 @@ static partial class Ae
       };
 
       //=================================================================================================================
+      public static bool ConsDebugWrite { get; set; } = false;
+      
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
          LispObject arg1 = ((Pair)argsList)[1];
+
+         if (Core.ConsDebugWrite)
+            WriteLine($"Core Cons({arg0.Princ()}, {arg1.Princ()})");
 
          return Ae.Cons(arg0, arg1);
       };
