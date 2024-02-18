@@ -83,14 +83,18 @@ static partial class Ae
          }
 
          if (!Special)
-            argsList = EvalArgs(env, argsList);
+            argsList = EvalArgs(env, argsList, argsLength);
 
          return Function(env, argsList, argsLength);
       }
 
       //================================================================================================================
-      private LispObject EvalArgs(Env env, LispObject argsList)
+      private LispObject EvalArgs(Env env, LispObject argsList, int argsLength)
       {
+ 
+
+         
+         
          throw new NotImplementedException("Implement this!");
       }
 
