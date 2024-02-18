@@ -15,7 +15,7 @@ static partial class Ae
       //================================================================================================================
       public LispObject Parameters { get; }
       public LispObject Body { get; }
-      public LispObject Env { get; }
+      public LispObject Environment { get; }
       public abstract bool Special { get; };
 
       //================================================================================================================
@@ -65,59 +65,12 @@ static partial class Ae
             throw new ArgumentException($"user fun requires {(Parameters.IsProperList ? "exactly" : "at least")} {Parameters.Length} args, but got {argsList.Length}");
 
          if (!Special)
-            if (!SPECIAL_FUNP(fun))
-               args = RETURN_IF_ERRORP(EVAL_ARGS(env, args));
+            argsList = EvalArgs(env, argsList);
 
-         if (log_eval)
-            LOG(args, "applying user fun %s to %d %s arg%s:", fun_name_part, LENGTH(args), (SPECIAL_FUNP(fun) ? "unevaled" : "evaled"), s_or_blank(LENGTH(args)));
 
-         env = NEW_ENV(FUN_ENV(fun), FUN_PARAMS(fun), args);
+         // PUT_PROP(fun, "fun", env);
 
-         /* if (log_eval) { */
-         /*   LOG(env,           "new env for user fun:"); */
-         /*   LOG(ENV_SYMS(env), "new env's syms:"); */
-         /*   LOG(ENV_VALS(env), "new env's vals:"); */
-         /* } */
-
-         INDENT;
-
-         ae_obj_t * const body = FUN_BODY(fun);
-
-         if (log_eval)
-         {
-            // If FUN_PARAMS(fun) is a blob, we lie to get a plural length:
-            LOG(FUN_PARAMS(fun), "as param%s", s_or_blank(CONSP(FUN_PARAMS(fun)) ? LENGTH(FUN_PARAMS(fun)) : 2));
-            LOG(body, "with body");
-         }
-
-         PUT_PROP(fun, "fun", env);
-
-         ret = EVAL_AND_RETURN_IF_ERRORP(env, body);
-
-         OUTDENT;
-
-      end:
-
-         if (log_eval)
-         {
-            if (HAS_PROP("last-bound-to", fun))
-            {
-               LOG(ret, "applying user fun '%s' returned %s :%s",
-                   SYM_VAL(GET_PROP("last-bound-to", fun)), a_or_an(GET_TYPE_STR(ret)), GET_TYPE_STR(ret));
-            }
-            else
-            {
-               char* const tmp = SWRITE(fun);
-               LOG(ret, "applying user fun %s returned %s :%s", tmp, a_or_an(GET_TYPE_STR(ret)), GET_TYPE_STR(ret));
-               free(tmp);
-            }
-         }
-
-         free_list_free(fun_name_part);
-
-         JUMP_RETURN_EXIT;
-
-         throw new NotImplementedException("Implement this!");
+         return Body.Eval(new Env(Environment, Parameters, argsList));
       }
 
       //================================================================================================================
