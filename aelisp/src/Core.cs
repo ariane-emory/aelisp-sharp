@@ -46,7 +46,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static bool ConsDebugWrite { get; set; } = false;
-      
+
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
@@ -59,8 +59,20 @@ static partial class Ae
       };
 
       //=================================================================================================================
+      public static CoreFunction.FuncT Eval = (env, argsList, argsLength)
+         => Nil;
+
+      //=================================================================================================================
+      public static CoreFunction.FuncT List = (env, argsList, argsLength)
+         => Nil;
+
+      //=================================================================================================================
+      public static CoreFunction.FuncT Quote = (env, argsList, argsLength)
+         => Nil;
+
+      //=================================================================================================================
       public static CoreFunction.FuncT EqP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
+       => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
 
       //=================================================================================================================
       public static CoreFunction.FuncT EqlP = (env, argsList, argsLength)
