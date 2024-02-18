@@ -29,9 +29,12 @@ static partial class Ae
    //====================================================================================================================
    // Ae's static methods
    //====================================================================================================================
-   public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
-   public static LispObject Read(string input) => ParseSExp.ParseOrThrow(Tokenize(input));
    public static LispObject Eval(Env env, string input) => Read(input).Eval(env);
+   public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
+
+   //====================================================================================================================
+   public static LispObject Read(string input, bool progn = false) =>
+      (progn ? ParseProgram : ParseSExp).ParseOrThrow(Tokenize(input));
 
    //====================================================================================================================
    public static bool ConsDebugWrite { get; set; } = false;
