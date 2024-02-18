@@ -519,78 +519,102 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
+      private static void BindVarlistInEnv(LispObject current, Env lookupEnv, Env bindEnv)
       {
-         LispObject dummy = Intern(":dummy");
-         var arg0 = ((Pair)argsList).Car;
-         var body = ((Pair)argsList).Cdr;
-
-         ValidateLetArguments(arg0, body);
-
-         var varlist = (Pair)arg0;
-         LispObject current = varlist;
-         var newEnv = new Env(env, Nil, Nil);
-
-         foreach (var varlistElem in varlist)
-            newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
-         
          while (!current.IsNil)
          {
             var sym = Nil;
-            var val = Nil;
+      var val = Nil;
 
             if (current is Pair currentVarPair)
             {
                sym = currentVarPair.Car;
-               val = ((Pair)currentVarPair.Cdr).Car.Eval(newEnv);
+               val = ((Pair) currentVarPair.Cdr).Car.Eval(lookupEnv);
             }
             else if (current is Symbol currentVarSym)
             {
                sym = currentVarSym;
             }
-
-            newEnv.Set(Env.LookupMode.Local, sym, val);
-
+            
+            bindEnv.Set(Env.LookupMode.Local, sym, val);
+            
             current = ((Pair)current).Cdr;
          }
 
-          return Core.Progn(newEnv, body, body.Length);
-      };
-
-      //===================================================================================================================
-      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
-      {
-         var arg0 = ((Pair)argsList).Car;
-         var body = ((Pair)argsList).Cdr;
-
-         ValidateLetArguments(arg0, body);
-
-         var varlist = (Pair)arg0;
-         LispObject current = varlist;
-         var newEnv = new Env(env, Nil, Nil);
-
-         while (!current.IsNil)
-         {
-            var sym = Nil;
-            var val = Nil;
-
-            if (current is Pair currentVarPair)
-            {
-               sym = currentVarPair.Car;
-               val = ((Pair)currentVarPair.Cdr).Car.Eval(bindInNewEnv ? newEnv : env);
-            }
-            else if (current is Symbol currentVarSym)
-            {
-               sym = currentVarSym;
-            }
-
-            newEnv.Set(Env.LookupMode.Local, sym, val);
-
-            current = ((Pair)current).Cdr;
-         }
-
-         return Core.Progn(newEnv, body, body.Length);
       }
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
+    {
+       LispObject dummy = Intern(":dummy");
+       var arg0 = ((Pair)argsList).Car;
+       var body = ((Pair)argsList).Cdr;
+
+       ValidateLetArguments(arg0, body);
+
+       var varlist = (Pair)arg0;
+       LispObject current = varlist;
+       var newEnv = new Env(env, Nil, Nil);
+
+       foreach (var varlistElem in varlist)
+          newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
+
+       while (!current.IsNil)
+       {
+          var sym = Nil;
+          var val = Nil;
+
+          if (current is Pair currentVarPair)
+          {
+             sym = currentVarPair.Car;
+             val = ((Pair)currentVarPair.Cdr).Car.Eval(newEnv);
+          }
+          else if (current is Symbol currentVarSym)
+          {
+             sym = currentVarSym;
+          }
+
+          newEnv.Set(Env.LookupMode.Local, sym, val);
+
+          current = ((Pair)current).Cdr;
+       }
+
+       return Core.Progn(newEnv, body, body.Length);
+    };
+
+//===================================================================================================================
+private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
+{
+   var arg0 = ((Pair)argsList).Car;
+   var body = ((Pair)argsList).Cdr;
+
+   ValidateLetArguments(arg0, body);
+
+   var varlist = (Pair)arg0;
+   LispObject current = varlist;
+   var newEnv = new Env(env, Nil, Nil);
+
+   while (!current.IsNil)
+   {
+      var sym = Nil;
+      var val = Nil;
+
+      if (current is Pair currentVarPair)
+      {
+         sym = currentVarPair.Car;
+         val = ((Pair)currentVarPair.Cdr).Car.Eval(bindInNewEnv ? newEnv : env);
+      }
+      else if (current is Symbol currentVarSym)
+      {
+         sym = currentVarSym;
+      }
+
+      newEnv.Set(Env.LookupMode.Local, sym, val);
+
+      current = ((Pair)current).Cdr;
+   }
+
+   return Core.Progn(newEnv, body, body.Length);
+}
 
       //================================================================================================================
       // private static List<LispObject> ToList(this Pair obj)
