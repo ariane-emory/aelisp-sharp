@@ -85,7 +85,7 @@ static partial class Ae
             return this;
 
          var lookupMode = IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
-         var (found, obj) = env.Lookup(Env.LookupMode.Global, this);
+         var (found, obj) = env.Lookup(lookupMode, this);
 
          if (!found)
             throw new ApplicationException($"Unbound symbol '{Write()}!");
