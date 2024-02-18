@@ -147,7 +147,7 @@ static partial class Ae
             }
          }
 
-            WriteLine($"ix: {currentIndex} / {index}");
+            WriteLine($"ix:  {currentIndex} / {index}");
             return Nil;
       }
 
