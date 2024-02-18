@@ -177,8 +177,11 @@ static partial class Ae
          LispObject head = Car;
          LispObject args = Cdr;
 
+         WriteLine($"head: {head}");
+         WriteLine($"args: {args}");
+         
          if (!args.IsList)
-            throw new ArgumentException($"{nameof(args)} is not a list, something has gone very wrong!");
+            throw new ArgumentException($"{nameof(args)} is {args}, not a list, something has gone very wrong!");
 
          LispObject fun = head.Eval(env);
 
