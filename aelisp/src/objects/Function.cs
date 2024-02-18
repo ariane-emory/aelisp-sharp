@@ -11,10 +11,10 @@ static partial class Ae
       //================================================================================================================
       public LispObject Apply(Env env, LispObject args)
       {
-         if (args.IsList)
-            return ImplApply(env, args);
-         else
-            throw new ArgumentException($"{nameof(args)} must be a list");
+         if (!args.IsProperList) // for the moment, args must be proper.
+            throw new ArgumentException($"{nameof(args)} must be a proper list!");
+
+         return ImplApply(env, args);
       }
 
       //================================================================================================================
