@@ -25,8 +25,22 @@ static partial class Ae
       public bool IsAtom => !IsList;
       public int Id { get; }
 
+      //==================================================================================================================
+      public int Length
+        {
+            get
+            {
+               if (this == Nil)
+                  return 0;
+               else if (this is Pair pair)
+                  return pair.PairListLength;
+               else
+                  throw new InvalidOperationException("Not a list");
+            }
+        }
+
       //================================================================================================================
-      public bool IsProperList
+        public bool IsProperList
       {
          get
          {

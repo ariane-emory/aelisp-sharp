@@ -188,8 +188,8 @@ class Program
 
       WriteLine(len);
       WriteLine(len2);
-      WriteLine(proper.PairListLength);
-      WriteLine(improper.PairListLength);
+      WriteLine(proper.Length);
+      WriteLine(improper.Length);
 
       WriteLine(Intern("xx").Eval(child_env));
       WriteLine(Intern(":xx").Eval(child_env));
