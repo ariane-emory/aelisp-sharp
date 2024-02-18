@@ -100,10 +100,12 @@ static partial class Ae
       IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
       //==================================================================================================================
-      public int Length
+      public int PairListLength
       {
          get
          {
+            // NOTE: Remember, the Listlength of both (1 2 3) and (1 2 3 . 4 ) is 3 in this language at present.
+
             int length = 0;
             LispObject current = this;
 
