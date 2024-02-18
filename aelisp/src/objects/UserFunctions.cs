@@ -30,7 +30,7 @@ static partial class Ae
       //==================================================================================================================
       // Instance methods
       //==================================================================================================================
-      public override string ToString() => $"{TypeName}({Id})";
+      public override string ToString() => $"{TypeName}(#{Id})";
       public override string Write() => ToString();
    }
 
