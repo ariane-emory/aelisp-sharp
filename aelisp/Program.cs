@@ -5,6 +5,8 @@ using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.LispToken>;
 using System.Text.RegularExpressions;
+using Char = Ae.Char;
+using String = Ae.String;
 
 //================================================================================================================================
 class Program
@@ -193,6 +195,16 @@ class Program
       WriteLine(Intern(":xx").Eval(child_env));
       WriteLine(Intern("nil").Eval(child_env));
       WriteLine(Nil.Eval(child_env));
+
+      LispObject lst = Cons(new Integer(11), Cons(new Char('a'), Cons(Intern("bang"), Cons(new String("hello"), Nil))));
+      WriteLine(lst.SPrinc());
+      WriteLine(lst.SPrint());
+      LispObject str = new String("hello");
+      WriteLine(str.SPrinc());
+      WriteLine(str.SPrint());
+      LispObject chr = new Char('x');
+      WriteLine(chr.SPrinc());
+      WriteLine(chr.SPrint());
     }
 
    //==============================================================================================================================
