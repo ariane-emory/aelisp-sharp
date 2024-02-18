@@ -78,7 +78,7 @@ static partial class Ae
    public class String : LispObjectWithStringValue
    {
       public String(string value) : base(value) { }
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
+      protected override string StringRepresentation() => $"\"{Value.EscapeChars()}\"";
       public override string Write() => $"\"{Value}\"";
    }
 
@@ -89,7 +89,7 @@ static partial class Ae
    public class Error : LispObjectWithStringValue
    {
       public Error(string value) : base(value) { }
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
+      protected override string StringRepresentation() => $"\"{Value.EscapeChars()}\"";
       public override string Write() => ToString();
    }
 
@@ -100,7 +100,7 @@ static partial class Ae
    {
       public char Value { get; }
       public Char(char value) => Value = value;
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \'{Value}\')";
+      protected override string StringRepresentation() => $"\'{Value}\'";
       public override string Write() => $"{Value}";
    }
 
@@ -111,7 +111,7 @@ static partial class Ae
    {
       public int Value { get; }
       public Integer(int value) => Value = value;
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Value})";
+      protected override string StringRepresentation() => $"{Value}";
       public override string Write() => $"{Value}";
    }
 
@@ -122,7 +122,7 @@ static partial class Ae
    {
       public double Value { get; }
       public Float(double value) => Value = value;
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Value})";
+      protected override string StringRepresentation() => $"{Value}";
       public override string Write() => $"{Value}";
    }
 
@@ -149,7 +149,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Write()})";
+      protected override string StringRepresentation() => $"{Write()}";
       public override string Write() => $"{Numerator}/{Denominator}";
    }
 
