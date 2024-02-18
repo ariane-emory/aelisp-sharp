@@ -19,11 +19,11 @@ static partial class Ae
       // Instance properties
       //==================================================================================================================
       protected string TypeName => GetType().Name;
+      protected abstract string? StringRepresentation { get; }
       public virtual bool IsSelfEvaluating => true;
       public bool IsList => this == Nil || this is Pair;
       public bool IsAtom => !IsList;
       public int Id { get; }
-      protected abstract string? StringRepresentation { get; }
 
       //================================================================================================================
       public bool IsProperList
