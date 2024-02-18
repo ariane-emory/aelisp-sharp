@@ -35,7 +35,7 @@ static partial class Ae
       //==================================================================================================================
       public override LispObject Eval(Env env)
       {
-            throw new NotImplementedException("Implement this!");
+         throw new NotImplementedException("Implement this!");
       }
 
       //================================================================================================================
@@ -121,7 +121,37 @@ static partial class Ae
             return length;
          }
       }
-   }
 
+
+      //====================================================================================================================
+      public LispObject ElementAt(int index)
+      {
+         int currentIndex = 0;
+         LispObject current = this;
+
+         while (current is Pair pair)
+         {
+            if (currentIndex == index)
+            {
+               return pair.Car;
+            }
+
+            current = pair.Cdr;
+            currentIndex++;
+
+            // If the current element is not a pair but is the last element (improper list), return Nil if searching beyond
+            if (!(current is Pair) && current != Nil && currentIndex <= index)
+            {
+               break;
+            }
+         }
+
+         // Return Nil if index is out of range, similar to returning None in Python
+         return Nil;
+      }
+
+   }
    //====================================================================================================================
 }
+//=======================================================================================================================
+

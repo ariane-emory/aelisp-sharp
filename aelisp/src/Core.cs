@@ -47,14 +47,9 @@ static partial class Ae
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
          LispObject arg1 = ((Pair)argsList).Car;
+         LispObject arg2 = ((Pair)((Pair)argsList).Cdr).Car;
 
-         if (! arg1.IsList)
-            throw new ArgumentException("Argument must be a list!");
-
-         if (arg1.IsNil)
-            return Nil;
-
-         return ((Pair)arg1).Cdr;
+         return Ae.Cons(arg1, arg2);
       };
       
    }
