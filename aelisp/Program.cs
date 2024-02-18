@@ -86,7 +86,7 @@ class Program
       var parent_env = new Env(root_env, Nil, Nil);
       var child_env = new Env(parent_env, Nil, Nil);
 
-      List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+      List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("setq   ", Core.Setq, 000000002, 15, true),
          ("unless ", Core.Unless, 0000002, 15, true),
          ("when   ", Core.When, 000000002, 15, true),
@@ -112,14 +112,14 @@ class Program
          ("car    ", Core.Car, 0000000001, 01, false),
       ];
 
-      foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
-         root_env.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFunction(name.Trim(), fun, minArgs, maxArgs, special));
+      foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
+         root_env.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFun(name.Trim(), fun, minArgs, maxArgs, special));
 
       WriteLine(root_env);
 
       // var (found, fobj) = root_env.Lookup(Env.LookupMode.Global, Intern("cons"));
       // var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
-      // WriteLine(((CoreFunction)fobj).Apply(root_env, args).Princ());
+      // WriteLine(((CoreFun)fobj).Apply(root_env, args).Princ());
 
       // WriteLine(new Rational(2, 4).Princ());
 

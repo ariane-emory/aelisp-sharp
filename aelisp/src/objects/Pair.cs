@@ -187,7 +187,7 @@ static partial class Ae
 
          LispObject result = fun switch
          {
-            CoreFunction coreFun => coreFun.Apply(env, args),
+            CoreFun coreFun => coreFun.Apply(env, args),
             Lambda lambda => lambda.Apply(env, args),
             Macro macro => macro.Apply(env, args),
             _ => throw new ApplicationException($"Result of evaluating head is inapplicable object: {fun} of type: {fun.GetType()}")
