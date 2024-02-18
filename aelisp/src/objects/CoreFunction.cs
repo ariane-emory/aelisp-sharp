@@ -70,14 +70,16 @@ static partial class Ae
          if (((!UnlimitedMinArgs) && argsLength < MinArgs) ||
              ((!UnlimitedMaxArgs) && argsLength > MaxArgs))
          {
+            var msgPrefix = $"core '{Name}' requires";
+
             if (UnlimitedMinArgs && (!UnlimitedMaxArgs))
-               throw new ArgumentException($"core '{Name}' requires at most {MaxArgs} args, but got {argsLength}");
+               throw new ArgumentException($"{msgPrefix} at most {MaxArgs} args, but got {argsLength}");
             else if (UnlimitedMaxArgs && (!UnlimitedMinArgs))
-               throw new ArgumentException($"core '{Name}' requires at least {MinArgs} args, but got {argsLength}");
+               throw new ArgumentException($"{msgPrefix} at least {MinArgs} args, but got {argsLength}");
             else if (MaxArgs == MinArgs)
-               throw new ArgumentException($"core '{Name}' requires {MinArgs} args, but got {argsLength}");
+               throw new ArgumentException($"{msgPrefix} {MinArgs} args, but got {argsLength}");
             else
-               throw new ArgumentException($"core '{Name}' requires {MinArgs} to {MaxArgs} args, but got {argsLength}");
+               throw new ArgumentException($"{msgPrefix} {MinArgs} to {MaxArgs} args, but got {argsLength}");
          }
 
          if (!Special)
