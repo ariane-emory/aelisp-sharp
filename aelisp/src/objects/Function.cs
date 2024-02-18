@@ -9,6 +9,11 @@ static partial class Ae
    public abstract class Function : LispObject
    {
       //================================================================================================================
+      // Public properties
+      //================================================================================================================
+      public abstract string Name { get; };
+
+      //================================================================================================================
       // Public instance methods
       //================================================================================================================
       public LispObject Apply(Env env, LispObject argsList)
@@ -31,7 +36,7 @@ static partial class Ae
       protected LispObject EvalArgs(Env env, LispObject argsList)
       {
          WriteLine($"EvalArgs: {argsList.Princ()}");
-         
+
          if (argsList.IsNil)
             return Nil;
 
@@ -40,11 +45,11 @@ static partial class Ae
          LispObject currentArg = argsList;
 
          int index = 0;
-            
+
          while (currentArg is Pair currentArg_pair)
          {
             WriteLine($"| Arg #{++index}:  {currentArg_pair.Car.Princ()}");
-            
+
             LispObject evaledArg = currentArg_pair.Car.Eval(env);
 
             WriteLine($"> Arg #{index} = {evaledArg.Princ()}");
