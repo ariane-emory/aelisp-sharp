@@ -39,7 +39,7 @@ static partial class Ae
          if (string.IsNullOrEmpty(name))
             throw new ArgumentException($"{nameof(name)} cannot be null or empty", nameof(name));
 
-         if (minArgs > 3)
+         if (minArgs > 15)
             throw new ArgumentOutOfRangeException(nameof(minArgs));
 
          if (maxArgs > 15)
