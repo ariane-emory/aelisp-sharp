@@ -30,7 +30,7 @@ static partial class Ae
       //================================================================================================================
       // Protected instance properties
       //================================================================================================================
-      protected override string? StringRepresentation => $"{Parameters.Princ()}";
+      protected override string? StringRepresentation => $"{Parameters.Princ()} {Body.Princ()}";
 
       //================================================================================================================
       // Instance methods
