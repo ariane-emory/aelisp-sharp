@@ -27,7 +27,7 @@ static partial class Ae
   //====================================================================================================================
   // Public static methods
   //====================================================================================================================
-  private static void DebugSPrinc(string s)
+  private static void DebugPrinc(string s)
   {
     if (EnableDebugWrite)
       Console.WriteLine(s);

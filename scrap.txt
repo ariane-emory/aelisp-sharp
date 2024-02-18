@@ -2,20 +2,20 @@
   // Pair improperList = Cons(new Symbol("one"), Cons(new Integer(37), Cons(new Rational(3, 4), new Symbol("four"))));
 
   // WriteLine(properList);
-  // WriteLine(SPrinc(properList));
+  // WriteLine(Princ(properList));
 
   // foreach (var obj in properList)
   //   WriteLine(obj);
 
   // WriteLine(improperList);
-  // WriteLine(SPrinc(improperList));
+  // WriteLine(Princ(improperList));
 
   // foreach (var obj in improperList)
   //   WriteLine(obj);
 
-  // WriteLine(SPrinc(new Lambda(Nil, Nil, Nil)));
-  // WriteLine(SPrinc(new Lambda(Nil, Nil, Nil)));
-  // WriteLine(SPrinc(new Lambda(Nil, Nil, Nil)));
+  // WriteLine(Princ(new Lambda(Nil, Nil, Nil)));
+  // WriteLine(Princ(new Lambda(Nil, Nil, Nil)));
+  // WriteLine(Princ(new Lambda(Nil, Nil, Nil)));
 
   // WriteLine("Done.");
 

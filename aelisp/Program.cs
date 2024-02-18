@@ -44,13 +44,13 @@ class Program
          var obj = ParseProgram.ParseOrThrow(tokens);
 
          // WriteLine($"obj.toString(): {obj}");
-         // WriteLine($"obj.SPrinc(): {obj.SPrinc()}");
+         // WriteLine($"obj.Princ(): {obj.Princ()}");
 
          // if (obj is Pair pair)
          //    foreach (var o in pair)
-         //       WriteLine(o.SPrinc());
+         //       WriteLine(o.Princ());
          // else
-         WriteLine(obj.SPrinc());
+         WriteLine(obj.Princ());
       }
       catch (ParseException e)
       {
@@ -95,7 +95,7 @@ class Program
          Cons(Intern("xxx"), Cons(Intern("yyy"), Cons(Intern("zzz"), Nil))),
          Cons(new Integer(111), Cons(new Integer(222), Cons(new Integer(333), Nil))));
 
-      WriteLine(child_env.SPrinc());
+      WriteLine(child_env.Princ());
 
       var (found, fobj) = child_env.Lookup(Env.LookupMode.Nearest, Intern("x"));
       WriteLine($"found: {found}, fobj: {fobj}");
@@ -197,14 +197,14 @@ class Program
       WriteLine(Nil.Eval(child_env));
 
       LispObject lst = Cons(new Integer(11), Cons(new Char('a'), Cons(Intern("bang"), Cons(new String("hello"), Nil))));
-      WriteLine(lst.SPrinc());
-      WriteLine(lst.SPrint());
+      WriteLine(lst.Princ());
+      WriteLine(lst.Print());
       LispObject str = new String("hello");
-      WriteLine(str.SPrinc());
-      WriteLine(str.SPrint());
+      WriteLine(str.Princ());
+      WriteLine(str.Print());
       LispObject chr = new Char('x');
-      WriteLine(chr.SPrinc());
-      WriteLine(chr.SPrint());
+      WriteLine(chr.Princ());
+      WriteLine(chr.Print());
     }
 
    //==============================================================================================================================

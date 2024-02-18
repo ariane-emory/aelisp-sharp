@@ -72,11 +72,11 @@ static partial class Ae
 
       if (string.IsNullOrEmpty(input))
       {
-        DebugSPrinc("PureStringTokenizer.NextToken:   No input, retun no token");
+        DebugPrinc("PureStringTokenizer.NextToken:   No input, retun no token");
         goto ReturnNoToken;
       }
       
-      DebugSPrinc($"PureStringTokenizer.NextToken:  Get token at: \"{input.FirstLine()}\".");
+      DebugPrinc($"PureStringTokenizer.NextToken:  Get token at: \"{input.FirstLine()}\".");
       
       foreach (var definition in _tokenDefinitions)
       {

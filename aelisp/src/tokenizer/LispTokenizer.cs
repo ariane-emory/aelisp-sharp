@@ -58,27 +58,27 @@ static partial class Ae
     {
       var ix = 0;
 
-      DebugSPrinc($"\nStream.Read:                Fill {buffer.Length} slots.");
+      DebugPrinc($"\nStream.Read:                Fill {buffer.Length} slots.");
 
       for (; ix < buffer.Length; ix++)
       {
         if (_input is null)
-          DebugSPrinc($"\nStream._input               null");
+          DebugPrinc($"\nStream._input               null");
         else
-          DebugSPrinc($"\nStream._input               \"{_input.ReplaceNewlinesWithEscaped()}\"");
+          DebugPrinc($"\nStream._input               \"{_input.ReplaceNewlinesWithEscaped()}\"");
 
-        DebugSPrinc($"Stream.Read:                Try to set slot #{ix}.");
+        DebugPrinc($"Stream.Read:                Try to set slot #{ix}.");
 
         var token = NextToken();
 
         if (token is null)
         {
-          DebugSPrinc($"\nStream.Read:                Got null from Next(), breaking after filling {ix} elements!");
+          DebugPrinc($"\nStream.Read:                Got null from Next(), breaking after filling {ix} elements!");
           break;
         }
 
         buffer[ix] = token.Value;
-        DebugSPrinc($"Stream.Read:                Set slot #{ix} to {token.Value}.");
+        DebugPrinc($"Stream.Read:                Set slot #{ix} to {token.Value}.");
       }
 
       return ix;
@@ -93,28 +93,28 @@ static partial class Ae
     //==================================================================================================================
     protected virtual LispToken? NextToken()
     {
-      DebugSPrinc($"\nStream.Next:                Get next token...");
+      DebugPrinc($"\nStream.Next:                Get next token...");
         
     Next:
       if (string.IsNullOrEmpty(_input))
       {
-        DebugSPrinc($"Stream.Next:                Input is null, not getting token!");
+        DebugPrinc($"Stream.Next:                Input is null, not getting token!");
         return null;
       }
 
-      DebugSPrinc($"Stream.Next:                Get token at: \"{_input.FirstLine()}\".");
+      DebugPrinc($"Stream.Next:                Get token at: \"{_input.FirstLine()}\".");
       var (newInput, newState, newToken) = PureLispTokenizer.Instance.NextToken(_input, _state);
       (_state, _input) = (newState, newInput);
 
       if (newToken is not null && _exclude is not null && _exclude(newToken.Value))
       {
-        DebugSPrinc($"Stream.Next:                Got excluded token: {newToken}, try again!");
+        DebugPrinc($"Stream.Next:                Got excluded token: {newToken}, try again!");
         goto Next;
       }
 
       if (newToken is null)
       {
-        DebugSPrinc($"Stream.Next:                Return no token!");
+        DebugPrinc($"Stream.Next:                Return no token!");
         throw new ApplicationException($"Bad input on line {_state.Value.Line}, "
                                        + $"column {_state.Value.Column} at \""
                                        + _input!.FirstLine()
@@ -122,7 +122,7 @@ static partial class Ae
       }
       else
       {
-        DebugSPrinc($"Stream.Next:                Return token:  {newToken}.");
+        DebugPrinc($"Stream.Next:                Return token:  {newToken}.");
       }
 
       return newToken;

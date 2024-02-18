@@ -39,7 +39,7 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public override string SPrinc()
+      public override string Princ()
       {
          var sb = new StringBuilder();
 
@@ -49,7 +49,7 @@ static partial class Ae
 
          while (current is Pair currentCons)
          {
-            sb.Append(currentCons.Car.SPrinc());
+            sb.Append(currentCons.Car.Print());
 
             if (currentCons.Cdr is Pair)
             {
@@ -60,7 +60,7 @@ static partial class Ae
             {
 
                sb.Append(" . ");
-               sb.Append(currentCons.Cdr.SPrinc());
+               sb.Append(currentCons.Cdr.Princ());
 
                break;
             }
