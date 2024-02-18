@@ -21,7 +21,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public UserFunction(LispObject parameters, LispObject body, Env environment)
+      public UserFunction(Env environment, LispObject parameters, LispObject body)
       {
          Parameters = parameters;
          Body = body;
@@ -52,7 +52,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public Lambda(LispObject parameters, LispObject body, Env env) : base(parameters, body, env) { }
+      public Lambda(Env env, LispObject parameters, LispObject body) : base(env, parameters, body) { }
 
       //================================================================================================================
       // Protected instance methods
@@ -89,7 +89,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public Macro(LispObject parameters, LispObject body, Env env) : base(parameters, body, env) { }
+      public Macro(Env env, LispObject parameters, LispObject body) : base(env, parameters, body) { }
 
       //================================================================================================================
       // Protected instance methods

@@ -333,7 +333,7 @@ static partial class Ae
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
             throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
 
-         return new Lambda(lambdaList, body, env);
+         return new Lambda(env, lambdaList, body);
       };
 
       //=================================================================================================================
@@ -364,7 +364,7 @@ static partial class Ae
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
             throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
 
-         return new Macro(lambdaList, body, env);
+         return new Macro(env, lambdaList, body);
       };
 
       //================================================================================================================
