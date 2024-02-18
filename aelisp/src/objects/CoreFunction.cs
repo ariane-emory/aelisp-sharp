@@ -117,8 +117,11 @@ static partial class Ae
 
             current_arg = current_arg_pair.Cdr;
          }
-
-         // implement evaling tai arg!
+         
+         if (!current_arg.IsNil) // dotted tail arg is present.
+         {
+         }
+         
          throw new NotImplementedException("Implement this!");
       }
 
