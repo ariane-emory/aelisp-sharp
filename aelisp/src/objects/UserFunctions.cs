@@ -67,7 +67,6 @@ static partial class Ae
          if (!Special)
             argsList = EvalArgs(env, argsList);
 
-
          // PUT_PROP(fun, "fun", env);
 
          return Body.Eval(new Env(Environment, Parameters, argsList));
