@@ -100,14 +100,9 @@ static partial class Ae
 
          while (current_arg is Pair current_arg_pair)
          {
-            // LOG(CAR(current_arg), "eval   arg #%d/%d", ctr, args_count);
-
             LispObject eval_result = current_arg_pair.Car.Eval(env);
 
             // TO-DO: add return if errorp? or stick with Exceptions?
-
-            // LOG(eval_result, "evaled arg #%d/%d", ctr, args_count);
-
             
             if (result.IsNil)
             {
