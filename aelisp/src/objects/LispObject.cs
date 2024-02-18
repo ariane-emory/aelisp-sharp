@@ -55,8 +55,8 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      public override string ToString() => StringRepresentation();
       protected abstract string StringRepresentation();
+      public override string ToString() => $"{TypeName}(#{Id}, {StringRepresentation()})";
       public abstract string Write();
       public virtual LispObject Eval(Env _) => this;
 
