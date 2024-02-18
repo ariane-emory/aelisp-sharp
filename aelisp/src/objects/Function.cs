@@ -43,9 +43,12 @@ static partial class Ae
             
          while (currentArg is Pair currentArg_pair)
          {
-            WriteLine($"^ Arg #{++index}: {currentArg_pair.Car.Princ()}");
+            WriteLine($"| Arg #{++index}:  {currentArg_pair.Car.Princ()}");
             
             LispObject evaledArg = currentArg_pair.Car.Eval(env);
+
+            WriteLine($"> Arg #{index} = {evaledArg.Princ()}");
+
             // TO-DO: add return if evaledArg is Error? or stick with Exceptions?
 
             if (result.IsNil)
