@@ -1,3 +1,5 @@
+using static System.Console;
+
 //======================================================================================================================
 static partial class Ae
 {
@@ -28,6 +30,8 @@ static partial class Ae
       //================================================================================================================
       protected LispObject EvalArgs(Env env, LispObject argsList)
       {
+         WriteLine($"EvalArgs: {argsList.Princ()}");
+         
          if (argsList.IsNil)
             return Nil;
 
