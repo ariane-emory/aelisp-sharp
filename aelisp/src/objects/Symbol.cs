@@ -23,11 +23,13 @@ static partial class Ae
       // Instance properties
       //================================================================================================================
       protected override string? StringRepresentation => $"{Value}";
+      public override bool IsSelfEvaluating => IsKeyword || this == Nil || this == True;
       public bool IsSpecial => Value[0] == '*' && Value[Value.Length - 1] == '*';
       public bool IsKeyword => Value[0] == ':';
-      public override bool IsSelfEvaluating => IsKeyword || this == Nil || this == True;
-
-      //================================================================================================================
+      public bool IsSetBindable => !IsKeyword && !IsSelfEvaluating;
+      public bool IsLetBindable => !IsSpecial && IsSetBindable;
+      
+      //==================================================================W==============================================
       // Public methods
       //================================================================================================================
       public override string Princ() => Value;

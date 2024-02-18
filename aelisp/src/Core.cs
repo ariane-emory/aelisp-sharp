@@ -28,7 +28,7 @@ static partial class Ae
          var result = Nil;
 
          if (argsList.IsImproperList)
-            throw new ArgumentException("prog body must be a proper list");      
+            throw new ArgumentException("prog body must be a proper list");
 
          while (argsList is Pair argsListPair)
          {
@@ -46,7 +46,7 @@ static partial class Ae
             throw new ArgumentException("setq requires an even number of arguments!");
 
          if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");      
+            throw new ArgumentException("argsList must be a proper list");
 
          var result = Nil;
 
@@ -104,10 +104,10 @@ static partial class Ae
 
          if (do_branch.IsImproperList)
             throw new ArgumentException("body must be a proper list");
-         
+
          while (while_cond.Eval(env).IsNil)
             result = Progn(env, do_branch, do_branch.Length);
-         
+
          return result;
       };
 
@@ -359,7 +359,7 @@ static partial class Ae
 
          if (current.IsImproperList)
             throw new ArgumentException("cond arguments must be a proper list");
-         
+
          while (current is Pair currentPair)
          {
             var condItem = currentPair.Car;
@@ -426,7 +426,7 @@ static partial class Ae
 
          if (caseForms.IsImproperList)
             throw new ArgumentException("case forms must be a proper list");
-         
+
          while (current is Pair currentPair)
          {
             var caseItem = currentPair.Car;
@@ -473,6 +473,107 @@ static partial class Ae
 
       //================================================================================================================
    }
+
+   //===================================================================================================================
+   public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
+   {
+      var arg0 = ((Pair)argsList).Car;
+      var body = ((Pair)argsList).Cdr;
+
+      if (!(arg0 is Pair varlist))
+         throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
+      
+      if (varlist.IsImproperList)
+         throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
+      
+      LispObject current = varlist;
+
+      while (!current.IsNil)
+      {
+         if (current is Pair currentVarPair)
+         {
+            if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
+               throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
+
+            if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
+               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+         }
+         else if (current is Symbol currentVarSym)
+         {
+            if (!currentVarSym.IsLetBindable)
+               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+         }
+         else
+         {
+            throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {currentVarPair}");
+         }
+      }
+
+
+      // FOR_EACH(varlist_item, varlist) {
+      //    REQUIRE(SYMBOLP(varlist_item) || (CONSP(varlist_item) && LENGTH(varlist_item) == 2),
+      //            "varlist items must be symbols or lists with two elements");
+
+      //    ae_obj_t * const sym = SYMBOLP(varlist_item) ? varlist_item : CAR(varlist_item);
+
+      //    REQUIRE((!SPECIAL_SYMP(sym)), "let forms cannot bind special symbols");
+
+      // }
+
+      // ae_obj_t * const body    = CDR(args);
+
+      // REQUIRE(PROPERP(body), "body must be a proper list");
+      // // REQUIRE(LENGTH(body) > 0,    "empty body");
+
+      // ae_obj_t * const new_env = NEW_ENV(env, NIL, NIL);
+
+      // int ctr = 0;
+
+      // FOR_EACH(varlist_item, varlist) {
+      //    ctr++;
+
+      //    if (log_core)
+      //       LOG(varlist_item, "let varlist item #%d/%d", ctr, LENGTH(varlist));
+
+      //    INDENT;
+
+      //    if (log_core)
+      //       OLOG(varlist_item);
+
+      //    ae_obj_t* val = SYMBOLP(varlist_item)
+      //       ? NIL
+      //       : RETURN_IF_ERRORP(EVAL(env, CADR(varlist_item)));
+
+      //    // let only sets the last-bound-to property if it's not already set.
+      //    if ((LAMBDAP(val) || MACROP(val)) && !HAS_PROP("last-bound-to", CAR(varlist_item)))
+      //       PUT_PROP(CAR(varlist_item), "last-bound-to", val);
+
+      //    if (log_core)
+      //    {
+      //       if (SYMBOLP(varlist_item))
+      //          LOG(varlist_item, "binding symbol");
+      //       else
+      //          LOG(CAR(varlist_item), "binding symbol");
+
+      //       LOG(val, "to value");
+      //    }
+
+      //    ENV_SET_L(new_env, SYMBOLP(varlist_item) ? varlist_item : CAR(varlist_item), val);
+
+      //    OUTDENT;
+      // }
+
+      // if (log_core)
+      // {
+      //    LOG(ENV_SYMS(new_env), "new_env syms");
+      //    LOG(ENV_VALS(new_env), "new_env vals");
+      // }
+
+      // RETURN(ae_core_progn(new_env, body, LENGTH(body)));
+
+      // END_DEF_CORE_FUN;
+      return Nil;
+   };
 
    //================================================================================================================
    // private static List<LispObject> ToList(this Pair obj)
