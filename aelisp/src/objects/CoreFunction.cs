@@ -123,13 +123,12 @@ static partial class Ae
             // TO-DO: add return if errorp? or stick with Exceptions?
 
             if (result.IsNil)
-               result = eval_result;            
-            else 
+               result = eval_result;
+            else
                result_tail_pair!.Cdr = eval_result;
-
          }
 
-         throw new NotImplementedException("Implement this!");
+         return result;
       }
 
       //================================================================================================================
