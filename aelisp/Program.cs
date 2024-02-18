@@ -272,7 +272,7 @@ class Program
 
       WriteLine(new Rational(2, 4).Princ());
 
-      WriteLine(ParseSExp.ParseOrThrow(new QueueingLispTokenizer("(cons 2 3)").ReadAll()).Eval(child_env).Princ());
+      WriteLine(Eval(child_env, "(cons 2 3)").Princ());
     }
 
    //==============================================================================================================================
