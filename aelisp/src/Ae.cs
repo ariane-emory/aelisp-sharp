@@ -11,7 +11,7 @@ using static Pidgin.Parser<Ae.LispToken>;
 static partial class Ae
 {
    //====================================================================================================================
-   // Ae's static variables
+   // Ae's static fields
    //====================================================================================================================
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
    public static LispObject SymbolsList = Nil;
@@ -30,16 +30,20 @@ static partial class Ae
    // Ae's static methods
    //====================================================================================================================
    public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
-    public static LispObject Read(string input) => ParseSExp.ParseOrThrow(Tokenize(input));
-    public static LispObject Eval(Env env, string input) => Read(input).Eval(env);
+   public static LispObject Read(string input) => ParseSExp.ParseOrThrow(Tokenize(input));
+   public static LispObject Eval(Env env, string input) => Read(input).Eval(env);
 
-    //====================================================================================================================
-    public static LispObject Cons(LispObject car, LispObject cdr)
-    {
-       WriteLine($"Cons({car}, {cdr})");
-       return (LispObject)new Pair(car, cdr);
-    }
-   
+   //====================================================================================================================
+   public static bool ConsDebugWrite { get; set; } = false;
+
+   public static LispObject Cons(LispObject car, LispObject cdr)
+   {
+      if (ConsDebugWrite)
+         WriteLine($"Cons({car}, {cdr})");
+      
+      return (LispObject)new Pair(car, cdr);
+   }
+
    //====================================================================================================================
    public static LispObject Truthiness(bool val) => val ? True : Nil;
 

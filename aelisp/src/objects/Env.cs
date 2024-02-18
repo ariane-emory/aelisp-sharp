@@ -19,7 +19,7 @@ static partial class Ae
       //================================================================================================================
       // Public static methods
       //================================================================================================================
-      private static void DebugPrinc(string s)
+      private static void DebugWrite(string s)
       {
          if (EnableDebugWrite)
             Console.WriteLine(s);
@@ -87,7 +87,7 @@ static partial class Ae
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
 
-         DebugPrinc($"Added {symbol} with value {value}.");
+         DebugWrite($"Added {symbol} with value {value}.");
       }
 
       //================================================================================================================
@@ -122,7 +122,7 @@ static partial class Ae
       //================================================================================================================
       private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
-         DebugPrinc($"\nLooking up {symbol} in {this}...");
+         DebugWrite($"\nLooking up {symbol} in {this}...");
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
@@ -133,12 +133,12 @@ static partial class Ae
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
-               DebugPrinc($"  symbs: {symPair}");
-               DebugPrinc($"   vals: {valPair}");
+               DebugWrite($"  symbs: {symPair}");
+               DebugWrite($"   vals: {valPair}");
 
                if (symbol == symPair.Car)
                {
-                  DebugPrinc($"Found {symbol} -> {valPair.Car}");
+                  DebugWrite($"Found {symbol} -> {valPair.Car}");
                   return (true, valPair);
                }
 
@@ -157,7 +157,7 @@ static partial class Ae
             current = (Env)current.Parent;
          }
 
-         DebugPrinc("Did not find it!");
+         DebugWrite("Did not find it!");
 
          return (false, Nil);
       }
