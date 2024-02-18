@@ -260,10 +260,13 @@ class Program
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
-      {
-         var coreFun = new CoreFunction(name, fun, minArgs, maxArgs, special);
-      }
+         root_env.Set(Env.LookupMode.Global, Intern(name), new CoreFunction(name, fun, minArgs, maxArgs, special));
 
+      WriteLine(root_env);
+
+      var result = Cons(Intern("cons"), Cons(new Integer(1), Cons(new Integer(2), Nil))).Eval(child_env);
+
+      WriteLine(result);
    }
 
    //==============================================================================================================================
