@@ -17,7 +17,7 @@ static partial class Ae
 
       //================================================================================================================
       public virtual bool IsSelfEvaluating => true;
-      // public abstract LispObject Eval(Env env);
+      public virtual LispObject Eval(Env _) => this;
 
       //================================================================================================================
       public bool IsList => this == Nil || this is Pair;
