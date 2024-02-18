@@ -174,7 +174,149 @@ static partial class Ae
 
       public override LispObject Eval(Env env)
       {
-         throw new NotImplementedException("Implement this!");
+         JUMP_RETURN_ENTER;
+
+         assert(env);
+         assert(ENVP(env));
+         assert(obj);
+         assert(CONSP(obj));
+
+         ae_obj_t * const head = CAR(obj);
+         ae_obj_t * const args = CDR(obj);
+
+         assert(args);
+         assert(TAILP(args));
+
+         if (log_eval)
+         {
+            char* const tmp = SWRITE(head);
+            char* const msg = free_list_malloc(256);
+
+            snprintf(msg, 256,
+                     "evaluating list by applying '%s' to %d arg%s:",
+                     tmp, LENGTH(args), s_or_blank(LENGTH(args)));
+
+            LOG(LENGTH(args) == 1
+                ? CAR(args)
+                : args,
+                msg);
+
+            free(tmp);
+            free_list_free(msg);
+         }
+
+         INDENT;
+
+         if (log_eval)
+         {
+            LOG(env, "in env");
+
+            if (!ROOTP(env))
+            {
+               LOG(ENV_SYMS(env), "with syms");
+               LOG(ENV_VALS(env), "and  vals");
+            }
+         }
+
+         ae_obj_t * const fun = EVAL_AND_RETURN_IF_ERRORP(env, head);
+
+         if (!(COREP(fun) || LAMBDAP(fun) || MACROP(fun)))
+         {
+            NL;
+            LOG(head, "Result of evaluating head: ");
+            LOG(fun, "is inapplicable object: ");
+            SLOGF("of type: %s", GET_TYPE_STR(fun));
+            NL;
+
+            ae_obj_t * const err = NEW_ERROR("inapplicable");
+
+            PUT_PROP(env, "error-env", err);
+            PUT_PROP(args, "error-args", err);
+            PUT_PROP(fun, "error-fun", err);
+
+            RETURN_IF_ERRORP(err);
+         }
+
+         long int begin = -1;
+
+         if (MACROP(fun) && (log_eval || log_macro))
+         {
+            LOG(obj, "expanding:");
+
+            begin = ae_sys_time_now_us();
+
+            INDENT;
+         }
+
+         ret = COREP(fun)
+           ? apply_core(env, fun, args)
+           : apply_user(env, fun, args);
+
+         RETURN_IF_ERRORP(ret);
+
+         if (MACROP(fun))
+         {
+            if (log_eval || log_macro)
+            {
+               LOG(ret, "expansion:");
+            }
+
+            if (ATOMP(ret))
+            {
+               ret = CONS(SYM("progn"), CONS(ret, NIL));
+
+               if (log_eval || log_macro)
+                  LOG(ret, "decorated expansion:");
+            }
+
+            ret = EVAL(env, ret);
+
+            long long int after = ae_sys_time_now_us();
+
+            if (log_eval || log_macro)
+               LOG(ret, "evaled expansion:");
+
+            if (log_eval || log_macro) // inside if MACROP
+               OUTDENT;
+
+            if (log_eval || log_macro)
+               LOG(obj, "expanding took %.2f ms:", ((double)(after - begin)) / 1000.0);
+
+            // RETURN_IF_ERRORP(ret);
+
+            // this line would cause 'in-place expansion' and is disabled until a way
+            // to annotate which macros should be expanded in-place is implemented:
+            // *obj = *ret; 
+         }
+
+         if (ERRORP(ret))
+         {
+            char* const fun_tmp = SWRITE(fun);
+            char* const ret_tmp = SWRITE(ret);
+
+            FSLOGF(stderr, "%s returned an error: %s", fun_tmp, ret_tmp);
+
+            free(fun_tmp);
+            free(ret_tmp);
+
+            /* if (HAS_PROP("error-fun", ret)) // this is probably going to double the first fun in the list but I can't be bothered fixing it yet. */
+            /*   PUT_PROP(CONS(fun, GET_PROP("error-fun", ret)), "error-fun", ret); */
+            /* else */
+            /*   PUT_PROP(CONS(fun, NIL), "error-fun", ret); */
+
+            // RETURN_IF_ERRORP(ret);
+         }
+
+      end:
+
+         OUTDENT;
+
+         if (log_eval)
+            LOG(ret, "evaluating list returned %s :%s", a_or_an(GET_TYPE_STR(ret)), GET_TYPE_STR(ret));
+
+         snap_indent();
+
+         JUMP_RETURN_EXIT;
       }
 
       //================================================================================================================
