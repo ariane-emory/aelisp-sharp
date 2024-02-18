@@ -10,10 +10,12 @@ static partial class Ae
    //===================================================================================================================
    public abstract class LispObject
    {
+      protected string TypeName => GetType().Name;
       public LispObject Properties { get; set; } = Nil;
       public abstract override string ToString();
       public abstract string Write();
-      protected string TypeName => GetType().Name;
+      public abstract LispObject Eval();
+      public abstract bool IsSelfEvaluting { get; }
 
       //================================================================================================================
       public bool IsList => this == Nil || this is Pair;
@@ -42,10 +44,19 @@ static partial class Ae
    }
 
    //===================================================================================================================
+   // SelfEvaluatingLispObject abstract class
+   //===================================================================================================================
+   public abstract class SelfEvaluatingLispObject : LispObject
+   {
+      public override bool IsSelfEvaluting => true;
+      public override LispObject Eval() => this;
+   }
+
+   //===================================================================================================================
    // LispObjectWithStringValue abstract class
    //===================================================================================================================
-   public abstract class LispObjectWithStringValue : LispObject
-   {
+   public abstract class LispObjectWithStringValue
+   { 
       public string Value { get; }
       public LispObjectWithStringValue(string value) => Value = value;
    }
@@ -67,11 +78,18 @@ static partial class Ae
       //================================================================================================================
       // Public methods
       //================================================================================================================
-      public override string ToString() => this == Nil ? "Nil" : $"{TypeName}({Value})";
+      public override string ToString() => (LispObject)this == Nil ? "Nil" : $"{TypeName}({Value})";
       public override string Write() => Value;
-
       public bool IsKeyword => Value[0] == ':';
-      public bool IsSelfEvaluting => IsKeyword || this == Nil || this == True;
+      public override bool IsSelfEvaluting => IsKeyword || (LispObject)this == Nil || (LispObject)this == True;
+
+      public override LispObject Eval()
+      {
+         if (IsSelfEvaluting)
+            return this;
+
+         throw new NotImplementedException();
+      }
    }
 
    //===================================================================================================================

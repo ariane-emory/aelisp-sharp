@@ -29,6 +29,14 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public override string ToString() => $"{TypeName}({Car}, {Cdr})";
+      public override bool IsSelfEvaluting => IsKeyword || (LispObject)this == Nil || (LispObject)this == True;
+
+
+      //==================================================================================================================
+      public override LispObject Eval()
+      {
+         throw new NotImplementedException();
+      }
 
       //==================================================================================================================
       public override string Write()
