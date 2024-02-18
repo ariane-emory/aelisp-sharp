@@ -87,11 +87,14 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-       ("eql?", Core.EqlP, 02, 2, false),
-       ("eq?", Core.EqP, 002, 2, false),
-       ("cons", Core.Cons, 02, 2, false),
-       ("cdr ", Core.Cdr, 001, 1, false),
-       ("car ", Core.Car, 001, 1, false),
+         ("eval ", Core.Eval, 01, 1,  false),
+         ("list ", Core.List, 15, 15, false),
+         ("quote", Core.Quote, 1, 1,  true),
+         ("eql? ", Core.EqlP, 02, 2,  false),
+         ("eq?  ", Core.EqP, 002, 2,  false),
+         ("cons ", Core.Cons, 02, 2,  false),
+         ("cdr  ", Core.Cdr, 001, 1,  false),
+         ("car  ", Core.Car, 001, 1,  false),
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
