@@ -97,7 +97,7 @@ class Program
          ("not    ", Core.Not, 0000000001, 01, false),
          ("macro  ", Core.Macro, 00000002, 15, true),
          ("lambda ", Core.Lambda, 0000002, 15, true),
-         ("progn  ", Core.Progn, 00000015, 15, false),
+         ("progn  ", Core.Progn, 00000015, 15, true),
          ("eval   ", Core.Eval, 000000001, 01, false),
          ("list   ", Core.List, 000000015, 15, false),
          ("quote  ", Core.Quote, 00000001, 01, true),
