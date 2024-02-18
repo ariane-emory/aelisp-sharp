@@ -17,18 +17,30 @@ static partial class Ae
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
       //=================================================================================================================
+      public static readonly CoreFunction.FuncT TailP = (env, argsList, argsLength)
+         => Truthiness(((Pair)argsList)[0].IsList);
+
+      //=================================================================================================================
+      public static readonly CoreFunction.FuncT AtomP = (env, argsList, argsLength)
+         => Truthiness(((Pair)argsList)[0].IsAtom);
+
+      //=================================================================================================================
+      public static readonly CoreFunction.FuncT NilP = (env, argsList, argsLength)
+         => Truthiness(((Pair)argsList)[0].IsNil);
+
+      //=================================================================================================================
       public static readonly CoreFunction.FuncT Rplacd = (env, argsList, argsLength) =>
-      {
-         LispObject arg0 = ((Pair)argsList)[0];
-         LispObject arg1 = ((Pair)argsList)[1];
+    {
+       LispObject arg0 = ((Pair)argsList)[0];
+       LispObject arg1 = ((Pair)argsList)[1];
 
-         if (arg0 is not Pair pair)
-            throw new ArgumentException("First argument must be a cons cell!");
+       if (arg0 is not Pair pair)
+          throw new ArgumentException("First argument must be a cons cell!");
 
-         pair.Cdr = arg1;
+       pair.Cdr = arg1;
 
-         return arg1;
-      };
+       return arg1;
+    };
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT Rplaca = (env, argsList, argsLength) =>
