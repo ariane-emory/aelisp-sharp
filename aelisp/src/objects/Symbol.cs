@@ -22,7 +22,7 @@ static partial class Ae
       //================================================================================================================
       // Instance properties
       //================================================================================================================
-      protected override string StringRepresentation => $"{Value}";
+      protected override string? StringRepresentation => $"{Value}";
       public bool IsSpecial => Value[0] == '*' && Value[Value.Length - 1] == '*';
       public bool IsKeyword => Value[0] == ':';
       public override bool IsSelfEvaluating => IsKeyword || this == Nil || this == True;

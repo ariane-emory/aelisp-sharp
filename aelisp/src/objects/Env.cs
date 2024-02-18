@@ -58,7 +58,7 @@ static partial class Ae
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
-      protected override string StringRepresentation
+      protected override string? StringRepresentation
       {
          get
          {
