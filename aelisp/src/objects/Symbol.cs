@@ -20,14 +20,17 @@ static partial class Ae
       }
 
       //================================================================================================================
-      // Public methods
+      // Instance properties
       //================================================================================================================
-      protected override string StringRepresentation() => this == Nil ? $"Nil(#{Id})" : $"{TypeName}(#{Id}, {Value})";
-      public override string Write() => Value;
-
+      protected override string StringRepresentation => $"{Value}";
       public bool IsSpecial => Value[0] == '*' && Value[Value.Length - 1] == '*';
       public bool IsKeyword => Value[0] == ':';
       public override bool IsSelfEvaluating => IsKeyword || this == Nil || this == True;
+
+      //================================================================================================================
+      // Public methods
+      //================================================================================================================
+      public override string Write() => Value;
 
       //================================================================================================================
       public override LispObject Eval(Env env)

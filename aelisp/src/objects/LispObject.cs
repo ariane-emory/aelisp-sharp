@@ -23,7 +23,8 @@ static partial class Ae
       public bool IsList => this == Nil || this is Pair;
       public bool IsAtom => !IsList;
       public int Id { get; }
-      
+      protected abstract string StringRepresentation { get; }
+
       //================================================================================================================
       public bool IsProperList
       {
@@ -50,13 +51,12 @@ static partial class Ae
       {
          Id = NextId++;
       }
-      
+
       //==================================================================================================================
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      protected abstract string StringRepresentation();
-      public override string ToString() => $"{TypeName}(#{Id}, {StringRepresentation()})";
+      public override string ToString() => $"{TypeName}(#{Id}, {StringRepresentation})";
       public abstract string Write();
       public virtual LispObject Eval(Env _) => this;
 
@@ -78,7 +78,7 @@ static partial class Ae
    public class String : LispObjectWithStringValue
    {
       public String(string value) : base(value) { }
-      protected override string StringRepresentation() => $"\"{Value.EscapeChars()}\"";
+      protected override string StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string Write() => $"\"{Value}\"";
    }
 
@@ -89,7 +89,7 @@ static partial class Ae
    public class Error : LispObjectWithStringValue
    {
       public Error(string value) : base(value) { }
-      protected override string StringRepresentation() => $"\"{Value.EscapeChars()}\"";
+      protected override string StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string Write() => ToString();
    }
 
@@ -100,7 +100,7 @@ static partial class Ae
    {
       public char Value { get; }
       public Char(char value) => Value = value;
-      protected override string StringRepresentation() => $"\'{Value}\'";
+      protected override string StringRepresentation => $"\'{Value}\'";
       public override string Write() => $"{Value}";
    }
 
@@ -111,7 +111,7 @@ static partial class Ae
    {
       public int Value { get; }
       public Integer(int value) => Value = value;
-      protected override string StringRepresentation() => $"{Value}";
+      protected override string StringRepresentation => $"{Value}";
       public override string Write() => $"{Value}";
    }
 
@@ -122,7 +122,7 @@ static partial class Ae
    {
       public double Value { get; }
       public Float(double value) => Value = value;
-      protected override string StringRepresentation() => $"{Value}";
+      protected override string StringRepresentation => $"{Value}";
       public override string Write() => $"{Value}";
    }
 
@@ -149,7 +149,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      protected override string StringRepresentation() => $"{Write()}";
+      protected override string StringRepresentation => $"{Write()}";
       public override string Write() => $"{Numerator}/{Denominator}";
    }
 
