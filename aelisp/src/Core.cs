@@ -505,74 +505,39 @@ static partial class Ae
          }
          else
          {
-            throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {currentVarPair}");
+            throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a let bindable symbol, not {current}");
          }
       }
 
+      if (body.IsImproperList)
+         throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
 
-      // FOR_EACH(varlist_item, varlist) {
-      //    REQUIRE(SYMBOLP(varlist_item) || (CONSP(varlist_item) && LENGTH(varlist_item) == 2),
-      //            "varlist items must be symbols or lists with two elements");
+      if (body.IsNil)
+         throw new ArgumentException("body cannot be empty");
 
-      //    ae_obj_t * const sym = SYMBOLP(varlist_item) ? varlist_item : CAR(varlist_item);
+      var newEnv = new Env(env, Nil, Nil);
 
-      //    REQUIRE((!SPECIAL_SYMP(sym)), "let forms cannot bind special symbols");
+      current = varlist;
 
-      // }
+      while (!current.IsNil)
+      {
+         var sym = Nil;
+         var val = Nil;
 
-      // ae_obj_t * const body    = CDR(args);
+         if (current is Pair currentVarPair)
+         {
+            sym = currentVarPair.Car;
+            val = ((Pair)currentVarPair.Cdr).Car.Eval(env);
+         }
+         else if (current is Symbol currentVarSym)
+         {
+            sym = currentVarSym;
+         }
 
-      // REQUIRE(PROPERP(body), "body must be a proper list");
-      // // REQUIRE(LENGTH(body) > 0,    "empty body");
+         newEnv.Set(Env.LookupMode.Local, sym, val);
+      }
 
-      // ae_obj_t * const new_env = NEW_ENV(env, NIL, NIL);
-
-      // int ctr = 0;
-
-      // FOR_EACH(varlist_item, varlist) {
-      //    ctr++;
-
-      //    if (log_core)
-      //       LOG(varlist_item, "let varlist item #%d/%d", ctr, LENGTH(varlist));
-
-      //    INDENT;
-
-      //    if (log_core)
-      //       OLOG(varlist_item);
-
-      //    ae_obj_t* val = SYMBOLP(varlist_item)
-      //       ? NIL
-      //       : RETURN_IF_ERRORP(EVAL(env, CADR(varlist_item)));
-
-      //    // let only sets the last-bound-to property if it's not already set.
-      //    if ((LAMBDAP(val) || MACROP(val)) && !HAS_PROP("last-bound-to", CAR(varlist_item)))
-      //       PUT_PROP(CAR(varlist_item), "last-bound-to", val);
-
-      //    if (log_core)
-      //    {
-      //       if (SYMBOLP(varlist_item))
-      //          LOG(varlist_item, "binding symbol");
-      //       else
-      //          LOG(CAR(varlist_item), "binding symbol");
-
-      //       LOG(val, "to value");
-      //    }
-
-      //    ENV_SET_L(new_env, SYMBOLP(varlist_item) ? varlist_item : CAR(varlist_item), val);
-
-      //    OUTDENT;
-      // }
-
-      // if (log_core)
-      // {
-      //    LOG(ENV_SYMS(new_env), "new_env syms");
-      //    LOG(ENV_VALS(new_env), "new_env vals");
-      // }
-
-      // RETURN(ae_core_progn(new_env, body, LENGTH(body)));
-
-      // END_DEF_CORE_FUN;
-      return Nil;
+      return Core.Progn(newEnv, body, body.Length);
    };
 
    //================================================================================================================
