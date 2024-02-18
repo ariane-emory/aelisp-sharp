@@ -60,19 +60,19 @@ static partial class Ae
 
       //=================================================================================================================
       public static CoreFunction.FuncT Eval = (env, argsList, argsLength)
-         => Nil;
-
+         => ((Pair)argsList)[0];
+      
       //=================================================================================================================
       public static CoreFunction.FuncT List = (env, argsList, argsLength)
-         => Nil;
+         => argsList;
 
       //=================================================================================================================
       public static CoreFunction.FuncT Quote = (env, argsList, argsLength)
-         => Nil;
+         => ((Pair)argsList)[0];
 
       //=================================================================================================================
       public static CoreFunction.FuncT EqP = (env, argsList, argsLength)
-       => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
+         => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
 
       //=================================================================================================================
       public static CoreFunction.FuncT EqlP = (env, argsList, argsLength)
