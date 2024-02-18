@@ -565,9 +565,10 @@ static partial class Ae
          var body = ((Pair)argsList).Cdr;
          ValidateLetArguments(arg0, body);
          var varlist = (Pair)arg0;
-         var newEnv = new Env(env, Nil, Nil);
+         var newEnv = env.Spawn(Nil, Nil);
 
          LispObject dummy = Intern(":dummy");
+
          foreach (var varlistElem in varlist)
             newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
 
@@ -583,7 +584,7 @@ static partial class Ae
          var body = ((Pair)argsList).Cdr;
          ValidateLetArguments(arg0, body);
          var varlist = (Pair)arg0;
-         var newEnv = new Env(env, Nil, Nil);
+         var newEnv = env.Spawn(Nil, Nil);
 
          BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
 

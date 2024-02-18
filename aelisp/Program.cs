@@ -83,8 +83,8 @@ class Program
       // }
 
       var root_env = new Env(Nil, Nil, Nil);
-      var parent_env = new Env(root_env, Nil, Nil);
-      var child_env = new Env(parent_env, Nil, Nil);
+      var parent_env = root_env.Spawn(Nil, Nil);
+      var child_env = parent_env.Spawn(Nil, Nil);
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("letrec ", Core.Letrec, 00000000002, 15, true),

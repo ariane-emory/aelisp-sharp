@@ -15,13 +15,13 @@ static partial class Ae
       //================================================================================================================
       public LispObject Parameters { get; }
       public LispObject Body { get; }
-      public LispObject Environment { get; }
+      public Env Environment { get; }
       public override string Name => ToString();
 
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public UserFunction(LispObject parameters, LispObject body, LispObject environment)
+      public UserFunction(LispObject parameters, LispObject body, Env environment)
       {
          Parameters = parameters;
          Body = body;
@@ -52,7 +52,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public Lambda(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
+      public Lambda(LispObject parameters, LispObject body, Env env) : base(parameters, body, env) { }
 
       //================================================================================================================
       // Protected instance methods
@@ -70,7 +70,7 @@ static partial class Ae
 
          // PUT_PROP(fun, "fun", env);
 
-         return Body.Eval(new Env(Environment, Parameters, argsList));
+         return Body.Eval(Environment.Spawn(Parameters, argsList));
       }
 
       //================================================================================================================
@@ -89,7 +89,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public Macro(LispObject parameters, LispObject body, LispObject env) : base(parameters, body, env) { }
+      public Macro(LispObject parameters, LispObject body, Env env) : base(parameters, body, env) { }
 
       //================================================================================================================
       // Protected instance methods
