@@ -131,7 +131,7 @@ class Program
       WriteLine(Eval(child_env, "(cons 1 (cons 2 3))").Princ());
       WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
       WriteLine(Eval(child_env, "(lambda (x) (+ x x))", true).Princ());
-      WriteLine(Eval(child_env, "((lambda (x) (+ x x)) 8)", true).Princ());
+      WriteLine(Eval(child_env, "((lambda (x) (list x x)) 8)", true).Princ());
       // }
     }
 
