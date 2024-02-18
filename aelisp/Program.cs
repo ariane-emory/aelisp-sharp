@@ -109,9 +109,12 @@ class Program
       // WriteLine(new Rational(2, 4).Princ());
 
       ConsDebugWrite = false;
-      Core.ConsDebugWrite = true;
+      // Core.ConsDebugWrite = true;
+      
       WriteLine("");
-      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 7))))").Princ());
+
+      while (true)
+         WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 7))))").Princ());
    }
 
    //==============================================================================================================================

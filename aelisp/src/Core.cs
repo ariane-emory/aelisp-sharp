@@ -61,7 +61,7 @@ static partial class Ae
       //=================================================================================================================
       public static CoreFunction.FuncT Eval = (env, argsList, argsLength)
          => ((Pair)argsList)[0];
-      
+
       //=================================================================================================================
       public static CoreFunction.FuncT List = (env, argsList, argsLength)
          => argsList;
@@ -78,6 +78,17 @@ static partial class Ae
       public static CoreFunction.FuncT EqlP = (env, argsList, argsLength)
          => Truthiness(((Pair)argsList)[0].Eql(((Pair)argsList)[1]));
 
+      //=================================================================================================================
+      public static CoreFunction.FuncT Progn = (env, argsList, argsLength) =>
+      {
+         var result = Nil;
+
+         if (argsList is Pair argsListPair)
+            foreach (var elem in argsListPair)
+               result = elem.Eval(env);
+
+         return result;
+      };
    }
    //====================================================================================================================
 }
