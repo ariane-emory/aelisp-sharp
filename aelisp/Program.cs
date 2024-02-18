@@ -271,6 +271,8 @@ class Program
       WriteLine(((CoreFunction)fobj).Apply(root_env, args).Princ());
 
       WriteLine(new Rational(2, 4).Princ());
+
+      WriteLine(ParseSExp.ParseOrThrow(new QueueingLispTokenizer("(cons 2 3)", exclude: IsWhitespaceToken).ReadAll()).Eval(child_env).Princ());
     }
 
    //==============================================================================================================================
