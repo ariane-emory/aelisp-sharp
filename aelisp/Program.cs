@@ -87,17 +87,21 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("macro ", Core.Macro, 002, 15, true),
-         ("lambda", Core.Lambda, 02, 15, true),
-         ("progn ", Core.Progn, 015, 15, false),
-         ("eval  ", Core.Eval, 0001, 01, false),
-         ("list  ", Core.List, 0015, 15, false),
-         ("quote ", Core.Quote, 001, 01, true),
-         ("eql?  ", Core.EqlP, 0002, 02, false),
-         ("eq?   ", Core.EqP, 00002, 02, false),
-         ("cons  ", Core.Cons, 0002, 02, false),
-         ("cdr   ", Core.Cdr, 00001, 01, false),
-         ("car   ", Core.Car, 00001, 01, false),
+         ("rplacd!", Core.Rplacd, 000002, 02, false),
+         ("rplaca!", Core.Rplaca, 000002, 02, false),
+         ("id     ", Core.Id, 0000000001, 01, false),
+         ("not    ", Core.Not, 000000001, 01, false),
+         ("macro  ", Core.Macro, 0000002, 15, true),
+         ("lambda ", Core.Lambda, 000002, 15, true),
+         ("progn  ", Core.Progn, 0000015, 15, false),
+         ("eval   ", Core.Eval, 00000001, 01, false),
+         ("list   ", Core.List, 00000015, 15, false),
+         ("quote  ", Core.Quote, 0000001, 01, true),
+         ("eql?   ", Core.EqlP, 00000002, 02, false),
+         ("eq?    ", Core.EqP, 000000002, 02, false),
+         ("cons   ", Core.Cons, 00000002, 02, false),
+         ("cdr    ", Core.Cdr, 000000001, 01, false),
+         ("car    ", Core.Car, 000000001, 01, false),
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
