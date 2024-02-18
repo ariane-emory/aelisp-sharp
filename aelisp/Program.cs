@@ -196,7 +196,7 @@ class Program
       WriteLine(Intern("nil").Eval(child_env));
       WriteLine(Nil.Eval(child_env));
 
-      LispObject lst = Cons(new Integer(11), Cons(new Char('a'), Cons(Intern("bang"), Cons(new String("hello"), Nil))));
+      LispObject lst = Cons(new Integer(11), Cons(new Char('a'), Cons(Intern("bang"), Cons(Intern(":asd"), Cons(new String("hello"), Nil)))));
       WriteLine(lst.Princ());
       WriteLine(lst.Print());
       LispObject str = new String("hello");
