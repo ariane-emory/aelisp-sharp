@@ -134,17 +134,13 @@ static partial class Ae
          while (current is Pair pair)
          {
             if (currentIndex == index)
-            {
                return pair.Car;
-            }
 
             current = pair.Cdr;
             currentIndex++;
 
             if (!(current is Pair) && current != Nil && currentIndex <= index)
-            {
                break;
-            }
          }
 
          WriteLine($"ix:  {currentIndex} / {index}");
