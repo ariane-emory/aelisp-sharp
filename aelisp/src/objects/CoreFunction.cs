@@ -19,24 +19,28 @@ static partial class Ae
       // Protected instance properties
       //================================================================================================================
       protected override string? StringRepresentation => $"\"{Name}\"";
-            
+
       //================================================================================================================
       // Public properties
       //================================================================================================================
       public string Name { get; }
       public bool Special { get; }
+      public byte MinArgs { get; }
+      public byte MaxArgs { get; }
       public CoreFunc Function { get; }
-
+      
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public CoreFunction(string name, bool special, CoreFunc fun)
+      public CoreFunction(string name, bool special, byte minArgs, byte maxArgs, CoreFunc fun)
       {
          if (string.IsNullOrEmpty(name))
             throw new ArgumentException($"{nameof(name)} cannot be null or empty", nameof(name));
 
          Name = name;
          Special = special;
+         MinArgs = minArgs;
+         MaxArgs = maxArgs;
          Function = fun;
       }
 
@@ -44,17 +48,19 @@ static partial class Ae
       // Public instance methods
       //================================================================================================================
       public override string Princ() => ToString();
-      
+
       //================================================================================================================
       // Protected instance methods
       //================================================================================================================
       protected override LispObject ImplApply(Env env, LispObject args)
       {
+
+
          throw new NotImplementedException("Implement this!");
       }
-      
+
       //================================================================================================================
    }
-   
+
    //===================================================================================================================
 }
