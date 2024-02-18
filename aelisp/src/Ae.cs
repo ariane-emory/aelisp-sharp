@@ -1,3 +1,4 @@
+using static System.Console;
 using System.Collections;
 using System.Reflection;
 using System.Text;
@@ -35,6 +36,7 @@ static partial class Ae
     //====================================================================================================================
     public static LispObject Cons(LispObject car, LispObject cdr)
     {
+       WriteLine($"Cons({car}, {cdr})");
        return (LispObject)new Pair(car, cdr);
     }
    
