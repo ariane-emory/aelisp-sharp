@@ -111,7 +111,7 @@ class Program
       ConsDebugWrite = false;
       Core.ConsDebugWrite = true;
       WriteLine("");
-      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 nil)))").Princ());
+      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 7))))").Princ());
    }
 
    //==============================================================================================================================
