@@ -70,16 +70,33 @@ static partial class Ae
       };
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT Repeat = (env, argsList, argsLength) =>
+      {
+         var first_arg = ((Pair)argsList).Car.Eval(env);
+         var body = ((Pair)argsList).Cdr;
+         var result = Nil;
+         var bodyLength = body.Length;
+
+         if (!((first_arg is Integer times) && (times.Value >= 0)))
+            throw new ArgumentException($"repeat requires a positive integer as its first argument, not {first_arg}!");
+
+         for (int ix = 0; ix < times.Value; ix++)
+            result = Progn(env, body, bodyLength);
+
+         return result;
+      };
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Until = (env, argsList, argsLength) =>
       {
          LispObject while_cond = ((Pair)argsList).Car;
          LispObject do_branch = ((Pair)argsList).Cdr;
-
+         
          var result = Nil;
-
+         
          while (while_cond.Eval(env).IsNil)
             result = Progn(env, do_branch, do_branch.Length);
-
+         
          return result;
       };
 
@@ -371,9 +388,10 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
       {
-         if (argsList.IsNil || !(argsList is Pair argsPair))
-            throw new ArgumentException("case requires at least one form after the key form");
+         // if (!(argsList is Pair argsPair))
+         //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
 
+         var argsPair = (Pair)argsList;
          LispObject keyForm = argsPair.Car.Eval(env);
          LispObject caseForms = argsPair.Cdr;
 
@@ -384,14 +402,17 @@ static partial class Ae
          while (current is Pair currentPair)
          {
             var caseItem = currentPair.Car;
+
             if (!(caseItem is Pair caseItemPair))
                throw new ArgumentException("case forms must be proper lists");
 
             var caseItemCar = caseItemPair.Car;
+
             if (caseItemCar.Equals(Intern("else")))
             {
                if (elseFound)
                   throw new ArgumentException("Only one else clause is allowed in a case expression");
+
                elseFound = true;
             }
 
