@@ -46,8 +46,9 @@ static partial class Ae
       //=================================================================================================================
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
-         LispObject arg1 = ((Pair)argsList).Car;
-         LispObject arg2 = ((Pair)((Pair)argsList).Cdr).Car;
+         var list = (Pair)argsList;
+         LispObject arg1 = list[0];
+         LispObject arg2 = list[1];
 
          return Ae.Cons(arg1, arg2);
       };
