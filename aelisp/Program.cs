@@ -175,8 +175,8 @@ class Program
 
       WriteLine("\nStop.");
  
-      var proper = (Pair)Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), Cons(new Integer(4), Nil))));
-      var improper = (Pair)Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), new Integer(4))));
+      var proper = (Pair)Cons(new Integer(0), Cons(new Integer(1), Cons(new Integer(2), Cons(new Integer(3), Nil))));
+      var improper = (Pair)Cons(new Integer(0), Cons(new Integer(1), Cons(new Integer(2), new Integer(3))));
 
       int len = 0;
       foreach (var o in proper)
@@ -213,12 +213,12 @@ class Program
       WriteLine(improper.ElementAt(4).Princ());
       WriteLine(improper.ElementAt(5).Princ());
       
-      WriteLine(proper.ElementAt(0).Princ());
-      WriteLine(proper.ElementAt(1).Princ());
-      WriteLine(proper.ElementAt(2).Princ());
-      WriteLine(proper.ElementAt(3).Princ());
-      WriteLine(proper.ElementAt(4).Princ());
-      WriteLine(proper.ElementAt(5).Princ());
+      // WriteLine(proper.ElementAt(0).Princ());
+      // WriteLine(proper.ElementAt(1).Princ());
+      // WriteLine(proper.ElementAt(2).Princ());
+      // WriteLine(proper.ElementAt(3).Princ());
+      // WriteLine(proper.ElementAt(4).Princ());
+      // WriteLine(proper.ElementAt(5).Princ());
       
     }
 
