@@ -87,6 +87,7 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("let    ", Core.Let, 0000000002, 15, true),
          ("repeat ", Core.Repeat, 0000001, 15, true),
          ("case   ", Core.Cond, 000000002, 15, true),
          ("cond   ", Core.Cond, 000000001, 15, true),
