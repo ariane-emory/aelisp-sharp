@@ -54,9 +54,16 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string ToString() => $"{TypeName}({Parent}, {Symbols.Write()}, {Values.Write()})";
       public override string Write() => ToString();
       public bool IsRoot => Parent == Nil;
+
+      //================================================================================================================
+      public override string ToString()
+      {
+         var parentStr = $"{(Parent == Nil ? Nil : Parent.Id)}";
+         
+         return $"{TypeName}({parentStr}, {Symbols.Write()}, {Values.Write()})";
+      }
 
       //================================================================================================================
       private Env GetRoot()
@@ -79,7 +86,7 @@ static partial class Ae
 
          DebugWrite($"Added {symbol} with value {value}.");
       }
- 
+
       //================================================================================================================
       public (bool Found, LispObject PairOrNil) Lookup(LookupMode mode, LispObject symbol)
       {
