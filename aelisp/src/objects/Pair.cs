@@ -124,25 +124,31 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public LispObject ElementAt(int index)
-      {
-         int currentIndex = 0;
-         LispObject current = this;
-
-         while (current is Pair pair)
-         {
-            if (currentIndex == index)
-               return pair.Car;
-
-            current = pair.Cdr;
-            currentIndex++;
-         }
-
-         return currentIndex == index ? current : Nil;
-      }
+      public LispObject ElementAt(int index) => this[index];
 
       //================================================================================================================
-   }
+      public LispObject this[int index]
+      {
+         get
+         {
+            int currentIndex = 0;
+            LispObject current = this;
+
+            while (current is Pair pair)
+            {
+               if (currentIndex == index)
+                  return pair.Car;
+               
+               current = pair.Cdr;
+               currentIndex++;
+            }
+            
+            return currentIndex == index ? current : Nil;
+         }
+      }
+      
+      //================================================================================================================
+    }
    //===================================================================================================================
 }
 
