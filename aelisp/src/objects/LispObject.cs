@@ -23,6 +23,7 @@ static partial class Ae
       public virtual bool IsSelfEvaluating => true;
       public bool IsNil => this == Nil;
       public bool IsList => IsNil || this is Pair;
+      public bool IsImproperList => IsList && !IsProperList;
       public bool IsAtom => this is not Pair;
       public int Id { get; }
 

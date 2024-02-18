@@ -22,7 +22,7 @@ static partial class Ae
          if (!argsList.IsList)
             throw new ArgumentException($"{nameof(argsList)} must be a list!");
 
-         if (!argsList.IsProperList) // for the moment, argsList must be proper.
+         if (argsList.IsImproperList) // for the moment, argsList must be proper.
             throw new NotImplementedException($"Using improper lists as {nameof(argsList)} is not permitted yet!");
 
          return ImplApply(env, argsList);

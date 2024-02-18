@@ -411,12 +411,11 @@ static partial class Ae
                var caseActions = caseClausePair.Cdr;
 
                if (caseKeys == Intern("else") ||
-                   (caseKeys is Pair && caseKeys.ToList().Contains(keyForm)) ||
-                   caseKeys == keyForm)
-               {
+                   caseKeys.Eql(keyForm) ||
+                   (caseKeys is Pair caseKeysPair && caseKeysPair.ToList().Contains(keyForm)))
                   return Progn(env, caseActions, caseActions.Length);
-               }
             }
+
             current = currentCasePair.Cdr;
          }
 
@@ -427,18 +426,19 @@ static partial class Ae
    }
 
    //================================================================================================================
-   private static List<LispObject> ToList(this LispObject obj)
+   private static List<LispObject> ToList(this Pair obj)
    {
       var list = new List<LispObject>();
+      LispObject current = obj;
 
-      while (obj is Pair pair)
+      while (current is Pair pair)
       {
          list.Add(pair.Car);
-         obj = pair.Cdr;
+         current = pair.Cdr;
       }
 
-      if (obj != Nil)
-         list.Add(obj);
+      if (current != Nil)
+         list.Add(current);
 
       return list;
    }
