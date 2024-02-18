@@ -206,22 +206,37 @@ class Program
         WriteLine(chr.Princ());
         WriteLine(chr.Print());
 
-        WriteLine("");
-        
+        WriteLine("");       
         WriteLine(improper[0].Princ());
         WriteLine(improper[1].Princ());
         WriteLine(improper[2].Princ());
         WriteLine(improper[3].Princ());
         WriteLine(improper[4].Princ());
         WriteLine(improper[5].Princ());
-      
-      // WriteLine(proper.ElementAt(0).Princ());
-      // WriteLine(proper.ElementAt(1).Princ());
-      // WriteLine(proper.ElementAt(2).Princ());
-      // WriteLine(proper.ElementAt(3).Princ());
-      // WriteLine(proper.ElementAt(4).Princ());
-      // WriteLine(proper.ElementAt(5).Princ());
-      
+
+        improper[0] = new Integer(10);
+        improper[1] = new Integer(11);
+        improper[2] = new Integer(12);
+        improper[3] = new Integer(13);
+        // improper[4] = new Integer(14);
+        // improper[4] = new Integer(15);
+
+        WriteLine("");       
+        WriteLine(improper[0].Princ());
+        WriteLine(improper[1].Princ());
+        WriteLine(improper[2].Princ());
+        WriteLine(improper[3].Princ());
+        WriteLine(improper[4].Princ());
+        WriteLine(improper[5].Princ());
+
+
+        // WriteLine(proper.ElementAt(0).Princ());
+        // WriteLine(proper.ElementAt(1).Princ());
+        // WriteLine(proper.ElementAt(2).Princ());
+        // WriteLine(proper.ElementAt(3).Princ());
+        // WriteLine(proper.ElementAt(4).Princ());
+        // WriteLine(proper.ElementAt(5).Princ());
+
     }
 
    //==============================================================================================================================
