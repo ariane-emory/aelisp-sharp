@@ -62,7 +62,7 @@ static partial class Ae
       {
          var parentStr = IsRoot ? $"{Parent.Write()}" : $"#{Parent.Id}";
          
-         return $"{TypeName}({parentStr}, #{Id}, {Symbols.Write()}, {Values.Write()})";
+         return $"{TypeName}(#{Id}, {parentStr}, {Symbols.Write()}, {Values.Write()})";
       }
 
       //================================================================================================================
