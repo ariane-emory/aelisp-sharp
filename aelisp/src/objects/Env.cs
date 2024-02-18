@@ -52,16 +52,29 @@ static partial class Ae
       }
 
       //================================================================================================================
+      public Env(LispObject parent)
+      {
+         if (!((parent is Env) || parent.IsNil))
+            throw new ArgumentException("Parent must be an Env or Nil");
+
+         Parent = parent;
+         Symbols = Nil;
+         Values = Nil;
+      }
+
+      //================================================================================================================
       // Instance methods
       //================================================================================================================
       public override string Princ() => ToString();
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
+      public Env Spawn()
+         => new Env(this, Nil, Nil);
+
+      //================================================================================================================
       public Env Spawn(LispObject symbols, LispObject values)
-      {
-         return new Env(this, symbols, values);
-      }
+         => new Env(this, symbols, values);
       
       //================================================================================================================
       protected override string? StringRepresentation
