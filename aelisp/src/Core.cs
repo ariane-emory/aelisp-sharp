@@ -314,24 +314,57 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
       {
-         while (argsList is Pair condClausePair)
-         {
-            var condClause = condClausePair.Car;
-            if (condClause is Pair condPair)
-            {
-               var condition = condPair.Car;
-               var actions = condPair.Cdr;
+         // First pass: Validation
+         bool elseFound = false;
+         var current = argsList;
 
-               var conditionResult = condition.Equals(Intern("else")) ? True : condition.Eval(env);
+         while (current is Pair currentPair)
+         {
+            var condItem = currentPair.Car;
+            
+            if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
+               throw new ArgumentException("cond arguments must be proper lists with at least two elements");
+
+            var itemCar = condItemPair.Car;
+            
+            if (itemCar.Equals(Intern("else")))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a cond expression");
+               
+               elseFound = true;
+
+               if (!(currentPair.Cdr.IsNil))
+                  throw new ArgumentException("If used, else clause must be the last clause in a cond expression");
+            }
+            current = currentPair.Cdr;
+         }
+
+         // Second pass: Evaluation
+         current = argsList;
+         while (current is Pair currentClausePair)
+         {
+            var condClause = currentClausePair.Car;
+            if (condClause is Pair condClausePair)
+            {
+               var condition = condClausePair.Car;
+               var actions = condClausePair.Cdr;
+
+               LispObject conditionResult = Nil;
+               if (condition.Equals(Intern("else")))
+                  conditionResult = True;
+               else
+                  conditionResult = condition.Eval(env);
+
                if (!conditionResult.IsNil)
                {
                   return Progn(env, actions, actions.Length);
                }
             }
-            argsList = condClausePair.Cdr;
+            current = currentClausePair.Cdr;
          }
 
-         return Nil; // No condition was true, and no else clause was found
+         return Nil;
       };
 
       //================================================================================================================

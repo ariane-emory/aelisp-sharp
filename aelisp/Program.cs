@@ -87,7 +87,7 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("Cond   ", Core.Cond, 000000001, 15, true),
+         ("cond   ", Core.Cond, 000000001, 15, true),
          ("setq   ", Core.Setq, 000000002, 15, true),
          ("until  ", Core.Until, 00000002, 15, true),
          ("while  ", Core.While, 00000002, 15, true),
@@ -141,9 +141,12 @@ class Program
       WriteLine(Eval(child_env, "((lambda (x) (cons x x)) 8)", true).Princ());
       WriteLine(Eval(child_env, "(setq qq 88 ww 77 *ee* 66)", true).Princ());
       WriteLine(Eval(child_env, "(progn 2 3 4)", true).Princ());
+      
       WriteLine($"\n{root_env}");
       WriteLine($"\n{parent_env}");
       WriteLine($"\n{child_env}");
+
+      WriteLine(Eval(child_env, "(cond (nil 8) (else 14))", true).Princ());
         // }
     }
 
