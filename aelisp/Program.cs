@@ -272,7 +272,7 @@ class Program
 
       WriteLine(new Rational(2, 4).Princ());
 
-      WriteLine(Eval(child_env, "(cons 2 3)").Princ());
+      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 nil)))").Princ());
     }
 
    //==============================================================================================================================
