@@ -34,7 +34,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public CoreFunction(string name, bool special, byte minArgs, byte maxArgs, FuncT fun)
+      public CoreFunction(string name, FuncT fun, byte minArgs, byte maxArgs, bool special)
       {
          if (string.IsNullOrEmpty(name))
             throw new ArgumentException($"{nameof(name)} cannot be null or empty", nameof(name));
