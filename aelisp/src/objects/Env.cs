@@ -58,7 +58,7 @@ static partial class Ae
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
-      public override string ToString()
+      protected override string StringRepresentation()
       {
          var parentStr = IsRoot ? $"{Parent.Write()}" : $"#{Parent.Id}";
          

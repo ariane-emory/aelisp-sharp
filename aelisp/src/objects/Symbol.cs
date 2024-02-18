@@ -22,7 +22,7 @@ static partial class Ae
       //================================================================================================================
       // Public methods
       //================================================================================================================
-      public override string ToString() => this == Nil ? $"Nil(#{Id})" : $"{TypeName}(#{Id}, {Value})";
+      protected override string StringRepresentation() => this == Nil ? $"Nil(#{Id})" : $"{TypeName}(#{Id}, {Value})";
       public override string Write() => Value;
 
       public bool IsSpecial => Value[0] == '*' && Value[Value.Length - 1] == '*';

@@ -55,7 +55,8 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      public abstract override string ToString();
+      public override string ToString() => StringRepresentation();
+      protected abstract string StringRepresentation();
       public abstract string Write();
       public virtual LispObject Eval(Env _) => this;
 
@@ -77,7 +78,7 @@ static partial class Ae
    public class String : LispObjectWithStringValue
    {
       public String(string value) : base(value) { }
-      public override string ToString() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
       public override string Write() => $"\"{Value}\"";
    }
 
@@ -88,7 +89,7 @@ static partial class Ae
    public class Error : LispObjectWithStringValue
    {
       public Error(string value) : base(value) { }
-      public override string ToString() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \"{Value.EscapeChars()}\")";
       public override string Write() => ToString();
    }
 
@@ -99,7 +100,7 @@ static partial class Ae
    {
       public char Value { get; }
       public Char(char value) => Value = value;
-      public override string ToString() => $"{TypeName}(#{Id}, \'{Value}\')";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, \'{Value}\')";
       public override string Write() => $"{Value}";
    }
 
@@ -110,7 +111,7 @@ static partial class Ae
    {
       public int Value { get; }
       public Integer(int value) => Value = value;
-      public override string ToString() => $"{TypeName}(#{Id}, {Value})";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Value})";
       public override string Write() => $"{Value}";
    }
 
@@ -121,7 +122,7 @@ static partial class Ae
    {
       public double Value { get; }
       public Float(double value) => Value = value;
-      public override string ToString() => $"{TypeName}(#{Id}, {Value})";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Value})";
       public override string Write() => $"{Value}";
    }
 
@@ -148,7 +149,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string ToString() => $"{TypeName}(#{Id}, {Write()})";
+      protected override string StringRepresentation() => $"{TypeName}(#{Id}, {Write()})";
       public override string Write() => $"{Numerator}/{Denominator}";
    }
 
