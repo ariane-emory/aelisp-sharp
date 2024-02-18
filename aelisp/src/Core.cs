@@ -16,29 +16,33 @@ static partial class Ae
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
       
       //=================================================================================================================
-      public static LispObject Car(LispObject obj)
+      public static CoreFunction.CoreFunc Car = (env, argsList, argsLength) =>
       {
-         if (obj == Nil)
+         LispObject arg1 = ((Pair)argsList).Car;
+
+         if (! arg1.IsList)
+            throw new ArgumentException("Argument must be a list!");
+
+         if (arg1.IsNil)
             return Nil;
 
-         if (obj is not Pair pair)
-            return new Error("Argument must be a pair or nil!");
-
-         return pair.Car;
-      }
-
-      //====================================================================================================================
-      public static LispObject Cdr(LispObject obj)
+         return ((Pair)arg1).Car;
+      };
+      
+      //=================================================================================================================
+      public static CoreFunction.CoreFunc Cdr = (env, argsList, argsLength) =>
       {
-         if (obj == Nil)
+         LispObject arg1 = ((Pair)argsList).Car;
+
+         if (! arg1.IsList)
+            throw new ArgumentException("Argument must be a list!");
+
+         if (arg1.IsNil)
             return Nil;
 
-         if (obj is not Pair pair)
-            return new Error("Argument must be a pair or nil!");
-
-         return pair.Cdr;
-      }
-
+         return ((Pair)arg1).Cdr;
+      };
+      
       //====================================================================================================================
       public static LispObject Cons(LispObject head, LispObject tail)
            => Ae.Cons(head, tail);
