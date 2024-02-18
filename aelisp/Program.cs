@@ -82,9 +82,9 @@ class Program
       //    Die(2, "Dying due to parse error.");
       // }
 
-      var root_env = new Env(Nil, Nil, Nil);
-      var parent_env = root_env.Spawn(Nil, Nil);
-      var child_env = parent_env.Spawn(Nil, Nil);
+      var root_env = new Env(Nil);
+      var parent_env = root_env.Spawn();
+      var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("letrec ", Core.Letrec, 00000000002, 15, true),
