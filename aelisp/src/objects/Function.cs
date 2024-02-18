@@ -12,7 +12,10 @@ static partial class Ae
       public LispObject Apply(Env env, LispObject args)
       {
          if (!args.IsProperList) // for the moment, args must be proper.
-            throw new ArgumentException($"{nameof(args)} must be a proper list!");
+            throw new NotImplementedException($"Using improper lists as {nameof(args)} is not permitted yet!");
+
+         if (!args.IsList)
+            throw new ArgumentException($"{nameof(args)} must be a list!");
 
          return ImplApply(env, args);
       }
