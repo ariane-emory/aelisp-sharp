@@ -206,6 +206,8 @@ class Program
         WriteLine(chr.Princ());
         WriteLine(chr.Print());
 
+        WriteLine("");
+        
         WriteLine(improper[0].Princ());
         WriteLine(improper[1].Princ());
         WriteLine(improper[2].Princ());
