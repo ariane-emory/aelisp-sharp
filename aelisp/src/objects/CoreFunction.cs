@@ -13,7 +13,7 @@ static partial class Ae
       //================================================================================================================
       // Core function delegate
       //================================================================================================================
-      public delegate LispObject CoreFunc(LispObject arg1, LispObject arg2, int arg3); // ???
+      public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
       //================================================================================================================
       // Protected instance properties
@@ -80,6 +80,15 @@ static partial class Ae
                throw new ArgumentException($"core '{Name}' requires {MinArgs} to {MaxArgs} args, but got {argsLength}");
          }
 
+         if (!Special)
+            argsList = EvalArgs(env, argsList);
+
+         return Function(env, argsList, argsLength);
+      }
+
+      //================================================================================================================
+      private LispObject EvalArgs(Env env, LispObject argsList)
+      {
          throw new NotImplementedException("Implement this!");
       }
 
