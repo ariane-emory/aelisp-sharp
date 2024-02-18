@@ -101,7 +101,6 @@ static partial class Ae
          while (current_arg is Pair current_arg_pair)
          {
             LispObject eval_result = current_arg_pair.Car.Eval(env);
-
             // TO-DO: add return if errorp? or stick with Exceptions?
 
             if (result.IsNil)
@@ -117,11 +116,19 @@ static partial class Ae
 
             current_arg = current_arg_pair.Cdr;
          }
-         
+
          if (!current_arg.IsNil) // dotted tail arg is present.
          {
+            LispObject eval_result = current_arg.Eval(env);
+            // TO-DO: add return if errorp? or stick with Exceptions?
+
+            if (result.IsNil)
+               result = eval_result;            
+            else 
+               result_tail_pair!.Cdr = eval_result;
+
          }
-         
+
          throw new NotImplementedException("Implement this!");
       }
 
