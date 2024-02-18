@@ -55,7 +55,7 @@ static partial class Ae
             if (sym.IsKeyword || sym.IsSelfEvaluating)
                throw new ArgumentException($"symbol {sym} may not be set.");
 
-            LispObject evaluatedValue = valueExpression.Eval(env);
+            var evaluatedValue = valueExpression.Eval(env);
 
             result = valueExpression.Eval(env);
 
@@ -89,9 +89,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Until = (env, argsList, argsLength) =>
       {
-         LispObject while_cond = ((Pair)argsList).Car;
-         LispObject do_branch = ((Pair)argsList).Cdr;
-         
+         var while_cond = ((Pair)argsList).Car;
+         var do_branch = ((Pair)argsList).Cdr;
          var result = Nil;
          
          while (while_cond.Eval(env).IsNil)
@@ -103,9 +102,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT While = (env, argsList, argsLength) =>
       {
-         LispObject while_cond = ((Pair)argsList).Car;
-         LispObject do_branch = ((Pair)argsList).Cdr;
-
+         var while_cond = ((Pair)argsList).Car;
+         var do_branch = ((Pair)argsList).Cdr;
          var result = Nil;
 
          while (!while_cond.Eval(env).IsNil)
@@ -117,8 +115,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList).Car;
-         LispObject then_branch = ((Pair)argsList).Cdr;
+         var if_cond = ((Pair)argsList).Car;
+         var then_branch = ((Pair)argsList).Cdr;
 
          return if_cond.Eval(env).IsNil
             ? Progn(env, then_branch, then_branch.Length)
@@ -128,8 +126,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT When = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList).Car;
-         LispObject then_branch = ((Pair)argsList).Cdr;
+         var if_cond = ((Pair)argsList).Car;
+         var then_branch = ((Pair)argsList).Cdr;
 
          return !if_cond.Eval(env).IsNil
             ? Progn(env, then_branch, then_branch.Length)
@@ -139,9 +137,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT If = (env, argsList, argsLength) =>
       {
-         LispObject if_cond = ((Pair)argsList).Car;
-         LispObject then_branch = ((Pair)((Pair)argsList).Cdr).Car;
-         LispObject else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
+         var if_cond = ((Pair)argsList).Car;
+         var then_branch = ((Pair)((Pair)argsList).Cdr).Car;
+         var else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
 
          return !if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
@@ -167,8 +165,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Rplacd = (env, argsList, argsLength) =>
       {
-         LispObject arg0 = ((Pair)argsList)[0];
-         LispObject arg1 = ((Pair)argsList)[1];
+         var arg0 = ((Pair)argsList)[0];
+         var arg1 = ((Pair)argsList)[1];
 
          if (arg0 is not Pair pair)
             throw new ArgumentException("First argument must be a cons cell!");
@@ -181,8 +179,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Rplaca = (env, argsList, argsLength) =>
       {
-         LispObject arg0 = ((Pair)argsList)[0];
-         LispObject arg1 = ((Pair)argsList)[1];
+         var arg0 = ((Pair)argsList)[0];
+         var arg1 = ((Pair)argsList)[1];
 
          if (arg0 is not Pair pair)
             throw new ArgumentException("First argument must be a cons cell!");
@@ -203,7 +201,7 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Car = (env, argsList, argsLength) =>
       {
-         LispObject arg0 = ((Pair)argsList)[0];
+         var arg0 = ((Pair)argsList)[0];
 
          if (!arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
@@ -217,7 +215,7 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Cdr = (env, argsList, argsLength) =>
       {
-         LispObject arg0 = ((Pair)argsList)[0];
+         var arg0 = ((Pair)argsList)[0];
 
          if (!arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
@@ -233,8 +231,8 @@ static partial class Ae
 
       public static readonly CoreFun.FuncT Cons = (env, argsList, argsLength) =>
       {
-         LispObject arg0 = ((Pair)argsList)[0];
-         LispObject arg1 = ((Pair)argsList)[1];
+         var arg0 = ((Pair)argsList)[0];
+         var arg1 = ((Pair)argsList)[1];
 
          if (Core.ConsDebugWrite)
             WriteLine($"Core Cons({arg0.Princ()}, {arg1.Princ()})");
@@ -269,8 +267,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Lambda = (env, argsList, argsLength) =>
       {
-         LispObject lambdaList = ((Pair)argsList)[0];
-         LispObject body = ((Pair)argsList)[1];
+         var lambdaList = ((Pair)argsList)[0];
+         var body = ((Pair)argsList)[1];
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
             throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
@@ -281,7 +279,7 @@ static partial class Ae
          if (body is not Pair)
             throw new ArgumentException($"Body argument must be a list, not {body.Princ()}!");
 
-         LispObject currentParam = lambdaList;
+         var currentParam = lambdaList;
 
          while (currentParam is Pair currentParamPair)
          {
@@ -300,8 +298,8 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Macro = (env, argsList, argsLength) =>
       {
-         LispObject lambdaList = ((Pair)argsList)[0];
-         LispObject body = ((Pair)argsList)[1];
+         var lambdaList = ((Pair)argsList)[0];
+         var body = ((Pair)argsList)[1];
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
             throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
@@ -312,7 +310,7 @@ static partial class Ae
          if (body is not Pair)
             throw new ArgumentException($"Body argument must be a list, not {body.Princ()}!");
 
-         LispObject currentParam = lambdaList;
+         var currentParam = lambdaList;
 
          while (currentParam is Pair currentParamPair)
          {
@@ -369,7 +367,7 @@ static partial class Ae
                var condition = condClausePair.Car;
                var actions = condClausePair.Cdr;
 
-               LispObject conditionResult = Nil;
+               var conditionResult = Nil;
 
                if (condition.Equals(Intern("else")))
                   conditionResult = True;
@@ -392,8 +390,8 @@ static partial class Ae
          //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
 
          var argsPair = (Pair)argsList;
-         LispObject keyForm = argsPair.Car.Eval(env);
-         LispObject caseForms = argsPair.Cdr;
+         var keyForm = argsPair.Car.Eval(env);
+         var caseForms = argsPair.Cdr;
 
          // First pass: Validation and check for multiple 'else' clauses
          bool elseFound = false;
