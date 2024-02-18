@@ -542,7 +542,7 @@ static partial class Ae
             if (current is Pair currentVarPair)
             {
                sym = currentVarPair.Car;
-               val = ((Pair)currentVarPair.Cdr).Car.Eval(newEnv );
+               val = ((Pair)currentVarPair.Cdr).Car.Eval(newEnv);
             }
             else if (current is Symbol currentVarSym)
             {
