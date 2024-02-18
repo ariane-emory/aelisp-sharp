@@ -17,8 +17,18 @@ static partial class Ae
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
       //=================================================================================================================
+      public static readonly CoreFunction.FuncT If = (env, argsList, argsLength) =>
+      {
+         LispObject if_cond = ((Pair)argsList)[0];
+         LispObject then_branch = ((Pair)argsList)[1];
+         LispObject else_branch = ((Pair)argsList)[2];
+
+         return !if_cond.Eval(env).IsNil ? then_branch.Eval(env) : else_branch.Eval(env);
+      };
+
+      //=================================================================================================================
       public static readonly CoreFunction.FuncT Length = (env, argsList, argsLength)
-         => new Integer(((Pair)argsList)[0].Length);
+       => new Integer(((Pair)argsList)[0].Length);
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT TailP = (env, argsList, argsLength)
@@ -34,17 +44,17 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT Rplacd = (env, argsList, argsLength) =>
-    {
-       LispObject arg0 = ((Pair)argsList)[0];
-       LispObject arg1 = ((Pair)argsList)[1];
+      {
+         LispObject arg0 = ((Pair)argsList)[0];
+         LispObject arg1 = ((Pair)argsList)[1];
 
-       if (arg0 is not Pair pair)
-          throw new ArgumentException("First argument must be a cons cell!");
+         if (arg0 is not Pair pair)
+            throw new ArgumentException("First argument must be a cons cell!");
 
-       pair.Cdr = arg1;
+         pair.Cdr = arg1;
 
-       return arg1;
-    };
+         return arg1;
+      };
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT Rplaca = (env, argsList, argsLength) =>
