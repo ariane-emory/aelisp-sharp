@@ -139,15 +139,14 @@ static partial class Ae
             current = pair.Cdr;
             currentIndex++;
 
-            // If the current element is not a pair but is the last element (improper list), return Nil if searching bey
             if (!(current is Pair) && current != Nil && currentIndex <= index)
             {
                break;
             }
          }
-         WriteLine($"ix {currentIndex}");
-         
-         return current;
+
+            WriteLine($"ix: {currentIndex}");
+            return Nil;
       }
 
       //================================================================================================================
