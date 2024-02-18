@@ -39,7 +39,7 @@ static partial class Ae
          var (found, obj) = env.Lookup(lookupMode, this);
 
          if (!found)
-            throw new ApplicationException($"Unbound symbol '{Write()}!");
+            throw new ApplicationException($"Unbound symbol '{this}!");
 
          return obj;
       }
