@@ -16,7 +16,7 @@ static partial class Ae
       public LispObject Parameters { get; }
       public LispObject Body { get; }
       public LispObject Environment { get; }
-      public abstract bool Special { get; }
+      public override string Name => ToString();
 
       //================================================================================================================
       // Constructor

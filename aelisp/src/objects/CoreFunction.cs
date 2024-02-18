@@ -21,10 +21,16 @@ static partial class Ae
       protected override string? StringRepresentation => $"\"{Name}\"";
 
       //================================================================================================================
+      // Private properties
+      //================================================================================================================
+      private string CoreName { get; set; }
+      private bool CoreSpecial { get; set; }
+
+      //================================================================================================================
       // Public properties
       //================================================================================================================
-      public string Name { get; }
-      public bool Special { get; }
+      public override string Name => CoreName;
+      public override bool Special => CoreSpecial;
       public byte MinArgs { get; }
       public byte MaxArgs { get; }
       public FuncT Function { get; }
@@ -48,8 +54,8 @@ static partial class Ae
          if (minArgs > maxArgs)
             throw new ArgumentException($"{nameof(minArgs)} {minArgs} greater than {nameof(maxArgs)} {maxArgs}!");
 
-         Name = name;
-         Special = special;
+         CoreName = name;
+         CoreSpecial = special;
          MinArgs = minArgs;
          MaxArgs = maxArgs;
          Function = fun;
