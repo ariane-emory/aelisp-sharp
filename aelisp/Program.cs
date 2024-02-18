@@ -15,73 +15,71 @@ class Program
    //==============================================================================================================================
    static void Main()
    {
-      if (false)
+
+      // EnableDebugWrite = true;
+
+      var path = "data/data.lisp"; // "~/lib.lisp";
+      var expandedPath = path.ExpandTilde();
+      var fileText = File.ReadAllText(expandedPath);
+
+      // WriteLine("File contents:");
+      // WriteLine(fileText);
+      // WriteLine("EOF");
+
+      var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsWhitespaceToken);
+
+      // WriteLine("\nSTEP 1 - Raw tokens: ");
+      IEnumerable<LispToken> tokens = tokenizer.ReadAll();
+      // tokens.Print();
+
+      // WriteLine("\nSTEP 2 - Tokens after merging multiline tokens: ");
+      tokens = MergeMultilineTokens.ParseOrThrow(tokens);
+      //tokens.Print();
+
+      // WriteLine("\nSTEP 3 - Tokens after excluding comments: ");
+      tokens = tokens.ExcludingComments();
+      // tokens.Print();
+
+      WriteLine("\nSTEP 4 - Parsed objects: ");
+      try
       {
-         // EnableDebugWrite = true;
+         var obj = ParseProgram.ParseOrThrow(tokens);
 
-         var path = "data/data.lisp"; // "~/lib.lisp";
-         var expandedPath = path.ExpandTilde();
-         var fileText = File.ReadAllText(expandedPath);
+         // WriteLine($"obj.toString(): {obj}");
+         // WriteLine($"obj.Princ(): {obj.Princ()}");
 
-         // WriteLine("File contents:");
-         // WriteLine(fileText);
-         // WriteLine("EOF");
+         // if (obj is Pair pair)
+         //    foreach (var o in pair)
+         //       WriteLine(o.Princ());
+         // else
+         WriteLine(obj.Princ());
+      }
+      catch (ParseException e)
+      {
+         var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
+         var match = re.Match(e.Message);
 
-         var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsWhitespaceToken);
-
-         // WriteLine("\nSTEP 1 - Raw tokens: ");
-         IEnumerable<LispToken> tokens = tokenizer.ReadAll();
-         // tokens.Print();
-
-         // WriteLine("\nSTEP 2 - Tokens after merging multiline tokens: ");
-         tokens = MergeMultilineTokens.ParseOrThrow(tokens);
-         //tokens.Print();
-
-         // WriteLine("\nSTEP 3 - Tokens after excluding comments: ");
-         tokens = tokens.ExcludingComments();
-         // tokens.Print();
-
-         WriteLine("\nSTEP 4 - Parsed objects: ");
-         try
+         if (match.Success)
          {
-            var obj = ParseProgram.ParseOrThrow(tokens);
+            // ParseException reports 1-based index, convert it to 0-based
+            var ix = int.Parse(match.Groups[1].Value) - 1;
 
-            // WriteLine($"obj.toString(): {obj}");
-            // WriteLine($"obj.Princ(): {obj.Princ()}");
-
-            // if (obj is Pair pair)
-            //    foreach (var o in pair)
-            //       WriteLine(o.Princ());
-            // else
-            WriteLine(obj.Princ());
-         }
-         catch (ParseException e)
-         {
-            var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
-            var match = re.Match(e.Message);
-
-            if (match.Success)
+            if (ix >= 0 && ix < tokens.Count())
             {
-               // ParseException reports 1-based index, convert it to 0-based
-               var ix = int.Parse(match.Groups[1].Value) - 1;
-
-               if (ix >= 0 && ix < tokens.Count())
-               {
-                  var tok = tokens.ElementAt(ix);
-                  WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
-               }
-               else
-               {
-                  WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
-               }
+               var tok = tokens.ElementAt(ix);
+               WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
             }
             else
             {
-               WriteLine($"ERROR: Parse error: {e.Message}");
+               WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
             }
-
-            Die(2, "Dying due to parse error.");
          }
+         else
+         {
+            WriteLine($"ERROR: Parse error: {e.Message}");
+         }
+
+         Die(2, "Dying due to parse error.");
       }
 
       var root_env = new Env(
