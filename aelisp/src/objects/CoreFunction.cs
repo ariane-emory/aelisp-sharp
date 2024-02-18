@@ -95,7 +95,7 @@ static partial class Ae
             return Nil;
 
          LispObject result = Nil;
-         LispObject result_tail = Nil;
+         Pair? result_tail_pair = null;
          LispObject current_arg = argsList;
 
          while (current_arg is Pair current_arg_pair)
@@ -103,16 +103,16 @@ static partial class Ae
             LispObject eval_result = current_arg_pair.Car.Eval(env);
 
             // TO-DO: add return if errorp? or stick with Exceptions?
-            
+
             if (result.IsNil)
             {
                result = Cons(eval_result, Nil);
-               result_tail = result;
+               result_tail_pair = (Pair)result;
             }
             else
             {
-               ((Pair)result_tail).Cdr = Cons(eval_result, Nil);
-               result_tail = ((Pair)result_tail).Cdr;
+               result_tail_pair!.Cdr = Cons(eval_result, Nil);
+               result_tail_pair = (Pair)result_tail_pair.Cdr;
             }
 
             current_arg = current_arg_pair.Cdr;
