@@ -6,23 +6,6 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 //======================================================================================================================
 static partial class Ae
 {
-   //================================================================================================================
-   private static List<LispObject> ToList(this LispObject obj)
-   {
-      var list = new List<LispObject>();
-
-      while (obj is Pair pair)
-      {
-         list.Add(pair.Car);
-         obj = pair.Cdr;
-      }
-
-      if (obj != Nil)
-         list.Add(obj);
-
-      return list;
-   }
-
    //====================================================================================================================
    public static class Core
    {
@@ -442,5 +425,23 @@ static partial class Ae
 
       //================================================================================================================
    }
+
+   //================================================================================================================
+   private static List<LispObject> ToList(this LispObject obj)
+   {
+      var list = new List<LispObject>();
+
+      while (obj is Pair pair)
+      {
+         list.Add(pair.Car);
+         obj = pair.Cdr;
+      }
+
+      if (obj != Nil)
+         list.Add(obj);
+
+      return list;
+   }
+
    //===================================================================================================================
 }
