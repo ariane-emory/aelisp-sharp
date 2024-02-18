@@ -87,6 +87,7 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("setq   ", Core.Setq, 000000002, 15, true),
          ("unless ", Core.Unless, 0000002, 15, true),
          ("when   ", Core.When, 000000002, 15, true),
          ("if     ", Core.If, 00000000002, 15, true),
@@ -112,7 +113,7 @@ class Program
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
-         root_env.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFunction(name, fun, minArgs, maxArgs, special));
+         root_env.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFunction(name.Trim(), fun, minArgs, maxArgs, special));
 
       WriteLine(root_env);
 
@@ -135,7 +136,11 @@ class Program
       // WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
       // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
       WriteLine(Eval(child_env, "((lambda (x) (cons x x)) 8)", true).Princ());
-      // }
+      WriteLine(Eval(child_env, "(setq qq 88 ww 77 *ee* 66)", true).Princ());
+      WriteLine($"\n{root_env}");
+      WriteLine($"\n{parent_env}");
+      WriteLine($"\n{child_env}");
+        // }
     }
 
    //==============================================================================================================================
