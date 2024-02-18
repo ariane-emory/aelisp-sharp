@@ -14,35 +14,35 @@ static partial class Ae
       //    // Core function delegate
       //    //===========================================================================================================
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
-      
+
       //=================================================================================================================
       public static CoreFunction.FuncT Car = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
 
-         if (! arg0.IsList)
+         if (!arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
-         
+
          if (arg0.IsNil)
             return Nil;
 
          return ((Pair)arg0).Car;
       };
-      
+
       //=================================================================================================================
       public static CoreFunction.FuncT Cdr = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
 
-         if (! arg0.IsList)
+         if (!arg0.IsList)
             throw new ArgumentException("Argument must be a list!");
-         
+
          if (arg0.IsNil)
             return Nil;
 
          return ((Pair)arg0).Cdr;
       };
-      
+
       //=================================================================================================================
       public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
@@ -51,7 +51,11 @@ static partial class Ae
 
          return Ae.Cons(arg0, arg1);
       };
-      
+
+      //=================================================================================================================
+      public static CoreFunction.FuncT EqP = (env, argsList, argsLength)
+         => ((Pair)argsList)[0] == ((Pair)argsList)[1] ? True : Nil;
+
    }
    //====================================================================================================================
 }
