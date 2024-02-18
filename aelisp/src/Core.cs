@@ -17,7 +17,7 @@ static partial class Ae
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Car = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Car = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
 
@@ -31,7 +31,7 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Cdr = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Cdr = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
 
@@ -47,7 +47,7 @@ static partial class Ae
       //=================================================================================================================
       public static bool ConsDebugWrite { get; set; } = false;
 
-      public static CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Cons = (env, argsList, argsLength) =>
       {
          LispObject arg0 = ((Pair)argsList)[0];
          LispObject arg1 = ((Pair)argsList)[1];
@@ -59,27 +59,27 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Eval = (env, argsList, argsLength)
+      public static readonly CoreFunction.FuncT Eval = (env, argsList, argsLength)
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      public static CoreFunction.FuncT List = (env, argsList, argsLength)
+      public static readonly CoreFunction.FuncT List = (env, argsList, argsLength)
          => argsList;
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Quote = (env, argsList, argsLength)
+      public static readonly CoreFunction.FuncT Quote = (env, argsList, argsLength)
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      public static CoreFunction.FuncT EqP = (env, argsList, argsLength)
+      public static readonly CoreFunction.FuncT EqP = (env, argsList, argsLength)
          => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
 
       //=================================================================================================================
-      public static CoreFunction.FuncT EqlP = (env, argsList, argsLength)
+      public static readonly CoreFunction.FuncT EqlP = (env, argsList, argsLength)
          => Truthiness(((Pair)argsList)[0].Eql(((Pair)argsList)[1]));
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Progn = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Progn = (env, argsList, argsLength) =>
       {
          var result = Nil;
 
@@ -94,7 +94,7 @@ static partial class Ae
            obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Lambda = (env, argsList, argsLength) =>
+      public static readonly CoreFunction.FuncT Lambda = (env, argsList, argsLength) =>
       {
          LispObject lambdaList = ((Pair)argsList)[0];
          LispObject body = ((Pair)argsList)[1];
@@ -125,7 +125,7 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static CoreFunction.FuncT Macro = (env, argsList, argsLength) =>
+      public static readonly CoreFunction .FuncT Macro = (env, argsList, argsLength) =>
       {
          LispObject lambdaList = ((Pair)argsList)[0];
          LispObject body = ((Pair)argsList)[1];
