@@ -41,31 +41,31 @@ static partial class Ae
       {
          if (argsLength % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
-         
+
          var result = Nil;
-         
+
          while (argsList is Pair currentPair)
          {
             var pairHead = currentPair.Car;
             var valueExpression = ((Pair)currentPair.Cdr).Car;
-            
+
             if (!(pairHead is Symbol sym))
                throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
-            
+
             if (sym.IsKeyword || sym.IsSelfEvaluating)
                throw new ArgumentException($"symbol {sym} may not be set.");
-            
+
             LispObject evaluatedValue = valueExpression.Eval(env);
 
             result = valueExpression.Eval(env);
 
             var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
-            
+
             env.Set(mode, sym, result);
-            
+
             argsList = ((Pair)currentPair.Cdr).Cdr;
          }
-         
+
          return result;
       };
 
@@ -312,7 +312,7 @@ static partial class Ae
       };
 
       //================================================================================================================
-      public static LispObject Cond(Env env, LispObject argsList)
+      public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
       {
          while (argsList is Pair condClausePair)
          {
@@ -332,7 +332,7 @@ static partial class Ae
          }
 
          return Nil; // No condition was true, and no else clause was found
-      }
+      };
 
       //================================================================================================================
    }
