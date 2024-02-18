@@ -229,13 +229,29 @@ class Program
         WriteLine(improper[4].Princ());
         WriteLine(improper[5].Princ());
 
+        WriteLine("");       
+        WriteLine(proper[0].Princ());
+        WriteLine(proper[1].Princ());
+        WriteLine(proper[2].Princ());
+        WriteLine(proper[3].Princ());
+        WriteLine(proper[4].Princ());
+        WriteLine(proper[5].Princ());
 
-        // WriteLine(proper.ElementAt(0).Princ());
-        // WriteLine(proper.ElementAt(1).Princ());
-        // WriteLine(proper.ElementAt(2).Princ());
-        // WriteLine(proper.ElementAt(3).Princ());
-        // WriteLine(proper.ElementAt(4).Princ());
-        // WriteLine(proper.ElementAt(5).Princ());
+        proper[0] = new Integer(10);
+        proper[1] = new Integer(11);
+        proper[2] = new Integer(12);
+        proper[3] = new Integer(13);
+        // proper[4] = new Integer(14);
+        // proper[4] = new Integer(15);
+
+        WriteLine("");       
+        WriteLine(proper[0].Princ());
+        WriteLine(proper[1].Princ());
+        WriteLine(proper[2].Princ());
+        WriteLine(proper[3].Princ());
+        WriteLine(proper[4].Princ());
+        WriteLine(proper[5].Princ());
+
 
     }
 
