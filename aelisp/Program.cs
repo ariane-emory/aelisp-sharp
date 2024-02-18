@@ -87,14 +87,15 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("eval ", Core.Eval, 01, 1,  false),
-         ("list ", Core.List, 15, 15, false),
-         ("quote", Core.Quote, 1, 1,  true),
-         ("eql? ", Core.EqlP, 02, 2,  false),
-         ("eq?  ", Core.EqP, 002, 2,  false),
-         ("cons ", Core.Cons, 02, 2,  false),
-         ("cdr  ", Core.Cdr, 001, 1,  false),
-         ("car  ", Core.Car, 001, 1,  false),
+         ("progn", Core.Progn, 15, 15, false),
+         ("eval ", Core.Eval, 001, 01, false),
+         ("list ", Core.List, 015, 15, false),
+         ("quote", Core.Quote, 01, 01, true),
+         ("eql? ", Core.EqlP, 002, 02, false),
+         ("eq?  ", Core.EqP, 0002, 02, false),
+         ("cons ", Core.Cons, 002, 02, false),
+         ("cdr  ", Core.Cdr, 0001, 01, false),
+         ("car  ", Core.Car, 0001, 01, false),
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
@@ -113,8 +114,7 @@ class Program
       
       WriteLine("");
 
-      while (true)
-         WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 7))))").Princ());
+      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 (progn 8 7)))))").Princ());
    }
 
    //==============================================================================================================================
