@@ -254,8 +254,8 @@ class Program
       WriteLine(proper[5].Princ());
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("car ", Core.Car, 1, 1, true),
-         ("cdr ", Core.Cdr, 1, 1, true),
+         ("car ", Core.Car, 01, 1, true),
+         ("cdr ", Core.Cdr, 01, 1, true),
          ("cons", Core.Cons, 2, 2, true),
       ];
 
