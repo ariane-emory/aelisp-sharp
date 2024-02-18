@@ -254,6 +254,7 @@ class Program
       WriteLine(proper[5].Princ());
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("eql?", Core.EqP, 02, 2, true),
          ("eq?",  Core.EqP, 02, 2, true),
          ("cons", Core.Cons, 2, 2, true),
          ("cdr ", Core.Cdr, 01, 1, true),
