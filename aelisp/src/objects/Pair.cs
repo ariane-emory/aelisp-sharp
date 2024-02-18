@@ -138,17 +138,47 @@ static partial class Ae
             {
                if (currentIndex == index)
                   return pair.Car;
-               
+
                current = pair.Cdr;
                currentIndex++;
             }
-            
+
             return currentIndex == index ? current : Nil;
          }
+         set
+         {
+            int currentIndex = 0;
+            LispObject current = this;
+            LispObject previous = Nil;
+
+            while (current is Pair pair)
+            {
+               if (currentIndex == index)
+               {
+                  pair.Car = value;
+                  return;
+               }
+
+               previous = current;
+               current = pair.Cdr;
+               currentIndex++;
+            }
+
+            if (currentIndex == index && previous is Pair prevPair)
+            {
+               prevPair.Cdr = value;
+
+               return;
+            }
+            else if (currentIndex <= index)
+            {
+               throw new IndexOutOfRangeException("Index is out of range.");
+            }
+         }
       }
-      
+
       //================================================================================================================
-    }
+   }
    //===================================================================================================================
 }
 
