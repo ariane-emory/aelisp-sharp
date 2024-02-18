@@ -118,9 +118,9 @@ class Program
 
       // while (true)
       // {
-           WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 (progn 8 7)))))", false).Princ());
-           WriteLine(Eval(child_env, "(progn 10 20 30)", true).Princ());
-           WriteLine(Eval(child_env, "(lambda (x) (+ x x))", true).Princ());
+      WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 (progn 8 7)))))", false).Princ());
+      WriteLine(Eval(child_env, "(progn 10 20 30)", true).Princ());
+      WriteLine(Eval(child_env, "(lambda (x) (+ x x))", true).Princ());
       // }
     }
 
