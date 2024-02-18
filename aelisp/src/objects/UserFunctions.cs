@@ -16,16 +16,16 @@ static partial class Ae
       public LispObject Parameters { get; }
       public LispObject Body { get; }
       public LispObject Environment { get; }
-      public abstract bool Special { get; };
+      public abstract bool Special { get; }
 
       //================================================================================================================
       // Constructor
       //================================================================================================================
-      public UserFunction(LispObject parameters, LispObject body, LispObject env)
+      public UserFunction(LispObject parameters, LispObject body, LispObject environment)
       {
          Parameters = parameters;
          Body = body;
-         Env = env;
+         Environment = environment;
       }
 
       //================================================================================================================
@@ -61,7 +61,7 @@ static partial class Ae
       {
          if ((Parameters is Pair pair) &&
              ((argsList.Length < Parameters.Length) ||
-              (Parameters.IsProperList && argsList.Length > Paramseters.Length)))
+              (Parameters.IsProperList && argsList.Length > Parameters.Length)))
             throw new ArgumentException($"user fun requires {(Parameters.IsProperList ? "exactly" : "at least")} {Parameters.Length} args, but got {argsList.Length}");
 
          if (!Special)
