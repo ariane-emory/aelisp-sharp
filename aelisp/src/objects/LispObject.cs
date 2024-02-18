@@ -16,7 +16,7 @@ static partial class Ae
       protected string TypeName => GetType().Name;
 
       //================================================================================================================
-      public abstract bool IsSelfEvaluating { get; }
+      public virtual bool IsSelfEvaluating => true;
       // public abstract LispObject Eval(Env env);
 
       //================================================================================================================
@@ -46,17 +46,9 @@ static partial class Ae
    }
 
    //===================================================================================================================
-   // SelfEvaluatingLispObject abstract class
-   //===================================================================================================================
-   public abstract class SelfEvaluatingLispObject : LispObject
-   {
-      public override bool IsSelfEvaluating => true;
-   }
-
-   //===================================================================================================================
    // LispObjectWithStringValue abstract class
    //===================================================================================================================
-   public abstract class LispObjectWithStringValue : SelfEvaluatingLispObject
+   public abstract class LispObjectWithStringValue : LispObject
    {
       public string Value { get; }
       public LispObjectWithStringValue(string value) => Value = value;
@@ -110,7 +102,7 @@ static partial class Ae
    //===================================================================================================================
    // Char class
    //===================================================================================================================
-   public class Char : SelfEvaluatingLispObject
+   public class Char : LispObject
    {
       public char Value { get; }
       public Char(char value) => Value = value;
@@ -121,7 +113,7 @@ static partial class Ae
    //===================================================================================================================
    // Integer class
    //===================================================================================================================
-   public class Integer : SelfEvaluatingLispObject
+   public class Integer : LispObject
    {
       public int Value { get; }
       public Integer(int value) => Value = value;
@@ -132,7 +124,7 @@ static partial class Ae
    //===================================================================================================================
    // Float class
    //===================================================================================================================
-   public class Float : SelfEvaluatingLispObject
+   public class Float : LispObject
    {
       public double Value { get; }
       public Float(double value) => Value = value;
@@ -143,7 +135,7 @@ static partial class Ae
    //===================================================================================================================
    // Rational class
    //===================================================================================================================
-   public class Rational : SelfEvaluatingLispObject
+   public class Rational : LispObject
    {
       //================================================================================================================
       // Public properties
