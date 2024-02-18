@@ -62,7 +62,7 @@ static partial class Ae
          }
       }
       //==================================================================================================================
-      public bool Eql(AeObject that)
+      public bool Eql(LispObject that)
       {
          if (this == that)
             return true;
@@ -75,62 +75,71 @@ static partial class Ae
 
          if ((this is String thisString) &&
              (that is String thatString) &&
-               (thisString.Value == thatString.Value))
+             (thisString.Value == thatString.Value))
             return true;
 
          if ((this is Char thisChar) &&
              (that is Char thatChar) &&
-             (thisChar.Value == thatChar.Value)
-             return true;
-
-         if ((this is Integer thisInteger) &&
-             (that is Integer thatInteger) &&
-             (thisInteger.Value == thatInteger.Value))
+             (thisChar.Value == thatChar.Value))
             return true;
 
-         if ((this is Float thisFloat) &&
+         {
+            if ((this is Integer thisInteger) &&
+                (that is Integer thatInteger) &&
+                (thisInteger.Value == thatInteger.Value))
+               return true;
+         }
+
+         {
+            if ((this is Float thisFloat) &&
              (that is Float thatFloat) &&
              (thisFloat.Value == thatFloat.Value))
-            return true;
+               return true;
+         }
 
-         if ((this if Integer thisInteger) &&
+         {
+            if ((this is Integer thisInteger) &&
              (that is Float thatFloat) &&
              (thisInteger.Value == thatFloat.Value))
                return true;
-
-         if ((this is Float thisFloat) &&
-             (that is Integer thatInteger) &&
-             (thisFloat.Value == thatInteger.Value))
-            return true;
-
-         if ((this is Rational thisRational) &&
-             (that is Rational thatRational))
-         {
-            // TODO: simplify both rationals;
-
-            return ((thisRational.Numerator == thatRational.Numerator) &&
-                    (thisRational.Denominator == thatRational.Denominator));
          }
 
-         if ((this is Rational thisRational) &&
-           (that is Integer thatInteger) &&
-             (thisRational.Numerator / thisRational.Denominator == thatInteger.Value))
-            return true;
+         {
+            if ((this is Float thisFloat) &&
+                (that is Integer thatInteger) &&
+                (thisFloat.Value == thatInteger.Value))
+               return true;
+         }
 
-         if ((this is Integer thisInteger) &&
-             (that is Rational thatRational) &&
-             (thisInteger.Value == thatRational.Numerator / thatRational.Denominator))
-            return true;
+         {
+            if ((this is Rational thisRational) &&
+                (that is Rational thatRational))
+            {
+               // TODO: simplify both rationals;
 
-         if ((this is Rational thisRational) &&
-             (that is Float thatFloat) &&
-             (thisRational.Numerator / thisRational.Denominator == thatFloat.Value))
-            return true;
+               return ((thisRational.Numerator == thatRational.Numerator) &&
+                       (thisRational.Denominator == thatRational.Denominator));
+            }
+         }
+         // if ((this is Rational thisRational) &&
+         //   (that is Integer thatInteger) &&
+         //     (thisRational.Numerator / thisRational.Denominator == thatInteger.Value))
+         //    return true;
 
-         if ((this is Float thisFloat) &&
-             (that is Rational thatRational) &&
-             (thisFloat.Value == thatRational.Numerator / thatRational.Denominator))
-            return true;
+         // if ((this is Integer thisInteger) &&
+         //     (that is Rational thatRational) &&
+         //     (thisInteger.Value == thatRational.Numerator / thatRational.Denominator))
+         //    return true;
+
+         // if ((this is Rational thisRational) &&
+         //     (that is Float thatFloat) &&
+         //     (thisRational.Numerator / thisRational.Denominator == thatFloat.Value))
+         //    return true;
+
+         // if ((this is Float thisFloat) &&
+         //     (that is Rational thatRational) &&
+         //     (thisFloat.Value == thatRational.Numerator / thatRational.Denominator))
+         //    return true;
 
          return false;
       }
