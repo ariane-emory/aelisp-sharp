@@ -213,12 +213,12 @@ class Program
       WriteLine(improper.ElementAt(4).Princ());
       WriteLine(improper.ElementAt(5).Princ());
       
-      // WriteLine(proper.ElementAt(0).Princ());
-      // WriteLine(proper.ElementAt(1).Princ());
-      // WriteLine(proper.ElementAt(2).Princ());
-      // WriteLine(proper.ElementAt(3).Princ());
-      // WriteLine(proper.ElementAt(4).Princ());
-      // WriteLine(proper.ElementAt(5).Princ());
+      WriteLine(proper.ElementAt(0).Princ());
+      WriteLine(proper.ElementAt(1).Princ());
+      WriteLine(proper.ElementAt(2).Princ());
+      WriteLine(proper.ElementAt(3).Princ());
+      WriteLine(proper.ElementAt(4).Princ());
+      WriteLine(proper.ElementAt(5).Princ());
       
     }
 

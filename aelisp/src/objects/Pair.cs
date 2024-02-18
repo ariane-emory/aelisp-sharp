@@ -149,7 +149,7 @@ static partial class Ae
 
          WriteLine($"ix:  {currentIndex} / {index}");
 
-         return current;
+         return currentIndex == index ? current : Nil;
       }
 
       //================================================================================================================
