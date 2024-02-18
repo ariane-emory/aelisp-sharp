@@ -6,7 +6,7 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 static partial class Ae
 {
    //====================================================================================================================
-   public static class LispCore
+   public static class Core
    {
       //=================================================================================================================
       public static LispObject Car(LispObject obj)
