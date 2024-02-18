@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Reflection;
 using System.Text;
+using static Ae.LispParsers;
+using Pidgin;
+using static Pidgin.Parser;
+using static Pidgin.Parser<Ae.LispToken>;
 
 //======================================================================================================================
 static partial class Ae
@@ -24,9 +28,12 @@ static partial class Ae
    //====================================================================================================================
    // Ae's static methods
    //====================================================================================================================
-   public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
+   public static List<LispToken> Read(string input) => new LispTokenizer(input).ReadAll();
+   public static LispObject Parse(string input) => ParseSExp.ParseOrThrow(Read(input));
+   public static LispObject Eval(Env env, string input) => Parse(input).Eval(env);
 
    //====================================================================================================================
+   public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
    public static LispObject Truthiness(bool val) => val ? True : Nil;
 
    //====================================================================================================================
