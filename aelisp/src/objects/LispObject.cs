@@ -90,7 +90,7 @@ static partial class Ae
       public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string SPrinc() => $"{Value}";
-      public override string SPrint() => $"\"{Value}\"";
+      public override string SPrint() => $"\"{SPrinc()}\"";
    }
 
    //===================================================================================================================
@@ -113,7 +113,7 @@ static partial class Ae
       public Char(char value) => Value = value;
       protected override string? StringRepresentation => $"\'{Value}\'";
       public override string SPrinc() => $"{Value}";
-      public override string SPrint() => $"\"{Value}\"";
+      public override string SPrint() => $"\'{SPrinc()}\'";
    }
 
    //===================================================================================================================
