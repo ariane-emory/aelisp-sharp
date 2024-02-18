@@ -255,16 +255,18 @@ static partial class Ae
       //================================================================================================================
       // Public properties
       //================================================================================================================
-      public int Numerator { get; }
-      public int Denominator { get; }
+      public int Numerator { get; private set; }
+      public int Denominator { get; private set; }
 
       //================================================================================================================
       // Constructor
       //================================================================================================================ 
       public Rational(int numerator, int denominator)
       {
-         Numerator = numerator;
-         Denominator = denominator;
+         int gcd = GCD(numerator, denominator);
+
+         Numerator = numerator / gcd;
+         Denominator = denominator / gcd;
       }
 
       //================================================================================================================
@@ -272,6 +274,7 @@ static partial class Ae
       //================================================================================================================
       protected override string? StringRepresentation => $"{Princ()}";
       public override string Princ() => $"{Numerator}/{Denominator}";
+
    }
 
    //===================================================================================================================
