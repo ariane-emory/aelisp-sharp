@@ -32,8 +32,13 @@ static partial class Ae
     public static LispObject Read(string input) => ParseSExp.ParseOrThrow(Tokenize(input));
     public static LispObject Eval(Env env, string input) => Read(input).Eval(env);
 
+    //====================================================================================================================
+    public static LispObject Cons(LispObject car, LispObject cdr)
+    {
+       return (LispObject)new Pair(car, cdr);
+    }
+   
    //====================================================================================================================
-   public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
    public static LispObject Truthiness(bool val) => val ? True : Nil;
 
    //====================================================================================================================
