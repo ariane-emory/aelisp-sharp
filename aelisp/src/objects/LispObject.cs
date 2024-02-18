@@ -24,7 +24,7 @@ static partial class Ae
       public bool IsAtom => !IsList;
       public int Id { get; }
       protected abstract string? StringRepresentation { get; }
- 
+
       //================================================================================================================
       public bool IsProperList
       {
@@ -57,20 +57,21 @@ static partial class Ae
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
       public abstract string SPrinc();
+      public virtual string SPrint() => SPrinc();
       public virtual LispObject Eval(Env _) => this;
 
-        //================================================================================================================
-        public override string ToString()
-        {
-           var repr = StringRepresentation;
+      //================================================================================================================
+      public override string ToString()
+      {
+         var repr = StringRepresentation;
 
-           return repr is null
-              ? $"{TypeName}(#{Id})"
-              : $"{TypeName}(#{Id}, {repr})";
-        }
+         return repr is null
+            ? $"{TypeName}(#{Id})"
+            : $"{TypeName}(#{Id}, {repr})";
+      }
 
-        //================================================================================================================
-    }
+      //================================================================================================================
+   }
 
    //===================================================================================================================
    // LispObjectWithStringValue abstract class
@@ -88,7 +89,8 @@ static partial class Ae
    {
       public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
-      public override string SPrinc() => $"\"{Value}\"";
+      public override string SPrinc() => $"{Value}";
+      public override string SPrint() => $"\"{Value}\"";
    }
 
    //===================================================================================================================
@@ -111,6 +113,7 @@ static partial class Ae
       public Char(char value) => Value = value;
       protected override string? StringRepresentation => $"\'{Value}\'";
       public override string SPrinc() => $"{Value}";
+      public override string SPrint() => $"\"{Value}\"";
    }
 
    //===================================================================================================================
