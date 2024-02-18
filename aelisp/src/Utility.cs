@@ -3,88 +3,100 @@ using System.Collections.Immutable;
 //======================================================================================================================
 static partial class Ae
 {
-  //====================================================================================================================
-  // Private static fields
-  //====================================================================================================================
-  private static readonly ImmutableArray<(string Escaped, string Unescaped)> EscapedChars = ImmutableArray.Create(
-    (@"\a", "\a"),
-    (@"\b", "\b"),
-    (@"\f", "\f"),
-    (@"\n", "\n"),
-    (@"\r", "\r"),
-    (@"\t", "\t"),
-    (@"\v", "\v"),
-    // (@"\'", "\'"),
-    (@"\""", "\"")
-    //(@"\\", "\\")
-    );
+   //====================================================================================================================
+   // Private static fields
+   //====================================================================================================================
+   private static readonly ImmutableArray<(string Escaped, string Unescaped)> EscapedChars = ImmutableArray.Create(
+     (@"\a", "\a"),
+     (@"\b", "\b"),
+     (@"\f", "\f"),
+     (@"\n", "\n"),
+     (@"\r", "\r"),
+     (@"\t", "\t"),
+     (@"\v", "\v"),
+     // (@"\'", "\'"),
+     (@"\""", "\"")
+     //(@"\\", "\\")
+     );
 
-  //====================================================================================================================
-  // Public properties
-  //====================================================================================================================
-  public static bool EnableDebugWrite { get; set; } = false;
+   //====================================================================================================================
+   // Public properties
+   //====================================================================================================================
+   public static bool EnableDebugWrite { get; set; } = false;
 
-  //====================================================================================================================
-  // Public static methods
-  //====================================================================================================================
-  private static void DebugPrinc(string s)
-  {
-    if (EnableDebugWrite)
-      Console.WriteLine(s);
-  }
+   //====================================================================================================================
+   // Public static methods
+   //====================================================================================================================
+   private static void DebugPrinc(string s)
+   {
+      if (EnableDebugWrite)
+         Console.WriteLine(s);
+   }
 
-  //====================================================================================================================
-  public static void Die(int exitCode, string message)
-  {
-    Console.Error.WriteLine(message);
-    Environment.Exit(exitCode);
-  }
+   //====================================================================================================================
+   public static void Die(int exitCode, string message)
+   {
+      Console.Error.WriteLine(message);
+      Environment.Exit(exitCode);
+   }
 
-  //====================================================================================================================
-  // String extension methods
-  //====================================================================================================================
-  private static string UnescapeChars(this string self)
-  {
-    foreach (var (escaped, unescaped) in EscapedChars)
-      self = self.Replace(escaped, unescaped);
+   //====================================================================================================================
+   public static int GCD(int a, int b)
+   {
+      while (b != 0)
+      {
+         int temp = b;
+         b = a % b;
+         a = temp;
+      }
+      return a;
+   }
 
-    return self;
-  }
+   //====================================================================================================================
+   // String extension methods
+   //====================================================================================================================
+   private static string UnescapeChars(this string self)
+   {
+      foreach (var (escaped, unescaped) in EscapedChars)
+         self = self.Replace(escaped, unescaped);
 
-  private static string EscapeChars(this string self)
-  {
-    foreach (var (escaped, unescaped) in EscapedChars)
-      self = self.Replace(unescaped, escaped);
+      return self;
+   }
 
-    return self;
-  }
+   private static string EscapeChars(this string self)
+   {
+      foreach (var (escaped, unescaped) in EscapedChars)
+         self = self.Replace(unescaped, escaped);
 
-  //====================================================================================================================
-  private static string ReplaceNewlinesWithEscaped(this string input) => input.Replace("\n", "\\n");
+      return self;
+   }
 
-  //====================================================================================================================
-  private static string Trim(this string input, bool trim) => trim ? input.Trim() : input;
+   //====================================================================================================================
+   private static string ReplaceNewlinesWithEscaped(this string input) => input.Replace("\n", "\\n");
 
-  //====================================================================================================================
-  private static string FirstLine(this string input)
-  {
-    var newlineIndex = input.IndexOf('\n');
+   //====================================================================================================================
+   private static string Trim(this string input, bool trim) => trim ? input.Trim() : input;
 
-    if (newlineIndex == -1)
-      return input;
+   //====================================================================================================================
+   private static string FirstLine(this string input)
+   {
+      var newlineIndex = input.IndexOf('\n');
 
-    return input.Substring(0, newlineIndex);
-  }
-  
-  //====================================================================================================================
-  public static string ExpandTilde(this string path)
-  {
-    if (string.IsNullOrEmpty(path) || !path.StartsWith("~"))
-      return path;
+      if (newlineIndex == -1)
+         return input;
 
-    var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-    return Path.Combine(homeDirectory, path.TrimStart('~').TrimStart('/', '\\'));
-  }
-  
-  //====================================================================================================================
+      return input.Substring(0, newlineIndex);
+   }
+
+   //====================================================================================================================
+   public static string ExpandTilde(this string path)
+   {
+      if (string.IsNullOrEmpty(path) || !path.StartsWith("~"))
+         return path;
+
+      var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+      return Path.Combine(homeDirectory, path.TrimStart('~').TrimStart('/', '\\'));
+   }
+
+   //====================================================================================================================
 }
