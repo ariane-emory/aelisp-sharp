@@ -27,6 +27,9 @@ static partial class Ae
       {
          var result = Nil;
 
+         if (argsList.IsImproperList)
+            throw new ArgumentException("prog body must be a proper list");      
+
          while (argsList is Pair argsListPair)
          {
             result = argsListPair.Car.Eval(env);
@@ -41,6 +44,9 @@ static partial class Ae
       {
          if (argsLength % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
+
+         if (argsList.IsImproperList)
+            throw new ArgumentException("argsList must be a proper list");      
 
          var result = Nil;
 
@@ -74,8 +80,11 @@ static partial class Ae
       {
          var first_arg = ((Pair)argsList).Car.Eval(env);
          var body = ((Pair)argsList).Cdr;
-         var result = Nil;
          var bodyLength = body.Length;
+         var result = Nil;
+
+         if (body.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
 
          if (!((first_arg is Integer times) && (times.Value >= 0)))
             throw new ArgumentException($"repeat requires a positive integer as its first argument, not {first_arg}!");
@@ -92,6 +101,9 @@ static partial class Ae
          var while_cond = ((Pair)argsList).Car;
          var do_branch = ((Pair)argsList).Cdr;
          var result = Nil;
+
+         if (do_branch.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
          
          while (while_cond.Eval(env).IsNil)
             result = Progn(env, do_branch, do_branch.Length);
@@ -106,6 +118,9 @@ static partial class Ae
          var do_branch = ((Pair)argsList).Cdr;
          var result = Nil;
 
+         if (do_branch.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
+
          while (!while_cond.Eval(env).IsNil)
             result = Progn(env, do_branch, do_branch.Length);
 
@@ -118,6 +133,9 @@ static partial class Ae
          var if_cond = ((Pair)argsList).Car;
          var then_branch = ((Pair)argsList).Cdr;
 
+         if (then_branch.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
+
          return if_cond.Eval(env).IsNil
             ? Progn(env, then_branch, then_branch.Length)
             : Nil;
@@ -128,6 +146,9 @@ static partial class Ae
       {
          var if_cond = ((Pair)argsList).Car;
          var then_branch = ((Pair)argsList).Cdr;
+
+         if (then_branch.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
 
          return !if_cond.Eval(env).IsNil
             ? Progn(env, then_branch, then_branch.Length)
@@ -140,6 +161,9 @@ static partial class Ae
          var if_cond = ((Pair)argsList).Car;
          var then_branch = ((Pair)((Pair)argsList).Cdr).Car;
          var else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
+
+         if (else_branch.IsImproperList)
+            throw new ArgumentException("else body must be a proper list");
 
          return !if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
@@ -276,8 +300,8 @@ static partial class Ae
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
             throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
 
-         if (body is not Pair)
-            throw new ArgumentException($"Body argument must be a list, not {body.Princ()}!");
+         if (!body.IsProperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
 
          var currentParam = lambdaList;
 
@@ -307,8 +331,8 @@ static partial class Ae
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
             throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
 
-         if (body is not Pair)
-            throw new ArgumentException($"Body argument must be a list, not {body.Princ()}!");
+         if (!body.IsProperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
 
          var currentParam = lambdaList;
 
@@ -333,6 +357,9 @@ static partial class Ae
          bool elseFound = false;
          var current = argsList;
 
+         if (current.IsImproperList)
+            throw new ArgumentException("cond arguments must be a proper list");
+         
          while (current is Pair currentPair)
          {
             var condItem = currentPair.Car;
@@ -397,16 +424,19 @@ static partial class Ae
          bool elseFound = false;
          var current = caseForms;
 
+         if (caseForms.IsImproperList)
+            throw new ArgumentException("case forms must be a proper list");
+         
          while (current is Pair currentPair)
          {
             var caseItem = currentPair.Car;
 
-            if (!(caseItem is Pair caseItemPair))
-               throw new ArgumentException("case forms must be proper lists");
+            if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
+               throw new ArgumentException("case forms elements must be proper lists");
 
             var caseItemCar = caseItemPair.Car;
 
-            if (caseItemCar.Equals(Intern("else")))
+            if (caseItemCar == Intern("else"))
             {
                if (elseFound)
                   throw new ArgumentException("Only one else clause is allowed in a case expression");
@@ -445,22 +475,22 @@ static partial class Ae
    }
 
    //================================================================================================================
-   private static List<LispObject> ToList(this Pair obj)
-   {
-      var list = new List<LispObject>();
-      LispObject current = obj;
+   // private static List<LispObject> ToList(this Pair obj)
+   // {
+   //    var list = new List<LispObject>();
+   //    LispObject current = obj;
 
-      while (current is Pair pair)
-      {
-         list.Add(pair.Car);
-         current = pair.Cdr;
-      }
+   //    while (current is Pair pair)
+   //    {
+   //       list.Add(pair.Car);
+   //       current = pair.Cdr;
+   //    }
 
-      if (current != Nil)
-         list.Add(current);
+   //    if (current != Nil)
+   //       list.Add(current);
 
-      return list;
-   }
+   //    return list;
+   // }
 
    //===================================================================================================================
 }

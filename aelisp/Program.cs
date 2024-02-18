@@ -149,6 +149,10 @@ class Program
       WriteLine($"\n{child_env}");
 
       WriteLine(Eval(child_env, "(cond (nil 8) (else 14))", true).Princ());
+
+      foreach (var o in ((Pair)Eval(child_env, "(list 2 4 6)", true)).ToList())
+            WriteLine(o);
+
         // }
     }
 
