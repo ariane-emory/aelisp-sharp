@@ -34,12 +34,6 @@ static partial class Ae
       //================================================================================================================
       // Public instance methods
       //================================================================================================================
-      public override LispObject Eval(Env env)
-      {
-         throw new NotImplementedException("Implement this!");
-      }
-
-      //================================================================================================================
       public override string Princ()
       {
          var sb = new StringBuilder();
@@ -175,6 +169,12 @@ static partial class Ae
                throw new IndexOutOfRangeException("Index is out of range.");
             }
          }
+      }
+      //================================================================================================================
+
+      public override LispObject Eval(Env env)
+      {
+         throw new NotImplementedException("Implement this!");
       }
 
       //================================================================================================================

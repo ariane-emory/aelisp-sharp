@@ -54,11 +54,11 @@ static partial class Ae
 
       //=================================================================================================================
       public static CoreFunction.FuncT EqP = (env, argsList, argsLength)
-         => ((Pair)argsList)[0] == ((Pair)argsList)[1] ? True : Nil;
+         => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
 
       //=================================================================================================================
       public static CoreFunction.FuncT EqlP = (env, argsList, argsLength)
-         => ((Pair)argsList)[0].Eql(((Pair)argsList)[1]) ? True : Nil;
+         => Truthiness(((Pair)argsList)[0].Eql(((Pair)argsList)[1]));
 
    }
    //====================================================================================================================

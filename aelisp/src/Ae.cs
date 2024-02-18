@@ -27,6 +27,9 @@ static partial class Ae
    public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
 
    //====================================================================================================================
+   public static LispObject Truthiness(bool val) => val ? True : Nil;
+
+   //====================================================================================================================
    public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
 
    //====================================================================================================================
