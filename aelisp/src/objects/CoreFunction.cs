@@ -28,6 +28,7 @@ static partial class Ae
       public byte MinArgs { get; }
       public byte MaxArgs { get; }
       public CoreFunc Function { get; }
+      public bool UnlimitedMaxArgs => MaxArgs == 15;
       
       //================================================================================================================
       // Constructor
@@ -37,6 +38,15 @@ static partial class Ae
          if (string.IsNullOrEmpty(name))
             throw new ArgumentException($"{nameof(name)} cannot be null or empty", nameof(name));
 
+         if (minArgs > 15)
+            throw new ArgumentOutOfRangeException(nameof(minArgs));
+
+         if (maxArgs > 15)
+            throw new ArgumentOutOfRangeException(nameof(maxArgs));
+
+         if (minArgs > maxArgs)
+            throw new ArgumentException($"{nameof(minArgs)} {minArgs} greater than {nameof(maxArgs)} {maxArgs}!");
+         
          Name = name;
          Special = special;
          MinArgs = minArgs;
