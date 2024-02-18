@@ -62,8 +62,8 @@ static partial class Ae
    // Ae's static fields
    //=================================================================================================================================================
    private static readonly ImmutableArray<LispTokenType> MultilineCommentLispTokenTypes =
-     ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
-
+      ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
+   
    private static readonly ImmutableArray<LispTokenType> MultilineStringLispTokenTypes =
       ImmutableArray.Create(LispTokenType.MultilineStringBegin, LispTokenType.MultilineStringContent, LispTokenType.MultilineStringEnd);
 
