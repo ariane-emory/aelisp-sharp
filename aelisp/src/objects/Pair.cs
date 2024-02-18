@@ -126,6 +126,8 @@ static partial class Ae
       //================================================================================================================
       public LispObject ElementAt(int index)
       {
+         WriteLine($"\nget: {index}");
+
          int currentIndex = 0;
          LispObject current = this;
 
