@@ -17,8 +17,12 @@ static partial class Ae
       //    public delegate LispObject CoreFunc(Env env, LispObject argsList, int argsLength); // ???
 
       //=================================================================================================================
+      public static readonly CoreFunction.FuncT Length = (env, argsList, argsLength)
+         => new Integer(((Pair)argsList)[0].Length);
+
+      //=================================================================================================================
       public static readonly CoreFunction.FuncT TailP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsList);
+       => Truthiness(((Pair)argsList)[0].IsList);
 
       //=================================================================================================================
       public static readonly CoreFunction.FuncT AtomP = (env, argsList, argsLength)

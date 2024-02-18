@@ -87,24 +87,25 @@ class Program
       var child_env = new Env(parent_env, Nil, Nil);
 
       List<(string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("tail?  ", Core.TailP, 0000001, 01, false),
-         ("nil?   ", Core.NilP, 00000001, 01, false),
-         ("atom?  ", Core.AtomP, 0000001, 01, false),
-         ("rplacd!", Core.Rplacd, 000002, 02, false),
-         ("rplaca!", Core.Rplaca, 000002, 02, false),
-         ("id     ", Core.Id, 0000000001, 01, false),
-         ("not    ", Core.Not, 000000001, 01, false),
-         ("macro  ", Core.Macro, 0000002, 15, true),
-         ("lambda ", Core.Lambda, 000002, 15, true),
-         ("progn  ", Core.Progn, 0000015, 15, false),
-         ("eval   ", Core.Eval, 00000001, 01, false),
-         ("list   ", Core.List, 00000015, 15, false),
-         ("quote  ", Core.Quote, 0000001, 01, true),
-         ("eql?   ", Core.EqlP, 00000002, 02, false),
-         ("eq?    ", Core.EqP, 000000002, 02, false),
-         ("cons   ", Core.Cons, 00000002, 02, false),
-         ("cdr    ", Core.Cdr, 000000001, 01, false),
-         ("car    ", Core.Car, 000000001, 01, false),
+         ("length ", Core.Length, 0000001, 01, false),
+         ("tail?  ", Core.TailP, 00000001, 01, false),
+         ("nil?   ", Core.NilP, 000000001, 01, false),
+         ("atom?  ", Core.AtomP, 00000001, 01, false),
+         ("rplacd!", Core.Rplacd, 0000002, 02, false),
+         ("rplaca!", Core.Rplaca, 0000002, 02, false),
+         ("id     ", Core.Id, 00000000001, 01, false),
+         ("not    ", Core.Not, 0000000001, 01, false),
+         ("macro  ", Core.Macro, 00000002, 15, true),
+         ("lambda ", Core.Lambda, 0000002, 15, true),
+         ("progn  ", Core.Progn, 00000015, 15, false),
+         ("eval   ", Core.Eval, 000000001, 01, false),
+         ("list   ", Core.List, 000000015, 15, false),
+         ("quote  ", Core.Quote, 00000001, 01, true),
+         ("eql?   ", Core.EqlP, 000000002, 02, false),
+         ("eq?    ", Core.EqP, 0000000002, 02, false),
+         ("cons   ", Core.Cons, 000000002, 02, false),
+         ("cdr    ", Core.Cdr, 0000000001, 01, false),
+         ("car    ", Core.Car, 0000000001, 01, false),
       ];
 
       foreach ((string name, CoreFunction.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
@@ -127,6 +128,8 @@ class Program
       // {
       WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 (progn 8 7)))))", false).Princ());
       WriteLine(Eval(child_env, "(progn 10 20 30)", true).Princ());
+      WriteLine(Eval(child_env, "(cons 1 (cons 2 3))").Princ());
+      WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
       WriteLine(Eval(child_env, "(lambda (x) (+ x x))", true).Princ());
       WriteLine(Eval(child_env, "((lambda (x) (+ x x)) 8)", true).Princ());
       // }
