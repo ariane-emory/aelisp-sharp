@@ -58,6 +58,12 @@ static partial class Ae
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
+      public Env Spawn(LispObject symbols, LispObject values)
+      {
+         return new Env(this, symbols, values);
+      }
+      
+      //================================================================================================================
       protected override string? StringRepresentation
       {
          get
