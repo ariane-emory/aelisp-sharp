@@ -56,12 +56,21 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      public override string ToString() => $"{TypeName}(#{Id}, {StringRepresentation})";
       public abstract string Write();
       public virtual LispObject Eval(Env _) => this;
 
-      //================================================================================================================
-   }
+        //================================================================================================================
+        public override string ToString()
+        {
+           var repr = StringRepresentation;
+
+           return string.IsNullOrEmpty(repr)
+              ? $"{TypeName}(#{Id})"
+              : $"{TypeName}(#{Id}, {repr})";
+        }
+
+        //================================================================================================================
+    }
 
    //===================================================================================================================
    // LispObjectWithStringValue abstract class
