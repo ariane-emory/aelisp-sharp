@@ -60,7 +60,7 @@ static partial class Ae
       //================================================================================================================
       public override string ToString()
       {
-         var parentStr = IsRoot ? $"{Parent.Write()}" : $"#{Parent.Id}"; // $"{(Parent == Nil ? Nil : Parent.Id)}";
+         var parentStr = IsRoot ? $"{Parent.Write()}" : $"#{Parent.Id}";
          
          return $"{TypeName}({parentStr}, #{Id}, {Symbols.Write()}, {Values.Write()})";
       }
