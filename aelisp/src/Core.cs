@@ -38,6 +38,8 @@ static partial class Ae
 
             LispObject evaluatedValue = valueExpression.Eval(env);
 
+            result = valueExpression.Eval(env);
+
             var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
 
             env.Set(mode, sym, result);
