@@ -205,6 +205,21 @@ class Program
       LispObject chr = new Char('x');
       WriteLine(chr.Princ());
       WriteLine(chr.Print());
+
+      WriteLine(improper.ElementAt(0).Princ());
+      WriteLine(improper.ElementAt(1).Princ());
+      WriteLine(improper.ElementAt(2).Princ());
+      WriteLine(improper.ElementAt(3).Princ());
+      WriteLine(improper.ElementAt(4).Princ());
+      WriteLine(improper.ElementAt(5).Princ());
+      
+      WriteLine(proper.ElementAt(0).Princ());
+      WriteLine(proper.ElementAt(1).Princ());
+      WriteLine(proper.ElementAt(2).Princ());
+      WriteLine(proper.ElementAt(3).Princ());
+      WriteLine(proper.ElementAt(4).Princ());
+      WriteLine(proper.ElementAt(5).Princ());
+      
     }
 
    //==============================================================================================================================
