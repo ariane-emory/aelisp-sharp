@@ -89,6 +89,42 @@ static partial class Ae
 
          return result;
       };
+
+      private static bool IsPermittedParamSymbol(LispObject obj) =>
+           obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
+
+      //=================================================================================================================
+      public static CoreFunction.FuncT Lambda = (env, argsList, argsLength) =>
+      {
+         LispObject lambdaList = ((Pair)argsList)[0];
+         LispObject body = ((Pair)argsList)[1];
+
+         if (!IsPermittedParamSymbol(lambdaList))
+            throw new ArgumentException("Lambda list must be a list or a symbol!");
+
+         if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
+            throw new ArgumentException($"Can't use {symbol} as a parameter!");
+
+         if (body is not Pair)
+            throw new ArgumentException("Body argument must be a list!");
+
+         LispObject currentParam = lambdaList;
+
+         while (currentParam is Pair currentParamPair)
+         {
+            if (!IsPermittedParamSymbol(currentParamPair.Car))
+               throw new ArgumentException($"Can't use {currentParamPair.Car} as a parameter!");
+
+            currentParam = currentParamPair.Cdr;
+         }
+
+         if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
+            throw new ArgumentException($"Can't use {currentParam} as a parameter!");
+
+         return new Lambda(lambdaList, body, env);
+      };
+
+      //================================================================================================================
    }
-   //====================================================================================================================
+   //===================================================================================================================
 }
