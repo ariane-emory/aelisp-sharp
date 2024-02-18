@@ -45,21 +45,49 @@ static partial class Ae
             env.Set(mode, sym, result);
 
             argsList = ((Pair)currentPair.Cdr).Cdr;
-          }
+         }
+
+         return result;
+      };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Until = (env, argsList, argsLength) =>
+      {
+         LispObject while_cond = ((Pair)argsList).Car;
+         LispObject do_branch = ((Pair)argsList).Cdr;
+
+         var result = Nil;
+
+         while (while_cond.Eval(env).IsNil)
+            result = Progn(env, do_branch, do_branch.Length);
+
+         return result;
+      };
+      
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT While = (env, argsList, argsLength) =>
+      {
+         LispObject while_cond = ((Pair)argsList).Car;
+         LispObject do_branch = ((Pair)argsList).Cdr;
+
+         var result = Nil;
+
+         while (!while_cond.Eval(env).IsNil)
+            result = Progn(env, do_branch, do_branch.Length);
 
          return result;
       };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
-    {
-       LispObject if_cond = ((Pair)argsList).Car;
-       LispObject then_branch = ((Pair)argsList).Cdr;
+      {
+         LispObject if_cond = ((Pair)argsList).Car;
+         LispObject then_branch = ((Pair)argsList).Cdr;
 
-       return if_cond.Eval(env).IsNil
-          ? then_branch.Eval(env)
-          : Nil;
-    };
+         return if_cond.Eval(env).IsNil
+            ? Progn(env, then_branch, then_branch.Length)
+            : Nil;
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT When = (env, argsList, argsLength) =>
@@ -68,7 +96,7 @@ static partial class Ae
          LispObject then_branch = ((Pair)argsList).Cdr;
 
          return !if_cond.Eval(env).IsNil
-            ? then_branch.Eval(env)
+            ? Progn(env, then_branch, then_branch.Length) 
             : Nil;
       };
 
@@ -80,8 +108,8 @@ static partial class Ae
          LispObject else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
 
          return !if_cond.Eval(env).IsNil
-           ? then_branch.Eval(env)
-           : else_branch.Eval(env);
+            ? then_branch.Eval(env)
+            : Progn(env, else_branch, else_branch.Length);
       };
 
       //=================================================================================================================
