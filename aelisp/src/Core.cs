@@ -6,6 +6,23 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 //======================================================================================================================
 static partial class Ae
 {
+   //================================================================================================================
+   private static List<LispObject> ToList(this LispObject obj)
+   {
+      var list = new List<LispObject>();
+
+      while (obj is Pair pair)
+      {
+         list.Add(pair.Car);
+         obj = pair.Cdr;
+      }
+
+      if (obj != Nil)
+         list.Add(obj);
+
+      return list;
+   }
+
    //====================================================================================================================
    public static class Core
    {
@@ -321,17 +338,17 @@ static partial class Ae
          while (current is Pair currentPair)
          {
             var condItem = currentPair.Car;
-            
+
             if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
                throw new ArgumentException("cond arguments must be proper lists with at least two elements");
 
             var itemCar = condItemPair.Car;
-            
+
             if (itemCar.Equals(Intern("else")))
             {
                if (elseFound)
                   throw new ArgumentException("Only one else clause is allowed in a cond expression");
-               
+
                elseFound = true;
 
                if (!(currentPair.Cdr.IsNil))
@@ -342,29 +359,85 @@ static partial class Ae
 
          // Second pass: Evaluation
          current = argsList;
+
          while (current is Pair currentClausePair)
          {
             var condClause = currentClausePair.Car;
+
             if (condClause is Pair condClausePair)
             {
                var condition = condClausePair.Car;
                var actions = condClausePair.Cdr;
 
                LispObject conditionResult = Nil;
+
                if (condition.Equals(Intern("else")))
                   conditionResult = True;
                else
                   conditionResult = condition.Eval(env);
 
                if (!conditionResult.IsNil)
-               {
                   return Progn(env, actions, actions.Length);
-               }
             }
             current = currentClausePair.Cdr;
          }
 
          return Nil;
+      };
+
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
+      {
+         if (argsList.IsNil || !(argsList is Pair argsPair))
+            throw new ArgumentException("case requires at least one form after the key form");
+
+         LispObject keyForm = argsPair.Car.Eval(env);
+         LispObject caseForms = argsPair.Cdr;
+
+         // First pass: Validation and check for multiple 'else' clauses
+         bool elseFound = false;
+         var current = caseForms;
+
+         while (current is Pair currentPair)
+         {
+            var caseItem = currentPair.Car;
+            if (!(caseItem is Pair caseItemPair))
+               throw new ArgumentException("case forms must be proper lists");
+
+            var caseItemCar = caseItemPair.Car;
+            if (caseItemCar.Equals(Intern("else")))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a case expression");
+               elseFound = true;
+            }
+
+            current = currentPair.Cdr;
+         }
+
+         // Second pass: Evaluation
+         current = caseForms;
+
+         while (current is Pair currentCasePair)
+         {
+            var caseClause = currentCasePair.Car;
+
+            if (caseClause is Pair caseClausePair)
+            {
+               var caseKeys = caseClausePair.Car;
+               var caseActions = caseClausePair.Cdr;
+
+               if (caseKeys == Intern("else") ||
+                   (caseKeys is Pair && caseKeys.ToList().Contains(keyForm)) ||
+                   caseKeys == keyForm)
+               {
+                  return Progn(env, caseActions, caseActions.Length);
+               }
+            }
+            current = currentCasePair.Cdr;
+         }
+
+         return Nil; // No matching case found
       };
 
       //================================================================================================================
