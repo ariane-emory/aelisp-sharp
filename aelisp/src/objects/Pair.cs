@@ -126,8 +126,6 @@ static partial class Ae
       //================================================================================================================
       public LispObject ElementAt(int index)
       {
-         WriteLine($"\nget: {index}");
-
          int currentIndex = 0;
          LispObject current = this;
 
@@ -138,12 +136,7 @@ static partial class Ae
 
             current = pair.Cdr;
             currentIndex++;
-
-            if (!(current is Pair) && current != Nil && currentIndex <= index)
-               break;
          }
-
-         WriteLine($"ix:  {currentIndex} / {index}");
 
          return currentIndex == index ? current : Nil;
       }
