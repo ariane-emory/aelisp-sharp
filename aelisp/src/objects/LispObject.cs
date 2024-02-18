@@ -21,32 +21,33 @@ static partial class Ae
       protected string TypeName => GetType().Name;
       protected abstract string? StringRepresentation { get; }
       public virtual bool IsSelfEvaluating => true;
-      public bool IsList => this == Nil || this is Pair;
-      public bool IsAtom => !IsList;
+      public bool IsNil => this == Nil;
+      public bool IsList => IsNil || this is Pair;
+      public bool IsAtom => this is not Pair;
       public int Id { get; }
 
       //==================================================================================================================
       public int Length
-        {
-            get
-            {
-               if (this == Nil)
-                  return 0;
-               else if (this is Pair pair)
-                  return pair.PairListLength;
-               else
-                  throw new InvalidOperationException("Not a list");
-            }
-        }
+      {
+         get
+         {
+            if (this == Nil)
+               return 0;
+            else if (this is Pair pair)
+               return pair.PairListLength;
+            else
+               throw new InvalidOperationException("Not a list");
+         }
+      }
 
       //================================================================================================================
-        public bool IsProperList
+      public bool IsProperList
       {
          get
          {
             if (this == Nil)
                return true;
-            
+
             LispObject current = this;
 
             while (current is Pair cons)

@@ -91,10 +91,39 @@ static partial class Ae
       //================================================================================================================
       private LispObject EvalArgs(Env env, LispObject argsList, int argsLength)
       {
- 
+         if (argsList.IsNil)
+            return Nil;
 
-         
-         
+         LispObject result = Nil;
+         LispObject result_tail = Nil;
+         LispObject current_arg = argsList;
+
+         while (current_arg is Pair current_arg_pair)
+         {
+            // LOG(CAR(current_arg), "eval   arg #%d/%d", ctr, args_count);
+
+            LispObject eval_result = current_arg_pair.Car.Eval(env);
+
+            // TO-DO: add return if errorp? or stick with Exceptions?
+
+            // LOG(eval_result, "evaled arg #%d/%d", ctr, args_count);
+
+            
+            if (result.IsNil)
+            {
+               result = Cons(eval_result, Nil);
+               result_tail = result;
+            }
+            else
+            {
+               ((Pair)result_tail).Cdr = Cons(eval_result, Nil);
+               result_tail = ((Pair)result_tail).Cdr;
+            }
+
+            current_arg = current_arg_pair.Cdr;
+         }
+
+         // implement evaling tai arg!
          throw new NotImplementedException("Implement this!");
       }
 
