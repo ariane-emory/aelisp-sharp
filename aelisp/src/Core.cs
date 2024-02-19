@@ -28,7 +28,7 @@ static partial class Ae
    public static class Core
    {
       //=================================================================================================================
-      private static CoreFun.FuncT ShortCircuitFun(Func<LispObject, bool> pred) =>
+      private static CoreFun.FuncT ShortCircuitSpecialFun(Func<LispObject, bool> pred) =>
          (env, argsList, argsLength) =>
          {
             if (argsList.IsImproperList)
@@ -50,13 +50,13 @@ static partial class Ae
          };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT And = ShortCircuitFun(o => o.IsNil);
+      public static readonly CoreFun.FuncT And = ShortCircuitSpecialFun(o => o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil);
+      public static readonly CoreFun.FuncT Or = ShortCircuitSpecialFun(o => !o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Progn = ShortCircuitFun(o => false);
+      public static readonly CoreFun.FuncT Progn = ShortCircuitSpecialFun(o => false);
 
       // //=================================================================================================================
       // public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
