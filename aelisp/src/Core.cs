@@ -230,6 +230,11 @@ static partial class Ae
          };
 
       //=================================================================================================================
+      private static CoreFun.FuncT SimplePredicateFun(Func<LispObject, bool> pred)
+         => (Env env, LispObject argsList, int argsLength)
+         => Truthiness(pred(((Pair)argsList)[0]));
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT ZeroP = NumericEqualityPredicateFun(0);
 
       //=================================================================================================================
