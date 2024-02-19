@@ -261,6 +261,22 @@ static partial class Ae
          SimplePredicateFun(o => o.IsNil);
 
       //=================================================================================================================
+      private static CoreFun.FuncT RplacaOrRplacdFun(Action<LispObject, LispObject> action)
+         => (Env env, LispObject argsList, int argsLength) =>
+         {
+            var arg0 = ((Pair)argsList)[0];
+            var arg1 = ((Pair)argsList)[1];
+
+            if (arg0 is not Pair pair)
+               throw new ArgumentException("First argument must be a cons cell!");
+
+            pair.Cdr = arg1;
+
+            return arg1;
+         };
+
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Rplacd = (env, argsList, argsLength) =>
       {
          var arg0 = ((Pair)argsList)[0];
