@@ -48,6 +48,9 @@ static partial class Ae
          ((Pair)argsList)[0].Eval(env);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT List = (env, argsList, argsLength) => argsList;
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
          var arg1 = ((Pair)argsList)[0];
@@ -59,9 +62,6 @@ static partial class Ae
 
          return Truthiness(found);
       };
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT List = (env, argsList, argsLength) => argsList;
 
       //================================================================================================================
    }
