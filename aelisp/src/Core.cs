@@ -241,24 +241,24 @@ static partial class Ae
          => Truthiness(pred(((Pair)argsList)[0]));
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT KeywordP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0] is Symbol sym && sym.IsKeyword);
+      public static readonly CoreFun.FuncT KeywordP =
+         SimplePredicateFun(o => o is Symbol sym && sym.IsKeyword);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT ProperP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsProperList);
+      public static readonly CoreFun.FuncT ProperP =
+         SimplePredicateFun(o => o.IsProperList);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT TailP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsList);
+      public static readonly CoreFun.FuncT TailP =
+         SimplePredicateFun(o => o.IsList);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT AtomP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsAtom);
+      public static readonly CoreFun.FuncT AtomP =
+         SimplePredicateFun(o => o.IsAtom);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT NilP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsNil);
+      public static readonly CoreFun.FuncT NilP =
+         SimplePredicateFun(o => o.IsNil);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Rplacd = (env, argsList, argsLength) =>
