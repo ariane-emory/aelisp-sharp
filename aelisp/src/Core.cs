@@ -591,6 +591,16 @@ static partial class Ae
          return Core.Progn(newEnv, body, body.Length);
       }
 
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT Type = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList).Car;
+
+         return Intern(arg0 is Pair
+                        ? ":cons"
+                        : ":" + ((Pair)argsList).Car.TypeName.ToLower());
+      };
+
       //================================================================================================================
    }
    //===================================================================================================================

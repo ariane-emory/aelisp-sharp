@@ -18,7 +18,7 @@ static partial class Ae
       //==================================================================================================================
       // Instance properties
       //==================================================================================================================
-      protected string TypeName => GetType().Name;
+      public string TypeName => GetType().Name;
       protected abstract string? StringRepresentation { get; }
       public virtual bool IsSelfEvaluating => true;
       public bool IsNil => this == Nil;

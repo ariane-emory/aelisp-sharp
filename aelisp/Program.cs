@@ -87,6 +87,7 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("type   ", Core.Type, 0000000000001, 01, false),
          ("letrec ", Core.Letrec, 00000000002, 15, true),
          ("let*   ", Core.LetStar, 0000000002, 15, true),
          ("let    ", Core.Let, 00000000000002, 15, true),
@@ -153,8 +154,12 @@ class Program
 
       Do(child_env, "(cond (nil 8) (else 14))");
 
-      // }
-   }
+      Do(child_env, "(type 22)");
+      Do(child_env, "(type 4.3)");
+      Do(child_env, "(type (lambda (x) (x x)))");
+      Do(child_env, "(type '(1 . 2))");
+        // }
+    }
 
    //==============================================================================================================================
    static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());

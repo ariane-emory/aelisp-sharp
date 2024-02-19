@@ -177,8 +177,8 @@ static partial class Ae
          LispObject head = Car;
          LispObject args = Cdr;
 
-         WriteLine($"\nhead: {head.Princ()}");
-         WriteLine($"args: {args.Princ()}");
+         // WriteLine($"\nhead: {head.Princ()}");
+         // WriteLine($"args: {args.Princ()}");
          
          if (!args.IsList)
             throw new ArgumentException($"{nameof(args)} is {args}, not a list, something has gone very wrong!");
