@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("nl           ", Newline,     00000000, 00, false),
          ("string       ", ObjToString, 00000001, 01, false),
          ("+            ", NotImplemented, 00000, 15, false),
          ("intern       ", InternString, 0000001, 01, false),
@@ -219,7 +220,8 @@ class Program
       WriteLine("----");
       Do(child_env, "(apply list '1 x lst)");
       WriteLine("");
-   }
+      Do(child_env, "(nl) (nl) (nl) (nl)");
+    }
 
    //==============================================================================================================================
    static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
