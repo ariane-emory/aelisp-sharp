@@ -119,15 +119,14 @@ static partial class Ae
                 TypedToken(LispTokenType.Dot)
                 .Then(ParseSExp, (_, tailExpr) => tailExpr).Optional(),
                 (exprs, optionalTailExpr) =>
-                (LispObject)exprs.Reverse().Aggregate((LispObject)optionalTailExpr.GetValueOrDefault(Nil), (acc, sexp) => Cons(sexp, acc));
-             )
-         );
+                (LispObject)exprs.Reverse().Aggregate((LispObject)optionalTailExpr
+                                                      .GetValueOrDefault(Nil), (acc, sexp) => Cons(sexp, acc))));
 
       //=====================================================================================================================================
       private static readonly LispObjectParser ParseList =
-        TypedToken(LispTokenType.LParen)
-        .Then(ParseListElements)
-        .Before(TypedToken(LispTokenType.RParen));
+      TypedToken(LispTokenType.LParen)
+      .Then(ParseListElements)
+      .Before(TypedToken(LispTokenType.RParen));
 
       private static readonly LispObjectParser ParseQuotedSExp =
         TypedToken(LispTokenType.Quote)

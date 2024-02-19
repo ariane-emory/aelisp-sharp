@@ -217,6 +217,9 @@ class Program
       Do(child_env, "(setq x 2)");
       Do(child_env, "(setq y 3)");
       Do(child_env, "(setq lst '(3 4))");
+      Do(child_env, "(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      Do(child_env, "(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      Do(child_env, "$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
       WriteLine("----");
       Do(child_env, "(apply list '1 x '(y 4))");
       WriteLine("----");
@@ -224,10 +227,7 @@ class Program
       WriteLine("----");
       Do(child_env, "(apply list '1 x lst)");
       WriteLine("");
-      Do(child_env, "(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do(child_env, "(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do(child_env, "$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
-    }
+   }
 
    //==============================================================================================================================
    static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());

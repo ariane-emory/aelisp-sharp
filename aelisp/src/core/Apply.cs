@@ -13,7 +13,7 @@ static partial class Ae
          Ae.Cons(Intern("quote"), Ae.Cons(obj, Nil));
 
       //================================================================================================================
-      public static bool ApplyLogEnabled { get; set; } = false;
+      public static bool ApplyLogEnabled { get; set; } = true;
 
       //================================================================================================================
       public static void ApplyLog(string msg)
