@@ -132,7 +132,7 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      private static CoreFun.FuncT WhileOrUntilFun(Func<LispObject, bool> pred) =>
+      private static CoreFun.FuncT WhileOrUntilSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
             var test = ((Pair)argsList).Car;
@@ -150,11 +150,11 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Until =
-         WhileOrUntilFun(o => o.IsNil);
+         WhileOrUntilSpecialFun(o => o.IsNil);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT While =
-         WhileOrUntilFun(o => !o.IsNil);
+         WhileOrUntilSpecialFun(o => !o.IsNil);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
