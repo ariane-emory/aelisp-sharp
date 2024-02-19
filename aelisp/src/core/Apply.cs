@@ -79,7 +79,7 @@ static partial class Ae
 
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
-            ApplyLog($"newExpr:       {newExpr}");
+            ApplyLog($"newExpr:        {newExpr.Princ()}");
             current = currentPair.Cdr;
          }
 
@@ -95,10 +95,14 @@ static partial class Ae
 
          if (!last.IsProperList)
             throw new ArgumentException($"last must be a proper list, not {last}!");
-
+         
          while (!last.IsNil)
          {
-            evaledArg = ((Pair)last).Car.Eval(env);
+            evaledArg = ((Pair)last).Car;
+            
+            if (! lastIsQuoteForm)
+               evaledArg = evaledArg.Eval(env);
+            
             ((Pair)newExprTail).Cdr = Ae.Cons(evaledArg, Nil);
             newExprTail = ((Pair)newExprTail).Cdr;
             last = ((Pair)last).Cdr;

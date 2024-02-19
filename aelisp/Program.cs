@@ -223,6 +223,12 @@ class Program
       WriteLine("----");
       Do(child_env, "(apply list '1 'x x '(y 4))");
       WriteLine("----");
+      Do(child_env, "(apply list 1 x (list y 4))");
+      WriteLine("----");
+      Do(child_env, "(apply list 1 x '(y 4))");
+      WriteLine("----");
+      Do(child_env, "(setq z '(2 3 4))");
+      Do(child_env, "(apply list 1 z)");
       // Do(child_env, "(apply list '1 'x x (list y 4))");
       // WriteLine("----");
       // Do(child_env, "(apply list '1 'x x lst)");
