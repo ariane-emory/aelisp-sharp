@@ -157,6 +157,21 @@ static partial class Ae
          WhileOrUntilSpecialFun(o => !o.IsNil);
 
       //=================================================================================================================
+      private static CoreFun.FuncT WhenOrUnlessSpecialFun(Func<LispObject, bool> pred) =>
+         (Env env, LispObject argsList, int argsLength) =>
+      {
+         var if_cond = ((Pair)argsList).Car;
+         var then_branch = ((Pair)argsList).Cdr;
+
+         if (then_branch.IsImproperList)
+            throw new ArgumentException("body must be a proper list");
+
+         return !if_cond.Eval(env).IsNil
+            ? Progn(env, then_branch, then_branch.Length)
+            : Nil;
+      };
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
       {
          var if_cond = ((Pair)argsList).Car;
