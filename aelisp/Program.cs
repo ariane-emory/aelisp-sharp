@@ -89,10 +89,10 @@ class Program
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("body         ", UserFunctionBody, 01, 01, false),
          ("params       ", UserFunctionParams,1, 01, false),
-         ("env          ", EnvOrFunEnv, 0000000, 01, false), // 0-arg version not yet supported.
+         ("env          ", EnvOrFunEnv, 0000000, 01, false),
                   
-         ("syms         ", EnvSymbols, 00000000, 01, false), // 0-arg version not yet supported.
-         ("vals         ", EnvValues, 000000000, 01, false), // 0-arg version not yet supported.
+         ("syms         ", EnvSymbols, 00000000, 01, false),
+         ("vals         ", EnvValues, 000000000, 01, false),
          ("numer        ", Numerator, 000000001, 01, false),
          ("denom        ", Denominator, 0000001, 01, false),
          ("message      ", ErrorMessage, 000001, 01, false),

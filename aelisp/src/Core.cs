@@ -277,15 +277,19 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EnvSymbols =
-         AccessorFun<Env, LispObject>(env => env.Symbols, n => n);
+         AccessorFunWithZeroArgsCase<Env, LispObject>(env => env.Symbols,
+                                                      n => n,
+                                                      () => Root.Symbols);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EnvValues =
-         AccessorFun<Env, LispObject>(env => env.Values, n => n);
+         AccessorFunWithZeroArgsCase<Env, LispObject>(env => env.Values,
+                                                      n => n,
+                                                      () => Root.Values);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Numerator =
-       AccessorFun<Rational, int>(rat => rat.Numerator, n => new Integer(n));
+         AccessorFun<Rational, int>(rat => rat.Numerator, n => new Integer(n));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Denominator =
