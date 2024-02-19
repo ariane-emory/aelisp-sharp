@@ -198,18 +198,18 @@ static partial class Ae
       private static CoreFun.FuncT NumericEqualityPredicateFun(int val) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
-            var arg0 = ((Pair)argsList)[0];
+            var arg1 = ((Pair)argsList)[0];
 
-            if (arg0 is Integer integer)
+            if (arg1 is Integer integer)
                return Truthiness(val == integer.Value);
 
-            if (arg0 is Float floatObj)
+            if (arg1 is Float floatObj)
                return Truthiness(val == floatObj.Value);
 
-            if (arg0 is Rational rational)
+            if (arg1 is Rational rational)
                return Truthiness(val == rational.Numerator);
 
-            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
+            throw new ArgumentException($"Argument must be a symbol, not {arg1}!");
          };
 
       //=================================================================================================================
@@ -394,10 +394,10 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
-         var arg0 = ((Pair)argsList)[0];
+         var arg1 = ((Pair)argsList)[0];
 
-         if (arg0 is not Symbol sym)
-            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
+         if (arg1 is not Symbol sym)
+            throw new ArgumentException($"Argument must be a symbol, not {arg1}!");
 
          var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
 
@@ -453,15 +453,15 @@ static partial class Ae
       private static CoreFun.FuncT RplacaOrRplacdFun(Action<Pair, LispObject> action) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
-            var arg0 = ((Pair)argsList)[0];
-            var arg1 = ((Pair)argsList)[1];
+            var arg1 = ((Pair)argsList)[0];
+            var arg2 = ((Pair)argsList)[1];
 
-            if (arg0 is not Pair pair)
+            if (arg1 is not Pair pair)
                throw new ArgumentException("First argument must be a cons cell!");
 
-            action(pair, arg1);
+            action(pair, arg2);
 
-            return arg1;
+            return arg2;
          };
 
       //=================================================================================================================
@@ -480,15 +480,15 @@ static partial class Ae
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
-            var arg0 = ((Pair)argsList)[0];
+            var arg1 = ((Pair)argsList)[0];
 
-            if (!arg0.IsList)
+            if (!arg1.IsList)
                throw new ArgumentException("Argument must be a list!");
 
-            if (arg0.IsNil)
+            if (arg1.IsNil)
                return Nil;
 
-            return func(arg0); // ((Pair)arg0).Car;
+            return func(arg1);
          };
 
       //=================================================================================================================
