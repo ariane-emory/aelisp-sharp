@@ -107,7 +107,7 @@ class Program
          ("length       ", Length, 0000000000001, 01, false),
          ("id           ", Core.Id, 000000000001, 01, false),
          ("eval         ", Core.Eval, 0000000001, 01, false),
-         // apply                               
+         ("apply        ", Core.Apply, 000000002, 15, true),
          ("macro        ", Core.Macro, 000000002, 15, true),
          ("improper?    ", ImproperP, 0000000001, 01, false),
          ("proper?      ", ProperP, 000000000001, 01, false),
