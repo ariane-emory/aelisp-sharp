@@ -117,14 +117,7 @@ static partial class Ae
              ParseSExp.Many()
              .Then(
                 TypedToken(LispTokenType.Dot)
-                .Then(OneOf(
-                         ParseQuotedSExp!.Select(exp => Cons(exp, Nil)),
-                         ParseQuasiQuotedSExp!.Select(exp => Cons(exp, Nil)),
-                         ParseUnquotedSExp!.Select(exp => Cons(exp, Nil)),
-                         ParseSplicedSExp!.Select(exp => Cons(exp, Nil)),
-                         ParseLitListSExp!.Select(exp => Cons(exp, Nil)),
-                         ParseSExp),
-                      (_, tailExpr) => tailExpr).Optional(),
+                .Then(ParseSExp, (_, tailExpr) => tailExpr).Optional(),
                 (exprs, optionalTailExpr) =>
                 {
                    LispObject list = Nil;
