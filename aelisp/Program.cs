@@ -98,8 +98,9 @@ class Program
          ("atom?   ", Core.AtomP, 000000000001, 01, false),
          ("nil?    ", Core.NilP, 0000000000001, 01, false),
          ("bound?  ", Core.BoundP, 00000000001, 01, false),
+         ("zero?   ", Core.ZeroP, 000000000001, 01, false), 
+         ("one?    ", Core.OneP, 0000000000001, 01, false), 
          ("keyword?", Core.KeywordP, 000000001, 01, false),
-
 
          ("lambda  ", Core.Lambda, 00000000002, 15, true),
          ("rplacd! ", Core.Rplacd, 00000000002, 02, false),

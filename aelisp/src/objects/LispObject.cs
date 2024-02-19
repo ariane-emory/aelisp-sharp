@@ -262,6 +262,9 @@ static partial class Ae
       //================================================================================================================ 
       public Rational(int numerator, int denominator)
       {
+         if (denominator == 0)
+            throw new ArgumentException("denominator can't be 0");
+         
          int gcd = GCD(numerator, denominator);
 
          Numerator = numerator / gcd;
