@@ -16,9 +16,9 @@ static partial class Ae
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
    public static LispObject SymbolsList = Nil;
    public static readonly LispObject True = Intern("t");
-   public static Env Root { get; } = new Env(Nil);
+   public static Env Root { get; private set; } = new Env(Nil);
 
-   //====================================================================================================================
+      //====================================================================================================================
    // Ae's static constructor
    //====================================================================================================================
    static Ae()
@@ -32,6 +32,7 @@ static partial class Ae
    //====================================================================================================================
    public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
    public static LispObject Eval(Env env, string input, bool progn = true) => Read(input, progn).Eval(env);
+   public static void Reset() { Root = new Env(Nil); SymbolsList = Nil; }
 
    //====================================================================================================================
    public static LispObject Read(string input, bool progn) =>
