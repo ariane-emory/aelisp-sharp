@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("write        ", WriteObj,    00000001, 15, false),
          ("nl           ", Newline,     00000000, 00, false),
          ("string       ", ObjToString, 00000001, 01, false),
          ("+            ", NotImplemented, 00000, 15, false),
@@ -220,7 +221,8 @@ class Program
       WriteLine("----");
       Do(child_env, "(apply list '1 x lst)");
       WriteLine("");
-      Do(child_env, "(nl) (nl) (nl) (nl)");
+      Do(child_env, "(write 1 ?  \"hello\" ?  33 ?  :nil)");
+      Do(child_env, "(nl)");
     }
 
    //==============================================================================================================================
