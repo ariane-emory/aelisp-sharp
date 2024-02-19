@@ -51,7 +51,8 @@ static partial class Ae
          
          WriteLine($"newExpr after consing: {newExpr.Princ()}");
 
-         return newExpr.Eval(env);
+         // return newExpr.Eval(env);
+         return Nil;
         }
 
       //================================================================================================================
