@@ -118,6 +118,8 @@ class Program
          ("bound?       ", BoundP, 000000000001, 01, false),
          ("zero?        ", ZeroP, 0000000000001, 01, false), 
          ("one?         ", OneP, 00000000000001, 01, false), 
+         ("positive?    ", PositiveP, 000000001, 01, false),
+         ("negative?    ", NegativeP, 000000001, 01, false),
          ("keyword?     ", KeywordP, 0000000001, 01, false),
                                                  
          ("lambda       ", Core.Lambda, 0000002, 15, true),
