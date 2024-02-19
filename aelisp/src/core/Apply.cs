@@ -20,22 +20,25 @@ static partial class Ae
 
          LispObject current = argsListPair;
          var stash = Nil;
-         
+
          while (current is Pair currentPair && currentPair.Cdr is Pair)
          {
             stash = Ae.Cons(currentPair.Car, stash);
             current = currentPair.Cdr;
          }
 
-         WriteLine($"Stash: {stash.Princ()}");
+         WriteLine($"Stash:   {stash.Princ()}");
          WriteLine($"current: {current.Princ()}");
 
-         var last = current;
-         var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern('QuoteSym');
+         var last = ((Pair)current).Car;
+         WriteLine($"last:    {last.Princ()}");
+         var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
+         WriteLine(lastIsQuoteForm);
+         var lastVal = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : current;
 
-
-            return Nil;
-        }
+         WriteLine($"lastVal: {lastVal.Princ()}");
+         return Nil;
+      }
 
       //================================================================================================================
    }
