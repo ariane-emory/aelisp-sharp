@@ -192,6 +192,14 @@ static partial class Ae
          => new Integer(((Pair)argsList)[0].Length);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT KeywordP = (env, argsList, argsLength)
+         => Truthiness(((Pair)argsList)[0] is Symbol sym && sym.IsKeyword);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT ProperP = (env, argsList, argsLength)
+         => Truthiness(((Pair)argsList)[0].IsProperList);
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT TailP = (env, argsList, argsLength)
          => Truthiness(((Pair)argsList)[0].IsList);
 
