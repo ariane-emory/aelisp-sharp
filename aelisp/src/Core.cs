@@ -243,11 +243,21 @@ static partial class Ae
          PureUnaryFun(o => new String(o.Princ()));
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT SymbolName =
+         PureUnaryFun(o =>
+         {
+            if (o is Symbol sym)
+               return new String(sym.Value);
+            
+            throw new ArgumentException($"Argument must be a string, not {o}!");
+         });
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT InternString =
          PureUnaryFun(o =>
          {
             if (o is String str)
-               return Intern(str!.Value);
+               return Intern(str.Value);
 
             throw new ArgumentException($"Argument must be a string, not {o}!");
          });
