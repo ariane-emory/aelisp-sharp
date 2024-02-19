@@ -12,7 +12,7 @@ static partial class Ae
          (env, argsList, argsLength) =>
          {
             if (argsList.IsImproperList)
-               throw new ArgumentException("prog body must be a proper list");
+               throw new ArgumentException($"argList must be a proper list, not {argsList}!");
 
             var result = Nil;
 

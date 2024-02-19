@@ -12,7 +12,7 @@ static partial class Ae
          (env, argsList, argsLength) =>
          {
             if (argsList.IsImproperList)
-               throw new ArgumentException("argsList must be a proper list");
+               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
             var arg0 = ((Pair)argsList).Car;
             var current = ((Pair)argsList).Cdr;

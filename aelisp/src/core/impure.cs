@@ -58,6 +58,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException("argsList must be a proper list");
+
          var arg1 = ((Pair)argsList)[0];
 
          if (arg1 is not Symbol sym)

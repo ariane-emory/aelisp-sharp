@@ -11,6 +11,9 @@ static partial class Ae
       private static CoreFun.FuncT RplacaOrRplacdFun(Action<Pair, LispObject> action) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
+            if (argsList.IsImproperList)
+               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
             var arg1 = ((Pair)argsList)[0];
             var arg2 = ((Pair)argsList)[1];
 
