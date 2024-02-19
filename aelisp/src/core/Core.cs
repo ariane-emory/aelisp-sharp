@@ -131,15 +131,6 @@ static partial class Ae
          ((Pair)argsList)[0].Eval(env);
 
       //=================================================================================================================
-      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
-                                                                                     Func<FieldT, LispObject> construct,
-                                                                                     Func<LispObject> thunk) =>
-         (Env env, LispObject argsList, int argsLength) =>
-          (argsList.Length == 0)
-               ? thunk()
-               : AccessorFun(getField, construct)(env, argsList, argsLength);
-
-      //=================================================================================================================
       private static CoreFun.FuncT AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
        => PureUnaryFun(o =>
        {
@@ -148,6 +139,15 @@ static partial class Ae
 
           throw new ArgumentException($"Argument must be a string, not {o}!");
        });
+
+      //=================================================================================================================
+      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
+                                                                                     Func<FieldT, LispObject> construct,
+                                                                                     Func<LispObject> thunk) =>
+         (Env env, LispObject argsList, int argsLength) =>
+          (argsList.Length == 0)
+               ? thunk()
+               : AccessorFun(getField, construct)(env, argsList, argsLength);
 
 
       //=================================================================================================================
