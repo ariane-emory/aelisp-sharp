@@ -232,7 +232,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Quote =
-       PureUnaryFun(o => o);
+         PureUnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Length =
