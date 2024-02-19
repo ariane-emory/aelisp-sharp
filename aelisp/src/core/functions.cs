@@ -13,14 +13,14 @@ static partial class Ae
 
       //=================================================================================================================
       public static LispObject NewLambda(Env env, LispObject argsList)
-          => NewFunction<Lambda>(env, argsList);
+          => NewFunction<Lambda>(env, argsList, (e, p, b) => new Lambda(e, p, b));
 
       //=================================================================================================================
       public static LispObject NewMacro(Env env, LispObject argsList)
-          => NewFunction<Macro>(env, argsList);
+         => NewFunction<Macro>(env, argsList, (e, p, b) => new Macro(e, p, b));
 
       //=================================================================================================================
-      public static LispObject NewFunction<T>(Env env, LispObject argsList)
+      public static LispObject NewFunction<T>(Env env, LispObject argsList, Func<Env, LispObject, LispObject, LispObject> create)
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -50,7 +50,7 @@ static partial class Ae
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
             throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
 
-         return new Lambda(env, lambdaList, body);
+         return create(env, lambdaList, body);
       }
 
       //================================================================================================================
