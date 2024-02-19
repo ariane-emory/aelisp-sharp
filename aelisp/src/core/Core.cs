@@ -152,19 +152,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
-       ((Pair)argsList)[0].Eval(env);
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT Cons = (env, argsList, argsLength) =>
-      // {
-      //    var arg0 = ((Pair)argsList)[0];
-      //    var arg1 = ((Pair)argsList)[1];
-
-      //    if (Core.ConsDebugWrite)
-      //       WriteLine($"Core Cons({arg0.Princ()}, {arg1.Princ()})");
-
-      //    return Ae.Cons(arg0, arg1);
-      // };
+         ((Pair)argsList)[0].Eval(env);
 
       //=================================================================================================================
       private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
