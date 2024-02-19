@@ -8,12 +8,12 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Setq = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
-         if (argsLength % 2 != 0)
+         if (argsList.Length % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
 
          var result = Nil;
@@ -44,7 +44,7 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Eval = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -53,10 +53,10 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT List = (env, argsList, argsLength) => argsList;
+      public static readonly CoreFun.FuncT List = (env, argsList) => argsList;
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT BoundP = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");

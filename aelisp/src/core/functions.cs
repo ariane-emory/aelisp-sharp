@@ -12,7 +12,7 @@ static partial class Ae
            obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Lambda = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Lambda = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -46,7 +46,7 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Macro = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Macro = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");

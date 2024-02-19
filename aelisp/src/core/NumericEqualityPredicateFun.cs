@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT NumericEqualityPredicateFun(int val) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (Env env, LispObject argsList) =>
          {
             var arg1 = ((Pair)argsList)[0];
 

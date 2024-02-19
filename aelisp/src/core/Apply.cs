@@ -8,7 +8,7 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Apply = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Apply = (env, argsList) =>
       {
          if (argsList is not Pair argsPair)
             throw new ArgumentException("apply expects at least one argument");

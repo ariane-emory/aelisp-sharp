@@ -11,10 +11,10 @@ static partial class Ae
       private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
                                                                                      Func<FieldT, LispObject> construct,
                                                                                      Func<LispObject> thunk) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (Env env, LispObject argsList) =>
           (argsList.Length == 0)
                ? thunk()
-               : AccessorFun(getField, construct)(env, argsList, argsLength);
+               : AccessorFun(getField, construct)(env, argsList);
 
 
       //=================================================================================================================

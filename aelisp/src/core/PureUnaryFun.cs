@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func)
-         => (Env env, LispObject argsList, int argsLength) =>
+         => (Env env, LispObject argsList) =>
          {
             if (argsList.IsImproperList)
                throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -20,7 +20,7 @@ static partial class Ae
       //=================================================================================================================
       private static CoreFun.FuncT PureUnaryFun<T1>(Func<T1, LispObject> func)
        where T1 : LispObject
-       => (Env env, LispObject argsList, int argsLength) =>
+       => (Env env, LispObject argsList) =>
        {
           if (argsList.IsImproperList)
              throw new ArgumentException($"argsList must be a proper list, not {argsList}!");

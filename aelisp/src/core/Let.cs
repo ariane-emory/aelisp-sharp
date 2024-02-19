@@ -8,15 +8,15 @@ static partial class Ae
    public static partial class Core
    {
       //===================================================================================================================
-      public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
-         LetInternal(env, argsList, argsLength, false);
+      public static readonly CoreFun.FuncT Let = (env, argsList) =>
+         LetInternal(env, argsList, false);
 
       //===================================================================================================================
-      public static readonly CoreFun.FuncT LetStar = (env, argsList, argsLength) =>
-         LetInternal(env, argsList, argsLength, true);
+      public static readonly CoreFun.FuncT LetStar = (env, argsList) =>
+         LetInternal(env, argsList, true);
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Letrec = (env, argsList) =>
       {
          var arg0 = ((Pair)argsList).Car;
          var body = ((Pair)argsList).Cdr;
@@ -36,7 +36,7 @@ static partial class Ae
       };
 
       //===================================================================================================================
-      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
+      private static LispObject LetInternal(Env env, LispObject argsList, bool bindInNewEnv)
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");

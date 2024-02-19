@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
-       => (Env env, LispObject argsList, int argsLength) =>
+       => (Env env, LispObject argsList) =>
        {
           if (argsList.IsImproperList)
              throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -19,7 +19,7 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT UnaryPredicateFun<T1>(Func<T1, bool> pred)
-       => (Env env, LispObject argsList, int argsLength) =>
+       => (Env env, LispObject argsList) =>
        {
           if (argsList.IsImproperList)
              throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -33,59 +33,59 @@ static partial class Ae
        };
 
         //=================================================================================================================
-        public static LispObject PositiveP(Env env, LispObject argsList, int argsLength) =>
+        public static LispObject PositiveP(Env env, LispObject argsList) =>
            UnaryPredicateFun(num => num switch
            {
                Integer integer => integer.Value > 0,
                Float floatObj => floatObj.Value > 0,
                Rational rational => rational.Numerator > 0,
                _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-           })(env, argsList, argsLength);
+           })(env, argsList);
 
         //=================================================================================================================
-        public static LispObject NegativeP(Env env, LispObject argsList, int argsLength) =>
+        public static LispObject NegativeP(Env env, LispObject argsList) =>
          UnaryPredicateFun(num => num switch
          {
             Integer integer => integer.Value < 0,
             Float floatObj => floatObj.Value < 0,
             Rational rational => rational.Numerator < 0,
             _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-         })(env, argsList, argsLength);
+         })(env, argsList);
 
       //=================================================================================================================
-      public static LispObject KeywordP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject KeywordP(Env env, LispObject argsList) =>
          UnaryPredicateFun<Symbol>(sym => sym.IsKeyword)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject ProperP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject ProperP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsProperList)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject ImproperP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject ImproperP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsImproperList)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject TailP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject TailP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsList)
-         (env, argsList, argsLength);
+         (env, argsList);
       
       //=================================================================================================================
-      public static LispObject AtomP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject AtomP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsAtom)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject NilP(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject NilP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsNil)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject Not(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject Not(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsNil)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //================================================================================================================
    }

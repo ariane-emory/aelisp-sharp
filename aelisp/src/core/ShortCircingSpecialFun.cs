@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT ShortCircuitingSpecialFun(Func<LispObject, bool> pred) =>
-         (env, argsList, argsLength) =>
+         (env, argsList) =>
          {
             if (argsList.IsImproperList)
                throw new ArgumentException($"argList must be a proper list, not {argsList}!");
@@ -30,19 +30,19 @@ static partial class Ae
          };
 
       //=================================================================================================================
-      public static LispObject And(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject And(Env env, LispObject argsList) =>
          ShortCircuitingSpecialFun(o => o.IsNil)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject Or(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject Or(Env env, LispObject argsList) =>
          ShortCircuitingSpecialFun(o => !o.IsNil)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //=================================================================================================================
-      public static LispObject Progn(Env env, LispObject argsList, int argsLength) =>
+      public static LispObject Progn(Env env, LispObject argsList) =>
          ShortCircuitingSpecialFun(o => false)
-         (env, argsList, argsLength);
+         (env, argsList);
 
       //================================================================================================================
    }

@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (Env env, LispObject argsList) =>
          PureUnaryFun((o) =>
          {
             if (!o.IsList)
@@ -19,7 +19,7 @@ static partial class Ae
                return Nil;
             
             return func((Pair)o);
-         })(env, argsList, argsLength);
+         })(env, argsList);
 
 
       //=================================================================================================================

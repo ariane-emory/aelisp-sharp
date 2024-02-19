@@ -8,7 +8,7 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Repeat = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Repeat = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -32,7 +32,7 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT WhileOrUntilSpecialFun(Func<LispObject, bool> pred) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (Env env, LispObject argsList) =>
          {
             if (argsList.IsImproperList)
                throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -60,7 +60,7 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT WhenOrUnlessSpecialFun(Func<LispObject, bool> pred) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (Env env, LispObject argsList) =>
          {
             if (argsList.IsImproperList)
                throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -85,7 +85,7 @@ static partial class Ae
          WhenOrUnlessSpecialFun(o => o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT If = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT If = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -103,7 +103,7 @@ static partial class Ae
       };
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Cond = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -166,7 +166,7 @@ static partial class Ae
       };
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
+      public static readonly CoreFun.FuncT Case = (env, argsList) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");

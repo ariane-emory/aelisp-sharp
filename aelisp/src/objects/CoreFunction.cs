@@ -13,7 +13,7 @@ static partial class Ae
       //================================================================================================================
       // Core function delegate
       //================================================================================================================
-      public delegate LispObject FuncT(Env env, LispObject argsList, int argsLength);
+      public delegate LispObject FuncT(Env env, LispObject argsList);
 
       //================================================================================================================
       // Protected instance properties
@@ -87,7 +87,7 @@ static partial class Ae
          if (!Special)
             argsList = EvalArgs(env, argsList);
 
-         return Function(env, argsList, argsLength);
+         return Function(env, argsList);
       }
 
       //================================================================================================================

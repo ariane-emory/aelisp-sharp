@@ -9,7 +9,7 @@ static partial class Ae
    {
       //=================================================================================================================
       private static CoreFun.FuncT PureBinaryFun(Func<LispObject, LispObject, LispObject> func)
-         => (Env env, LispObject argsList, int argsLength) =>
+         => (Env env, LispObject argsList) =>
           {
              if (argsList.IsImproperList)
                 throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -24,7 +24,7 @@ static partial class Ae
       private static CoreFun.FuncT PureBinaryFun<T1, T2>(Func<T1, T2, LispObject> func)
           where T1 : LispObject
           where T2 : LispObject
-          => (Env env, LispObject argsList, int argsLength) =>
+          => (Env env, LispObject argsList) =>
           {
              if (argsList.IsImproperList)
                 throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
