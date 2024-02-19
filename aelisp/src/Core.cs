@@ -351,7 +351,7 @@ static partial class Ae
             {
                result = argsListPair.Car.Eval(env);
                
-               if (result.IsNil)
+               if (pred(result))
                   return result;
                
                argsList = argsListPair.Cdr;
@@ -361,46 +361,10 @@ static partial class Ae
          };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT And = (env, argsList, argsLength) =>
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException("prog body must be a proper list");
-         
-         var result = Nil;
-         
-         while (argsList is Pair argsListPair)
-         {
-            result = argsListPair.Car.Eval(env);
-            
-            if (result.IsNil)
-               return result;
-            
-            argsList = argsListPair.Cdr;
-         }
-         
-         return result;
-      };
+      public static readonly CoreFun.FuncT And = ShortCircuitFun(o => o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Or = (env, argsList, argsLength) =>
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException("prog body must be a proper list");
-
-         var result = Nil;
-
-         while (argsList is Pair argsListPair)
-         {
-            result = argsListPair.Car.Eval(env);
-
-            if (!result.IsNil)
-               return result;
-
-            argsList = argsListPair.Cdr;
-         }
-
-         return result;
-      };
+      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil); 
 
       //=================================================================================================================
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
