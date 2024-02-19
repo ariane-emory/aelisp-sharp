@@ -247,11 +247,10 @@ static partial class Ae
                                                                                      Func<FieldT, LispObject> construct,
                                                                                      Func<LispObject> thunk) =>
          (Env env, LispObject argsList, int argsLength) =>
-         {
-            return (argsList.Length == 0)
+          (argsList.Length == 0)
                ? thunk()
                : AccessorFun(getField, construct)(env, argsList, argsLength);
-         };
+         
 
       //=================================================================================================================
       private static CoreFun.FuncT AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
