@@ -82,10 +82,9 @@ class Program
       //    Die(2, "Dying due to parse error.");
       // }
 
-      var root_env = new Env(Nil);
-      var parent_env = root_env.Spawn();
+      var parent_env = Root.Spawn();
       var child_env = parent_env.Spawn();
-
+      
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          ("body         ", Core.UserFunctionBody, 001, 01, false),
          ("params       ", Core.UserFunctionParams,01, 01, false),
@@ -146,13 +145,13 @@ class Program
       ];
 
       foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
-         root_env.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFun(name.Trim(), fun, minArgs, maxArgs, special));
+         Root.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFun(name.Trim(), fun, minArgs, maxArgs, special));
 
-      WriteLine(root_env);
+      WriteLine(Root);
 
-      // var (found, fobj) = root_env.Lookup(Env.LookupMode.Global, Intern("cons"));
+      // var (found, fobj) = Root.Lookup(Env.LookupMode.Global, Intern("cons"));
       // var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
-      // WriteLine(((CoreFun)fobj).Apply(root_env, args).Princ());
+      // WriteLine(((CoreFun)fobj).Apply(Root, args).Princ());
 
       // WriteLine(new Rational(2, 4).Princ());
 
@@ -172,7 +171,7 @@ class Program
       Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
       Do(child_env, "(progn 2 3 4)");
 
-      WriteLine($"\n{root_env}");
+      WriteLine($"\n{Root}");
       WriteLine($"\n{parent_env}");
       WriteLine($"\n{child_env}");
 
