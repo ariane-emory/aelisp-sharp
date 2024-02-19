@@ -1,5 +1,6 @@
 ﻿using static System.Console;
 using static Ae;
+using static Ae.Core;
 using static Ae.LispParsers;
 using Pidgin;
 using static Pidgin.Parser;
@@ -155,7 +156,7 @@ class Program
 
       // WriteLine(new Rational(2, 4).Princ());
 
-      ConsDebugWrite = false;
+      // ConsDebugWrite = false;
       // Core.ConsDebugWrite = true;
 
       WriteLine("");
