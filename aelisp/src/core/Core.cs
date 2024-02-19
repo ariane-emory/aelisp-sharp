@@ -105,11 +105,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT Cdr = CarOrCdrFun(o => ((Pair)o).Cdr);
 
       //=================================================================================================================
-      public static bool ConsDebugWrite { get; set; } = false;
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT List = (env, argsList, argsLength)
-         => argsList;
+      public static readonly CoreFun.FuncT List = (env, argsList, argsLength) => argsList;
 
       //=================================================================================================================
       private static bool IsPermittedParamSymbol(LispObject obj) =>
