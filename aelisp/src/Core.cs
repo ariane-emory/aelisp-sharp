@@ -339,23 +339,45 @@ static partial class Ae
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
+      private static CoreFun.FuncT ShortCircuitFun(Func<LispObject, bool> pred) =>
+         (env, argsList, argsLength) =>
+         {
+            if (argsList.IsImproperList)
+               throw new ArgumentException("prog body must be a proper list");
+            
+            var result = Nil;
+            
+            while (argsList is Pair argsListPair)
+            {
+               result = argsListPair.Car.Eval(env);
+               
+               if (result.IsNil)
+                  return result;
+               
+               argsList = argsListPair.Cdr;
+            }
+            
+            return result;
+         };
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT And = (env, argsList, argsLength) =>
       {
          if (argsList.IsImproperList)
             throw new ArgumentException("prog body must be a proper list");
-
+         
          var result = Nil;
-
+         
          while (argsList is Pair argsListPair)
          {
             result = argsListPair.Car.Eval(env);
-
+            
             if (result.IsNil)
                return result;
-
+            
             argsList = argsListPair.Cdr;
          }
-
+         
          return result;
       };
 
