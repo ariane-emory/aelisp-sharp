@@ -219,6 +219,26 @@ static partial class Ae
       public static readonly CoreFun.FuncT OneP = NumericEqualityPredicateFun(1);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT PositiveP =
+         UnaryPredicateFun(num => num switch
+         {
+            Integer integer => integer.Value > 0,
+            Float floatObj => floatObj.Value > 0,
+            Rational rational => rational.Numerator > 0,
+            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+         });
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT NegativeP =
+         UnaryPredicateFun(num => num switch
+         {
+            Integer integer => integer.Value < 0,
+            Float floatObj => floatObj.Value < 0,
+            Rational rational => rational.Numerator < 0,
+            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+         });
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
          ((Pair)argsList)[0].Eval(env);
 
