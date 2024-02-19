@@ -224,12 +224,17 @@ static partial class Ae
          => func(((Pair)argsList)[0]);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Eval =
-         UnaryFun(o => o);
+      public static readonly CoreFun.FuncT Id = UnaryFun(o => o);
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList)[0];
+         return arg0.Eval(env);
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Quote =
-         UnaryFun(o => o);
+       UnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Length =
@@ -256,7 +261,7 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP =
          UnaryPredicateFun(o => o is Symbol sym && sym.IsKeyword);
-      
+
       //=================================================================================================================
       public static readonly CoreFun.FuncT ProperP =
          UnaryPredicateFun(o => o.IsProperList);
@@ -295,10 +300,6 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Rplaca =
          RplacaOrRplacdFun((pair, arg1) => pair.Car = arg1);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Id =
-         UnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Not =
