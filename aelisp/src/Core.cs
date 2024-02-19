@@ -285,32 +285,25 @@ static partial class Ae
          => Truthiness(((Pair)argsList)[0].IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Car = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
+      private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
+         (Env env, LispObject argsList, int argsLength) =>
+         {
+            var arg0 = ((Pair)argsList)[0];
 
-         if (!arg0.IsList)
-            throw new ArgumentException("Argument must be a list!");
+            if (!arg0.IsList)
+               throw new ArgumentException("Argument must be a list!");
 
-         if (arg0.IsNil)
-            return Nil;
+            if (arg0.IsNil)
+               return Nil;
 
-         return ((Pair)arg0).Car;
-      };
+            return func(arg0); // ((Pair)arg0).Car;
+         };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Cdr = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
+      public static readonly CoreFun.FuncT Car = CarOrCdrFun(o => ((Pair)o).Car);
 
-         if (!arg0.IsList)
-            throw new ArgumentException("Argument must be a list!");
-
-         if (arg0.IsNil)
-            return Nil;
-
-         return ((Pair)arg0).Cdr;
-      };
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Cdr = CarOrCdrFun(o => ((Pair)o).Cdr);
 
       //=================================================================================================================
       public static bool ConsDebugWrite { get; set; } = false;
@@ -344,19 +337,19 @@ static partial class Ae
          {
             if (argsList.IsImproperList)
                throw new ArgumentException("prog body must be a proper list");
-            
+
             var result = Nil;
-            
+
             while (argsList is Pair argsListPair)
             {
                result = argsListPair.Car.Eval(env);
-               
+
                if (pred(result))
                   return result;
-               
+
                argsList = argsListPair.Cdr;
             }
-            
+
             return result;
          };
 
@@ -364,7 +357,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT And = ShortCircuitFun(o => o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil); 
+      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil);
 
       //=================================================================================================================
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
