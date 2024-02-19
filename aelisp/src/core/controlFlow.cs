@@ -10,6 +10,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Repeat = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          var first_arg = ((Pair)argsList).Car.Eval(env);
          var body = ((Pair)argsList).Cdr;
          var bodyLength = body.Length;
@@ -31,6 +34,9 @@ static partial class Ae
       private static CoreFun.FuncT WhileOrUntilSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
+            if (argsList.IsImproperList)
+               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
             var test = ((Pair)argsList).Car;
             var body = ((Pair)argsList).Cdr;
             var result = Nil;
@@ -55,17 +61,20 @@ static partial class Ae
       //=================================================================================================================
       private static CoreFun.FuncT WhenOrUnlessSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList, int argsLength) =>
-      {
-         var test = ((Pair)argsList).Car;
-         var body = ((Pair)argsList).Cdr;
+         {
+            if (argsList.IsImproperList)
+               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
-         if (body.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
+            var test = ((Pair)argsList).Car;
+            var body = ((Pair)argsList).Cdr;
 
-         return pred(test.Eval(env))
-            ? Progn(env, body, body.Length)
-            : Nil;
-      };
+            if (body.IsImproperList)
+               throw new ArgumentException("body must be a proper list");
+
+            return pred(test.Eval(env))
+               ? Progn(env, body, body.Length)
+               : Nil;
+         };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT When =
@@ -78,6 +87,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT If = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          var if_cond = ((Pair)argsList).Car;
          var then_branch = ((Pair)((Pair)argsList).Cdr).Car;
          var else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
@@ -93,6 +105,9 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          // First pass: Validation
          bool elseFound = false;
          var current = argsList;
@@ -153,6 +168,9 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          // if (!(argsList is Pair argsPair))
          //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
 

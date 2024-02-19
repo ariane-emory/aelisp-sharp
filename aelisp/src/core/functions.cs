@@ -14,6 +14,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Lambda = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          var lambdaList = ((Pair)argsList)[0];
          var body = ((Pair)argsList)[1];
 
@@ -45,6 +48,9 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Macro = (env, argsList, argsLength) =>
       {
+         if (argsList.IsImproperList)
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+
          var lambdaList = ((Pair)argsList)[0];
          var body = ((Pair)argsList)[1];
 
@@ -72,7 +78,7 @@ static partial class Ae
 
          return new Macro(env, lambdaList, body);
       };
-      
+
       //================================================================================================================
    }
    //===================================================================================================================

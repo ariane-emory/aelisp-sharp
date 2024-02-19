@@ -11,7 +11,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
       {
          if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
          if (argsLength % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
@@ -47,7 +47,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
       {
          if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
          return ((Pair)argsList)[0].Eval(env);
       };
@@ -59,7 +59,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
          if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
          var arg1 = ((Pair)argsList)[0];
 
