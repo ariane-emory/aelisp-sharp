@@ -87,20 +87,25 @@ class Program
       var child_env = parent_env.Spawn();
       
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         // exit
+         ("string       ", ObjToString, 0000001, 01, false),
+         ("intern       ", InternString, 000001, 01, false),
+         // set-props
+         // props
+         ("message      ", ErrorMessage, 000001, 01, false),
+         ("symbol-name  ", SymbolName, 00000001, 01, false),
+         // rational
+         ("denom        ", Denominator, 0000001, 01, false),
+         ("numer        ", Numerator, 000000001, 01, false),
          ("body         ", UserFunctionBody, 01, 01, false),
          ("params       ", UserFunctionParams,1, 01, false),
          ("env          ", EnvOrFunEnv, 0000000, 01, false),
-                  
          ("syms         ", EnvSymbols, 00000000, 01, false),
          ("vals         ", EnvValues, 000000000, 01, false),
-         ("numer        ", Numerator, 000000001, 01, false),
-         ("denom        ", Denominator, 0000001, 01, false),
-         ("message      ", ErrorMessage, 000001, 01, false),
-         ("symbol-name  ", SymbolName, 00000001, 01, false),
-         ("intern       ", InternString, 000001, 01, false),
-         ("string       ", ObjToString, 0000001, 01, false),
+         // concat
          // set                                 
          ("length       ", Length, 000000000001, 01, false),
+         ("id           ", Core.Id, 00000000001, 01, false),
          ("eval         ", Core.Eval, 000000001, 01, false),
          // apply                               
          ("macro        ", Core.Macro, 00000002, 15, true),
