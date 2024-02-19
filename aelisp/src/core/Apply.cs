@@ -27,6 +27,12 @@ static partial class Ae
          LispObject current = argsListPair.Cdr;
          LispObject evaledArg = Nil;
 
+         WriteLine($"newExpr:     {newExpr.Princ()}");
+         WriteLine($"newExprTail: {newExprTail.Princ()}");
+         WriteLine($"current:     {current.Princ()}");
+         WriteLine($"evaledArg:   {evaledArg.Princ()}");
+         
+
             // LispObject current = argsListPair;
             // var stash = Nil;
 
