@@ -113,36 +113,29 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Until = (env, argsList, argsLength) =>
-      {
-         var while_cond = ((Pair)argsList).Car;
-         var do_branch = ((Pair)argsList).Cdr;
-         var result = Nil;
+      private static CoreFun.FuncT WhileOrUntilFun(Func<LispObject, bool> pred) =>
+         (Env env, LispObject argsList, int argsLength) =>
+         {
+            var test = ((Pair)argsList).Car;
+            var body = ((Pair)argsList).Cdr;
+            var result = Nil;
 
-         if (do_branch.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
+            if (body.IsImproperList)
+               throw new ArgumentException("body must be a proper list");
 
-         while (while_cond.Eval(env).IsNil)
-            result = Progn(env, do_branch, do_branch.Length);
+            while (pred(test.Eval(env)))
+               result = Progn(env, body, body.Length);
 
-         return result;
-      };
+            return result;
+         };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT While = (env, argsList, argsLength) =>
-      {
-         var while_cond = ((Pair)argsList).Car;
-         var do_branch = ((Pair)argsList).Cdr;
-         var result = Nil;
+      public static readonly CoreFun.FuncT Until =
+         WhileOrUntilFun(o => o.IsNil);
 
-         if (do_branch.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
-
-         while (!while_cond.Eval(env).IsNil)
-            result = Progn(env, do_branch, do_branch.Length);
-
-         return result;
-      };
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT While =
+         WhileOrUntilFun(o => !o.IsNil);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
