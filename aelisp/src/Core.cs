@@ -294,7 +294,7 @@ static partial class Ae
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      private static CoreFun.FuncT EqualityPredicate(Func<LispObject, LispObject, bool> pred) =>
+      private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
             if (argsList.IsImproperList)
@@ -318,11 +318,11 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EqP =
-        EqualityPredicate((o1, o2) => o1 == o2);
+        EqualityPredicateFun((o1, o2) => o1 == o2);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EqlP =
-         EqualityPredicate((o1, o2) => o1.Eql(o2));
+         EqualityPredicateFun((o1, o2) => o1.Eql(o2));
 
       //=================================================================================================================
       private static bool IsPermittedParamSymbol(LispObject obj) =>
