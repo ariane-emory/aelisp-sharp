@@ -221,11 +221,11 @@ class Program
       Do(child_env, "(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
       Do(child_env, "$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
       WriteLine("----");
-      Do(child_env, "(apply list '1 x '(y 4))");
+      Do(child_env, "(apply list '1 'x x '(y 4))");
       WriteLine("----");
-      Do(child_env, "(apply list '1 x (list y 4))");
+      Do(child_env, "(apply list '1 'x x (list y 4))");
       WriteLine("----");
-      Do(child_env, "(apply list '1 x lst)");
+      Do(child_env, "(apply list '1 'x x lst)");
       WriteLine("");
    }
 
