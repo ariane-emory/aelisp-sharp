@@ -242,19 +242,26 @@ static partial class Ae
       public static readonly CoreFun.FuncT ObjToString =
          PureUnaryFun(o => new String(o.Princ()));
 
-      private static CoreFun.FuncT StringAccessorFun(Func<LispObject, LispObject> func) =>
+      //=================================================================================================================
+      private static CoreFun.FuncT StringAccessorFun<T>(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength)
-         => Nil;
+         => PureUnaryFun(o =>
+         {
+            if (o is T typed)
+               return new String(func(str));
+
+            throw new ArgumentException($"Argument must be a string, not {o}!");
+         });
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ErrorMessage =
-         PureUnaryFun(o =>
-         {
-            if (o is Error err)
-               return new String(err.Value);
+       PureUnaryFun(o =>
+       {
+          if (o is Error err)
+             return new String(err.Value);
 
-            throw new ArgumentException($"Argument must be  an error, not {o}!");
-         });
+          throw new ArgumentException($"Argument must be  an error, not {o}!");
+       });
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT SymbolName =
