@@ -34,7 +34,7 @@ static partial class Ae
          WriteLine($"last:    {last.Princ()}");
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
          WriteLine(lastIsQuoteForm);
-         var lastVal = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last;
+         var lastVal = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : ((Pair)((Pair)last).Cdr);
 
          WriteLine($"lastVal: {lastVal.Princ()}");
          return Nil;
