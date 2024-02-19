@@ -37,22 +37,23 @@ static partial class Ae
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
          WriteLine(lastIsQuoteForm);
          var lastTail = (Pair)((Pair)last).Cdr;
-         var lastVal = lastIsQuoteForm ? lastTail.Car : lastTail;
+         var newExpr = lastIsQuoteForm ? lastTail.Car : lastTail;
 
-         WriteLine($"lastVal: {lastVal.Princ()}");
+         WriteLine($"newExpr: {newExpr.Princ()}");
 
          current = stash;
 
          while (current is Pair currentPair)
          {
-            lastVal = Ae.Cons(currentPair.Car, lastVal);
+            newExpr = Ae.Cons(currentPair.Car, newExpr);
             current = currentPair.Cdr;
          }
          
-         WriteLine($"lastVal after consing: {lastVal.Princ()}");
+         WriteLine($"newExpr after consing: {newExpr.Princ()}");
 
-         return lastVal.Eval(env);
-      }
+         // return newExpr.Eval(env);
+         return Nil;
+        }
 
       //================================================================================================================
    }
