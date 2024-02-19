@@ -85,7 +85,7 @@ class Program
 
       var parent_env = Root.Spawn();
       var child_env = parent_env.Spawn();
-      
+
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
          ("string       ", ObjToString, 0000001, 01, false),
@@ -98,7 +98,7 @@ class Program
          ("denom        ", Denominator, 0000001, 01, false),
          ("numer        ", Numerator, 000000001, 01, false),
          ("body         ", UserFunctionBody, 01, 01, false),
-         ("params       ", UserFunctionParams,1, 01, false),
+         ("params       ", UserFunctionParams, 1, 01, false),
          ("env          ", EnvOrFunEnv, 0000000, 01, false),
          ("syms         ", EnvSymbols, 00000000, 01, false),
          ("vals         ", EnvValues, 000000000, 01, false),
@@ -109,22 +109,22 @@ class Program
          ("eval         ", Core.Eval, 000000001, 01, false),
          // apply                               
          ("macro        ", Core.Macro, 00000002, 15, true),
-                                                
+
          ("improper?    ", ImproperP, 000000001, 01, false),
          ("proper?      ", ProperP, 00000000001, 01, false),
          ("tail?        ", TailP, 0000000000001, 01, false),
          ("atom?        ", AtomP, 0000000000001, 01, false),
          ("nil?         ", NilP, 00000000000001, 01, false),
          ("bound?       ", BoundP, 000000000001, 01, false),
-         ("zero?        ", ZeroP, 0000000000001, 01, false), 
-         ("one?         ", OneP, 00000000000001, 01, false), 
+         ("zero?        ", ZeroP, 0000000000001, 01, false),
+         ("one?         ", OneP, 00000000000001, 01, false),
          ("positive?    ", PositiveP, 000000001, 01, false),
          ("negative?    ", NegativeP, 000000001, 01, false),
          ("keyword?     ", KeywordP, 0000000001, 01, false),
-         
+
          ("1-           ", Minus1, 000000000001, 01, false),
          ("1+           ", Plus1, 0000000000001, 01, false),
-         
+
          ("lambda       ", Core.Lambda, 0000002, 15, true),
          ("rplacd!      ", Rplacd, 000000000002, 02, false),
          ("rplaca!      ", Rplaca, 000000000002, 02, false),
@@ -134,7 +134,7 @@ class Program
          ("not          ", Core.Not, 0000000001, 01, false),
          ("or           ", Or, 0000000000000001, 15, false),
          ("and          ", And, 000000000000001, 15, false),
-                                                
+
          ("repeat       ", Repeat, 000000000001, 15, true),
          ("case         ", Cond, 00000000000002, 15, true),
          ("cond         ", Cond, 00000000000001, 15, true),
@@ -203,7 +203,9 @@ class Program
       Do(child_env, "(bound? :asd)");
 
       Do(child_env, "(rational 3 4)");
-      Do(child_env, "(cons 3 4)");
+      Do(child_env, "(car (cons 3 4))");
+      Do(child_env, "(cdr (cons 3 4))");
+      Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
 
       // }
    }

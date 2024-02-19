@@ -90,7 +90,7 @@ static partial class Ae
             var arg1 = ((Pair)argsList)[0];
 
             if (!arg1.IsList)
-               throw new ArgumentException("Argument must be a list!");
+               throw new ArgumentException($"Argument must be a list, not {arg1}!");
 
             if (arg1.IsNil)
                return Nil;
