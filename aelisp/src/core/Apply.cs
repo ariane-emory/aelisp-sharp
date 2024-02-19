@@ -30,7 +30,11 @@ static partial class Ae
          WriteLine($"Stash: {stash.Princ()}");
          WriteLine($"current: {current.Princ()}");
 
-         return Nil;
+         var last = current;
+         var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern('QuoteSym');
+
+
+            return Nil;
         }
 
       //================================================================================================================
