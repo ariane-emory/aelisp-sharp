@@ -219,8 +219,8 @@ static partial class Ae
    {
       public char Value { get; }
       public Char(char value) => Value = value;
-      protected override string? StringRepresentation => $"\'{Value}\'";
-      public override string Princ() => $"{Value}";
+        protected override string? StringRepresentation => $"\'{Value}\'".EscapeChars();
+        public override string Princ() => $"{Value}";
       public override string Print() => $"\'{Princ()}\'";
    }
 
