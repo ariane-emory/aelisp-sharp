@@ -25,7 +25,7 @@ static partial class Ae
 
          while (current is Pair currentPair && currentPair.Cdr is Pair)
          {
-            stash = Ae.Cons(currentPair.Car, stash);
+            stash = Ae.Cons(currentPair.Car.Eval(env), stash);
             current = currentPair.Cdr;
          }
 
@@ -51,8 +51,7 @@ static partial class Ae
          
          WriteLine($"newExpr after consing: {newExpr.Princ()}");
 
-         // return newExpr.Eval(env);
-         return Nil;
+         return newExpr.Eval(env);
         }
 
       //================================================================================================================

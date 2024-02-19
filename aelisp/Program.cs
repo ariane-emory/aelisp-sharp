@@ -89,6 +89,7 @@ class Program
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
          ("string       ", ObjToString, 00000001, 01, false),
+         ("+            ", NotImplemented, 00000, 15, false),
          ("intern       ", InternString, 0000001, 01, false),
          // set-props
          // props
