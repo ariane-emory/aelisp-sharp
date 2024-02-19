@@ -16,7 +16,7 @@ static partial class Ae
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
    public static LispObject SymbolsList = Nil;
    public static readonly LispObject True = Intern("t");
-   public static Env RootEnvironment { get; } = new Env(Nil);
+   public static Env Root { get; } = new Env(Nil);
 
    //====================================================================================================================
    // Ae's static constructor
