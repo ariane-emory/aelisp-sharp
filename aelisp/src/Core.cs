@@ -382,7 +382,7 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
-         (Env env, LispObject argsList, int argsLength) =>
+         (env, argsList, argsLength) =>
          {
             if (argsList.IsImproperList)
                throw new ArgumentException("argsList must be a proper list");
