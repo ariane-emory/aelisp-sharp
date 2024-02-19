@@ -243,26 +243,27 @@ static partial class Ae
          PureUnaryFun(o => new String(o.Princ()));
 
       //=================================================================================================================
-      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>
-         (Func<ThisLispObjT, FieldT> getField,
-          Func<FieldT, LispObject> construct)
-         => PureUnaryFun(o =>
+      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
+                                                                                      Func<FieldT, LispObject> construct) =>
+         (Env env, LispObject argsList, int argsLength) =>
          {
-            if (o is ThisLispObjT typed)
+            var obj = ((Pair)argsList)[0];
+
+            if (obj is ThisLispObjT typed)
                return construct(getField(typed));
 
-            throw new ArgumentException($"Argument must be a string, not {o}!");
-         });
+            throw new ArgumentException($"Argument must be a string, not {obj}!");
+         };
 
       //=================================================================================================================
       private static CoreFun.FuncT AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
-         => PureUnaryFun(o =>
-         {
-            if (o is ThisLispObjT typed)
-               return construct(getField(typed));
+       => PureUnaryFun(o =>
+       {
+          if (o is ThisLispObjT typed)
+             return construct(getField(typed));
 
-            throw new ArgumentException($"Argument must be a string, not {o}!");
-         });
+          throw new ArgumentException($"Argument must be a string, not {o}!");
+       });
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT UserFunctionBody =
