@@ -37,7 +37,18 @@ static partial class Ae
          var lastTail = (Pair)((Pair)last).Cdr;
          var lastVal = lastIsQuoteForm ? lastTail.Car : lastTail;
 
-            WriteLine($"lastVal: {lastVal.Princ()}");
+         WriteLine($"lastVal: {lastVal.Princ()}");
+
+         current = stash;
+
+         while (current is Pair currentPair)
+         {
+            lastVal = Ae.Cons(currentPair.Car, lastVal);
+            current = currentPair.Cdr;
+         }
+         
+         WriteLine($"lastVal after consing: {lastVal.Princ()}");
+         
          return Nil;
       }
 
