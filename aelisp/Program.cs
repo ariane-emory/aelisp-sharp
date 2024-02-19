@@ -102,8 +102,7 @@ class Program
          ("env          ", EnvOrFunEnv, 00000000, 01, false),
          ("syms         ", EnvSymbols, 000000000, 01, false),
          ("vals         ", EnvValues, 0000000000, 01, false),
-         // concat
-         // set                                 
+         ("set          ", Setq, 000000000000002, 15, false),
          ("concat       ", Concat, 0000000000000, 15, false),
          ("length       ", Length, 0000000000001, 01, false),
          ("id           ", Core.Id, 000000000001, 01, false),
