@@ -54,7 +54,7 @@ static partial class Ae
             WriteLine($"evaledArg:      {evaledArg.Princ()}");
 
             //     ae_obj_t * const elem = CONS(requote(evaluated_arg), NIL);
-            var elem = Ae.Cons(Requote(evaledArg), Nil);
+            var elem = Ae.Cons((argIsQuoteForm ? Requote(evaledArg) : evaledArg), Nil);
             
             WriteLine($"elem:           {elem.Princ()}");
 
