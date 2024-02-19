@@ -248,10 +248,9 @@ static partial class Ae
                                                                                      Func<LispObject> thunk) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
-            if (argsList.Length == 0)
-               return thunk();
-            else
-               return AccessorFun(getField, construct)(env, argsList, argsLength);
+            return (argsList.Length == 0)
+               ? thunk()
+               : AccessorFun(getField, construct)(env, argsList, argsLength);
          };
 
       //=================================================================================================================
