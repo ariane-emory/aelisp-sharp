@@ -76,13 +76,13 @@ static partial class Ae
 
          LispObject last = ((Pair)current).Car;
 
-         ApplyLog($"last:        {last.Princ()}");
+         ApplyLog($"last:           {last.Princ()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
-         ApplyLog($"lastIsQForm: {lastIsQuoteForm}");
+         ApplyLog($"lastIsQForm:    {lastIsQuoteForm}");
 
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
-         ApplyLog($"last 2:      {last.Princ()}");
+         ApplyLog($"last 2:         {last.Princ()}");
 
          if (!last.IsProperList)
             throw new ArgumentException($"last must be a proper list, not {last}!");
@@ -95,8 +95,8 @@ static partial class Ae
             last = ((Pair)last).Cdr;
          }
 
-         ApplyLog($"last 3:      {last.Princ()}");
-         ApplyLog($"newExpr:     {newExpr.Princ()}");
+         ApplyLog($"last 3:         {last.Princ()}");
+         ApplyLog($"newExpr:        {newExpr.Princ()}");
 
          return newExpr.Eval(env);
          // return Nil;
