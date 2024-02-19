@@ -294,30 +294,34 @@ static partial class Ae
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT EqP = (env, argsList, argsLength) =>
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
-
-         var arg0 = ((Pair)argsList).Car;
-         var current = ((Pair)((Pair)argsList).Cdr).Car;
-
-
-         while (current is Pair currentPair)
+      private static CoreFun.FuncT EqualityPredicate(Func<LispObject, LispObject, bool> pred) =>
+         (Env env, LispObject argsList, int argsLength) =>
          {
-            if (arg0 != ((Pair)currentPair).Car)
-               return Nil;
+            if (argsList.IsImproperList)
+               throw new ArgumentException("argsList must be a proper list");
 
-            current = ((Pair)currentPair).Cdr;
-         }
+            var arg0 = ((Pair)argsList).Car;
+            var current = ((Pair)((Pair)argsList).Cdr).Car;
 
-         return True;
-      };
+
+            while (current is Pair currentPair)
+            {
+               if (pred(arg0, ((Pair)currentPair).Car))
+                  return Nil;
+
+               current = ((Pair)currentPair).Cdr;
+            }
+
+            return True;
+         };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT EqlP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].Eql(((Pair)argsList)[1]));
+       public static readonly CoreFun.FuncT EqP =
+         EqualityPredicate((o1, o2) => o1 == o2);
+
+      //=================================================================================================================
+       public static readonly CoreFun.FuncT EqlP =
+          EqualityPredicate((o1, o2) => o1.Eql(o2));
 
       //=================================================================================================================
       private static bool IsPermittedParamSymbol(LispObject obj) =>

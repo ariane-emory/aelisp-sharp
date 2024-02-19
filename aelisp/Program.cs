@@ -114,8 +114,8 @@ class Program
          ("eval   ", Core.Eval, 0000000000001, 01, false),
          ("list   ", Core.List, 0000000000015, 15, false),
          ("quote  ", Core.Quote, 000000000001, 01, true),
-         ("eql?   ", Core.EqlP, 0000000000002, 02, false),
-         ("eq?    ", Core.EqP, 00000000000002, 02, false),
+         ("eql?   ", Core.EqlP, 0000000000002, 15, false),
+         ("eq?    ", Core.EqP, 00000000000002, 15, false),
          ("cons   ", Core.Cons, 0000000000002, 02, false),
          ("cdr    ", Core.Cdr, 00000000000001, 01, false),
          ("car    ", Core.Car, 00000000000001, 01, false),
@@ -158,6 +158,13 @@ class Program
       Do(child_env, "(type 4.3)");
       Do(child_env, "(type (lambda (x) (x x)))");
       Do(child_env, "(type '(1 . 2))");
+
+      Do(child_env, "(eq? :asd :asd :asd)");
+      Do(child_env, "(eq? :asd :asd :qwe)");
+
+      Do(child_env, "(eql? 2 2 2)");
+      Do(child_env, "(eql? 2 2 2/1)");
+
         // }
     }
 
