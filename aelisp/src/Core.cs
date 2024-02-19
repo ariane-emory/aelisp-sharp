@@ -205,6 +205,24 @@ static partial class Ae
       };
 
       //=================================================================================================================
+      private static CoreFun.FuncT NumericEqualityPredicateFun(int val) =>
+         (Env env, LispObject argsList, int argsLength) =>
+         {
+            var arg0 = ((Pair)argsList)[0];
+            
+            if (arg0 is Integer integer)
+               return Truthiness(val == integer.Value);
+            
+            if (arg0 is Float floatObj)
+               return Truthiness(val == floatObj.Value);
+            
+            if (arg0 is Rational rational)
+               return Truthiness(val == rational.Numerator);
+            
+            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
+         };
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT ZeroP = (env, argsList, argsLength) =>
       {
          var arg0 = ((Pair)argsList)[0];
