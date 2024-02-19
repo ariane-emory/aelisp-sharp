@@ -15,6 +15,40 @@ static partial class Ae
       public static readonly CoreFun.FuncT LetStar = (env, argsList, argsLength) =>
          LetInternal(env, argsList, argsLength, true);
 
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
+
+         ValidateLetArguments(arg0, body);
+
+         var varlist = (Pair)arg0;
+         var newEnv = env.Spawn(Nil, Nil);
+         LispObject dummy = Intern(":dummy");
+
+         foreach (var varlistElem in varlist)
+            newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
+
+         BindVarlistInEnv(varlist, newEnv, newEnv);
+
+         return Core.Progn(newEnv, body, body.Length);
+      };
+
+      //===================================================================================================================
+      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
+      {
+         var arg0 = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
+         ValidateLetArguments(arg0, body);
+         var varlist = (Pair)arg0;
+         var newEnv = env.Spawn(Nil, Nil);
+
+         BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
+
+         return Core.Progn(newEnv, body, body.Length);
+      }
+
       //===================================================================================================================
       private static void ValidateLetArguments(LispObject arg0, LispObject body)
       {
@@ -75,39 +109,6 @@ static partial class Ae
 
             varlist = ((Pair)varlist).Cdr;
          }
-      }
-
-      //================================================================================================================
-      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList).Car;
-         var body = ((Pair)argsList).Cdr;
-         ValidateLetArguments(arg0, body);
-         var varlist = (Pair)arg0;
-         var newEnv = env.Spawn(Nil, Nil);
-
-         LispObject dummy = Intern(":dummy");
-
-         foreach (var varlistElem in varlist)
-            newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
-
-         BindVarlistInEnv(varlist, newEnv, newEnv);
-
-         return Core.Progn(newEnv, body, body.Length);
-      };
-
-      //===================================================================================================================
-      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
-      {
-         var arg0 = ((Pair)argsList).Car;
-         var body = ((Pair)argsList).Cdr;
-         ValidateLetArguments(arg0, body);
-         var varlist = (Pair)arg0;
-         var newEnv = env.Spawn(Nil, Nil);
-
-         BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
-
-         return Core.Progn(newEnv, body, body.Length);
       }
 
       //================================================================================================================
