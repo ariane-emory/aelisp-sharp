@@ -4,110 +4,46 @@ using static Ae;
 //======================================================================================================================
 static partial class Ae
 {
-   //================================================================================================================
-   // private static List<LispObject> ToList(this Pair obj)
-   // {
-   //    var list = new List<LispObject>();
-   //    LispObject current = obj;
-
-   //    while (current is Pair pair)
-   //    {
-   //       list.Add(pair.Car);
-   //       current = pair.Cdr;
-   //    }
-
-   //    if (current != Nil)
-   //       list.Add(current);
-
-   //    return list;
-   // }
-
    //====================================================================================================================
-   public static class Core
+   public static partial class Core
    {
-      //=================================================================================================================
-      private static CoreFun.FuncT ShortCircuitingSpecialFun(Func<LispObject, bool> pred) =>
-         (env, argsList, argsLength) =>
-         {
-            if (argsList.IsImproperList)
-               throw new ArgumentException("prog body must be a proper list");
-
-            var result = Nil;
-
-            while (argsList is Pair argsListPair)
-            {
-               result = argsListPair.Car.Eval(env);
-
-               if (pred(result))
-                  return result;
-
-               argsList = argsListPair.Cdr;
-            }
-
-            return result;
-         };
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT And = ShortCircuitingSpecialFun(o => o.IsNil);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Or = ShortCircuitingSpecialFun(o => !o.IsNil);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Progn = ShortCircuitingSpecialFun(o => false);
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
-      // {
-      //    if (argsList.IsImproperList)
-      //       throw new ArgumentException("prog body must be a proper list");
-
-      //    var result = Nil;
-
-      //    while (argsList is Pair argsListPair)
-      //    {
-      //       result = argsListPair.Car.Eval(env);
-      //       argsList = argsListPair.Cdr;
-      //    }
-
-      //    return result;
-      // };
+      static Core() { }
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
-      {
-         if (argsLength % 2 != 0)
-            throw new ArgumentException("setq requires an even number of arguments!");
+    {
+       if (argsLength % 2 != 0)
+          throw new ArgumentException("setq requires an even number of arguments!");
 
-         if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+       if (argsList.IsImproperList)
+          throw new ArgumentException("argsList must be a proper list");
 
-         var result = Nil;
+       var result = Nil;
 
-         while (argsList is Pair currentPair)
-         {
-            var pairHead = currentPair.Car;
-            var valueExpression = ((Pair)currentPair.Cdr).Car;
+       while (argsList is Pair currentPair)
+       {
+          var pairHead = currentPair.Car;
+          var valueExpression = ((Pair)currentPair.Cdr).Car;
 
-            if (!(pairHead is Symbol sym))
-               throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
+          if (!(pairHead is Symbol sym))
+             throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
 
-            if (sym.IsKeyword || sym.IsSelfEvaluating)
-               throw new ArgumentException($"symbol {sym} may not be set.");
+          if (sym.IsKeyword || sym.IsSelfEvaluating)
+             throw new ArgumentException($"symbol {sym} may not be set.");
 
-            var evaluatedValue = valueExpression.Eval(env);
+          var evaluatedValue = valueExpression.Eval(env);
 
-            result = valueExpression.Eval(env);
+          result = valueExpression.Eval(env);
 
-            var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
+          var mode = sym.IsSpecial ? Env.LookupMode.Global : Env.LookupMode.Nearest;
 
-            env.Set(mode, sym, result);
+          env.Set(mode, sym, result);
 
-            argsList = ((Pair)currentPair.Cdr).Cdr;
-         }
+          argsList = ((Pair)currentPair.Cdr).Cdr;
+       }
 
-         return result;
-      };
+       return result;
+    };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Repeat = (env, argsList, argsLength) =>
