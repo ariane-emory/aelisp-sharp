@@ -42,10 +42,10 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
       {
-         var result = Nil;
-
          if (argsList.IsImproperList)
             throw new ArgumentException("prog body must be a proper list");
+
+         var result = Nil;
 
          while (argsList is Pair argsListPair)
          {
@@ -296,14 +296,39 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT And = (env, argsList, argsLength) =>
       {
-         var result = Nil;
-         
          if (argsList.IsImproperList)
             throw new ArgumentException("prog body must be a proper list");
+         
+         var result = Nil;
          
          while (argsList is Pair argsListPair)
          {
             result = argsListPair.Car.Eval(env);
+
+            if (result.IsNil)
+               return result;
+            
+            argsList = argsListPair.Cdr;
+         }
+         
+         return result;
+      };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Or = (env, argsList, argsLength) =>
+      {
+         if (argsList.IsImproperList)
+            throw new ArgumentException("prog body must be a proper list");
+         
+         var result = Nil;
+         
+         while (argsList is Pair argsListPair)
+         {
+            result = argsListPair.Car.Eval(env);
+
+            if (! result.IsNil)
+               return result;
+            
             argsList = argsListPair.Cdr;
          }
          
