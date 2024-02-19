@@ -94,7 +94,7 @@ class Program
          // props
          ("message      ", ErrorMessage, 000001, 01, false),
          ("symbol-name  ", SymbolName, 00000001, 01, false),
-         // rational
+         ("rational     ", NewRational, 0000002, 02, false),
          ("denom        ", Denominator, 0000001, 01, false),
          ("numer        ", Numerator, 000000001, 01, false),
          ("body         ", UserFunctionBody, 01, 01, false),
@@ -195,6 +195,8 @@ class Program
       Do(child_env, "(eql? 2 2 3)");
 
       Do(child_env, "(bound? :asd)");
+
+      Do(child_env, "(rational 3 4)");
 
       // }
    }
