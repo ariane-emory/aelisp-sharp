@@ -9,7 +9,7 @@ static partial class Ae
    public static partial class Core
    {
       //================================================================================================================
-      public static LispObject OutputFun(Env env, LispObject argsList, Func<LispObject, string> fun)
+      public static LispObject WriteOutput(Env env, LispObject argsList, Func<LispObject, string> fun)
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -32,33 +32,21 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public static LispObject WriteObj(Env env, LispObject argsList)
-      {
-         return OutputFun(env, argsList, o => o.Princ());
-      }
+      public static LispObject WriteObj(Env env, LispObject argsList) =>       
+         WriteOutput(env, argsList, o => o.Princ());
 
       //================================================================================================================
-      public static LispObject PutObj(Env env, LispObject argsList)
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+      public static LispObject PrincObj(Env env, LispObject argsList) =>       
+         WriteOutput(env, argsList, o => o.Princ());
 
-         int written = 0;
-         LispObject current = argsList;
+      //================================================================================================================
+      public static LispObject PrintObj(Env env, LispObject argsList) =>       
+         WriteOutput(env, argsList, o => o.Print());
 
-         while (current is Pair pair)
-         {
-            var elem = pair.Car;
-            var str = elem.ToString();
+      //================================================================================================================
+      public static LispObject PutObj(Env env, LispObject argsList) =>       
+         WriteOutput(env, argsList, o => o.ToString());
 
-            Write(str);
-            written += str.Length;
-
-            current = pair.Cdr;
-         }
-
-         return new Integer(written);
-      }
 
       //================================================================================================================
       public static LispObject Newline(Env env, LispObject argList)
