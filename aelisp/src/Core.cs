@@ -409,7 +409,7 @@ static partial class Ae
        => (Env env, LispObject argsList, int argsLength) =>
        {
           if (argsList.IsImproperList)
-               throw new ArgumentException("prog body must be a proper list");
+            throw new ArgumentException("argsList must be a proper list");
 
           return Truthiness(pred(((Pair)argsList)[0]));
        };
@@ -419,7 +419,7 @@ static partial class Ae
        => (Env env, LispObject argsList, int argsLength) =>
        {
           if (argsList.IsImproperList)
-               throw new ArgumentException("prog body must be a proper list");
+            throw new ArgumentException("argsList must be a proper list");
 
           var arg1 = ((Pair)argsList)[0];
 
