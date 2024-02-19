@@ -91,6 +91,127 @@ static partial class Ae
       };
 
       //================================================================================================================
+      public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
+      {
+         // First pass: Validation
+         bool elseFound = false;
+         var current = argsList;
+
+         if (current.IsImproperList)
+            throw new ArgumentException("cond arguments must be a proper list");
+
+         while (current is Pair currentPair)
+         {
+            var condItem = currentPair.Car;
+
+            if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
+               throw new ArgumentException("cond arguments must be proper lists with at least two elements");
+
+            var itemCar = condItemPair.Car;
+
+            if (itemCar.Equals(Intern("else")))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a cond expression");
+
+               elseFound = true;
+
+               if (!(currentPair.Cdr.IsNil))
+                  throw new ArgumentException("If used, else clause must be the last clause in a cond expression");
+            }
+            current = currentPair.Cdr;
+         }
+
+         // Second pass: Evaluation
+         current = argsList;
+
+         while (current is Pair currentClausePair)
+         {
+            var condClause = currentClausePair.Car;
+
+            if (condClause is Pair condClausePair)
+            {
+               var condition = condClausePair.Car;
+               var actions = condClausePair.Cdr;
+
+               var conditionResult = Nil;
+
+               if (condition.Equals(Intern("else")))
+                  conditionResult = True;
+               else
+                  conditionResult = condition.Eval(env);
+
+               if (!conditionResult.IsNil)
+                  return Progn(env, actions, actions.Length);
+            }
+            current = currentClausePair.Cdr;
+         }
+
+         return Nil;
+      };
+
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
+      {
+         // if (!(argsList is Pair argsPair))
+         //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
+
+         var argsPair = (Pair)argsList;
+         var keyForm = argsPair.Car.Eval(env);
+         var caseForms = argsPair.Cdr;
+
+         // First pass: Validation and check for multiple 'else' clauses
+         bool elseFound = false;
+         var current = caseForms;
+
+         if (caseForms.IsImproperList)
+            throw new ArgumentException("case forms must be a proper list");
+
+         while (current is Pair currentPair)
+         {
+            var caseItem = currentPair.Car;
+
+            if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
+               throw new ArgumentException("case forms elements must be proper lists");
+
+            var caseItemCar = caseItemPair.Car;
+
+            if (caseItemCar == Intern("else"))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a case expression");
+
+               elseFound = true;
+            }
+
+            current = currentPair.Cdr;
+         }
+
+         // Second pass: Evaluation
+         current = caseForms;
+
+         while (current is Pair currentCasePair)
+         {
+            var caseClause = currentCasePair.Car;
+
+            if (caseClause is Pair caseClausePair)
+            {
+               var caseKeys = caseClausePair.Car;
+               var caseActions = caseClausePair.Cdr;
+
+               if (caseKeys == Intern("else") ||
+                   caseKeys.Eql(keyForm) ||
+                   (caseKeys is Pair caseKeysPair && caseKeysPair.ToList().Contains(keyForm)))
+                  return Progn(env, caseActions, caseActions.Length);
+            }
+
+            current = currentCasePair.Cdr;
+         }
+
+         return Nil; // No matching case found
+      };
+
+      //================================================================================================================
    }
    //===================================================================================================================
 }
