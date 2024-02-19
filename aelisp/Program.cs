@@ -133,7 +133,7 @@ class Program
 
       ConsDebugWrite = false;
       // Core.ConsDebugWrite = true;
-      
+
       WriteLine("");
 
       // while (true)
@@ -143,21 +143,21 @@ class Program
       // WriteLine(Eval(child_env, "(cons 1 (cons 2 3))").Princ());
       // WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
       // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
-      WriteLine(Eval(child_env, "((lambda (x) (cons x x)) 8)", true).Princ());
-      WriteLine(Eval(child_env, "(setq qq 88 ww 77 *ee* 66)", true).Princ());
-      WriteLine(Eval(child_env, "(progn 2 3 4)", true).Princ());
-      
+      Do(child_env, "((lambda (x) (cons x x)) 8)");
+      Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
+      Do(child_env, "(progn 2 3 4)");
+
       WriteLine($"\n{root_env}");
       WriteLine($"\n{parent_env}");
       WriteLine($"\n{child_env}");
 
-      WriteLine(Eval(child_env, "(cond (nil 8) (else 14))", true).Princ());
+      Do(child_env, "(cond (nil 8) (else 14))");
 
-      foreach (var o in ((Pair)Eval(child_env, "(list 2 4 6)", true)).ToList())
-            WriteLine(o);
+      // }
+   }
 
-        // }
-    }
+   //==============================================================================================================================
+   static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
 
    //==============================================================================================================================
 }

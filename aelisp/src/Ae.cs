@@ -30,7 +30,7 @@ static partial class Ae
    // Ae's static methods
    //====================================================================================================================
    public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
-   public static LispObject Eval(Env env, string input, bool progn = false) => Read(input, progn).Eval(env);
+   public static LispObject Eval(Env env, string input, bool progn = true) => Read(input, progn).Eval(env);
 
    //====================================================================================================================
    public static LispObject Read(string input, bool progn) =>
