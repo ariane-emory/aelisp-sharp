@@ -192,6 +192,19 @@ static partial class Ae
          => new Integer(((Pair)argsList)[0].Length);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList)[0];
+
+         if (arg0 is not Symbol sym)
+            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
+
+         var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
+
+         return Truthiness(found);
+      };
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP = (env, argsList, argsLength)
          => Truthiness(((Pair)argsList)[0] is Symbol sym && sym.IsKeyword);
 
@@ -306,19 +319,19 @@ static partial class Ae
       {
          if (argsList.IsImproperList)
             throw new ArgumentException("prog body must be a proper list");
-         
+
          var result = Nil;
-         
+
          while (argsList is Pair argsListPair)
          {
             result = argsListPair.Car.Eval(env);
 
             if (result.IsNil)
                return result;
-            
+
             argsList = argsListPair.Cdr;
          }
-         
+
          return result;
       };
 
@@ -327,354 +340,354 @@ static partial class Ae
       {
          if (argsList.IsImproperList)
             throw new ArgumentException("prog body must be a proper list");
-         
+
          var result = Nil;
-         
+
          while (argsList is Pair argsListPair)
          {
             result = argsListPair.Car.Eval(env);
 
-            if (! result.IsNil)
+            if (!result.IsNil)
                return result;
-            
+
             argsList = argsListPair.Cdr;
          }
-         
+
          return result;
       };
 
-   //=================================================================================================================
-   private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
-      (Env env, LispObject argsList, int argsLength) =>
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+      //=================================================================================================================
+      private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
+         (Env env, LispObject argsList, int argsLength) =>
+         {
+            if (argsList.IsImproperList)
+               throw new ArgumentException("argsList must be a proper list");
 
-         var arg0 = ((Pair)argsList).Car;
-         var current = ((Pair)argsList).Cdr;
+            var arg0 = ((Pair)argsList).Car;
+            var current = ((Pair)argsList).Cdr;
+
+            while (current is Pair currentPair)
+            {
+               // WriteLine($"Compare {arg0} to {((Pair)currentPair).Car}.");
+
+               if (!pred(arg0, ((Pair)currentPair).Car))
+                  return Nil;
+
+               current = ((Pair)currentPair).Cdr;
+            }
+
+            return True;
+         };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT EqP =
+        EqualityPredicateFun((o1, o2) => o1 == o2);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT EqlP =
+         EqualityPredicateFun((o1, o2) => o1.Eql(o2));
+
+      //=================================================================================================================
+      private static bool IsPermittedParamSymbol(LispObject obj) =>
+           obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Lambda = (env, argsList, argsLength) =>
+      {
+         var lambdaList = ((Pair)argsList)[0];
+         var body = ((Pair)argsList)[1];
+
+         if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
+            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
+
+         if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
+            throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
+
+         if (!body.IsProperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
+
+         var currentParam = lambdaList;
+
+         while (currentParam is Pair currentParamPair)
+         {
+            if (!IsPermittedParamSymbol(currentParamPair.Car))
+               throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
+
+            currentParam = currentParamPair.Cdr;
+         }
+
+         if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
+            throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
+
+         return new Lambda(env, lambdaList, body);
+      };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Macro = (env, argsList, argsLength) =>
+      {
+         var lambdaList = ((Pair)argsList)[0];
+         var body = ((Pair)argsList)[1];
+
+         if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
+            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
+
+         if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
+            throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
+
+         if (!body.IsProperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
+
+         var currentParam = lambdaList;
+
+         while (currentParam is Pair currentParamPair)
+         {
+            if (!IsPermittedParamSymbol(currentParamPair.Car))
+               throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
+
+            currentParam = currentParamPair.Cdr;
+         }
+
+         if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
+            throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
+
+         return new Macro(env, lambdaList, body);
+      };
+
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
+      {
+         // First pass: Validation
+         bool elseFound = false;
+         var current = argsList;
+
+         if (current.IsImproperList)
+            throw new ArgumentException("cond arguments must be a proper list");
 
          while (current is Pair currentPair)
          {
-            // WriteLine($"Compare {arg0} to {((Pair)currentPair).Car}.");
+            var condItem = currentPair.Car;
 
-            if (!pred(arg0, ((Pair)currentPair).Car))
-               return Nil;
+            if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
+               throw new ArgumentException("cond arguments must be proper lists with at least two elements");
 
-            current = ((Pair)currentPair).Cdr;
+            var itemCar = condItemPair.Car;
+
+            if (itemCar.Equals(Intern("else")))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a cond expression");
+
+               elseFound = true;
+
+               if (!(currentPair.Cdr.IsNil))
+                  throw new ArgumentException("If used, else clause must be the last clause in a cond expression");
+            }
+            current = currentPair.Cdr;
          }
 
-         return True;
+         // Second pass: Evaluation
+         current = argsList;
+
+         while (current is Pair currentClausePair)
+         {
+            var condClause = currentClausePair.Car;
+
+            if (condClause is Pair condClausePair)
+            {
+               var condition = condClausePair.Car;
+               var actions = condClausePair.Cdr;
+
+               var conditionResult = Nil;
+
+               if (condition.Equals(Intern("else")))
+                  conditionResult = True;
+               else
+                  conditionResult = condition.Eval(env);
+
+               if (!conditionResult.IsNil)
+                  return Progn(env, actions, actions.Length);
+            }
+            current = currentClausePair.Cdr;
+         }
+
+         return Nil;
       };
 
-   //=================================================================================================================
-   public static readonly CoreFun.FuncT EqP =
-     EqualityPredicateFun((o1, o2) => o1 == o2);
-
-   //=================================================================================================================
-   public static readonly CoreFun.FuncT EqlP =
-      EqualityPredicateFun((o1, o2) => o1.Eql(o2));
-
-   //=================================================================================================================
-   private static bool IsPermittedParamSymbol(LispObject obj) =>
-        obj is Symbol symbol && (!(symbol.IsSpecial || symbol.IsKeyword || symbol == True || symbol == Nil));
-
-   //=================================================================================================================
-   public static readonly CoreFun.FuncT Lambda = (env, argsList, argsLength) =>
-   {
-      var lambdaList = ((Pair)argsList)[0];
-      var body = ((Pair)argsList)[1];
-
-      if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
-         throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
-
-      if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
-         throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
-
-      if (!body.IsProperList)
-         throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
-
-      var currentParam = lambdaList;
-
-      while (currentParam is Pair currentParamPair)
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
       {
-         if (!IsPermittedParamSymbol(currentParamPair.Car))
-            throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
+         // if (!(argsList is Pair argsPair))
+         //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
 
-         currentParam = currentParamPair.Cdr;
-      }
+         var argsPair = (Pair)argsList;
+         var keyForm = argsPair.Car.Eval(env);
+         var caseForms = argsPair.Cdr;
 
-      if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
-         throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
+         // First pass: Validation and check for multiple 'else' clauses
+         bool elseFound = false;
+         var current = caseForms;
 
-      return new Lambda(env, lambdaList, body);
-   };
+         if (caseForms.IsImproperList)
+            throw new ArgumentException("case forms must be a proper list");
 
-   //=================================================================================================================
-   public static readonly CoreFun.FuncT Macro = (env, argsList, argsLength) =>
-   {
-      var lambdaList = ((Pair)argsList)[0];
-      var body = ((Pair)argsList)[1];
-
-      if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
-         throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
-
-      if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
-         throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
-
-      if (!body.IsProperList)
-         throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
-
-      var currentParam = lambdaList;
-
-      while (currentParam is Pair currentParamPair)
-      {
-         if (!IsPermittedParamSymbol(currentParamPair.Car))
-            throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
-
-         currentParam = currentParamPair.Cdr;
-      }
-
-      if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
-         throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
-
-      return new Macro(env, lambdaList, body);
-   };
-
-   //================================================================================================================
-   public static readonly CoreFun.FuncT Cond = (env, argsList, argsLength) =>
-   {
-      // First pass: Validation
-      bool elseFound = false;
-      var current = argsList;
-
-      if (current.IsImproperList)
-         throw new ArgumentException("cond arguments must be a proper list");
-
-      while (current is Pair currentPair)
-      {
-         var condItem = currentPair.Car;
-
-         if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
-            throw new ArgumentException("cond arguments must be proper lists with at least two elements");
-
-         var itemCar = condItemPair.Car;
-
-         if (itemCar.Equals(Intern("else")))
+         while (current is Pair currentPair)
          {
-            if (elseFound)
-               throw new ArgumentException("Only one else clause is allowed in a cond expression");
+            var caseItem = currentPair.Car;
 
-            elseFound = true;
+            if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
+               throw new ArgumentException("case forms elements must be proper lists");
 
-            if (!(currentPair.Cdr.IsNil))
-               throw new ArgumentException("If used, else clause must be the last clause in a cond expression");
+            var caseItemCar = caseItemPair.Car;
+
+            if (caseItemCar == Intern("else"))
+            {
+               if (elseFound)
+                  throw new ArgumentException("Only one else clause is allowed in a case expression");
+
+               elseFound = true;
+            }
+
+            current = currentPair.Cdr;
          }
-         current = currentPair.Cdr;
-      }
 
-      // Second pass: Evaluation
-      current = argsList;
+         // Second pass: Evaluation
+         current = caseForms;
 
-      while (current is Pair currentClausePair)
-      {
-         var condClause = currentClausePair.Car;
-
-         if (condClause is Pair condClausePair)
+         while (current is Pair currentCasePair)
          {
-            var condition = condClausePair.Car;
-            var actions = condClausePair.Cdr;
+            var caseClause = currentCasePair.Car;
 
-            var conditionResult = Nil;
+            if (caseClause is Pair caseClausePair)
+            {
+               var caseKeys = caseClausePair.Car;
+               var caseActions = caseClausePair.Cdr;
 
-            if (condition.Equals(Intern("else")))
-               conditionResult = True;
+               if (caseKeys == Intern("else") ||
+                   caseKeys.Eql(keyForm) ||
+                   (caseKeys is Pair caseKeysPair && caseKeysPair.ToList().Contains(keyForm)))
+                  return Progn(env, caseActions, caseActions.Length);
+            }
+
+            current = currentCasePair.Cdr;
+         }
+
+         return Nil; // No matching case found
+      };
+
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
+         LetInternal(env, argsList, argsLength, false);
+
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT LetStar = (env, argsList, argsLength) =>
+         LetInternal(env, argsList, argsLength, true);
+
+      //===================================================================================================================
+      private static void ValidateLetArguments(LispObject arg0, LispObject body)
+      {
+         if (!(arg0 is Pair varlist))
+            throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
+
+         if (varlist.IsImproperList)
+            throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
+
+         LispObject current = varlist;
+
+         while (!current.IsNil)
+            if (current is Pair currentVarPair)
+            {
+               if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
+                  throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
+
+               if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+            }
+            else if (current is Symbol currentVarSym)
+            {
+               if (!currentVarSym.IsLetBindable)
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+            }
             else
-               conditionResult = condition.Eval(env);
+            {
+               throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a "
+                                           + $"let-bindable symbol, not {current}");
+            }
 
-            if (!conditionResult.IsNil)
-               return Progn(env, actions, actions.Length);
-         }
-         current = currentClausePair.Cdr;
+         if (body.IsImproperList)
+            throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
+
+         if (body.IsNil)
+            throw new ArgumentException("body cannot be empty");
       }
 
-      return Nil;
-   };
-
-   //================================================================================================================
-   public static readonly CoreFun.FuncT Case = (env, argsList, argsLength) =>
-   {
-      // if (!(argsList is Pair argsPair))
-      //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
-
-      var argsPair = (Pair)argsList;
-      var keyForm = argsPair.Car.Eval(env);
-      var caseForms = argsPair.Cdr;
-
-      // First pass: Validation and check for multiple 'else' clauses
-      bool elseFound = false;
-      var current = caseForms;
-
-      if (caseForms.IsImproperList)
-         throw new ArgumentException("case forms must be a proper list");
-
-      while (current is Pair currentPair)
+      //================================================================================================================
+      private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
       {
-         var caseItem = currentPair.Car;
-
-         if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
-            throw new ArgumentException("case forms elements must be proper lists");
-
-         var caseItemCar = caseItemPair.Car;
-
-         if (caseItemCar == Intern("else"))
+         while (!varlist.IsNil)
          {
-            if (elseFound)
-               throw new ArgumentException("Only one else clause is allowed in a case expression");
+            var sym = Nil;
+            var val = Nil;
 
-            elseFound = true;
+            if (varlist is Pair varlistVarPair)
+            {
+               sym = varlistVarPair.Car;
+               val = ((Pair)varlistVarPair.Cdr).Car.Eval(lookupEnv);
+            }
+            else if (varlist is Symbol varlistVarSym)
+            {
+               sym = varlistVarSym;
+            }
+
+            bindEnv.Set(Env.LookupMode.Local, sym, val);
+
+            varlist = ((Pair)varlist).Cdr;
          }
-
-         current = currentPair.Cdr;
       }
 
-      // Second pass: Evaluation
-      current = caseForms;
-
-      while (current is Pair currentCasePair)
+      //================================================================================================================
+      public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
       {
-         var caseClause = currentCasePair.Car;
+         var arg0 = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
+         ValidateLetArguments(arg0, body);
+         var varlist = (Pair)arg0;
+         var newEnv = env.Spawn(Nil, Nil);
 
-         if (caseClause is Pair caseClausePair)
-         {
-            var caseKeys = caseClausePair.Car;
-            var caseActions = caseClausePair.Cdr;
+         LispObject dummy = Intern(":dummy");
 
-            if (caseKeys == Intern("else") ||
-                caseKeys.Eql(keyForm) ||
-                (caseKeys is Pair caseKeysPair && caseKeysPair.ToList().Contains(keyForm)))
-               return Progn(env, caseActions, caseActions.Length);
-         }
+         foreach (var varlistElem in varlist)
+            newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
 
-         current = currentCasePair.Cdr;
-      }
+         BindVarlistInEnv(varlist, newEnv, newEnv);
 
-      return Nil; // No matching case found
-   };
+         return Core.Progn(newEnv, body, body.Length);
+      };
 
-   //===================================================================================================================
-   public static readonly CoreFun.FuncT Let = (env, argsList, argsLength) =>
-      LetInternal(env, argsList, argsLength, false);
-
-   //===================================================================================================================
-   public static readonly CoreFun.FuncT LetStar = (env, argsList, argsLength) =>
-      LetInternal(env, argsList, argsLength, true);
-
-   //===================================================================================================================
-   private static void ValidateLetArguments(LispObject arg0, LispObject body)
-   {
-      if (!(arg0 is Pair varlist))
-         throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
-
-      if (varlist.IsImproperList)
-         throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
-
-      LispObject current = varlist;
-
-      while (!current.IsNil)
-         if (current is Pair currentVarPair)
-         {
-            if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
-               throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
-
-            if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
-               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
-         }
-         else if (current is Symbol currentVarSym)
-         {
-            if (!currentVarSym.IsLetBindable)
-               throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
-         }
-         else
-         {
-            throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a "
-                                        + $"let-bindable symbol, not {current}");
-         }
-
-      if (body.IsImproperList)
-         throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
-
-      if (body.IsNil)
-         throw new ArgumentException("body cannot be empty");
-   }
-
-   //================================================================================================================
-   private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
-   {
-      while (!varlist.IsNil)
+      //===================================================================================================================
+      private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
       {
-         var sym = Nil;
-         var val = Nil;
+         var arg0 = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
+         ValidateLetArguments(arg0, body);
+         var varlist = (Pair)arg0;
+         var newEnv = env.Spawn(Nil, Nil);
 
-         if (varlist is Pair varlistVarPair)
-         {
-            sym = varlistVarPair.Car;
-            val = ((Pair)varlistVarPair.Cdr).Car.Eval(lookupEnv);
-         }
-         else if (varlist is Symbol varlistVarSym)
-         {
-            sym = varlistVarSym;
-         }
+         BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
 
-         bindEnv.Set(Env.LookupMode.Local, sym, val);
-
-         varlist = ((Pair)varlist).Cdr;
+         return Core.Progn(newEnv, body, body.Length);
       }
+
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT Type = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList).Car;
+
+         return Intern(arg0 is Pair
+                        ? ":cons"
+                        : ":" + ((Pair)argsList).Car.TypeName.ToLower());
+      };
+
+      //================================================================================================================
    }
-
-   //================================================================================================================
-   public static readonly CoreFun.FuncT Letrec = (env, argsList, argsLength) =>
-   {
-      var arg0 = ((Pair)argsList).Car;
-      var body = ((Pair)argsList).Cdr;
-      ValidateLetArguments(arg0, body);
-      var varlist = (Pair)arg0;
-      var newEnv = env.Spawn(Nil, Nil);
-
-      LispObject dummy = Intern(":dummy");
-
-      foreach (var varlistElem in varlist)
-         newEnv.Set(Env.LookupMode.Local, ((Pair)varlistElem).Car, dummy);
-
-      BindVarlistInEnv(varlist, newEnv, newEnv);
-
-      return Core.Progn(newEnv, body, body.Length);
-   };
-
-   //===================================================================================================================
-   private static LispObject LetInternal(Env env, LispObject argsList, int argsLength, bool bindInNewEnv)
-   {
-      var arg0 = ((Pair)argsList).Car;
-      var body = ((Pair)argsList).Cdr;
-      ValidateLetArguments(arg0, body);
-      var varlist = (Pair)arg0;
-      var newEnv = env.Spawn(Nil, Nil);
-
-      BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
-
-      return Core.Progn(newEnv, body, body.Length);
-   }
-
-   //===================================================================================================================
-   public static readonly CoreFun.FuncT Type = (env, argsList, argsLength) =>
-   {
-      var arg0 = ((Pair)argsList).Car;
-
-      return Intern(arg0 is Pair
-                     ? ":cons"
-                     : ":" + ((Pair)argsList).Car.TypeName.ToLower());
-   };
-
-   //================================================================================================================
-}
    //===================================================================================================================
 }

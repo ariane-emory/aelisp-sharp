@@ -97,6 +97,7 @@ class Program
          ("tail?   ", Core.TailP, 000000000001, 01, false),
          ("atom?   ", Core.AtomP, 000000000001, 01, false),
          ("nil?    ", Core.NilP, 0000000000001, 01, false),
+         ("bound?  ", Core.BoundP, 00000000001, 01, false),
          ("keyword?", Core.KeywordP, 000000001, 01, false),
 
 
