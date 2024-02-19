@@ -8,28 +8,6 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Plus1 =
-         PureUnaryFun(num =>
-            num switch
-            {
-               Integer integer => (LispObject)new Integer(integer.Value + 1),
-               Float floatObj => (LispObject)new Float(floatObj.Value + 1),
-               Rational rational => (LispObject)new Rational(rational.Numerator + rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-            });
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Minus1 =
-         PureUnaryFun(num =>
-            num switch
-            {
-               Integer integer => (LispObject)new Integer(integer.Value - 1),
-               Float floatObj => (LispObject)new Float(floatObj.Value - 1),
-               Rational rational => (LispObject)new Rational(rational.Numerator - rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-            });
-
-      //=================================================================================================================
       private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func)
          => (Env env, LispObject argsList, int argsLength) =>
          {
@@ -54,6 +32,28 @@ static partial class Ae
 
           throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
        };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Plus1 =
+         PureUnaryFun(num =>
+            num switch
+            {
+               Integer integer => (LispObject)new Integer(integer.Value + 1),
+               Float floatObj => (LispObject)new Float(floatObj.Value + 1),
+               Rational rational => (LispObject)new Rational(rational.Numerator + rational.Denominator, rational.Denominator),
+               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+            });
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Minus1 =
+         PureUnaryFun(num =>
+            num switch
+            {
+               Integer integer => (LispObject)new Integer(integer.Value - 1),
+               Float floatObj => (LispObject)new Float(floatObj.Value - 1),
+               Rational rational => (LispObject)new Rational(rational.Numerator - rational.Denominator, rational.Denominator),
+               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+            });
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Id = PureUnaryFun(o => o);
