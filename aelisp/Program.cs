@@ -104,6 +104,7 @@ class Program
          ("vals         ", EnvValues, 0000000000, 01, false),
          // concat
          // set                                 
+         ("concat       ", Concat, 0000000000000, 15, false),
          ("length       ", Length, 0000000000001, 01, false),
          ("id           ", Core.Id, 000000000001, 01, false),
          ("eval         ", Core.Eval, 0000000001, 01, false),
@@ -203,6 +204,12 @@ class Program
       Do(child_env, "(cdr (cons 3 4))");
       Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
 
+      Do(child_env, "(concat)");
+      Do(child_env, "(concat \"hello\" \"world\")");
+      Do(child_env, "(concat \"hello\" nil \"world\")");
+      Do(child_env, "(concat nil \"hello\" nil \"world\")");
+
+      
       // }
    }
 
