@@ -211,10 +211,13 @@ class Program
 
       Do(child_env, "(setq x 2)");
       Do(child_env, "(setq y 3)");
+      Do(child_env, "(setq lst '(3 4))");
       WriteLine("");
       Do(child_env, "(apply + 1 x '(y 4))");
       WriteLine("----");
       Do(child_env, "(apply + 1 x (list y 4))");
+      WriteLine("----");
+      Do(child_env, "(apply + 1 x lst)");
       WriteLine("");
    }
 

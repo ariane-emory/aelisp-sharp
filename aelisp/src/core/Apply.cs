@@ -61,7 +61,6 @@ static partial class Ae
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
             current = currentPair.Cdr;
-
          }
 
          LispObject last = ((Pair)current).Car;
@@ -69,8 +68,9 @@ static partial class Ae
          WriteLine($"last:        {last.Princ()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
+         WriteLine($"lastIsQForm: {lastIsQuoteForm}");
+         
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
-
          WriteLine($"last 2:      {last.Princ()}");
 
          if (!last.IsProperList)
