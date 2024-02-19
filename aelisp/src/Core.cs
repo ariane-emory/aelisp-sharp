@@ -209,52 +209,24 @@ static partial class Ae
          (Env env, LispObject argsList, int argsLength) =>
          {
             var arg0 = ((Pair)argsList)[0];
-            
+
             if (arg0 is Integer integer)
                return Truthiness(val == integer.Value);
-            
+
             if (arg0 is Float floatObj)
                return Truthiness(val == floatObj.Value);
-            
+
             if (arg0 is Rational rational)
                return Truthiness(val == rational.Numerator);
-            
+
             throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
          };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT ZeroP = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
-
-         if (arg0 is Integer integer)
-            return Truthiness(0 == integer.Value);
-
-         if (arg0 is Float floatObj)
-            return Truthiness(0 == floatObj.Value);
-
-         if (arg0 is Rational rational)
-            return Truthiness(0 == rational.Numerator);
-
-         throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
-      };
+      public static readonly CoreFun.FuncT ZeroP = NumericEqualityPredicateFun(0);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT OneP = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
-
-         if (arg0 is Integer integer)
-            return Truthiness(1 == integer.Value);
-
-         if (arg0 is Float floatObj)
-            return Truthiness(1 == floatObj.Value);
-
-         if (arg0 is Rational rational)
-            return Truthiness(1 == rational.Numerator);
-
-         throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
-      };
+      public static readonly CoreFun.FuncT OneP = NumericEqualityPredicateFun(1);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP = (env, argsList, argsLength)
