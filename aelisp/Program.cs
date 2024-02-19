@@ -87,38 +87,47 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         // set
+         ("length ", Core.Length, 00000000001, 01, false),
+         ("eval   ", Core.Eval, 0000000000001, 01, false),
+         // apply
+         ("macro  ", Core.Macro, 000000000002, 15, true),
+
+         ("atom?  ", Core.AtomP, 000000000001, 01, false),
+         ("tail?  ", Core.TailP, 000000000001, 01, false),
+         ("nil?   ", Core.NilP, 0000000000001, 01, false),
+         // keywordp
+         // properp
+
+         ("lambda ", Core.Lambda, 00000000002, 15, true),
+         ("rplacd!", Core.Rplacd, 00000000002, 02, false),
+         ("rplaca!", Core.Rplaca, 00000000002, 02, false),
          ("type   ", Core.Type, 0000000000001, 01, false),
-         ("letrec ", Core.Letrec, 00000000002, 15, true),
-         ("let*   ", Core.LetStar, 0000000002, 15, true),
-         ("let    ", Core.Let, 00000000000002, 15, true),
+         ("setq   ", Core.Setq, 0000000000002, 15, true),
+         ("id     ", Core.Id, 000000000000001, 01, false),
+         ("not    ", Core.Not, 00000000000001, 01, false),
+         ("or     ", Core.Type, 0000000000001, 15, false),
+         ("and    ", Core.Type, 0000000000001, 15, false),
+
          ("repeat ", Core.Repeat, 00000000001, 15, true),
          ("case   ", Core.Cond, 0000000000002, 15, true),
          ("cond   ", Core.Cond, 0000000000001, 15, true),
-         ("setq   ", Core.Setq, 0000000000002, 15, true),
          ("until  ", Core.Until, 000000000002, 15, true),
          ("while  ", Core.While, 000000000002, 15, true),
          ("unless ", Core.Unless, 00000000002, 15, true),
          ("when   ", Core.When, 0000000000002, 15, true),
          ("if     ", Core.If, 000000000000002, 15, true),
-         ("length ", Core.Length, 00000000001, 01, false),
-         ("tail?  ", Core.TailP, 000000000001, 01, false),
-         ("nil?   ", Core.NilP, 0000000000001, 01, false),
-         ("atom?  ", Core.AtomP, 000000000001, 01, false),
-         ("rplacd!", Core.Rplacd, 00000000002, 02, false),
-         ("rplaca!", Core.Rplaca, 00000000002, 02, false),
-         ("id     ", Core.Id, 000000000000001, 01, false),
-         ("not    ", Core.Not, 00000000000001, 01, false),
-         ("macro  ", Core.Macro, 000000000002, 15, true),
-         ("lambda ", Core.Lambda, 00000000002, 15, true),
-         ("progn  ", Core.Progn, 000000000015, 15, true),
-         ("eval   ", Core.Eval, 0000000000001, 01, false),
          ("list   ", Core.List, 0000000000015, 15, false),
          ("quote  ", Core.Quote, 000000000001, 01, true),
+         ("letrec ", Core.Letrec, 00000000002, 15, true),
+         ("let*   ", Core.LetStar, 0000000002, 15, true),
+         ("let    ", Core.Let, 00000000000002, 15, true),
          ("eql?   ", Core.EqlP, 0000000000002, 15, false),
          ("eq?    ", Core.EqP, 00000000000002, 15, false),
          ("cons   ", Core.Cons, 0000000000002, 02, false),
          ("cdr    ", Core.Cdr, 00000000000001, 01, false),
          ("car    ", Core.Car, 00000000000001, 01, false),
+         ("progn  ", Core.Progn, 000000000015, 15, true),
       ];
 
       foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
