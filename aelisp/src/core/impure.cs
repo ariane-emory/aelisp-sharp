@@ -10,11 +10,11 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
       {
-         if (argsLength % 2 != 0)
-            throw new ArgumentException("setq requires an even number of arguments!");
-
          if (argsList.IsImproperList)
             throw new ArgumentException("argsList must be a proper list");
+
+         if (argsLength % 2 != 0)
+            throw new ArgumentException("setq requires an even number of arguments!");
 
          var result = Nil;
 
@@ -45,7 +45,12 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
-         ((Pair)argsList)[0].Eval(env);
+      {
+         if (argsList.IsImproperList)
+            throw new ArgumentException("argsList must be a proper list");
+
+         return ((Pair)argsList)[0].Eval(env);
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT List = (env, argsList, argsLength) => argsList;
