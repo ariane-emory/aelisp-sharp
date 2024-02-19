@@ -143,7 +143,7 @@ class Program
          ("unless       ", Unless, 000000000002, 15, true),
          ("when         ", When, 00000000000002, 15, true),
          ("if           ", If, 0000000000000002, 15, true),
-         ("list         ", List, 00000000000015, 15, false),
+         ("list         ", List, 00000000000000, 15, false),
          ("quote        ", Quote, 0000000000001, 01, true),
          ("letrec       ", Letrec, 000000000002, 15, true),
          ("let*         ", LetStar, 00000000002, 15, true),
@@ -153,7 +153,7 @@ class Program
          ("cons         ", Core.Cons, 000000002, 02, false),
          ("cdr          ", Cdr, 000000000000001, 01, false),
          ("car          ", Car, 000000000000001, 01, false),
-         ("progn        ", Progn, 0000000000015, 15, true),
+         ("progn        ", Progn, 0000000000000, 15, true),
       ];
 
       foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)

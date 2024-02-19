@@ -35,7 +35,6 @@ static partial class Ae
       public byte MaxArgs { get; }
       public FuncT Function { get; }
       public bool UnlimitedMaxArgs => MaxArgs == 15;
-      public bool UnlimitedMinArgs => MinArgs == 15;
 
       //================================================================================================================
       // Constructor
@@ -73,14 +72,11 @@ static partial class Ae
       {
          int argsLength = argsList.Length;
 
-         if (((!UnlimitedMinArgs) && argsLength < MinArgs) ||
-             ((!UnlimitedMaxArgs) && argsLength > MaxArgs))
+         if ((argsLength < MinArgs) || ((!UnlimitedMaxArgs) && argsLength > MaxArgs))
          {
             var msgPrefix = $"core '{Name}' requires";
 
-            if (UnlimitedMinArgs && (!UnlimitedMaxArgs))
-               throw new ArgumentException($"{msgPrefix} at most {MaxArgs} args, but got {argsLength}");
-            else if (UnlimitedMaxArgs && (!UnlimitedMinArgs))
+            if (UnlimitedMaxArgs)
                throw new ArgumentException($"{msgPrefix} at least {MinArgs} args, but got {argsLength}");
             else if (MaxArgs == MinArgs)
                throw new ArgumentException($"{msgPrefix} {MinArgs} args, but got {argsLength}");
