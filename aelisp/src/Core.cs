@@ -243,22 +243,22 @@ static partial class Ae
          PureUnaryFun(o => new String(o.Princ()));
 
       //=================================================================================================================
-      private static CoreFun.FuncT StringAccessorFun<T>(Func<T, string> func)
+      private static CoreFun.FuncT StringAccessorFun<T>(Func<T, string> getField, Func<string, LispObject> construct)
          => PureUnaryFun(o =>
          {
             if (o is T typed)
-               return new String(func(typed));
+               return new String(getField(typed));
             
             throw new ArgumentException($"Argument must be a string, not {o}!");
          });
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ErrorMessage =
-         StringAccessorFun<Error>(err => err.Value);
+         StringAccessorFun<Error>(err => err.Value, s => new Error(s));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT SymbolName =
-         StringAccessorFun<Symbol>(sym => sym.Value);
+         StringAccessorFun<Symbol>(sym => sym.Value, s => new String(s));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT InternString =
