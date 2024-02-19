@@ -236,7 +236,16 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT PureBinaryFun(Func<LispObject, LispObject, LispObject> func)
-         => PureBinaryFun<LispObject, LispObject>((arg1, arg2) => func(arg1, arg2));
+         => (Env env, LispObject argsList, int argsLength) =>
+          {
+             if (argsList.IsImproperList)
+                throw new ArgumentException("argsList must be a proper list");
+
+             var arg1 = ((Pair)argsList)[0];
+             var arg2 = ((Pair)argsList)[1];
+
+             return func(arg1, arg2);
+          };
 
       //=================================================================================================================
       private static CoreFun.FuncT PureBinaryFun<T1, T2>(Func<T1, T2, LispObject> func)
