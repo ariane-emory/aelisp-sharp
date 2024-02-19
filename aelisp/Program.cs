@@ -91,7 +91,7 @@ class Program
          ("print        ", PrintObj,    00000001, 15, false),
          ("princ        ", PrincObj,    00000001, 15, false),
          ("put-raw      ", PutObj,      00000001, 15, false),
-         ("write        ", WriteObj,    00000001, 15, false),
+         ("write        ", WriteObj,    00000001, 15, false), // add quoting to write!
          ("nl           ", Newline,     00000000, 00, false),
          ("string       ", ObjToString, 00000001, 01, false),
          ("+            ", NotImplemented, 00000, 15, false),
