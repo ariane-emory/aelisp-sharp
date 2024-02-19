@@ -51,11 +51,14 @@ static partial class Ae
          WriteLine($"\nlast:        {last.Princ()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
-            last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
+         last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
 
-            WriteLine($"last:        {last.Princ()}");
+         WriteLine($"last:        {last.Princ()}");
          
-            // LispObject current = argsListPair;
+         if (!last.IsProperList)
+            throw new ArgumentException($"last must be a proper list, not {last}!");
+
+// LispObject current = argsListPair;
             // var stash = Nil;
 
             // while (current is Pair currentPair && currentPair.Cdr is Pair)
