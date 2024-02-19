@@ -301,12 +301,13 @@ static partial class Ae
                throw new ArgumentException("argsList must be a proper list");
 
             var arg0 = ((Pair)argsList).Car;
-            var current = ((Pair)((Pair)argsList).Cdr).Car;
-
+            var current = ((Pair)argsList).Cdr;
 
             while (current is Pair currentPair)
             {
-               if (pred(arg0, ((Pair)currentPair).Car))
+               // WriteLine($"Compare {arg0} to {((Pair)currentPair).Car}.");
+
+               if (!pred(arg0, ((Pair)currentPair).Car))
                   return Nil;
 
                current = ((Pair)currentPair).Cdr;
@@ -316,12 +317,12 @@ static partial class Ae
          };
 
       //=================================================================================================================
-       public static readonly CoreFun.FuncT EqP =
-         EqualityPredicate((o1, o2) => o1 == o2);
+      public static readonly CoreFun.FuncT EqP =
+        EqualityPredicate((o1, o2) => o1 == o2);
 
       //=================================================================================================================
-       public static readonly CoreFun.FuncT EqlP =
-          EqualityPredicate((o1, o2) => o1.Eql(o2));
+      public static readonly CoreFun.FuncT EqlP =
+         EqualityPredicate((o1, o2) => o1.Eql(o2));
 
       //=================================================================================================================
       private static bool IsPermittedParamSymbol(LispObject obj) =>

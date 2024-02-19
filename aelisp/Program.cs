@@ -162,8 +162,8 @@ class Program
       Do(child_env, "(eq? :asd :asd :asd)");
       Do(child_env, "(eq? :asd :asd :qwe)");
 
-      Do(child_env, "(eql? 2 2 2)");
       Do(child_env, "(eql? 2 2 2/1)");
+      Do(child_env, "(eql? 2 2 3)");
 
         // }
     }
