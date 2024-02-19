@@ -18,6 +18,30 @@ static partial class Ae
        });
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT UserFunctionBody =
+         AccessorFun<UserFunction, LispObject>(fun => fun.Body, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT UserFunctionParams =
+         AccessorFun<UserFunction, LispObject>(fun => fun.Parameters, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Numerator =
+         AccessorFun<Rational, int>(rat => rat.Numerator, n => new Integer(n));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Denominator =
+         AccessorFun<Rational, int>(rat => rat.Denominator, n => new Integer(n));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT ErrorMessage =
+         AccessorFun<Error, string>(err => err.Value, s => new Error(s));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT SymbolName =
+         AccessorFun<Symbol, string>(sym => sym.Value, s => new String(s));
+
+      //=================================================================================================================
       private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
                                                                                      Func<FieldT, LispObject> construct,
                                                                                      Func<LispObject> thunk) =>
@@ -26,14 +50,6 @@ static partial class Ae
                ? thunk()
                : AccessorFun(getField, construct)(env, argsList, argsLength);
 
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT UserFunctionBody =
-         AccessorFun<UserFunction, LispObject>(fun => fun.Body, n => n);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT UserFunctionParams =
-         AccessorFun<UserFunction, LispObject>(fun => fun.Parameters, n => n);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EnvOrFunEnv =
@@ -52,22 +68,6 @@ static partial class Ae
          AccessorFunWithZeroArgsCase<Env, LispObject>(env => env.Values,
                                                       n => n,
                                                       () => Root.Values);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Numerator =
-         AccessorFun<Rational, int>(rat => rat.Numerator, n => new Integer(n));
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Denominator =
-         AccessorFun<Rational, int>(rat => rat.Denominator, n => new Integer(n));
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT ErrorMessage =
-         AccessorFun<Error, string>(err => err.Value, s => new Error(s));
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT SymbolName =
-         AccessorFun<Symbol, string>(sym => sym.Value, s => new String(s));
 
       //================================================================================================================
    }
