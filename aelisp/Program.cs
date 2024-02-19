@@ -175,6 +175,8 @@ class Program
 
       Do(child_env, "(eql? 2 2 2/1)");
       Do(child_env, "(eql? 2 2 3)");
+      
+      Do(child_env, "(bound? :asd)");
 
         // }
     }
