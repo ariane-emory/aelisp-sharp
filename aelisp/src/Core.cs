@@ -297,8 +297,8 @@ static partial class Ae
          RplacaOrRplacdFun((pair, arg1) => pair.Car = arg1);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Id = (env, argsList, argsLength)
-         => ((Pair)argsList)[0];
+      public static readonly CoreFun.FuncT Id = (env, argsList, argsLength) =
+         UnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Not =
