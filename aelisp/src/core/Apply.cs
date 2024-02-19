@@ -55,22 +55,31 @@ static partial class Ae
             var argIsQuoteForm = arg is Pair argPair && argPair.Car == Intern("quote");
             ApplyLog($"argIsQuoteForm: {argIsQuoteForm}");
 
-            if (argIsQuoteForm)
+            // if (argIsQuoteForm)
+            // {
+            //    arg = ((Pair)(((Pair)arg).Cdr)).Car;
+            //    ApplyLog($"arg 2:          {arg.Princ()}");
+            // }
+
+            if (!argIsQuoteForm)
             {
-               arg = ((Pair)(((Pair)arg).Cdr)).Car;
-               ApplyLog($"arg 2:          {arg.Princ()}");
+               ApplyLog($"evaluating:     {currentPair.Car}");
+               evaledArg = currentPair.Car.Eval(env);
+            }
+            else
+            {
+               evaledArg = currentPair.Car; // 'Eval(env);.Car;
             }
 
-            ApplyLog($"evaluating:     {currentPair.Car}");
-            evaledArg = currentPair.Car.Eval(env);
             ApplyLog($"evaledArg:      {evaledArg.Princ()}");
 
-            var elem = Ae.Cons((argIsQuoteForm && ! evaledArg.IsSelfEvaluating ? Requote(evaledArg) : evaledArg), Nil);
+            var elem = Ae.Cons(evaledArg, Nil);
 
             ApplyLog($"elem:           {elem.Princ()}");
 
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
+            ApplyLog($"newExpr:       {newExpr}");
             current = currentPair.Cdr;
          }
 
