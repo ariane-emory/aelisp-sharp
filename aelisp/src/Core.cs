@@ -261,12 +261,12 @@ static partial class Ae
 
              if (arg1 is T1 typedArg1 && arg2 is T2 typedArg2)
                 return func(typedArg1, typedArg2);
-             else
-                throw new ArgumentException($"Arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}");
+
+             throw new ArgumentException($"Arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}");
           };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Cons = 
+      public static readonly CoreFun.FuncT Cons =
          PureBinaryFun((arg1, arg2) => Ae.Cons(arg1, arg2));
 
       //=================================================================================================================
@@ -274,9 +274,30 @@ static partial class Ae
          PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
 
       //=================================================================================================================
-      private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func) =>
-         (Env env, LispObject argsList, int argsLength)
-         => func(((Pair)argsList)[0]);
+      private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func)
+         => (Env env, LispObject argsList, int argsLength) =>
+         {
+            if (argsList.IsImproperList)
+               throw new ArgumentException("argsList must be a proper list");
+
+            return func(((Pair)argsList)[0]);
+         };
+
+      //=================================================================================================================
+      private static CoreFun.FuncT PureUnaryFun<T1>(Func<T1, LispObject> func)
+       where T1 : LispObject
+       => (Env env, LispObject argsList, int argsLength) =>
+       {
+          if (argsList.IsImproperList)
+             throw new ArgumentException("argsList must be a proper list");
+
+          var arg1 = ((Pair)argsList)[0];
+
+          if (arg1 is T1 typedArg1)
+             return func(typedArg1);
+
+          throw new ArgumentException($"Arguments must be of types {typeof(T1).Name}");
+       };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Id = PureUnaryFun(o => o);
