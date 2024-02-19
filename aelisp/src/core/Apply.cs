@@ -64,8 +64,7 @@ static partial class Ae
             evaledArg = currentPair.Car.Eval(env);
             ApplyLog($"evaledArg:      {evaledArg.Princ()}");
 
-            //     ae_obj_t * const elem = CONS(requote(evaluated_arg), NIL);
-            var elem = Ae.Cons((argIsQuoteForm ? Requote(evaledArg) : evaledArg), Nil);
+            var elem = Ae.Cons((argIsQuoteForm && ! evaledArg.IsSelfEvaluating ? Requote(evaledArg) : evaledArg), Nil);
 
             ApplyLog($"elem:           {elem.Princ()}");
 
