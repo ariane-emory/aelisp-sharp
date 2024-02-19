@@ -250,7 +250,6 @@ static partial class Ae
           (argsList.Length == 0)
                ? thunk()
                : AccessorFun(getField, construct)(env, argsList, argsLength);
-         
 
       //=================================================================================================================
       private static CoreFun.FuncT AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
@@ -271,8 +270,10 @@ static partial class Ae
          AccessorFun<UserFunction, LispObject>(fun => fun.Parameters, n => n);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT UserFunctionEnv =
-         AccessorFun<UserFunction, LispObject>(fun => fun.Environment, n => n);
+      public static readonly CoreFun.FuncT EnvOrFunEnv =
+         AccessorFunWithZeroArgsCase<UserFunction, LispObject>(fun => fun.Environment,
+                                                               n => n,
+                                                               () => Root);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EnvSymbols =
