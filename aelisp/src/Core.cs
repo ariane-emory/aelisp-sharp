@@ -248,9 +248,25 @@ static partial class Ae
          {
             if (o is ThisLispObjT typed)
                return construct(getField(typed));
-            
+
             throw new ArgumentException($"Argument must be a string, not {o}!");
          });
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT EnvSymbols =
+         AccessorFun<Env, LispObject>(env => env.Symbols, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT EnvValues =
+         AccessorFun<Env, LispObject>(env => env.Values, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Numerator =
+       AccessorFun<Rational, int>(rat => rat.Numerator, n => new Integer(n));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Denominator =
+         AccessorFun<Rational, int>(rat => rat.Denominator, n => new Integer(n));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ErrorMessage =

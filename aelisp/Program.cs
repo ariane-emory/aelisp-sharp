@@ -87,10 +87,14 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
+         ("syms         ", Core.EnvSymbols, 0001, 01, false), // 0-arg version not yet supported.
+         ("vals         ", Core.EnvValues, 00001, 01, false), // 0-arg version not yet supported.
+         ("numer        ", Core.Numerator, 00001, 01, false),
+         ("denom        ", Core.Denominator, 001, 01, false),
+         ("message      ", Core.ErrorMessage, 01, 01, false),
          ("symbol-name  ", Core.SymbolName, 0001, 01, false),
          ("intern       ", Core.InternString, 01, 01, false),
          ("string       ", Core.ObjToString, 001, 01, false),
-         
          // set
          ("length       ", Core.Length, 00000001, 01, false),
          ("eval         ", Core.Eval, 0000000001, 01, false),
@@ -180,15 +184,16 @@ class Program
 
       Do(child_env, "(eql? 2 2 2/1)");
       Do(child_env, "(eql? 2 2 3)");
-      
+
       Do(child_env, "(bound? :asd)");
 
-        // }
-    }
+      // }
+   }
 
    //==============================================================================================================================
    static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
 
    //==============================================================================================================================
 }
+
 
