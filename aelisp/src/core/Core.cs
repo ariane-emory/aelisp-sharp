@@ -86,20 +86,17 @@ static partial class Ae
       //=================================================================================================================
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength) =>
+         PureUnaryFun((o) =>
          {
-            return PureUnaryFun((o) =>
-            {
-               if (!o.IsList)
-                  throw new ArgumentException($"Argument must be a list, not {o}!");
-
-               if (o.IsNil)
-                  return Nil;
-               
-               return func((Pair)o);
-
-            })(env, argsList, argsLength);
+            if (!o.IsList)
+               throw new ArgumentException($"Argument must be a list, not {o}!");
             
-         };
+            if (o.IsNil)
+               return Nil;
+            
+            return func((Pair)o);
+         })(env, argsList, argsLength);
+
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Car = CarOrCdrFun(o => ((Pair)o).Car);
