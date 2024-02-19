@@ -31,15 +31,18 @@ static partial class Ae
 
       //=================================================================================================================
       public static LispObject And(Env env, LispObject argsList, int argsLength) =>
-         ShortCircuitingSpecialFun(o => o.IsNil)(env, argsList, argsLength);
+         ShortCircuitingSpecialFun(o => o.IsNil)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject Or(Env env, LispObject argsList, int argsLength) =>
-         ShortCircuitingSpecialFun(o => !o.IsNil)(env, argsList, argsLength);
+         ShortCircuitingSpecialFun(o => !o.IsNil)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject Progn(Env env, LispObject argsList, int argsLength) =>
-         ShortCircuitingSpecialFun(o => false)(env, argsList, argsLength);
+         ShortCircuitingSpecialFun(o => false)
+         (env, argsList, argsLength);
 
       //================================================================================================================
    }

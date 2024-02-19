@@ -54,31 +54,38 @@ static partial class Ae
 
       //=================================================================================================================
       public static LispObject KeywordP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun<Symbol>(sym => sym.IsKeyword)(env, argsList, argsLength);
+         UnaryPredicateFun<Symbol>(sym => sym.IsKeyword)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject ProperP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsProperList)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsProperList)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject ImproperP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsImproperList)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsImproperList)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject TailP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsList)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsList)
+         (env, argsList, argsLength);
       
       //=================================================================================================================
       public static LispObject AtomP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsAtom)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsAtom)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject NilP(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsNil)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsNil)
+         (env, argsList, argsLength);
 
       //=================================================================================================================
       public static LispObject Not(Env env, LispObject argsList, int argsLength) =>
-         UnaryPredicateFun(o => o.IsNil)(env, argsList, argsLength);
+         UnaryPredicateFun(o => o.IsNil)
+         (env, argsList, argsLength);
 
       //================================================================================================================
    }
