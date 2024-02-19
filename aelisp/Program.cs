@@ -121,7 +121,10 @@ class Program
          ("positive?    ", PositiveP, 000000001, 01, false),
          ("negative?    ", NegativeP, 000000001, 01, false),
          ("keyword?     ", KeywordP, 0000000001, 01, false),
-                                                 
+         
+         ("1-           ", Minus1, 000000000001, 01, false),
+         ("1+           ", Plus1, 0000000000001, 01, false),
+         
          ("lambda       ", Core.Lambda, 0000002, 15, true),
          ("rplacd!      ", Rplacd, 000000000002, 02, false),
          ("rplaca!      ", Rplaca, 000000000002, 02, false),
