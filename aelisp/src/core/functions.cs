@@ -20,7 +20,7 @@ static partial class Ae
          => NewFunction<Macro>(env, argsList, (e, p, b) => new Macro(e, p, b));
 
       //=================================================================================================================
-      public static LispObject NewFunction<T>(Env env, LispObject argsList, Func<Env, LispObject, LispObject, LispObject> create)
+      private static LispObject NewFunction<T>(Env env, LispObject argsList, Func<Env, LispObject, LispObject, LispObject> create)
       {
          if (argsList.IsImproperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
