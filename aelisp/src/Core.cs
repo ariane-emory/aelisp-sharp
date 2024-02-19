@@ -223,6 +223,28 @@ static partial class Ae
          ((Pair)argsList)[0].Eval(env);
 
       //=================================================================================================================
+      private static CoreFun.FuncT PureBinaryFun<T1, T2>(Func<T1, T2, LispObject> func)
+          where T1 : LispObject
+          where T2 : LispObject
+          => (Env env, LispObject argsList, int argsLength) =>
+          {
+             if (argsList.IsImproperList)
+                throw new ArgumentException("argsList must be a proper list");
+             
+             var arg1 = ((Pair)argsList)[0];
+             var arg2 = ((Pair)argsList)[1];
+
+             if (arg1 is T1 typedArg1 && arg2 is T2 typedArg2)
+                return func(typedArg1, typedArg2);
+             else
+                throw new ArgumentException($"Arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}");
+          };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT NewRational =
+         PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
+
+      //=================================================================================================================
       private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength)
          => func(((Pair)argsList)[0]);
