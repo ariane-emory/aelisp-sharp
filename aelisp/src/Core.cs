@@ -160,44 +160,24 @@ static partial class Ae
       private static CoreFun.FuncT WhenOrUnlessSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList, int argsLength) =>
       {
-         var if_cond = ((Pair)argsList).Car;
-         var then_branch = ((Pair)argsList).Cdr;
+         var test = ((Pair)argsList).Car;
+         var body = ((Pair)argsList).Cdr;
 
-         if (then_branch.IsImproperList)
+         if (body.IsImproperList)
             throw new ArgumentException("body must be a proper list");
 
-         return !if_cond.Eval(env).IsNil
-            ? Progn(env, then_branch, then_branch.Length)
+         return pred(test.Eval(env))
+            ? Progn(env, body, body.Length)
             : Nil;
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Unless = (env, argsList, argsLength) =>
-      {
-         var if_cond = ((Pair)argsList).Car;
-         var then_branch = ((Pair)argsList).Cdr;
-
-         if (then_branch.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
-
-         return if_cond.Eval(env).IsNil
-            ? Progn(env, then_branch, then_branch.Length)
-            : Nil;
-      };
+      public static readonly CoreFun.FuncT When =
+         WhenOrUnlessSpecialFun(o => !o.IsNil);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT When = (env, argsList, argsLength) =>
-      {
-         var if_cond = ((Pair)argsList).Car;
-         var then_branch = ((Pair)argsList).Cdr;
-
-         if (then_branch.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
-
-         return !if_cond.Eval(env).IsNil
-            ? Progn(env, then_branch, then_branch.Length)
-            : Nil;
-      };
+      public static readonly CoreFun.FuncT Unless =
+         WhenOrUnlessSpecialFun(o => o.IsNil);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT If = (env, argsList, argsLength) =>
