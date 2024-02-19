@@ -13,6 +13,8 @@ static partial class Ae
          if (!argsList.IsProperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
+         WriteLine($"argList: {argsList.Princ()}");
+
          var arg1 = ((Pair)argsList)[0];
 
          if (!(argsList is Pair argsListPair))
@@ -48,8 +50,8 @@ static partial class Ae
          }
          
          WriteLine($"lastVal after consing: {lastVal.Princ()}");
-         
-         return Nil;
+
+         return lastVal.Eval(env);
       }
 
       //================================================================================================================
