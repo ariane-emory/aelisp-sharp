@@ -296,7 +296,7 @@ static partial class Ae
           if (arg1 is T1 typedArg1)
              return func(typedArg1);
 
-          throw new ArgumentException($"Arguments must be of types {typeof(T1).Name}");
+          throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
        };
 
       //=================================================================================================================
@@ -412,6 +412,21 @@ static partial class Ae
                throw new ArgumentException("prog body must be a proper list");
 
           return Truthiness(pred(((Pair)argsList)[0]));
+       };
+
+      //=================================================================================================================
+      private static CoreFun.FuncT UnaryPredicateFun<T1>(Func<T1, bool> pred)
+       => (Env env, LispObject argsList, int argsLength) =>
+       {
+          if (argsList.IsImproperList)
+               throw new ArgumentException("prog body must be a proper list");
+
+          var arg1 = ((Pair)argsList)[0];
+
+          if (arg1 is T1 typedArg1)
+             return Truthiness(pred(typedArg1));
+
+          throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
        };
 
       //=================================================================================================================
