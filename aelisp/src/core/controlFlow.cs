@@ -15,7 +15,6 @@ static partial class Ae
 
          var first_arg = ((Pair)argsList).Car.Eval(env);
          var body = ((Pair)argsList).Cdr;
-         var bodyLength = body.Length;
          var result = Nil;
 
          if (body.IsImproperList)
