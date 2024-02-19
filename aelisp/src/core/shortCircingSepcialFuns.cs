@@ -29,8 +29,6 @@ static partial class Ae
             return result;
          };
 
-      //       public delegate LispObject FuncT(Env env, LispObject argsList, int argsLength);
-
       //=================================================================================================================
       public static LispObject And(Env env, LispObject argsList, int argsLength) =>
          ShortCircuitingSpecialFun(o => o.IsNil)(env, argsList, argsLength);
