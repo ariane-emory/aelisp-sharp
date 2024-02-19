@@ -32,53 +32,53 @@ static partial class Ae
           throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
        };
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT PositiveP =
-         UnaryPredicateFun(num => num switch
-         {
-            Integer integer => integer.Value > 0,
-            Float floatObj => floatObj.Value > 0,
-            Rational rational => rational.Numerator > 0,
-            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-         });
+        //=================================================================================================================
+        public static LispObject PositiveP(Env env, LispObject argsList, int argsLength) =>
+           UnaryPredicateFun(num => num switch
+           {
+               Integer integer => integer.Value > 0,
+               Float floatObj => floatObj.Value > 0,
+               Rational rational => rational.Numerator > 0,
+               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+           })(env, argsList, argsLength);
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT NegativeP =
+        //=================================================================================================================
+        public static LispObject NegativeP(Env env, LispObject argsList, int argsLength) =>
          UnaryPredicateFun(num => num switch
          {
             Integer integer => integer.Value < 0,
             Float floatObj => floatObj.Value < 0,
             Rational rational => rational.Numerator < 0,
             _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-         });
+         })(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT KeywordP =
-         UnaryPredicateFun<Symbol>(sym => sym.IsKeyword);
+      public static LispObject KeywordP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun<Symbol>(sym => sym.IsKeyword)(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT ProperP =
-         UnaryPredicateFun(o => o.IsProperList);
+      public static LispObject ProperP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsProperList)(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT ImproperP =
-         UnaryPredicateFun(o => o.IsImproperList);
+      public static LispObject ImproperP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsImproperList)(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT TailP =
-       UnaryPredicateFun(o => o.IsList);
+      public static LispObject TailP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsList)(env, argsList, argsLength);
+      
+      //=================================================================================================================
+      public static LispObject AtomP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsAtom)(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT AtomP =
-         UnaryPredicateFun(o => o.IsAtom);
+      public static LispObject NilP(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsNil)(env, argsList, argsLength);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT NilP =
-         UnaryPredicateFun(o => o.IsNil);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Not =
-         UnaryPredicateFun(o => o.IsNil);
+      public static LispObject Not(Env env, LispObject argsList, int argsLength) =>
+         UnaryPredicateFun(o => o.IsNil)(env, argsList, argsLength);
 
       //================================================================================================================
    }
