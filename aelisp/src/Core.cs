@@ -294,8 +294,26 @@ static partial class Ae
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT EqP = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0] == ((Pair)argsList)[1]);
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT EqP = (env, argsList, argsLength) =>
+      {
+         if (argsList.IsImproperList)
+            throw new ArgumentException("argsList must be a proper list");
+
+         var arg0 = ((Pair)argsList).Car;
+         var current = ((Pair)((Pair)argsList).Cdr).Car;
+
+
+         while (current is Pair currentPair)
+         {
+            if (arg0 != ((Pair)currentPair).Car)
+               return Nil;
+
+            current = ((Pair)currentPair).Cdr;
+         }
+
+         return True;
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EqlP = (env, argsList, argsLength)
