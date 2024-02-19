@@ -177,49 +177,49 @@ class Program
       // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
       while (true)
       {
-         Do(child_env, "((lambda (x) (cons x x)) 8)");
-         Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
-         Do(child_env, "(progn 2 3 4)");
+         // Do(child_env, "((lambda (x) (cons x x)) 8)");
+         // Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
+         // Do(child_env, "(progn 2 3 4)");
 
-         // WriteLine($"\n{Root}");
-         // WriteLine($"\n{parent_env}");
-         // WriteLine($"\n{child_env}");
+         // // WriteLine($"\n{Root}");
+         // // WriteLine($"\n{parent_env}");
+         // // WriteLine($"\n{child_env}");
 
-         Do(child_env, "(cond (nil 8) (else 14))");
+         // Do(child_env, "(cond (nil 8) (else 14))");
 
-         Do(child_env, "(type 22)");
-         Do(child_env, "(type 4.3)");
-         Do(child_env, "(type (lambda (x) (x x)))");
-         Do(child_env, "(type '(1 . 2))");
+         // Do(child_env, "(type 22)");
+         // Do(child_env, "(type 4.3)");
+         // Do(child_env, "(type (lambda (x) (x x)))");
+         // Do(child_env, "(type '(1 . 2))");
 
-         Do(child_env, "(eq? :asd :asd :asd)");
-         Do(child_env, "(eq? :asd :asd :qwe)");
+         // Do(child_env, "(eq? :asd :asd :asd)");
+         // Do(child_env, "(eq? :asd :asd :qwe)");
 
-         Do(child_env, "(eql? 2 2 2/1)");
-         Do(child_env, "(eql? 2 2 3)");
+         // Do(child_env, "(eql? 2 2 2/1)");
+         // Do(child_env, "(eql? 2 2 3)");
 
-         Do(child_env, "(bound? :asd)");
+         // Do(child_env, "(bound? :asd)");
 
-         Do(child_env, "(rational 3 4)");
-         Do(child_env, "(car (cons 3 4))");
-         Do(child_env, "(cdr (cons 3 4))");
-         Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
+         // Do(child_env, "(rational 3 4)");
+         // Do(child_env, "(car (cons 3 4))");
+         // Do(child_env, "(cdr (cons 3 4))");
+         // Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
 
-         Do(child_env, "(concat)");
-         Do(child_env, "(concat \"hello\" \"world\")");
-         Do(child_env, "(concat \"hello\" nil \"world\")");
-         Do(child_env, "(concat nil \"hello\" nil \"world\")");
+         // Do(child_env, "(concat)");
+         // Do(child_env, "(concat \"hello\" \"world\")");
+         // Do(child_env, "(concat \"hello\" nil \"world\")");
+         // Do(child_env, "(concat nil \"hello\" nil \"world\")");
 
-         Do(child_env, "(setq x 2)");
-         Do(child_env, "(setq y 3)");
-         Do(child_env, "(setq lst '(3 4))");
-         WriteLine("----");
-         Do(child_env, "(apply list '1 x '(y 4))");
-         WriteLine("----");
-         Do(child_env, "(apply list '1 x (list y 4))");
-         WriteLine("----");
-         Do(child_env, "(apply list '1 x lst)");
-         WriteLine("");
+         // Do(child_env, "(setq x 2)");
+         // Do(child_env, "(setq y 3)");
+         // Do(child_env, "(setq lst '(3 4))");
+         // WriteLine("----");
+         // Do(child_env, "(apply list '1 x '(y 4))");
+         // WriteLine("----");
+         // Do(child_env, "(apply list '1 x (list y 4))");
+         // WriteLine("----");
+         // Do(child_env, "(apply list '1 x lst)");
+         // WriteLine("");
 
          WriteLine("1");
          QuietlyDo(child_env, "(setq lst '(1 2 3))");
