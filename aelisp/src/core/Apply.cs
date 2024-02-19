@@ -87,39 +87,7 @@ static partial class Ae
          WriteLine($"last 3:      {last.Princ()}");
          WriteLine($"newExpr:     {newExpr.Princ()}");
 
-         // LispObject current = argsListPair;
-         // var stash = Nil;
-
-         // while (current is Pair currentPair && currentPair.Cdr is Pair)
-         // {
-         //    stash = Ae.Cons(currentPair.Car.Eval(env), stash);
-         //    current = currentPair.Cdr;
-         // }
-
-         // WriteLine($"Stash:   {stash.Princ()}");
-         // WriteLine($"current: {current.Princ()}");
-
-         // var last = ((Pair)current).Car;
-         // WriteLine($"last:    {last.Princ()}");
-         // var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
-         // WriteLine(lastIsQuoteForm);
-         // var lastTail = (Pair)((Pair)last).Cdr;
-         // var newExpr = lastIsQuoteForm ? lastTail.Car : lastTail;
-
-         // WriteLine($"newExpr: {newExpr.Princ()}");
-
-         // current = stash;
-
-         // while (current is Pair currentPair)
-         // {
-         //    newExpr = Ae.Cons(currentPair.Car, newExpr);
-         //    current = currentPair.Cdr;
-         // }
-
-         // WriteLine($"newExpr after consing: {newExpr.Princ()}");
-
-         // return newExpr.Eval(env);
-         return Nil;
+         return newExpr.Eval(env);
       }
 
       //================================================================================================================
