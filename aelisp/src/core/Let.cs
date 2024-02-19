@@ -32,7 +32,7 @@ static partial class Ae
 
          BindVarlistInEnv(varlist, newEnv, newEnv);
 
-         return Core.Progn(newEnv, body, body.Length);
+         return Core.Progn(newEnv, body);
       };
 
       //===================================================================================================================
@@ -51,7 +51,7 @@ static partial class Ae
 
          BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
 
-         return Core.Progn(newEnv, body, body.Length);
+         return Core.Progn(newEnv, body);
       }
 
       //===================================================================================================================

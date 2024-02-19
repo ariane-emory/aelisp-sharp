@@ -25,7 +25,7 @@ static partial class Ae
             throw new ArgumentException($"repeat requires a positive integer as its first argument, not {first_arg}!");
 
          for (int ix = 0; ix < times.Value; ix++)
-            result = Progn(env, body, bodyLength);
+            result = Progn(env, body);
 
          return result;
       };
@@ -45,7 +45,7 @@ static partial class Ae
                throw new ArgumentException("body must be a proper list");
 
             while (pred(test.Eval(env)))
-               result = Progn(env, body, body.Length);
+               result = Progn(env, body);
 
             return result;
          };
@@ -72,7 +72,7 @@ static partial class Ae
                throw new ArgumentException("body must be a proper list");
 
             return pred(test.Eval(env))
-               ? Progn(env, body, body.Length)
+               ? Progn(env, body)
                : Nil;
          };
 
@@ -99,7 +99,7 @@ static partial class Ae
 
          return !if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
-            : Progn(env, else_branch, else_branch.Length);
+            : Progn(env, else_branch);
       };
 
       //================================================================================================================
@@ -157,7 +157,7 @@ static partial class Ae
                   conditionResult = condition.Eval(env);
 
                if (!conditionResult.IsNil)
-                  return Progn(env, actions, actions.Length);
+                  return Progn(env, actions);
             }
             current = currentClausePair.Cdr;
          }
@@ -220,7 +220,7 @@ static partial class Ae
                if (caseKeys == Intern("else") ||
                    caseKeys.Eql(keyForm) ||
                    (caseKeys is Pair caseKeysPair && caseKeysPair.ToList().Contains(keyForm)))
-                  return Progn(env, caseActions, caseActions.Length);
+                  return Progn(env, caseActions);
             }
 
             current = currentCasePair.Cdr;
