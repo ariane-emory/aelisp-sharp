@@ -236,11 +236,6 @@ static partial class Ae
          UnaryFun(o => new Integer(o.Length));
 
       //=================================================================================================================
-      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
-         => (Env env, LispObject argsList, int argsLength)
-         => Truthiness(pred(((Pair)argsList)[0]));
-
-      //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
          var arg0 = ((Pair)argsList)[0];
@@ -252,6 +247,11 @@ static partial class Ae
 
          return Truthiness(found);
       };
+
+      //=================================================================================================================
+      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
+         => (Env env, LispObject argsList, int argsLength)
+         => Truthiness(pred(((Pair)argsList)[0]));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP =
