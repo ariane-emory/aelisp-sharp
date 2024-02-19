@@ -103,7 +103,7 @@ static partial class Ae
       ));
 
       //=====================================================================================================================================
-      public static readonly LispObjectParser  ParseProgram =
+      public static readonly LispObjectParser ParseProgram =
          ParseSExp.Many()
          .Select(sexps => Cons(Intern("progn"),
                                (LispObject)sexps.Reverse().Aggregate((LispObject)Nil, (acc, sexp) => Cons(sexp, acc))))
@@ -119,17 +119,7 @@ static partial class Ae
                 TypedToken(LispTokenType.Dot)
                 .Then(ParseSExp, (_, tailExpr) => tailExpr).Optional(),
                 (exprs, optionalTailExpr) =>
-                {
-                   LispObject list = Nil;
-
-                   if (optionalTailExpr.HasValue)
-                      list = optionalTailExpr.Value;
-
-                   foreach (var expr in exprs.Reverse())
-                      list = Cons(expr, list);
-
-                   return list;
-                }
+                (LispObject)exprs.Reverse().Aggregate((LispObject)optionalTailExpr.GetValueOrDefault(Nil), (acc, sexp) => Cons(sexp, acc));
              )
          );
 
