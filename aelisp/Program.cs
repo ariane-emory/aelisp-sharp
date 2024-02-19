@@ -223,9 +223,9 @@ class Program
       WriteLine("----");
       Do(child_env, "(apply list '1 'x x '(y 4))");
       WriteLine("----");
-      Do(child_env, "(apply list '1 'x x (list y 4))");
-      WriteLine("----");
-      Do(child_env, "(apply list '1 'x x lst)");
+      // Do(child_env, "(apply list '1 'x x (list y 4))");
+      // WriteLine("----");
+      // Do(child_env, "(apply list '1 'x x lst)");
       WriteLine("");
    }
 

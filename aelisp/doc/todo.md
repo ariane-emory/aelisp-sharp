@@ -12,3 +12,4 @@ To Do - replicatinc features from C impelemtation of Ælisp:
 - [ ] plist handling (data layer/core).
 - [ ] Math comparison functions (probably gen with T4).
 - [ ] Math operator functions (probably gen with T4).
+- [ ] Make princ the default ToString().
