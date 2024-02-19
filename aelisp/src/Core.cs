@@ -409,7 +409,7 @@ static partial class Ae
        => (Env env, LispObject argsList, int argsLength) =>
        {
           if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+             throw new ArgumentException("argsList must be a proper list");
 
           return Truthiness(pred(((Pair)argsList)[0]));
        };
@@ -419,7 +419,7 @@ static partial class Ae
        => (Env env, LispObject argsList, int argsLength) =>
        {
           if (argsList.IsImproperList)
-            throw new ArgumentException("argsList must be a proper list");
+             throw new ArgumentException("argsList must be a proper list");
 
           var arg1 = ((Pair)argsList)[0];
 
@@ -431,15 +431,19 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP =
-       UnaryPredicateFun(o => o is Symbol sym && sym.IsKeyword);
+         UnaryPredicateFun<Symbol>(sym => sym.IsKeyword);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ProperP =
          UnaryPredicateFun(o => o.IsProperList);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT ImproperP =
+         UnaryPredicateFun(o => o.IsImproperList);
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT TailP =
-         UnaryPredicateFun(o => o.IsList);
+       UnaryPredicateFun(o => o.IsList);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT AtomP =

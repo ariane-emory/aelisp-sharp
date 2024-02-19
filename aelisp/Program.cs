@@ -110,6 +110,7 @@ class Program
          // apply                               
          ("macro        ", Core.Macro, 00000002, 15, true),
                                                 
+         ("improper?    ", ImproperP, 000000001, 01, false),
          ("proper?      ", ProperP, 00000000001, 01, false),
          ("tail?        ", TailP, 0000000000001, 01, false),
          ("atom?        ", AtomP, 0000000000001, 01, false),
