@@ -61,6 +61,7 @@ static partial class Ae
                ApplyLog($"arg 2:          {arg.Princ()}");
             }
 
+            ApplyLog($"evaluating:     {currentPair.Car}");
             evaledArg = currentPair.Car.Eval(env);
             ApplyLog($"evaledArg:      {evaledArg.Princ()}");
 
