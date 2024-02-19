@@ -219,26 +219,31 @@ static partial class Ae
       public static readonly CoreFun.FuncT OneP = NumericEqualityPredicateFun(1);
 
       //=================================================================================================================
-      private static CoreFun.FuncT UnaryFun(Func<LispObject, LispObject> func) =>
+      public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
+         ((Pair)argsList)[0].Eval(env);
+
+      //=================================================================================================================
+      private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength)
          => func(((Pair)argsList)[0]);
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Id = UnaryFun(o => o);
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
-         return arg0.Eval(env);
-      };
+      public static readonly CoreFun.FuncT Id = PureUnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Quote =
-       UnaryFun(o => o);
+       PureUnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Length =
-         UnaryFun(o => new Integer(o.Length));
+         PureUnaryFun(o => new Integer(o.Length));
+
+
+      //===================================================================================================================
+      public static readonly CoreFun.FuncT Type =
+         PureUnaryFun(o => Intern(o is Pair
+                                  ? ":cons"
+                                  : ":" + o.TypeName.ToLower()));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
@@ -665,16 +670,6 @@ static partial class Ae
 
          return Core.Progn(newEnv, body, body.Length);
       }
-
-      //===================================================================================================================
-      public static readonly CoreFun.FuncT Type = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList).Car;
-
-         return Intern(arg0 is Pair
-                        ? ":cons"
-                        : ":" + ((Pair)argsList).Car.TypeName.ToLower());
-      };
 
       //================================================================================================================
    }
