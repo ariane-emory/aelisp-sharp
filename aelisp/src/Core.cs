@@ -195,19 +195,6 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
-
-         if (arg0 is not Symbol sym)
-            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
-
-         var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
-
-         return Truthiness(found);
-      };
-
-      //=================================================================================================================
       private static CoreFun.FuncT NumericEqualityPredicateFun(int val) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
@@ -232,11 +219,6 @@ static partial class Ae
       public static readonly CoreFun.FuncT OneP = NumericEqualityPredicateFun(1);
 
       //=================================================================================================================
-      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
-         => (Env env, LispObject argsList, int argsLength)
-         => Truthiness(pred(((Pair)argsList)[0]));
-
-      //=================================================================================================================
       private static CoreFun.FuncT UnaryFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList, int argsLength)
          => func(((Pair)argsList)[0]);
@@ -252,6 +234,24 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Length =
          UnaryFun(o => new Integer(o.Length));
+
+      //=================================================================================================================
+      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
+         => (Env env, LispObject argsList, int argsLength)
+         => Truthiness(pred(((Pair)argsList)[0]));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
+      {
+         var arg0 = ((Pair)argsList)[0];
+
+         if (arg0 is not Symbol sym)
+            throw new ArgumentException($"Argument must be a symbol, not {arg0}!");
+
+         var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
+
+         return Truthiness(found);
+      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP =
