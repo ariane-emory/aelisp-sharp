@@ -406,12 +406,17 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
-         => (Env env, LispObject argsList, int argsLength)
-         => Truthiness(pred(((Pair)argsList)[0]));
+       => (Env env, LispObject argsList, int argsLength) =>
+       {
+          if (argsList.IsImproperList)
+               throw new ArgumentException("prog body must be a proper list");
+
+          return Truthiness(pred(((Pair)argsList)[0]));
+       };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT KeywordP =
-         UnaryPredicateFun(o => o is Symbol sym && sym.IsKeyword);
+       UnaryPredicateFun(o => o is Symbol sym && sym.IsKeyword);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ProperP =
