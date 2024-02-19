@@ -8,8 +8,19 @@ static partial class Ae
    public static partial class Core
    {
 
+      //================================================================================================================
       private static LispObject Requote(LispObject obj) =>
          Ae.Cons(Intern("quote"), Ae.Cons(obj, Nil));
+
+      //================================================================================================================
+      public static bool ApplyLogEnabled { get; set; } = true;
+
+      //================================================================================================================
+      public static void ApplyLog(string msg)
+      {
+         if (ApplyLogEnabled)
+            WriteLine(msg);
+      }
 
       //================================================================================================================
       public static LispObject Apply(Env env, LispObject argsList)
@@ -17,46 +28,46 @@ static partial class Ae
          if (!argsList.IsProperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
-         WriteLine($"argList:        {argsList.Princ()}");
+         ApplyLog($"argList:        {argsList.Princ()}");
 
          var arg1 = ((Pair)argsList)[0];
 
          if (!(argsList is Pair argsListPair))
             throw new ArgumentException($"argsList must be a pair, not {argsList}!");
 
-         WriteLine($"argListPair:    {argsListPair.Princ()}");
+         ApplyLog($"argListPair:    {argsListPair.Princ()}");
 
          Pair newExpr = (Pair)Ae.Cons(argsListPair.Car, Nil);
          LispObject newExprTail = newExpr;
          LispObject current = argsListPair.Cdr;
          LispObject evaledArg = Nil;
 
-         WriteLine($"newExpr:        {newExpr.Princ()}");
-         WriteLine($"newExprTail:    {newExprTail.Princ()}");
-         WriteLine($"current:        {current.Princ()}");
-         // WriteLine($"evaledArg:   {evaledArg.Princ()}");
+         ApplyLog($"newExpr:        {newExpr.Princ()}");
+         ApplyLog($"newExprTail:    {newExprTail.Princ()}");
+         ApplyLog($"current:        {current.Princ()}");
+         // ApplyLog($"evaledArg:   {evaledArg.Princ()}");
 
          while (current is Pair currentPair && !currentPair.Cdr.IsNil)
          {
             var arg = currentPair.Car;
-            WriteLine($"\narg:            {arg.Princ()}");
+            ApplyLog($"\narg:            {arg.Princ()}");
 
             var argIsQuoteForm = arg is Pair argPair && argPair.Car == Intern("quote");
-            WriteLine($"argIsQuoteForm: {argIsQuoteForm}");
+            ApplyLog($"argIsQuoteForm: {argIsQuoteForm}");
 
             if (argIsQuoteForm)
             {
                arg = ((Pair)(((Pair)arg).Cdr)).Car;
-               WriteLine($"arg 2:          {arg.Princ()}");
+               ApplyLog($"arg 2:          {arg.Princ()}");
             }
 
             evaledArg = currentPair.Car.Eval(env);
-            WriteLine($"evaledArg:      {evaledArg.Princ()}");
+            ApplyLog($"evaledArg:      {evaledArg.Princ()}");
 
             //     ae_obj_t * const elem = CONS(requote(evaluated_arg), NIL);
             var elem = Ae.Cons((argIsQuoteForm ? Requote(evaledArg) : evaledArg), Nil);
-            
-            WriteLine($"elem:           {elem.Princ()}");
+
+            ApplyLog($"elem:           {elem.Princ()}");
 
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
@@ -65,13 +76,13 @@ static partial class Ae
 
          LispObject last = ((Pair)current).Car;
 
-         WriteLine($"last:        {last.Princ()}");
+         ApplyLog($"last:        {last.Princ()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
-         WriteLine($"lastIsQForm: {lastIsQuoteForm}");
-         
+         ApplyLog($"lastIsQForm: {lastIsQuoteForm}");
+
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
-         WriteLine($"last 2:      {last.Princ()}");
+         ApplyLog($"last 2:      {last.Princ()}");
 
          if (!last.IsProperList)
             throw new ArgumentException($"last must be a proper list, not {last}!");
@@ -84,10 +95,11 @@ static partial class Ae
             last = ((Pair)last).Cdr;
          }
 
-         WriteLine($"last 3:      {last.Princ()}");
-         WriteLine($"newExpr:     {newExpr.Princ()}");
+         ApplyLog($"last 3:      {last.Princ()}");
+         ApplyLog($"newExpr:     {newExpr.Princ()}");
 
          return newExpr.Eval(env);
+         // return Nil;
       }
 
       //================================================================================================================
