@@ -222,6 +222,18 @@ static partial class Ae
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
          ((Pair)argsList)[0].Eval(env);
 
+      // //=================================================================================================================
+      // public static readonly CoreFun.FuncT Cons = (env, argsList, argsLength) =>
+      // {
+      //    var arg0 = ((Pair)argsList)[0];
+      //    var arg1 = ((Pair)argsList)[1];
+
+      //    if (Core.ConsDebugWrite)
+      //       WriteLine($"Core Cons({arg0.Princ()}, {arg1.Princ()})");
+
+      //    return Ae.Cons(arg0, arg1);
+      // };
+
       //=================================================================================================================
       private static CoreFun.FuncT PureBinaryFun(Func<LispObject, LispObject, LispObject> func)
          => PureBinaryFun<LispObject, LispObject>((arg1, arg2) => func(arg1, arg2));
@@ -243,6 +255,10 @@ static partial class Ae
              else
                 throw new ArgumentException($"Arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}");
           };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Cons = 
+         PureBinaryFun((arg1, arg2) => Ae.Cons(arg1, arg2));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT NewRational =
@@ -433,18 +449,6 @@ static partial class Ae
 
       //=================================================================================================================
       public static bool ConsDebugWrite { get; set; } = false;
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Cons = (env, argsList, argsLength) =>
-      {
-         var arg0 = ((Pair)argsList)[0];
-         var arg1 = ((Pair)argsList)[1];
-
-         if (Core.ConsDebugWrite)
-            WriteLine($"Core Cons({arg0.Princ()}, {arg1.Princ()})");
-
-         return Ae.Cons(arg0, arg1);
-      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT List = (env, argsList, argsLength)

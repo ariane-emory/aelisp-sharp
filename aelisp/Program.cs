@@ -197,6 +197,7 @@ class Program
       Do(child_env, "(bound? :asd)");
 
       Do(child_env, "(rational 3 4)");
+      Do(child_env, "(cons 3 4)");
 
       // }
    }
