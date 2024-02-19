@@ -87,8 +87,8 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("intern  ", Core.InternString, 00001, 01, false),
-         ("string  ", Core.ObjToString, 000001, 01, false),
+         ("intern  ", Core.InternString, 01, 01, false),
+         ("string  ", Core.ObjToString, 001, 01, false),
          
          // set
          ("length  ", Core.Length, 00000001, 01, false),
