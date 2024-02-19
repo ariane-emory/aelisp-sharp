@@ -1,0 +1,11 @@
+To Do - replicatinc features from C impelemtation of Ælisp:
+- [ ] C#-level unit tests.
+- [ ] Try running stdlib's tests package.
+- [ ] Refactor the stdlib and tests into it's own repo and try running it.
+- [ ] Organize building the root and make Main sensible, it's a construction zone ATM.
+- [ ] Implement REPL, maybe use ReadLine package?
+- [ ] OS interaction functions (data layer/core).
+- [ ] Find sensible/useful things for this implementation to put in object properties.
+- [ ] plist handling (data layer/core).
+- [ ] Math comparison functions (probably gen with T4).
+- [ ] Math operator functions (probably gen with T4).
