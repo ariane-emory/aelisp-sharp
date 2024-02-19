@@ -48,7 +48,7 @@ static partial class Ae
 
          LispObject last = ((Pair)current).Car;
          
-         WriteLine($"\nlast:        {last.Princ()}");
+         WriteLine($"last:        {last.Princ()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
