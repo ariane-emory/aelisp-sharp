@@ -28,33 +28,52 @@ static partial class Ae
    public static class Core
    {
       //=================================================================================================================
+      private static CoreFun.FuncT ShortCircuitFun(Func<LispObject, bool> pred) =>
+         (env, argsList, argsLength) =>
+         {
+            if (argsList.IsImproperList)
+               throw new ArgumentException("prog body must be a proper list");
+
+            var result = Nil;
+
+            while (argsList is Pair argsListPair)
+            {
+               result = argsListPair.Car.Eval(env);
+
+               if (pred(result))
+                  return result;
+
+               argsList = argsListPair.Cdr;
+            }
+
+            return result;
+         };
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT And = ShortCircuitFun(o => o.IsNil);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Progn = ShortCircuitFun(o => false);
+
+      // //=================================================================================================================
       // public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
       // {
+      //    if (argsList.IsImproperList)
+      //       throw new ArgumentException("prog body must be a proper list");
+
       //    var result = Nil;
 
-      //    if (argsList is Pair argsListPair)
-      //       foreach (var elem in argsListPair)
-      //          result = elem.Eval(env);
+      //    while (argsList is Pair argsListPair)
+      //    {
+      //       result = argsListPair.Car.Eval(env);
+      //       argsList = argsListPair.Cdr;
+      //    }
 
       //    return result;
       // };
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Progn = (env, argsList, argsLength) =>
-      {
-         if (argsList.IsImproperList)
-            throw new ArgumentException("prog body must be a proper list");
-
-         var result = Nil;
-
-         while (argsList is Pair argsListPair)
-         {
-            result = argsListPair.Car.Eval(env);
-            argsList = argsListPair.Cdr;
-         }
-
-         return result;
-      };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Setq = (env, argsList, argsLength) =>
@@ -324,34 +343,6 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Quote = (env, argsList, argsLength)
          => ((Pair)argsList)[0];
-
-      //=================================================================================================================
-      private static CoreFun.FuncT ShortCircuitFun(Func<LispObject, bool> pred) =>
-         (env, argsList, argsLength) =>
-         {
-            if (argsList.IsImproperList)
-               throw new ArgumentException("prog body must be a proper list");
-
-            var result = Nil;
-
-            while (argsList is Pair argsListPair)
-            {
-               result = argsListPair.Car.Eval(env);
-
-               if (pred(result))
-                  return result;
-
-               argsList = argsListPair.Cdr;
-            }
-
-            return result;
-         };
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT And = ShortCircuitFun(o => o.IsNil);
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Or = ShortCircuitFun(o => !o.IsNil);
 
       //=================================================================================================================
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
