@@ -63,7 +63,7 @@ static partial class Ae
 
             if (!argIsQuoteForm)
             {
-               ApplyLog($"evaluating:     {currentPair.Car}");
+               ApplyLog($"evaluating:     {currentPair.Car.Princ()}");
                evaledArg = currentPair.Car.Eval(env);
             }
             else
