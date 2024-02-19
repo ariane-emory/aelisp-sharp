@@ -1,7 +1,5 @@
 using static System.Console;
 using static Ae;
-using LispObjectParser = Pidgin.Parser<Ae.LispToken, Ae.LispObject>;
-using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 
 //======================================================================================================================
 static partial class Ae
