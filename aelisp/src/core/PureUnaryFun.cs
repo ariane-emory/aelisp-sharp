@@ -70,15 +70,9 @@ static partial class Ae
       public static readonly CoreFun.FuncT ObjToString =
          PureUnaryFun(o => new String(o.Princ()));
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT InternString =
-         PureUnaryFun(o =>
-         {
-            if (o is String str)
-               return Intern(str.Value);
-
-            throw new ArgumentException($"Argument must be a string, not {o}!");
-         });
+        //=================================================================================================================
+        public static readonly CoreFun.FuncT InternString =
+           PureUnaryFun<String> (str => Intern(str.Value));
 
       //===================================================================================================================
       public static readonly CoreFun.FuncT Type =
