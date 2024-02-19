@@ -226,7 +226,8 @@ class Program
       WriteLine("");
       Do(child_env, "(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
       Do(child_env, "(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-   }
+      Do(child_env, "$($(1 2) $(3 4) $(5 6))");
+    }
 
    //==============================================================================================================================
    static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
