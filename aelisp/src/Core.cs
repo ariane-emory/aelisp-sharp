@@ -195,10 +195,6 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Length = (env, argsList, argsLength)
-         => new Integer(((Pair)argsList)[0].Length);
-
-      //=================================================================================================================
       public static readonly CoreFun.FuncT BoundP = (env, argsList, argsLength) =>
       {
          var arg0 = ((Pair)argsList)[0];
@@ -236,29 +232,46 @@ static partial class Ae
       public static readonly CoreFun.FuncT OneP = NumericEqualityPredicateFun(1);
 
       //=================================================================================================================
-      private static CoreFun.FuncT SimplePredicateFun(Func<LispObject, bool> pred)
+      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
          => (Env env, LispObject argsList, int argsLength)
          => Truthiness(pred(((Pair)argsList)[0]));
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT KeywordP =
-         SimplePredicateFun(o => o is Symbol sym && sym.IsKeyword);
+      private static CoreFun.FuncT UnaryFun(Func<LispObject, LispObject> func) =>
+         (Env env, LispObject argsList, int argsLength)
+         => func(((Pair)argsList)[0]);
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT Eval =
+         UnaryFun(o => o);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Quote =
+         UnaryFun(o => o);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Length =
+         UnaryFun(o => new Integer(o.Length));
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT KeywordP =
+         UnaryPredicateFun(o => o is Symbol sym && sym.IsKeyword);
+      
+      //=================================================================================================================
       public static readonly CoreFun.FuncT ProperP =
-         SimplePredicateFun(o => o.IsProperList);
+         UnaryPredicateFun(o => o.IsProperList);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT TailP =
-         SimplePredicateFun(o => o.IsList);
+         UnaryPredicateFun(o => o.IsList);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT AtomP =
-         SimplePredicateFun(o => o.IsAtom);
+         UnaryPredicateFun(o => o.IsAtom);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT NilP =
-         SimplePredicateFun(o => o.IsNil);
+         UnaryPredicateFun(o => o.IsNil);
 
       //=================================================================================================================
       private static CoreFun.FuncT RplacaOrRplacdFun(Action<Pair, LispObject> action) =>
@@ -289,7 +302,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Not =
-         SimplePredicateFun(o => o.IsNil);
+         UnaryPredicateFun(o => o.IsNil);
 
       //=================================================================================================================
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
@@ -328,16 +341,8 @@ static partial class Ae
       };
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength)
-         => ((Pair)argsList)[0];
-
-      //=================================================================================================================
       public static readonly CoreFun.FuncT List = (env, argsList, argsLength)
          => argsList;
-
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT Quote = (env, argsList, argsLength)
-         => ((Pair)argsList)[0];
 
       //=================================================================================================================
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
