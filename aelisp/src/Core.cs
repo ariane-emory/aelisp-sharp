@@ -244,15 +244,14 @@ static partial class Ae
 
       //=================================================================================================================
       private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
-                                                                                      Func<FieldT, LispObject> construct) =>
+                                                                                     Func<FieldT, LispObject> construct,
+                                                                                     Func<LispObject> thunk) =>
          (Env env, LispObject argsList, int argsLength) =>
          {
-            var obj = ((Pair)argsList)[0];
-
-            if (obj is ThisLispObjT typed)
-               return construct(getField(typed));
-
-            throw new ArgumentException($"Argument must be a string, not {obj}!");
+            if (argsList.Length == 0)
+               return thunk();
+            else
+               return AccessorFun(getField, construct)(env, argsList, argsLength);
          };
 
       //=================================================================================================================
