@@ -243,6 +243,18 @@ static partial class Ae
          PureUnaryFun(o => new String(o.Princ()));
 
       //=================================================================================================================
+      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>
+         (Func<ThisLispObjT, FieldT> getField,
+          Func<FieldT, LispObject> construct)
+         => PureUnaryFun(o =>
+         {
+            if (o is ThisLispObjT typed)
+               return construct(getField(typed));
+
+            throw new ArgumentException($"Argument must be a string, not {o}!");
+         });
+
+      //=================================================================================================================
       private static CoreFun.FuncT AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
          => PureUnaryFun(o =>
          {
@@ -251,6 +263,18 @@ static partial class Ae
 
             throw new ArgumentException($"Argument must be a string, not {o}!");
          });
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT UserFunctionBody =
+         AccessorFun<UserFunction, LispObject>(fun => fun.Body, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT UserFunctionParams =
+         AccessorFun<UserFunction, LispObject>(fun => fun.Parameters, n => n);
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT UserFunctionEnv =
+         AccessorFun<UserFunction, LispObject>(fun => fun.Environment, n => n);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT EnvSymbols =

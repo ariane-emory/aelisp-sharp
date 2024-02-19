@@ -87,58 +87,62 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         ("syms         ", Core.EnvSymbols, 0001, 01, false), // 0-arg version not yet supported.
-         ("vals         ", Core.EnvValues, 00001, 01, false), // 0-arg version not yet supported.
-         ("numer        ", Core.Numerator, 00001, 01, false),
-         ("denom        ", Core.Denominator, 001, 01, false),
-         ("message      ", Core.ErrorMessage, 01, 01, false),
-         ("symbol-name  ", Core.SymbolName, 0001, 01, false),
-         ("intern       ", Core.InternString, 01, 01, false),
-         ("string       ", Core.ObjToString, 001, 01, false),
-         // set
-         ("length       ", Core.Length, 00000001, 01, false),
-         ("eval         ", Core.Eval, 0000000001, 01, false),
-         // apply
-         ("macro        ", Core.Macro, 000000002, 15, true),
-
-         ("proper?      ", Core.ProperP, 0000001, 01, false),
-         ("tail?        ", Core.TailP, 000000001, 01, false),
-         ("atom?        ", Core.AtomP, 000000001, 01, false),
-         ("nil?         ", Core.NilP, 0000000001, 01, false),
-         ("bound?       ", Core.BoundP, 00000001, 01, false),
-         ("zero?        ", Core.ZeroP, 000000001, 01, false), 
-         ("one?         ", Core.OneP, 0000000001, 01, false), 
-         ("keyword?     ", Core.KeywordP, 000001, 01, false),
-
-         ("lambda       ", Core.Lambda, 00000002, 15, true),
-         ("rplacd!      ", Core.Rplacd, 00000002, 02, false),
-         ("rplaca!      ", Core.Rplaca, 00000002, 02, false),
-         ("type         ", Core.Type, 0000000001, 01, false),
-         ("setq         ", Core.Setq, 0000000002, 15, true),
-         ("id           ", Core.Id, 000000000001, 01, false),
-         ("not          ", Core.Not, 00000000001, 01, false),
-         ("or           ", Core.Type, 0000000001, 15, false),
-         ("and          ", Core.Type, 0000000001, 15, false),
-
-         ("repeat       ", Core.Repeat, 00000001, 15, true),
-         ("case         ", Core.Cond, 0000000002, 15, true),
-         ("cond         ", Core.Cond, 0000000001, 15, true),
-         ("until        ", Core.Until, 000000002, 15, true),
-         ("while        ", Core.While, 000000002, 15, true),
-         ("unless       ", Core.Unless, 00000002, 15, true),
-         ("when         ", Core.When, 0000000002, 15, true),
-         ("if           ", Core.If, 000000000002, 15, true),
-         ("list         ", Core.List, 0000000015, 15, false),
-         ("quote        ", Core.Quote, 000000001, 01, true),
-         ("letrec       ", Core.Letrec, 00000002, 15, true),
-         ("let*         ", Core.LetStar, 0000002, 15, true),
-         ("let          ", Core.Let, 00000000002, 15, true),
-         ("eql?         ", Core.EqlP, 0000000002, 15, false),
-         ("eq?          ", Core.EqP, 00000000002, 15, false),
-         ("cons         ", Core.Cons, 0000000002, 02, false),
-         ("cdr          ", Core.Cdr, 00000000001, 01, false),
-         ("car          ", Core.Car, 00000000001, 01, false),
-         ("progn        ", Core.Progn, 000000015, 15, true),
+         ("body         ", Core.UserFunctionBody, 001, 01, false),
+         ("params       ", Core.UserFunctionParams,01, 01, false),
+         ("env          ", Core.UserFunctionEnv, 0001, 01, false), // 0-arg version not yet supported.
+                  
+         ("syms         ", Core.EnvSymbols, 000000001, 01, false), // 0-arg version not yet supported.
+         ("vals         ", Core.EnvValues, 0000000001, 01, false), // 0-arg version not yet supported.
+         ("numer        ", Core.Numerator, 0000000001, 01, false),
+         ("denom        ", Core.Denominator, 00000001, 01, false),
+         ("message      ", Core.ErrorMessage, 0000001, 01, false),
+         ("symbol-name  ", Core.SymbolName, 000000001, 01, false),
+         ("intern       ", Core.InternString, 0000001, 01, false),
+         ("string       ", Core.ObjToString, 00000001, 01, false),
+         // set                                  
+         ("length       ", Core.Length, 0000000000001, 01, false),
+         ("eval         ", Core.Eval, 000000000000001, 01, false),
+         // apply                                
+         ("macro        ", Core.Macro, 00000000000002, 15, true),
+                                                 
+         ("proper?      ", Core.ProperP, 000000000001, 01, false),
+         ("tail?        ", Core.TailP, 00000000000001, 01, false),
+         ("atom?        ", Core.AtomP, 00000000000001, 01, false),
+         ("nil?         ", Core.NilP, 000000000000001, 01, false),
+         ("bound?       ", Core.BoundP, 0000000000001, 01, false),
+         ("zero?        ", Core.ZeroP, 00000000000001, 01, false), 
+         ("one?         ", Core.OneP, 000000000000001, 01, false), 
+         ("keyword?     ", Core.KeywordP, 00000000001, 01, false),
+                                                 
+         ("lambda       ", Core.Lambda, 0000000000002, 15, true),
+         ("rplacd!      ", Core.Rplacd, 0000000000002, 02, false),
+         ("rplaca!      ", Core.Rplaca, 0000000000002, 02, false),
+         ("type         ", Core.Type, 000000000000001, 01, false),
+         ("setq         ", Core.Setq, 000000000000002, 15, true),
+         ("id           ", Core.Id, 00000000000000001, 01, false),
+         ("not          ", Core.Not, 0000000000000001, 01, false),
+         ("or           ", Core.Type, 000000000000001, 15, false),
+         ("and          ", Core.Type, 000000000000001, 15, false),
+                                                 
+         ("repeat       ", Core.Repeat, 0000000000001, 15, true),
+         ("case         ", Core.Cond, 000000000000002, 15, true),
+         ("cond         ", Core.Cond, 000000000000001, 15, true),
+         ("until        ", Core.Until, 00000000000002, 15, true),
+         ("while        ", Core.While, 00000000000002, 15, true),
+         ("unless       ", Core.Unless, 0000000000002, 15, true),
+         ("when         ", Core.When, 000000000000002, 15, true),
+         ("if           ", Core.If, 00000000000000002, 15, true),
+         ("list         ", Core.List, 000000000000015, 15, false),
+         ("quote        ", Core.Quote, 00000000000001, 01, true),
+         ("letrec       ", Core.Letrec, 0000000000002, 15, true),
+         ("let*         ", Core.LetStar, 000000000002, 15, true),
+         ("let          ", Core.Let, 0000000000000002, 15, true),
+         ("eql?         ", Core.EqlP, 000000000000002, 15, false),
+         ("eq?          ", Core.EqP, 0000000000000002, 15, false),
+         ("cons         ", Core.Cons, 000000000000002, 02, false),
+         ("cdr          ", Core.Cdr, 0000000000000001, 01, false),
+         ("car          ", Core.Car, 0000000000000001, 01, false),
+         ("progn        ", Core.Progn, 00000000000015, 15, true),
       ];
 
       foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
