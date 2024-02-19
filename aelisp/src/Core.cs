@@ -288,8 +288,8 @@ static partial class Ae
          => ((Pair)argsList)[0];
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Not = (env, argsList, argsLength)
-         => Truthiness(((Pair)argsList)[0].IsNil);
+      public static readonly CoreFun.FuncT Not =
+         SimplePredicateFun(o => o.IsNil);
 
       //=================================================================================================================
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
