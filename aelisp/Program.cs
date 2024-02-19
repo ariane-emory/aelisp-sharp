@@ -209,6 +209,7 @@ class Program
       Do(child_env, "(concat nil \"hello\" nil \"world\")");
 
       Do(child_env, "(apply + 1 2 '(3 4))");
+      Do(child_env, "(apply + '(3 4))");
       
       // }
    }
