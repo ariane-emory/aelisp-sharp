@@ -239,8 +239,20 @@ static partial class Ae
          });
 
       //=================================================================================================================
+      public static readonly CoreFun.FuncT Plus1 =
+         PureUnaryFun(num =>
+            num switch
+            {
+               Integer integer => (LispObject)new Integer(integer.Value + 1),
+               Float floatObj => (LispObject)new Float(floatObj.Value + 1),
+               Rational rational => (LispObject)new Rational(rational.Numerator + rational.Denominator, rational.Denominator),
+               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+            });
+
+
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Eval = (env, argsList, argsLength) =>
-         ((Pair)argsList)[0].Eval(env);
+       ((Pair)argsList)[0].Eval(env);
 
       // //=================================================================================================================
       // public static readonly CoreFun.FuncT Cons = (env, argsList, argsLength) =>
