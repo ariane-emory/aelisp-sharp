@@ -82,6 +82,8 @@ class Program
       //    Die(2, "Dying due to parse error.");
       // }
 
+      while (true)
+      {
       var parent_env = Root.Spawn();
       var child_env = parent_env.Spawn();
 
@@ -155,7 +157,7 @@ class Program
       foreach ((string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special) in coreFuns)
          Root.Set(Env.LookupMode.Global, Intern(name.Trim()), new CoreFun(name.Trim(), fun, minArgs, maxArgs, special));
 
-      WriteLine(Root);
+      // WriteLine(Root);
 
       // var (found, fobj) = Root.Lookup(Env.LookupMode.Global, Intern("cons"));
       // var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
@@ -175,8 +177,6 @@ class Program
       // WriteLine(Eval(child_env, "(cons 1 (cons 2 3))").Princ());
       // WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
       // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
-      while (true)
-      {
          // Do(child_env, "((lambda (x) (cons x x)) 8)");
          // Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
          // Do(child_env, "(progn 2 3 4)");

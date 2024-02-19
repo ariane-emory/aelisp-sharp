@@ -106,7 +106,7 @@ static partial class Ae
          Symbols = Cons(symbol, Symbols);
          Values = Cons(value, Values);
 
-         DebugWrite($"Added {symbol} with value {value}.");
+         // DebugWrite($"Added {symbol} with value {value}.");
       }
 
       //================================================================================================================
@@ -141,7 +141,7 @@ static partial class Ae
       //================================================================================================================
       private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
-         DebugWrite($"\nLooking up {symbol} in {this}...");
+         // DebugWrite($"\nLooking up {symbol} in {this}...");
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
 
@@ -152,12 +152,12 @@ static partial class Ae
 
             while (symbols is Pair symPair && values is Pair valPair)
             {
-               DebugWrite($"  symbs: {symPair}");
-               DebugWrite($"   vals: {valPair}");
+               // DebugWrite($"  symbs: {symPair}");
+               // DebugWrite($"   vals: {valPair}");
 
                if (symbol == symPair.Car)
                {
-                  DebugWrite($"Found {symbol} -> {valPair.Car}");
+                  // DebugWrite($"Found {symbol} -> {valPair.Car}");
                   return (true, valPair);
                }
 
@@ -176,7 +176,7 @@ static partial class Ae
             current = (Env)current.Parent;
          }
 
-         DebugWrite("Did not find it!");
+         // DebugWrite("Did not find it!");
 
          return (false, Nil);
       }
