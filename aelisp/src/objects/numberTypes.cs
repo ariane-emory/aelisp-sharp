@@ -74,9 +74,11 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
-      protected override Number AddToSameType(Number other)
+      protected override Number AddToSameType(Number that)
       {
-         throw new NotImplementedException("not implemented");
+         var addend = (Integer)that;
+
+         return new Integer(this.Value + addend.Value);
       }
 
       //================================================================================================================
@@ -85,7 +87,7 @@ static partial class Ae
    //===================================================================================================================
    // Rational class
    //===================================================================================================================
-   public class Rational : Number //, IPromotableToFloat, IPromotableTo<Float>
+   public class Rational : Number
    {
       //================================================================================================================
       // Constructor
@@ -116,13 +118,21 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      protected override Number AddToSameType(Number other)
+      protected override Number AddToSameType(Number that)
       {
-         throw new NotImplementedException("not implemented");
+         var addend = (Rational)that;
+
+         int commonDenominator = Denominator * addend.Denominator / GCD(Denominator, addend.Denominator);
+         int newNumerator = Numerator * (commonDenominator / Denominator);
+         int newAddendNumerator = addend.Numerator * (commonDenominator / addend.Denominator);
+         int sumNumerator = newNumerator + newAddendNumerator;
+
+         return new Rational(sumNumerator, commonDenominator);
       }
 
       //================================================================================================================
    }
+
 
    //===================================================================================================================
    // Float class
@@ -147,9 +157,11 @@ static partial class Ae
       public override string ToPrincString() => $"{Value}";
 
       //================================================================================================================
-      protected override Number AddToSameType(Number other)
+      protected override Number AddToSameType(Number that)
       {
-         throw new NotImplementedException("not implemented");
+         var addend = (Float)that;
+
+         return new Float(Value + addend.Value);
       }
 
       //================================================================================================================

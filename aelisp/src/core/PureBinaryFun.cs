@@ -48,7 +48,9 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Add =
-         PureBinaryFun<Number, Number>((left, right) => BinaryAdd(left, right));
+         PureBinaryFun<Number, Number>((left, right) => {
+            return BinaryAdd(left, right);
+         });
 
       //================================================================================================================
    }
