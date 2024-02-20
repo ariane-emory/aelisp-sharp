@@ -30,16 +30,16 @@ static partial class Ae
       //==================================================================================================================
       // Constructor
       //==================================================================================================================
-      public LispTokenizer(string? input) : this(input, null)
+      public LispTokenizer(string? input)
       {
          _input = input;
          _exclude = IsWhitespaceToken;
       }
 
       //==================================================================================================================
-      public LispTokenizer(string? input, Func<LispToken, bool>? exclude)
+      public LispTokenizer(string? input, Func<LispToken, bool>? exclude) : this(input)
       {
-         _input = input;
+         //         _input = input;
          _exclude = exclude;
       }
 
