@@ -96,7 +96,7 @@ static partial class Ae
    //=================================================================================================================================================
    // PureLispTokenizer class
    //=================================================================================================================================================
-   public class PureLispTokenizer : PureStringTokenizer<LispTokenType, LispToken, LispTokenizerState>
+   private class PureLispTokenizer : PureStringTokenizer<LispTokenType, LispToken, LispTokenizerState>
    {
       //==============================================================================================================================================
       // Private constructor
