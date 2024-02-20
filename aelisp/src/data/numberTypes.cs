@@ -61,12 +61,6 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinaryAddSameType(r)));
-      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
-      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFunc((l, r) => l.BinaryMulSameType(r)));
-      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryDivSameType(r)));
-
-      //==============================================================================================================================================
       protected static Number ApplyVariadicArithmetic(LispObject list,
                                                       int defaultAccum,
                                                       bool forbidArgsEqlToZero,
@@ -105,6 +99,12 @@ static partial class Ae
 
          return accum;
       }
+      
+      //==============================================================================================================================================
+      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinaryAddSameType(r)));
+      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
+      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFunc((l, r) => l.BinaryMulSameType(r)));
+      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryDivSameType(r)));
 
       //==============================================================================================================================================
       private static (Number, Number) MatchRanks(LispObject left, LispObject right)
