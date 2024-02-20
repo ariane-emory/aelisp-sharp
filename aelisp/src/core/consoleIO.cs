@@ -36,10 +36,7 @@ static partial class Ae
       public static LispObject WriteObj(Env env, LispObject argsList) =>       
          WriteOutput(env, argsList, o =>
          {
-            return o switch {
-               o is String => o.Princ(),
-                  o is Char => o.Princ()
-                  };
+            return o.Princ();
          });
       
       //================================================================================================================
