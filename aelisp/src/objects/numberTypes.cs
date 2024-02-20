@@ -152,28 +152,23 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that)
+      private Number AddOrSubSameType(Rational that, Func<int, int, int> fun)
       {
-         var addend = (Rational)that;
-         int commonDenominator = Denominator * addend.Denominator / GCD(Denominator, addend.Denominator);
+         int commonDenominator = Denominator * that.Denominator / GCD(Denominator, that.Denominator);
          int newNumerator = Numerator * (commonDenominator / Denominator);
-         int newAddendNumerator = addend.Numerator * (commonDenominator / addend.Denominator);
-         int sumNumerator = newNumerator + newAddendNumerator;
+         int newThatNumerator = that.Numerator * (commonDenominator / that.Denominator);
+         int sumNumerator = newNumerator + newThatNumerator;
 
          return new Rational(sumNumerator, commonDenominator);
       }
 
       //================================================================================================================
-      protected override Number SubSameType(Number that)
-      {
-         var subtrahend = (Rational)that;
-         int commonDenominator = Denominator * subtrahend.Denominator / GCD(Denominator, subtrahend.Denominator);
-         int newNumerator = Numerator * (commonDenominator / Denominator);
-         int newSubtrahendNumerator = subtrahend.Numerator * (commonDenominator / subtrahend.Denominator);
-         int sumNumerator = newNumerator - newSubtrahendNumerator;
+      protected override Number AddSameType(Number that) =>
+         AddOrSubSameType((Rational)that, (l, r) => l + r);
 
-         return new Rational(sumNumerator, commonDenominator);
-      }
+      //================================================================================================================
+      protected override Number SubSameType(Number that) =>
+         AddOrSubSameType((Rational)that, (l, r) => l - r);
 
       //================================================================================================================
    }
@@ -201,11 +196,11 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
-      protected override Number AddSameType(Number addend) => 
+      protected override Number AddSameType(Number addend) =>
          new Float(Value + ((Float)addend).Value);
 
       //================================================================================================================
-      protected override Number SubSameType(Number subtrahend) => 
+      protected override Number SubSameType(Number subtrahend) =>
          new Float(Value - ((Float)subtrahend).Value);
 
       //================================================================================================================
