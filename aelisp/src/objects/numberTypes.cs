@@ -142,27 +142,6 @@ static partial class Ae
    public class Integer : Number
    {
       //==============================================================================================================================================
-      // Static methods
-      //==============================================================================================================================================
-      public static Integer Mod(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't modulo non-integers: {l} % {r}.");
-
-            if (rInteger.Value <= 0)
-               throw new ArgumentException($"Modulo by zero or negative number: {rInteger}.");
-
-            return lInteger.BinaryMod(rInteger);
-         });
-
-      //==============================================================================================================================================
-      protected Integer BinaryMod(Integer that)
-      {
-         return ApplyBinaryOp(that, (l, r) => l % r);
-      }
-
-      //==============================================================================================================================================
       // Constructor
       //==============================================================================================================================================
       public Integer(int value) => Value = value;
@@ -181,14 +160,35 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //==============================================================================================================================================
-      private Number ApplyBinaryOp(Number that, Func<int, int, int> op) =>
+      private Integer ApplyBinaryOp(Number that, Func<int, int, int> op) =>
          new Integer(op(this.Value, ((Integer)that).Value));
 
       //==============================================================================================================================================
-      protected override Number BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
-      protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
-      protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
-      protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+      protected override Integer BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
+      protected override Integer BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
+      protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
+      protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+
+      //==============================================================================================================================================
+      protected Integer BinaryModSameType(Integer that)
+      {
+         if (that.Value <= 0)
+            throw new ArgumentException($"Modulo by zero or negative number: {that}.");
+
+         return (Integer)ApplyBinaryOp(that, (l, r) => l % r);
+      }
+
+      //==============================================================================================================================================
+      // Static methods
+      //==============================================================================================================================================
+      public static Integer Mod(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't modulo non-integers: {l} % {r}.");
+
+            return lInteger.BinaryModSameType(rInteger);
+         });
 
       //==============================================================================================================================================
    }
