@@ -57,6 +57,7 @@ static partial class Ae
       //================================================================================================================
       protected abstract Number AddSameType(Number other);
       protected abstract Number SubSameType(Number other);
+      protected abstract Number MulSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -73,6 +74,13 @@ static partial class Ae
       {
          var (left, right) = MatchRanks(this, other);
          return MaybeDemote(left.SubSameType(right));
+      }
+
+      //================================================================================================================
+      public Number Mul(Number other)
+      {
+         var (left, right) = MatchRanks(this, other);
+         return MaybeDemote(left.MulSameType(right));
       }
 
       //================================================================================================================
@@ -102,18 +110,16 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
-      protected override Number AddSameType(Number that)
-      {
-         var addend = (Integer)that;
-         return new Integer(this.Value + addend.Value);
-      }
+      protected override Number AddSameType(Number that) => 
+         new Integer(this.Value + ((Integer)that).Value);
+  
+      //================================================================================================================
+      protected override Number SubSameType(Number that) => 
+         new Integer(this.Value - ((Integer)that).Value);
 
       //================================================================================================================
-      protected override Number SubSameType(Number that)
-      {
-         var subtrahend = (Integer)that;
-         return new Integer(this.Value - subtrahend.Value);
-      }
+      protected override Number MulSameType(Number that) => 
+         new Integer(this.Value * ((Integer)that).Value);
 
       //================================================================================================================
    }
@@ -152,7 +158,7 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      private Number AddOrSubSameType(Rational that, Func<int, int, int> fun)
+      private Number DoBinaryOp(Rational that, Func<int, int, int> fun)
       {
          int commonDenominator = Denominator * that.Denominator / GCD(Denominator, that.Denominator);
          int newNumerator = Numerator * (commonDenominator / Denominator);
@@ -164,11 +170,15 @@ static partial class Ae
 
       //================================================================================================================
       protected override Number AddSameType(Number that) =>
-         AddOrSubSameType((Rational)that, (l, r) => l + r);
-
+         DoBinaryOp((Rational)that, (l, r) => l + r);
+      
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
-         AddOrSubSameType((Rational)that, (l, r) => l - r);
+         DoBinaryOp((Rational)that, (l, r) => l - r);
+      
+      //================================================================================================================
+      protected override Number MulSameType(Number that) =>
+         DoBinaryOp((Rational)that, (l, r) => l * r);
 
       //================================================================================================================
    }
@@ -196,12 +206,16 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
-      protected override Number AddSameType(Number addend) =>
-         new Float(Value + ((Float)addend).Value);
+      protected override Number AddSameType(Number that) =>
+         new Float(Value + ((Float)that).Value);
 
       //================================================================================================================
-      protected override Number SubSameType(Number subtrahend) =>
-         new Float(Value - ((Float)subtrahend).Value);
+      protected override Number SubSameType(Number that) =>
+         new Float(Value - ((Float)that).Value);
+      
+      //================================================================================================================
+      protected override Number MulSameType(Number that) =>
+         new Float(Value * ((Float)that).Value);
 
       //================================================================================================================
       protected override Number Promote()
