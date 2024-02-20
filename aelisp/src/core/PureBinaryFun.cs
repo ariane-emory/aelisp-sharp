@@ -54,6 +54,14 @@ static partial class Ae
             return leftNumber.Add(rightNumber);
          });
 
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Sub =
+         PureBinaryFun<Number, Number>((left, right) => {
+            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+            return leftNumber.Sub(rightNumber);
+         });
+
       //================================================================================================================
    }
    //===================================================================================================================
