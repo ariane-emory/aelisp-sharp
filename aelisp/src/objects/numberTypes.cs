@@ -130,7 +130,7 @@ static partial class Ae
             if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
                throw new ArgumentException($"Possible division by zero: {currentNumber}");
 
-            accum = accum.BinaryAdd(currentNumber);
+            accum = op(accum, currentNumber);
             current = currentPair.Cdr;
          }
 
