@@ -182,13 +182,13 @@ static partial class Ae
                 if (assignMode == AssignMode.AssignAnd)
                 {
                    var tmp = op(left, currentNumber);
-                   // WriteLine($"assign {result} & {tmp}");
+                   WriteLine($"assign {result} & {tmp}");
                    result &= tmp;
                 }
                 else
                 {
                    var tmp = op(left, currentNumber);
-                   // WriteLine($"assign {result} | {tmp}");
+                   WriteLine($"assign {result} | {tmp}");
                    result |= tmp;
                 }
 
