@@ -17,6 +17,7 @@ static partial class Ae
       public override string TypeName => "Cons";
       public LispObject Car { get; set; }
       public LispObject Cdr { get; set; }
+      public bool IsQuoteForm  => Car == Intern("quote");
       
       //================================================================================================================
       // Constructor
@@ -37,49 +38,40 @@ static partial class Ae
       //================================================================================================================
       public override string PrincString()
       {
-         var sb = new StringBuilder();
 
+         if (IsQuoteForm)
+            return $"'{((Pair)Cdr).Car.PrincString()}";
 
          LispObject current = this;
 
-         var currentIsQuoteForm = current is Pair currentPair && currentPair.Car == Intern("quote");
+         var sb = new StringBuilder();
 
-         if (current.IsQuoteForm)
+         sb.Append("(");
+
+         while (current is Pair currentCons)
          {
-            var cadr = ((Pair)((Pair)current).Cdr).Car;
+            sb.Append(currentCons.Car.Print());
 
-            sb.Append("'");
-            sb.Append(cadr.PrincString());
-         }
-         else
-         {
-            sb.Append("(");
-
-            while (current is Pair currentCons)
+            if (currentCons.Cdr is Pair)
             {
-               sb.Append(currentCons.Car.Print());
-
-               if (currentCons.Cdr is Pair)
-               {
-                  sb.Append(" ");
-                  current = currentCons.Cdr;
-               }
-               else if (currentCons.Cdr != Nil)
-               {
-
-                  sb.Append(" . ");
-                  sb.Append(currentCons.Cdr.PrincString());
-
-                  break;
-               }
-               else
-               {
-                  break;
-               }
+               sb.Append(" ");
+               current = currentCons.Cdr;
             }
+            else if (currentCons.Cdr != Nil)
+            {
 
-            sb.Append(")");
+               sb.Append(" . ");
+               sb.Append(currentCons.Cdr.PrincString());
+
+               break;
+            }
+            else
+            {
+               break;
+            }
          }
+
+         sb.Append(")");
 
          return sb.ToString();
       }
@@ -200,12 +192,12 @@ static partial class Ae
          LispObject fun = head.Eval(env);
 
          LispObject result = fun switch
-         {
-            CoreFun coreFun => coreFun.Apply(env, args),
-            Lambda lambda => lambda.Apply(env, args),
-            Macro macro => macro.Apply(env, args),
-            _ => throw new ApplicationException($"Result of evaluating head is inapplicable object: {fun} of type: {fun.GetType()}")
-         };
+            {
+               CoreFun coreFun => coreFun.Apply(env, args),
+               Lambda lambda => lambda.Apply(env, args),
+               Macro macro => macro.Apply(env, args),
+               _ => throw new ApplicationException($"Result of evaluating head is inapplicable object: {fun} of type: {fun.GetType()}")
+            };
 
          if (fun is Macro)
          {
