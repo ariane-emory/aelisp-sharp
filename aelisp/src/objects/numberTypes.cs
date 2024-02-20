@@ -105,8 +105,14 @@ static partial class Ae
       protected override Number AddSameType(Number that)
       {
          var addend = (Integer)that;
-
          return new Integer(this.Value + addend.Value);
+      }
+
+      //================================================================================================================
+      protected override Number SubSameType(Number that)
+      {
+         var subtrahend = (Integer)that;
+         return new Integer(this.Value - subtrahend.Value);
       }
 
       //================================================================================================================
