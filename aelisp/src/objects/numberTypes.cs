@@ -141,7 +141,7 @@ static partial class Ae
    //=================================================================================================================================================
    public class Integer : Number
    {
-      protected abstract Number BinaryModSameType(Number other);
+      // protected abstract Number BinaryModSameType(Number other);
 
       //==============================================================================================================================================
       // Static methods
@@ -177,7 +177,7 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected override Number BinaryModSameType(Number that)
+      protected  Number BinaryModSameType(Number that)
       {
          if (that is Integer thatInteger && thatInteger.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
