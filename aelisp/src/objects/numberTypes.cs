@@ -61,9 +61,9 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected static Number ApplyVariadicArithmetic(LispObject list,
-                                                    int defaultAccum,
-                                                    bool forbidArgsEqlToZero,
-                                                    Func<Number, Number, Number> op)
+                                                      int defaultAccum,
+                                                      bool forbidArgsEqlToZero,
+                                                      Func<Number, Number, Number> op)
       {
          if (!list.IsProperList)
             throw new ArgumentException($"Can't do math on an improper list: {list}");
@@ -157,11 +157,11 @@ static partial class Ae
       // Instance methods 
       //==============================================================================================================================================
       public override string ToPrincString() => $"{Value}";
-      protected override Number Promote() => new Rational(Value, 1);
+      protected override Rational Promote() => new(Value, 1);
 
       //==============================================================================================================================================
       private Integer ApplyBinaryOp(Number that, Func<int, int, int> op) =>
-         new Integer(op(this.Value, ((Integer)that).Value));
+         new(op(this.Value, ((Integer)that).Value));
 
       //==============================================================================================================================================
       protected override Integer BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
@@ -179,6 +179,24 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
+      protected Integer BinaryLsftSameType(Integer that)
+      {
+         if (that.Value < 0)
+            throw new ArgumentException($"Left shift by negative number: {that}.");
+
+         return ApplyBinaryOp(that, (l, r) => l << r);
+      }
+
+      //==============================================================================================================================================
+      protected Integer BinaryRsftSameType(Integer that)
+      {
+         if (that.Value < 0)
+            throw new ArgumentException($"Right shift by negative number: {that}.");
+
+         return ApplyBinaryOp(that, (l, r) => l >> r);
+      }
+
+      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
       public static Integer Mod(LispObject list) =>
@@ -188,6 +206,24 @@ static partial class Ae
                throw new ArgumentException($"Can't modulo non-integers: {l} % {r}.");
 
             return lInteger.BinaryModSameType(rInteger);
+         });
+
+      public static Integer Lsft(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
+
+            return lInteger.BinaryLsftSameType(rInteger);
+         });
+
+      public static Integer Rsft(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
+
+            return lInteger.BinaryRsftSameType(rInteger);
          });
 
       //==============================================================================================================================================
