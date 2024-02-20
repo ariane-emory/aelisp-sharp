@@ -47,19 +47,19 @@ static partial class Ae
 
          LispObject current = this;
 
-         while (current is Pair currentCons)
+         while (current is Pair currentPair)
          {
-            sb.Append(currentCons.Car.ToPrintString());
+            sb.Append(currentPair.Car.ToPrintString());
 
-            if (currentCons.Cdr is Pair)
+            if (currentPair.Cdr is Pair)
             {
                sb.Append(" ");
-               current = currentCons.Cdr;
+               current = currentPair.Cdr;
             }
-            else if (currentCons.Cdr != Nil)
+            else if (currentPair.Cdr != Nil)
             {
                sb.Append(" . ");
-               sb.Append(currentCons.Cdr.ToPrincString());
+               sb.Append(currentPair.Cdr.ToPrintString());
 
                break;
             }
