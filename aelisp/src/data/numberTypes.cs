@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Reflection;
 using System.Text;
+using static System.Console;
 
 //====================================================================================================================================================
 static partial class Ae
@@ -62,7 +63,9 @@ static partial class Ae
          return (l, r) =>
          {
             var (left, right) = MatchRanks(l, r);
-            return cmp(left, right);
+            var result = cmp(left, right);
+            WriteLine($"cmp {left.ToPrincString()} <=> {right.ToPrincString()} result: {result}");
+            return result;
          };
       }
 
