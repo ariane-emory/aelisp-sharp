@@ -272,10 +272,10 @@ static partial class Ae
       protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
       protected override bool BinaryCmpEqualsSameType(Number other) => Value == ((Integer)other).Value;
-      protected override bool BinaryCmpLTSameType(Number other) => Value < ((Float)other).Value;
-      protected override bool BinaryCmpGTSameType(Number other) => Value > ((Float)other).Value;
-      protected override bool BinaryCmpLTESameType(Number other) => Value <= ((Float)other).Value;
-      protected override bool BinaryCmpGTESameType(Number other) => Value >= ((Float)other).Value;
+      protected override bool BinaryCmpLTSameType(Number other) => Value < ((Integer)other).Value;
+      protected override bool BinaryCmpGTSameType(Number other) => Value > ((Integer)other).Value;
+      protected override bool BinaryCmpLTESameType(Number other) => Value <= ((Integer)other).Value;
+      protected override bool BinaryCmpGTESameType(Number other) => Value >= ((Integer)other).Value;
 
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
