@@ -175,7 +175,7 @@ static partial class Ae
          if (that.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
 
-         return (Integer)ApplyBinaryOp(that, (l, r) => l % r);
+         return ApplyBinaryOp(that, (l, r) => l % r);
       }
 
       //==============================================================================================================================================
@@ -223,7 +223,7 @@ static partial class Ae
 
       //==============================================================================================================================================
       private Float ApplyBinaryOp(Number that, Func<double, double, double> op) =>
-         new Float(op(this.Value, ((Float)that).Value));
+         new(op(this.Value, ((Float)that).Value));
 
       //==============================================================================================================================================
       protected override Float BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
