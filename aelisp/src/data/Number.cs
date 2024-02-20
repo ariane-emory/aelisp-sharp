@@ -12,10 +12,19 @@ static partial class Ae
    public abstract class Number : LispObject
    {
       //==============================================================================================================================================
+      // Private types
+      //==============================================================================================================================================
+      private enum AssignMode { AssignAnd, AssignOr, };
+
+      //==============================================================================================================================================
       // Properties
       //==============================================================================================================================================
-      protected abstract int Rank { get; }
       private static Integer Zero => new Integer(0);
+      
+      //==============================================================================================================================================
+      // Abstract instance properties
+      //==============================================================================================================================================
+      protected abstract int Rank { get; }
 
       //==============================================================================================================================================
       // Abstract instance methods
@@ -32,30 +41,6 @@ static partial class Ae
       protected abstract bool BinaryCmpGTE(Number other);
 
       //==============================================================================================================================================
-      // Instance methods
-      //==============================================================================================================================================
-      protected static Func<Number, Number, Number> ApplyBinaryOpFun(Func<Number, Number, Number> op)
-      {
-         return (l, r) =>
-         {
-            var (left, right) = MatchRanks(l, r);
-            return MaybeDemote(op(left, right));
-         };
-      }
-
-      //==============================================================================================================================================
-      protected static Func<Number, Number, bool> ApplyBinaryCmpFun(Func<Number, Number, bool> cmp)
-      {
-         return (l, r) =>
-         {
-            var (left, right) = MatchRanks(l, r);
-            var result = cmp(left, right);
-            // WriteLine($"cmp {left.ToPrincString()} <=> {right.ToPrincString()} result: {result}");
-            return result;
-         };
-      }
-
-      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
       public static (Number, Number) ThrowUnlessNumbers(LispObject left, LispObject right)
@@ -69,48 +54,59 @@ static partial class Ae
          return (leftNumber, rightNumber);
       }
 
-      //=================================================================================================================================================
-      protected static Number ApplyVariadicArithmetic(LispObject list,
-                                                      int defaultAccum,
-                                                      bool forbidArgsEqlToZero,
-                                                      Func<Number, Number, Number> op)
+      //==============================================================================================================================================
+      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
       {
-         if (!list.IsProperList)
-            throw new ArgumentException($"Can't do math on an improper list: {list}");
+         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-         Number accum = new Integer(defaultAccum);
+         while (leftNumber.Rank < rightNumber.Rank)
+            leftNumber = leftNumber.Promote();
 
-         if (!(list is Pair head))
-            return accum;
+         while (leftNumber.Rank > rightNumber.Rank)
+            rightNumber = rightNumber.Promote();
 
-         LispObject current = head;
-
-         if (!head.Cdr.IsNil)
-         {
-            if (!(head.Car is Number headNum))
-               throw new ArgumentException($"head.Car is not a number: {head.Car}");
-
-            accum = headNum;
-            current = head.Cdr;
-         }
-
-         while (current is Pair currentPair)
-         {
-            if (!(currentPair.Car is Number currentNumber))
-               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
-
-            if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
-               throw new ArgumentException($"Possible division by zero: {currentNumber}");
-
-            accum = op(accum, currentNumber);
-            current = currentPair.Cdr;
-         }
-
-         return accum;
+         return (leftNumber, rightNumber);
       }
 
       //==============================================================================================================================================
-      private enum AssignMode { AssignAnd, AssignOr, };
+      private static Number MaybeDemote(Number number)
+      {
+         if (number is Integer)
+            return number;
+
+         if (number is Rational numberRational)
+            return numberRational.Denominator == 1
+               ? new Integer(numberRational.Numerator)
+               : number;
+
+         if (number is Float numberFloat)
+         {
+            var floor = Math.Floor(numberFloat.Value);
+            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
+         }
+
+         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
+      }
+
+      //==============================================================================================================================================
+      private static Func<Number, Number, Number> ApplyBinaryOpFun(Func<Number, Number, Number> op)
+      {
+         return (l, r) =>
+         {
+            var (left, right) = MatchRanks(l, r);
+            return MaybeDemote(op(left, right));
+         };
+      }
+
+      //==============================================================================================================================================
+      private static Func<Number, Number, bool> ApplyBinaryCmpFun(Func<Number, Number, bool> cmp)
+      {
+         return (l, r) =>
+         {
+            var (left, right) = MatchRanks(l, r);
+            return cmp(left, right);
+         };
+      }
 
       //==============================================================================================================================================
       private static bool ApplyVariadicComparison(LispObject list,
@@ -165,6 +161,46 @@ static partial class Ae
          return result;
       }
 
+      //=================================================================================================================================================
+      protected static Number ApplyVariadicArithmetic(LispObject list,
+                                                      int defaultAccum,
+                                                      bool forbidArgsEqlToZero,
+                                                      Func<Number, Number, Number> op)
+      {
+         if (!list.IsProperList)
+            throw new ArgumentException($"Can't do math on an improper list: {list}");
+
+         Number accum = new Integer(defaultAccum);
+
+         if (!(list is Pair head))
+            return accum;
+
+         LispObject current = head;
+
+         if (!head.Cdr.IsNil)
+         {
+            if (!(head.Car is Number headNum))
+               throw new ArgumentException($"head.Car is not a number: {head.Car}");
+
+            accum = headNum;
+            current = head.Cdr;
+         }
+
+         while (current is Pair currentPair)
+         {
+            if (!(currentPair.Car is Number currentNumber))
+               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+
+            if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
+               throw new ArgumentException($"Possible division by zero: {currentNumber}");
+
+            accum = op(accum, currentNumber);
+            current = currentPair.Cdr;
+         }
+
+         return accum;
+      }
+
       //==============================================================================================================================================
       public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinaryAdd(r)));
       public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySub(r)));
@@ -177,40 +213,6 @@ static partial class Ae
       public static bool CmpGT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
       public static bool CmpLTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
       public static bool CmpGTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
-
-      //==============================================================================================================================================
-      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
-      {
-         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-         while (leftNumber.Rank < rightNumber.Rank)
-            leftNumber = leftNumber.Promote();
-
-         while (leftNumber.Rank > rightNumber.Rank)
-            rightNumber = rightNumber.Promote();
-
-         return (leftNumber, rightNumber);
-      }
-
-      //==============================================================================================================================================
-      private static Number MaybeDemote(Number number)
-      {
-         if (number is Integer)
-            return number;
-
-         if (number is Rational numberRational)
-            return numberRational.Denominator == 1
-               ? new Integer(numberRational.Numerator)
-               : number;
-
-         if (number is Float numberFloat)
-         {
-            var floor = Math.Floor(numberFloat.Value);
-            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
-         }
-
-         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
-      }
 
       //==============================================================================================================================================
    }
