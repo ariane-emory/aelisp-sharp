@@ -123,19 +123,19 @@ static partial class Ae
 
       //================================================================================================================
       protected override Number AddSameType(Number that) =>
-         ApplyBinaryOp(that, (l, r) => l.Value + r.Value);
+         ApplyBinaryOp((Integer)that, (l, r) => l + r);
 
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
-         ApplyBinaryOp(that, (l, r) => l.Value - r.Value);
+         ApplyBinaryOp((Integer)that, (l, r) => l - r);
 
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
-         ApplyBinaryOp(that, (l, r) => l.Value * r.Value);
+         ApplyBinaryOp((Integer)that, (l, r) => l * r);
 
       //================================================================================================================
       protected override Number DivSameType(Number that) =>
-         ApplyBinaryOp(that, (l, r) => l.Value / r.Value);
+         ApplyBinaryOp((Integer)that, (l, r) => l / r);
 
       //================================================================================================================
    }
