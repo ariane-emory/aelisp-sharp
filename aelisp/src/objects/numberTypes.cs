@@ -91,6 +91,29 @@ static partial class Ae
       public Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
       //================================================================================================================
+      public Number Add(Pair pair)
+      {
+         Number accum = new Integer(0);
+
+         if (!pair.IsProperList)
+            throw new ArgumentException($"Can't do math on an improper list: {pair}");
+
+         LispObject current = pair;
+
+         while (current is Pair currentPair)
+         {
+            if (!(currentPair.Car is Number currentNumber))
+               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+
+            accum = accum.BinaryAdd(currentNumber);
+
+            current = currentPair.Cdr;
+         }
+
+         return accum;
+      }
+
+      //================================================================================================================
    }
 
    //===================================================================================================================
@@ -190,7 +213,7 @@ static partial class Ae
       }
 
       //================================================================================================================ 
-      public Rational((int Numerator, int Denominator) pair) : this(pair.Numerator, pair.Denominator) {}
+      public Rational((int Numerator, int Denominator) pair) : this(pair.Numerator, pair.Denominator) { }
 
       //================================================================================================================
       // Properties
