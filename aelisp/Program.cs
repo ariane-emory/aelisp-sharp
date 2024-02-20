@@ -243,7 +243,7 @@ class Program
       // Do("(princ '(1 \"hello\" 'world))");
       // Do("(print '(1 \"hello\" 'world))");
 
-      WriteLine("\Add:\n");
+      WriteLine("\nAdd:\n");
 
       Do("(+ 2 4)");
       Do("(+ 2 8/4)");
@@ -263,7 +263,7 @@ class Program
       Do("(+ 2.0 2.0)");
       Do("(+ 2.0 2.5)");
 
-      WriteLine("\Subtract:\n");
+      WriteLine("\nSubtract:\n");
 
       Do("(- 20 4)");
       Do("(- 20 8/4)");
