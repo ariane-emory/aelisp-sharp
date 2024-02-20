@@ -155,11 +155,22 @@ static partial class Ae
       protected override Number AddSameType(Number that)
       {
          var addend = (Rational)that;
-
          int commonDenominator = Denominator * addend.Denominator / GCD(Denominator, addend.Denominator);
          int newNumerator = Numerator * (commonDenominator / Denominator);
          int newAddendNumerator = addend.Numerator * (commonDenominator / addend.Denominator);
          int sumNumerator = newNumerator + newAddendNumerator;
+
+         return new Rational(sumNumerator, commonDenominator);
+      }
+
+      //================================================================================================================
+      protected override Number SubSameType(Number that)
+      {
+         var subtrahend = (Rational)that;
+         int commonDenominator = Denominator * subtrahend.Denominator / GCD(Denominator, subtrahend.Denominator);
+         int newNumerator = Numerator * (commonDenominator / Denominator);
+         int newSubtrahendNumerator = subtrahend.Numerator * (commonDenominator / subtrahend.Denominator);
+         int sumNumerator = newNumerator - newSubtrahendNumerator;
 
          return new Rational(sumNumerator, commonDenominator);
       }
@@ -190,12 +201,12 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
-      protected override Number AddSameType(Number that)
-      {
-         var addend = (Float)that;
+      protected override Number AddSameType(Number addend) => 
+         new Float(Value + ((Float)addend).Value);
 
-         return new Float(Value + addend.Value);
-      }
+      //================================================================================================================
+      protected override Number SubSameType(Number subtrahend) => 
+         new Float(Value - ((Float)subtrahend).Value);
 
       //================================================================================================================
       protected override Number Promote()
