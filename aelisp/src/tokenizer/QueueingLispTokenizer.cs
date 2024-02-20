@@ -4,7 +4,7 @@ static partial class Ae
    //====================================================================================================================
    // QueueingLispTokenizer class
    //====================================================================================================================
-   public class QueueingLispTokenizer : LispTokenizer
+   private class QueueingLispTokenizer : LispTokenizer
    {
       //==================================================================================================================
       // Private fields
@@ -14,17 +14,12 @@ static partial class Ae
       //==================================================================================================================
       // Constructor
       //==================================================================================================================
-      public QueueingLispTokenizer(string? input) : base(null)
-      {
-
-         if (input is not null)
-            _queuedInputs.Enqueue(input);
-      }
+      public QueueingLispTokenizer(string? input) : this(input, null)
+      {}
 
       //==================================================================================================================
       public QueueingLispTokenizer(string? input, Func<LispToken, bool>? exclude) : base(null, exclude)
       {
-
          if (input is not null)
             _queuedInputs.Enqueue(input);
       }
