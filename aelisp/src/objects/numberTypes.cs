@@ -11,6 +11,8 @@ static partial class Ae
    public abstract class Number : LispObject
    {
       //================================================================================================================
+      // Static methods
+      //================================================================================================================
       private static (Number, Number) MatchRanks(LispObject left, LispObject right)
       {
          var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
@@ -19,10 +21,20 @@ static partial class Ae
       }
 
       //================================================================================================================
+      // Properties
+      //================================================================================================================
       protected abstract int Rank { get; }
+
+      //================================================================================================================
+      // Abstract instance methods
+      //================================================================================================================
       protected abstract Number AddToSameType(Number other);
       protected abstract Number Promote(Number other);
-      protected Number Add(Number other)
+
+      //================================================================================================================
+      // Instance methods
+      //================================================================================================================
+      public Number Add(Number other)
       {
          var (left, right) = MatchRanks(this, other);
 
