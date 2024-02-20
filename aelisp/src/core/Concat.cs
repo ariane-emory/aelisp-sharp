@@ -23,7 +23,7 @@ static partial class Ae
                // Check if the item is not Nil and is either a String or can be represented as a String.
                if (item != Nil && (item is String str || !(item is Symbol)))
                {
-                  stringBuilder.Append(item.PrincString());
+                  stringBuilder.Append(item.ToPrincString());
                }
 
                current = currentPair.Cdr;
@@ -34,7 +34,7 @@ static partial class Ae
                // but because the last Cdr was not a Pair), add the last item if it's not Nil.
                if (current != Nil && (current is String str || !(current is Symbol)))
                {
-                  stringBuilder.Append(current.PrincString());
+                  stringBuilder.Append(current.ToPrincString());
                }
                break;
             }

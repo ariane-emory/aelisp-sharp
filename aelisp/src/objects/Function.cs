@@ -36,7 +36,7 @@ static partial class Ae
       //================================================================================================================
       protected LispObject EvalArgs(Env env, LispObject argsList)
       {
-         // WriteLine($"EvalArgs for {Name}: {argsList.PrincString()}");
+         // WriteLine($"EvalArgs for {Name}: {argsList.ToPrincString()}");
 
          if (argsList.IsNil)
             return Nil;
@@ -49,11 +49,11 @@ static partial class Ae
 
          while (currentArg is Pair currentArg_pair)
          {
-            // WriteLine($"| Arg #{++index} for {Name}:  {currentArg_pair.Car.PrincString()}");
+            // WriteLine($"| Arg #{++index} for {Name}:  {currentArg_pair.Car.ToPrincString()}");
             
             LispObject evaledArg = currentArg_pair.Car.Eval(env);
             
-            // WriteLine($"> Arg #{index} for {Name}= {evaledArg.PrincString()}");
+            // WriteLine($"> Arg #{index} for {Name}= {evaledArg.ToPrincString()}");
 
             // TO-DO: add return if evaledArg is Error? or stick with Exceptions?
 

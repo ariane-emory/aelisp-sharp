@@ -36,10 +36,10 @@ static partial class Ae
       //================================================================================================================
       // Public instance methods
       //================================================================================================================
-      public override string PrincString()
+      public override string ToPrincString()
       {
          if (IsQuoteForm)
-            return $"'{((Pair)Cdr).Car.PrincString()}";
+            return $"'{((Pair)Cdr).Car.ToPrincString()}";
 
          var sb = new StringBuilder();
 
@@ -49,7 +49,7 @@ static partial class Ae
 
          while (current is Pair currentCons)
          {
-            sb.Append(currentCons.Car.PrintString());
+            sb.Append(currentCons.Car.ToPrintString());
 
             if (currentCons.Cdr is Pair)
             {
@@ -59,7 +59,7 @@ static partial class Ae
             else if (currentCons.Cdr != Nil)
             {
                sb.Append(" . ");
-               sb.Append(currentCons.Cdr.PrincString());
+               sb.Append(currentCons.Cdr.ToPrincString());
 
                break;
             }
@@ -181,8 +181,8 @@ static partial class Ae
          LispObject head = Car;
          LispObject args = Cdr;
 
-         // WriteLine($"\nhead: {head.PrincString()}");
-         // WriteLine($"args: {args.PrincString()}");
+         // WriteLine($"\nhead: {head.ToPrincString()}");
+         // WriteLine($"args: {args.ToPrincString()}");
 
          if (!args.IsList)
             throw new ArgumentException($"{nameof(args)} is {args}, not a list, something has gone very wrong!");

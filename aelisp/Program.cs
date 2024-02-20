@@ -47,13 +47,13 @@ class Program
       //    var obj = ParseProgram.ParseOrThrow(tokens);
 
       //    // WriteLine($"obj.toString(): {obj}");
-      //    // WriteLine($"obj.PrincString(): {obj.PrincString()}");
+      //    // WriteLine($"obj.ToPrincString(): {obj.ToPrincString()}");
 
       //    // if (obj is Pair pair)
       //    //    foreach (var o in pair)
-      //    //       WriteLine(o.PrincString());
+      //    //       WriteLine(o.ToPrincString());
       //    // else
-      //    WriteLine(obj.PrincString());
+      //    WriteLine(obj.ToPrincString());
       // }
       // catch (ParseException e)
       // {
@@ -165,9 +165,9 @@ class Program
 
       // var (found, fobj) = Root.Lookup(Env.LookupMode.Global, Intern("cons"));
       // var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
-      // WriteLine(((CoreFun)fobj).Apply(Root, args).PrincString());
+      // WriteLine(((CoreFun)fobj).Apply(Root, args).ToPrincString());
 
-      // WriteLine(new Rational(2, 4).PrincString());
+      // WriteLine(new Rational(2, 4).ToPrincString());
 
       // ConsDebugWrite = false;
       // Core.ConsDebugWrite = true;
@@ -222,8 +222,8 @@ class Program
          WriteLine($"Æ#> {input}");
          var result = Eval(child_env, input);
          Write("⇒ ");
-         WriteLine($"{result.PrincString()}");
-         //WriteLine($"'{result.PrincString()}'");
+         WriteLine($"{result.ToPrincString()}");
+         //WriteLine($"'{result.ToPrincString()}'");
          //WriteLine("");
       }
       

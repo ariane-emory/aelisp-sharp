@@ -68,7 +68,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ObjToString =
-         PureUnaryFun(o => new String(o.PrincString()));
+         PureUnaryFun(o => new String(o.ToPrincString()));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT InternString =

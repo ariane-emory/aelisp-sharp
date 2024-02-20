@@ -164,8 +164,8 @@ static partial class Ae
       // Instance methods
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
-      public abstract string PrincString();
-      public virtual string PrintString() => PrincString();
+      public abstract string ToPrincString();
+      public virtual string ToPrintString() => ToPrincString();
       public virtual LispObject Eval(Env _) => this;
 
       //================================================================================================================
@@ -197,8 +197,8 @@ static partial class Ae
    {
       public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
-      public override string PrincString() => $"{Value}";
-      public override string PrintString() => $"\"{PrincString()}\"";
+      public override string ToPrincString() => $"{Value}";
+      public override string ToPrintString() => $"\"{ToPrincString()}\"";
    }
 
    //===================================================================================================================
@@ -209,7 +209,7 @@ static partial class Ae
    {
       public Error(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
-      public override string PrincString() => ToString();
+      public override string ToPrincString() => ToString();
    }
 
    //===================================================================================================================
@@ -220,8 +220,8 @@ static partial class Ae
       public char Value { get; }
       public Char(char value) => Value = value;
         protected override string? StringRepresentation => $"\'{Value}\'".EscapeChars();
-        public override string PrincString() => $"{Value}";
-      public override string PrintString() => $"\'{PrincString()}\'";
+        public override string ToPrincString() => $"{Value}";
+      public override string ToPrintString() => $"\'{ToPrincString()}\'";
    }
 
    //===================================================================================================================
@@ -232,7 +232,7 @@ static partial class Ae
       public int Value { get; }
       public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
-      public override string PrincString() => $"{Value}";
+      public override string ToPrincString() => $"{Value}";
    }
 
    //===================================================================================================================
@@ -243,7 +243,7 @@ static partial class Ae
       public double Value { get; }
       public Float(double value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
-      public override string PrincString() => $"{Value}";
+      public override string ToPrincString() => $"{Value}";
    }
 
    //===================================================================================================================
@@ -274,8 +274,8 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      protected override string? StringRepresentation => $"{PrincString()}";
-      public override string PrincString() => $"{Numerator}/{Denominator}";
+      protected override string? StringRepresentation => $"{ToPrincString()}";
+      public override string ToPrincString() => $"{Numerator}/{Denominator}";
 
    }
 

@@ -37,18 +37,18 @@ static partial class Ae
          WriteOutput(env, argsList,
                      o => o switch
                      {
-                        String s => $"\"{s.PrincString()}\"",
-                        Char c => $"'{c.PrincString()}'",
-                        _ => o.PrincString()
+                        String s => $"\"{s.ToPrincString()}\"",
+                        Char c => $"'{c.ToPrincString()}'",
+                        _ => o.ToPrincString()
                      });
       
       //================================================================================================================
       public static LispObject PrincObj(Env env, LispObject argsList) =>       
-         WriteOutput(env, argsList, o => o.PrincString());
+         WriteOutput(env, argsList, o => o.ToPrincString());
 
       //================================================================================================================
       public static LispObject PrintObj(Env env, LispObject argsList) => 
-         WriteOutput(env, argsList, o => $"\n{o.PrintString()}");
+         WriteOutput(env, argsList, o => $"\n{o.ToPrintString()}");
 
       //================================================================================================================
       public static LispObject RawObj(Env env, LispObject argsList) =>       

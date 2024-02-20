@@ -28,29 +28,29 @@ static partial class Ae
          if (!argsList.IsProperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
-         ApplyLog($"argList:        {argsList.PrincString()}");
+         ApplyLog($"argList:        {argsList.ToPrincString()}");
 
          var arg1 = ((Pair)argsList)[0];
 
          if (!(argsList is Pair argsListPair))
             throw new ArgumentException($"argsList must be a pair, not {argsList}!");
 
-         ApplyLog($"argListPair:    {argsListPair.PrincString()}");
+         ApplyLog($"argListPair:    {argsListPair.ToPrincString()}");
 
          Pair newExpr = (Pair)Ae.Cons(argsListPair.Car, Nil);
          LispObject newExprTail = newExpr;
          LispObject current = argsListPair.Cdr;
          LispObject evaledArg = Nil;
 
-         ApplyLog($"newExpr:        {newExpr.PrincString()}");
-         ApplyLog($"newExprTail:    {newExprTail.PrincString()}");
-         ApplyLog($"current:        {current.PrincString()}");
-         // ApplyLog($"evaledArg:   {evaledArg.PrincString()}");
+         ApplyLog($"newExpr:        {newExpr.ToPrincString()}");
+         ApplyLog($"newExprTail:    {newExprTail.ToPrincString()}");
+         ApplyLog($"current:        {current.ToPrincString()}");
+         // ApplyLog($"evaledArg:   {evaledArg.ToPrincString()}");
 
          while (current is Pair currentPair && !currentPair.Cdr.IsNil)
          {
             var arg = currentPair.Car;
-            ApplyLog($"\narg:            {arg.PrincString()}");
+            ApplyLog($"\narg:            {arg.ToPrincString()}");
 
             var argIsQuoteForm = arg is Pair argPair && argPair.Car == Intern("quote");
             ApplyLog($"argIsQuoteForm: {argIsQuoteForm}");
@@ -58,12 +58,12 @@ static partial class Ae
             // if (argIsQuoteForm)
             // {
             //    arg = ((Pair)(((Pair)arg).Cdr)).Car;
-            //    ApplyLog($"arg 2:          {arg.PrincString()}");
+            //    ApplyLog($"arg 2:          {arg.ToPrincString()}");
             // }
 
             if (!argIsQuoteForm)
             {
-               ApplyLog($"evaluating:     {currentPair.Car.PrincString()}");
+               ApplyLog($"evaluating:     {currentPair.Car.ToPrincString()}");
                evaledArg = currentPair.Car.Eval(env);
             }
             else
@@ -71,27 +71,27 @@ static partial class Ae
                evaledArg = currentPair.Car; // 'Eval(env);.Car;
             }
 
-            ApplyLog($"evaledArg:      {evaledArg.PrincString()}");
+            ApplyLog($"evaledArg:      {evaledArg.ToPrincString()}");
 
             var elem = Ae.Cons(evaledArg, Nil);
 
-            ApplyLog($"elem:           {elem.PrincString()}");
+            ApplyLog($"elem:           {elem.ToPrincString()}");
 
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
-            ApplyLog($"newExpr:        {newExpr.PrincString()}");
+            ApplyLog($"newExpr:        {newExpr.ToPrincString()}");
             current = currentPair.Cdr;
          }
 
          LispObject last = ((Pair)current).Car;
 
-         ApplyLog($"last:           {last.PrincString()}");
+         ApplyLog($"last:           {last.ToPrincString()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
          ApplyLog($"lastIsQForm:    {lastIsQuoteForm}");
 
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
-         ApplyLog($"last 2:         {last.PrincString()}");
+         ApplyLog($"last 2:         {last.ToPrincString()}");
 
          if (!last.IsProperList)
             throw new ArgumentException($"last must be a proper list, not {last}!");
@@ -108,8 +108,8 @@ static partial class Ae
             last = ((Pair)last).Cdr;
          }
 
-         ApplyLog($"last 3:         {last.PrincString()}");
-         ApplyLog($"newExpr:        {newExpr.PrincString()}");
+         ApplyLog($"last 3:         {last.ToPrincString()}");
+         ApplyLog($"newExpr:        {newExpr.ToPrincString()}");
 
          return newExpr.Eval(env);
          // return Nil;

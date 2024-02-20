@@ -65,7 +65,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string PrincString() => ToString();
+      public override string ToPrincString() => ToString();
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
@@ -81,9 +81,9 @@ static partial class Ae
       {
          get
          {
-            var parentStr = IsRoot ? $"{Parent.PrincString()}" : $"#{Parent.Id}";
+            var parentStr = IsRoot ? $"{Parent.ToPrincString()}" : $"#{Parent.Id}";
 
-            return $"{parentStr}, {Symbols.PrincString()}, {Values.PrincString()}";
+            return $"{parentStr}, {Symbols.ToPrincString()}, {Values.ToPrincString()}";
          }
       }
 
