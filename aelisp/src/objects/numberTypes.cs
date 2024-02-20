@@ -56,6 +56,7 @@ static partial class Ae
       // Abstract instance methods
       //================================================================================================================
       protected abstract Number AddSameType(Number other);
+      protected abstract Number SubSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -64,8 +65,14 @@ static partial class Ae
       public Number Add(Number other)
       {
          var (left, right) = MatchRanks(this, other);
-
          return MaybeDemote(left.AddSameType(right));
+      }
+
+      //================================================================================================================
+      public Number Sub(Number other)
+      {
+         var (left, right) = MatchRanks(this, other);
+         return MaybeDemote(left.SubSameType(right));
       }
 
       //================================================================================================================
