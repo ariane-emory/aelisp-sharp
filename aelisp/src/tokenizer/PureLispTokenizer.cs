@@ -150,7 +150,7 @@ static partial class Ae
         .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"<"  + SymBody + @">"))
         .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"\*" + SymBody + @"\*"))
         .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"𝑎|𝑏|𝑐|𝑑|𝑒|𝑓|𝑚|𝑛|𝑜|𝑝|𝑞|𝑟|𝑠|𝑡|𝑢|𝑣|𝑤|𝑥|𝑦|𝑧"))
-        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:=)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)"))
+        .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"(?:_)|(?:==)|(?:!=)|(?:>=?)|(?:<=?)|(?:=)"))
         .Add((Type: LispTokenType.Symbol,                    Discrete: true,  Process: null,              IsActive: null,               Pattern: @"¬|λ\??|∧|∨|⊤|⊥|≤|≥|×|÷|Ø|∈|∉|≠|!|∃|∄|∀|≔|\||&|~|\^|\?"))
         .Add((Type: LispTokenType.String,                    Discrete: true,  Process: ProcStringLike,    IsActive: null,               Pattern: @"\""" + StringContent+ @"\"""))
         .Add((Type: LispTokenType.MultilineStringBegin,      Discrete: false, Process: ProcBeginMLS,      IsActive: null,               Pattern: @"\""" + StringContent+ @"\n"))
