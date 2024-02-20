@@ -226,6 +226,12 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
+      protected override Number Promote()
+      {
+         throw new NotImplementedException("float can't be promoted further");
+      }
+
+      //================================================================================================================
       private Number ApplyBinaryOp(Float that, Func<double, double, double> op) =>
          new Float(op(this.Value, that.Value));
 
@@ -244,12 +250,6 @@ static partial class Ae
       //================================================================================================================
       protected override Number DivSameType(Number that) =>
          ApplyBinaryOp((Float)that, (l, r) => l / r);
-
-      //================================================================================================================
-      protected override Number Promote()
-      {
-         throw new NotImplementedException("float can't be promoted further");
-      }
 
       //================================================================================================================
    }
