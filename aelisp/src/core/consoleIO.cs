@@ -48,7 +48,7 @@ static partial class Ae
 
       //================================================================================================================
       public static LispObject PrintObj(Env env, LispObject argsList) => 
-         WriteOutput(env, argsList, o => $"\n{o.Print()}");
+         WriteOutput(env, argsList, o => $"\n{o.PrintString()}");
 
       //================================================================================================================
       public static LispObject RawObj(Env env, LispObject argsList) =>       

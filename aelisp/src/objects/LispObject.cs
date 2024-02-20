@@ -165,7 +165,7 @@ static partial class Ae
       //==================================================================================================================
       public LispObject Properties { get; set; } = Nil;
       public abstract string PrincString();
-      public virtual string Print() => PrincString();
+      public virtual string PrintString() => PrincString();
       public virtual LispObject Eval(Env _) => this;
 
       //================================================================================================================
@@ -198,7 +198,7 @@ static partial class Ae
       public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string PrincString() => $"{Value}";
-      public override string Print() => $"\"{PrincString()}\"";
+      public override string PrintString() => $"\"{PrincString()}\"";
    }
 
    //===================================================================================================================
@@ -221,7 +221,7 @@ static partial class Ae
       public Char(char value) => Value = value;
         protected override string? StringRepresentation => $"\'{Value}\'".EscapeChars();
         public override string PrincString() => $"{Value}";
-      public override string Print() => $"\'{PrincString()}\'";
+      public override string PrintString() => $"\'{PrincString()}\'";
    }
 
    //===================================================================================================================

@@ -49,7 +49,7 @@ static partial class Ae
 
          while (current is Pair currentCons)
          {
-            sb.Append(currentCons.Car.Print());
+            sb.Append(currentCons.Car.PrintString());
 
             if (currentCons.Cdr is Pair)
             {
