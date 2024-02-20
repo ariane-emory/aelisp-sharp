@@ -6,6 +6,20 @@ using System.Text;
 static partial class Ae
 {
    //===================================================================================================================
+   // Ae's static method
+   //===================================================================================================================
+   public static (Number, Number) ThrowUnlessNumbers(LispObject left, LispObject right)
+   {
+      if (!(left is Number leftNumber))
+         throw new ArgumentException($"left must be a Number, not {left}.");
+
+      if (!(right is Number rightNumber))
+         throw new ArgumentException($"right must be a Number, not {right}.");
+
+      return (leftNumber, rightNumber);
+   }
+
+   //===================================================================================================================
    // Number class
    //===================================================================================================================
    public abstract class Number : LispObject
@@ -64,32 +78,18 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public Number Add(Number other)
+      public Number ApplyBinaryOp(Number other, Func<Number, Number, Number> op)
       {
          var (left, right) = MatchRanks(this, other);
-         return MaybeDemote(left.AddSameType(right));
+         return op(left, (right));
+         // return MaybeDemote(op(left, (right)));
       }
 
       //================================================================================================================
-      public Number Sub(Number other)
-      {
-         var (left, right) = MatchRanks(this, other);
-         return MaybeDemote(left.SubSameType(right));
-      }
-
-      //================================================================================================================
-      public Number Mul(Number other)
-      {
-         var (left, right) = MatchRanks(this, other);
-         return MaybeDemote(left.MulSameType(right));
-      }
-
-      //================================================================================================================
-      public Number Div(Number other)
-      {
-         var (left, right) = MatchRanks(this, other);
-         return MaybeDemote(left.DivSameType(right));
-      }
+      public Number Add(Number other) => ApplyBinaryOp(other, (l, r) => l.AddSameType(r));
+      public Number Sub(Number other) => ApplyBinaryOp(other, (l, r) => l.SubSameType(r));
+      public Number Mul(Number other) => ApplyBinaryOp(other, (l, r) => l.MulSameType(r));
+      public Number Div(Number other) => ApplyBinaryOp(other, (l, r) => l.DivSameType(r));
 
       //================================================================================================================
    }
@@ -122,20 +122,10 @@ static partial class Ae
          new Integer(op(this.Value, that.Value));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) =>
-         ApplyBinaryOp((Integer)that, (l, r) => l + r);
-
-      //================================================================================================================
-      protected override Number SubSameType(Number that) =>
-         ApplyBinaryOp((Integer)that, (l, r) => l - r);
-
-      //================================================================================================================
-      protected override Number MulSameType(Number that) =>
-         ApplyBinaryOp((Integer)that, (l, r) => l * r);
-
-      //================================================================================================================
-      protected override Number DivSameType(Number that) =>
-         ApplyBinaryOp((Integer)that, (l, r) => l / r);
+      protected override Number AddSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l + r);
+      protected override Number SubSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l - r);
+      protected override Number MulSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l * r);
+      protected override Number DivSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l / r);
 
       //================================================================================================================
    }
@@ -159,7 +149,7 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      protected override string? StringRepresentation => $"{Value}";
+      protected override string? StringRepresentation => $"{ToPrincString()}";
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
@@ -173,20 +163,10 @@ static partial class Ae
          new Float(op(this.Value, that.Value));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) =>
-         ApplyBinaryOp((Float)that, (l, r) => l + r);
-
-      //================================================================================================================
-      protected override Number SubSameType(Number that) =>
-         ApplyBinaryOp((Float)that, (l, r) => l - r);
-
-      //================================================================================================================
-      protected override Number MulSameType(Number that) =>
-         ApplyBinaryOp((Float)that, (l, r) => l * r);
-
-      //================================================================================================================
-      protected override Number DivSameType(Number that) =>
-         ApplyBinaryOp((Float)that, (l, r) => l / r);
+      protected override Number AddSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l + r);
+      protected override Number SubSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l - r);
+      protected override Number MulSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l * r);
+      protected override Number DivSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l / r);
 
       //================================================================================================================
    }
@@ -236,118 +216,13 @@ static partial class Ae
       }
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) =>
-         ApplyBinaryOp((Rational)that, (l, r) => l + r);
-
-      //================================================================================================================
-      protected override Number SubSameType(Number that) =>
-         ApplyBinaryOp((Rational)that, (l, r) => l - r);
-
-      //================================================================================================================
-      protected override Number MulSameType(Number that) =>
-         ApplyBinaryOp((Rational)that, (l, r) => l * r);
-
-      //================================================================================================================
-      protected override Number DivSameType(Number that) =>
-         ApplyBinaryOp((Rational)that, (l, r) => l / r);
+      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l + r);
+      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l - r);
+      protected override Number MulSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l * r);
+      protected override Number DivSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l / r);
 
       //================================================================================================================
    }
-
-   //===================================================================================================================
-   public static (Number, Number) ThrowUnlessNumbers(LispObject left, LispObject right)
-   {
-      if (!(left is Number leftNumber))
-         throw new ArgumentException($"left must be a Number, not {left}.");
-
-      if (!(right is Number rightNumber))
-         throw new ArgumentException($"right must be a Number, not {right}.");
-
-      return (leftNumber, rightNumber);
-   }
-
-   // //===================================================================================================================
-   // public static LispObject BinaryAdd(LispObject left, LispObject right)
-   // {
-   //    var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-   //    var result = Nil;
-
-   //    //================================================================================================================
-   //    // Integer     Integer      Integer
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-   //          result = new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
-   //    }
-   //    //================================================================================================================
-   //    // Integer     Rational     Rational
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-   //          result = new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
-   //                              rightTypedNumber.Denominator);
-   //    }
-   //    //================================================================================================================
-   //    // Integer     Float        Float
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
-
-   //    }
-   //    //================================================================================================================
-   //    // Rational     Integer      Rational
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-   //          result = new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value * leftTypedNumber.Denominator,
-   //                              leftTypedNumber.Denominator);
-   //    }
-   //    //================================================================================================================
-   //    // Rational     Rational     Rational
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-   //          result = new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
-   //                              (leftTypedNumber.Denominator * rightTypedNumber.Denominator));
-   //    }
-   //    //================================================================================================================
-   //    // Rational     Float        Float
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-   //          result = new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
-   //                           rightTypedNumber.Value);
-
-   //    }
-   //    //================================================================================================================
-   //    // Float     Integer      Float
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
-   //    }
-   //    //================================================================================================================
-   //    // Float     Rational     Float
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-   //          result = new Float(leftTypedNumber.Value + (((float)rightTypedNumber.Numerator) / ((float)rightTypedNumber.Denominator)));
-   //    }
-   //    //================================================================================================================
-   //    // Float     Float        Float
-   //    //================================================================================================================
-   //    {
-   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
-   //    }
-   //    //================================================================================================================
-
-   //    if (result is Rational resultRational && resultRational.Denominator == 1)
-   //       return new Integer(resultRational.Numerator);
-
-   //    return result;
-   // }
 
    //===================================================================================================================
 }
