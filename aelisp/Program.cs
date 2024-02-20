@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("%            ", Mod, 0000000000000002, 15, false),
          ("/            ", Div, 0000000000000002, 15, false),
          ("*            ", Mul, 0000000000000001, 15, false),
          ("-            ", Sub, 0000000000000001, 15, false),
@@ -333,6 +334,9 @@ class Program
       Do("(- 1 2 3 4)");
       Do("(* 1 2 3 4)");
       Do("(/ 32 4 2 1)");
+      
+      Do("(% 13 8)");
+      Do("(% 13 8 2)");
 
    }
 

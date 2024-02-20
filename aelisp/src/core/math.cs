@@ -12,6 +12,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT Sub = (env, argsList) => Number.Sub(argsList);
       public static readonly CoreFun.FuncT Mul = (env, argsList) => Number.Mul(argsList);
       public static readonly CoreFun.FuncT Div = (env, argsList) => Number.Div(argsList);
+      public static readonly CoreFun.FuncT Mod = (env, argsList) => Number.Mod(argsList);
 
       //================================================================================================================
    }

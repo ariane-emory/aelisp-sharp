@@ -216,7 +216,7 @@ static partial class Ae
       //==============================================================================================================================================
       protected override Number BinaryModSameType(Number that)
       {
-         throw new ArgumentException($"Can't modulo by non-Integer {this}.");
+         throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
       }
 
       //==============================================================================================================================================
@@ -271,7 +271,7 @@ static partial class Ae
       //==============================================================================================================================================
       protected override Number BinaryModSameType(Number that)
       {
-         throw new ArgumentException($"Can't modulo by non-Integer {this}.");
+         throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
       }
 
       //==============================================================================================================================================
