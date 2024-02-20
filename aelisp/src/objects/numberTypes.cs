@@ -197,6 +197,11 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
+      protected Integer BinaryAndSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
+      protected Integer BinaryOrSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
+      protected Integer BinaryXorSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
+
+      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
       public static Integer Mod(LispObject list) =>
@@ -224,6 +229,33 @@ static partial class Ae
                throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
 
             return lInteger.BinaryRsftSameType(rInteger);
+         });
+
+      public static Integer And(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't AND non-integers: {l} % {r}.");
+
+            return lInteger.BinaryAndSameType(rInteger);
+         });
+
+      public static Integer Or(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't OR non-integers: {l} % {r}.");
+
+            return lInteger.BinaryOrSameType(rInteger);
+         });
+
+      public static Integer Xor(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't XOR non-integers: {l} % {r}.");
+
+            return lInteger.BinaryXorSameType(rInteger);
          });
 
       //==============================================================================================================================================
