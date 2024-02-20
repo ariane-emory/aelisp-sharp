@@ -18,6 +18,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
       public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.BitXor(argsList);
+      public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~ o.Value));
 
       //================================================================================================================
    }

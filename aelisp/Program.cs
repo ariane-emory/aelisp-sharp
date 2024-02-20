@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("~            ", BitNot, 0000000000001, 01, false),
          ("^            ", BitXor, 0000000000002, 15, false),
          ("|            ", BitOr, 00000000000002, 15, false),
          ("&            ", BitAnd, 0000000000002, 15, false),
@@ -349,6 +350,9 @@ class Program
       Do("(>> 160 1)");
 
       Do("(| (<< 7) (<< 5) (<< 4) (<< 2))");
+
+      Do("(~ 3)");
+      Do("(& 255 (~ 3))");
     }
 
    //==============================================================================================================================
