@@ -107,14 +107,32 @@ static partial class Ae
 
       }
       //================================================================================================================
-      // Rational    Integer      Rational
+      // Rational     Integer      Rational
       //================================================================================================================
+      {
+         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+            return new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value *  leftTypedNumber.Denominator,
+                                leftTypedNumber.Denominator);
+      }
       //================================================================================================================
-      // Rational    Rational     Rational
+      // Rational     Rational     Rational
       //================================================================================================================
+      {
+         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+            return new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
+                                (leftTypedNumber.Denominator * rightTypedNumber.Denominator));
+      }
       //================================================================================================================
-      // Rational    Float        Float
+      // Rational     Float        Float
       //================================================================================================================
+      {
+         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+            return new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
+                             rightTypedNumber.Value);
+
+      }
+
+
       //================================================================================================================
       // Float       Integer      Float
       //================================================================================================================
@@ -124,9 +142,7 @@ static partial class Ae
       //================================================================================================================
       // Float       Float        Float
       //================================================================================================================
-      //================================================================================================================
-      // Left Type:  Right Type:  Result Type:
-      //================================================================================================================
+
 
       return result;
    }
