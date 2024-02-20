@@ -11,6 +11,7 @@ static partial class Ae
    public abstract class Number : LispObject
    {
       protected abstract int Rank { get; }
+      protected abstract Number AddToSameType(Number other);
    }
 
    //===================================================================================================================
@@ -44,6 +45,12 @@ static partial class Ae
       public Rational ToRational() => new Rational(Value, 1);
       public Rational Promote() => ToRational();
       public Float ToFloat() => new Float(Value);
+
+      //================================================================================================================
+      protected override Number AddToSameType(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
    }
 
    //===================================================================================================================
@@ -65,6 +72,12 @@ static partial class Ae
       public override string ToPrincString() => $"{Numerator}/{Denominator}";
       public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
       public Float Promote() => ToFloat();
+
+      //================================================================================================================
+      protected override Number AddToSameType(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
 
       //================================================================================================================
       // Constructor
@@ -91,6 +104,12 @@ static partial class Ae
       public Float(double value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
+
+      //================================================================================================================
+      protected override Number AddToSameType(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
    }
 
    //===================================================================================================================
@@ -104,7 +123,7 @@ static partial class Ae
 
       return (leftNumber, rightNumber);
    }
-   
+
    //===================================================================================================================
    public static LispObject MatchRanks(LispObject left, LispObject right)
    {
@@ -112,7 +131,7 @@ static partial class Ae
 
       return Nil;
    }
-   
+
    //===================================================================================================================
    public static LispObject BinaryAdd(LispObject left, LispObject right)
    {
