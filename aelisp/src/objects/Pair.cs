@@ -58,7 +58,6 @@ static partial class Ae
             }
             else if (currentCons.Cdr != Nil)
             {
-
                sb.Append(" . ");
                sb.Append(currentCons.Cdr.PrincString());
 
