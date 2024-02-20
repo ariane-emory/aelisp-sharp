@@ -99,7 +99,55 @@ static partial class Ae
 
          return accum;
       }
-      
+
+      //==============================================================================================================================================
+      private enum AssignMode { AndEquals, OrEquals, };
+
+      //==============================================================================================================================================
+      private static bool ApplyVariadicComparison(LispObject list,
+                                                  bool defaultResult,
+                                                  Func<Number, Number, bool> op,
+                                                  AssignMode assignMode)
+      {
+         if (!list.IsProperList)
+            throw new ArgumentException($"Can't do math on an improper list: {list}");
+
+         bool result = defaultResult;
+
+         if (!(list is Pair head))
+            throw new ArgumentException($"can't compare zero items: {list}.");
+
+         LispObject current = head;
+
+         if (head.Cdr.IsNil)
+            throw new ArgumentException($"can't compare a single item: {list}.");
+
+         if (!(head.Car is Number headNum))
+            throw new ArgumentException($"head.Car is not a number: {head.Car}");
+
+         var left = headNum;
+         current = head.Cdr;
+
+         while (current is Pair currentPair)
+         {
+            if (!(currentPair.Car is Number currentNumber))
+               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+
+            if (assignMode == AssignMode.AndEquals)
+               result &= op(left, currentNumber);
+            else
+               result |= op(left, currentNumber);
+
+            result = op(left, currentNumber);
+            
+            // TODO: probably okay to short circuit as soon as result becomes false.
+            
+            current = currentPair.Cdr;
+         }
+
+         return result;
+      }
+
       //==============================================================================================================================================
       public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinaryAddSameType(r)));
       public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
@@ -176,7 +224,7 @@ static partial class Ae
       protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
       protected override bool EqualSameStype(Number other) => Value == ((Integer)other).Value;
-      
+
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
       {
@@ -213,7 +261,7 @@ static partial class Ae
       public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryAndSameType(r));
       public static readonly Func<LispObject, Integer> BitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryOrSameType(r));
       public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryXorSameType(r));
-      
+
       //==============================================================================================================================================
    }
 
@@ -305,7 +353,7 @@ static partial class Ae
       protected override Rational BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
       protected override bool EqualSameStype(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
-      
+
       //==============================================================================================================================================
    }
 
