@@ -204,64 +204,21 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Integer Mod(LispObject list) =>
+      public static Integer ApplyVariadicIntegerArithmetic(string opName, Func<Integer, Integer, Integer> op, LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
             if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't modulo non-integers: {l} % {r}.");
+               throw new ArgumentException($"Can't {opName} non-integers: {l} % {r}.");
 
-            return lInteger.BinaryModSameType(rInteger);
+            return op(lInteger,  rInteger);
          });
 
       //==============================================================================================================================================
-      public static Integer Lsft(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
-
-            return lInteger.BinaryLsftSameType(rInteger);
-         });
-
-      // //==============================================================================================================================================
-      // public static Integer Rsft(LispObject list) =>
-      //    (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-      //    {
-      //       if (!((l is Integer lInteger) && (r is Integer rInteger)))
-      //          throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
-
-      //       return lInteger.BinaryRsftSameType(rInteger);
-      //    });
-
-      //==============================================================================================================================================
-      public static Integer BitAnd(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't AND non-integers: {l} % {r}.");
-
-            return lInteger.BinaryAndSameType(rInteger);
-         });
-
-      //==============================================================================================================================================
-      public static Integer BitOr(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't OR non-integers: {l} % {r}.");
-
-            return lInteger.BinaryOrSameType(rInteger);
-         });
-
-      //==============================================================================================================================================
-      public static Integer BitXor(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't XOR non-integers: {l} % {r}.");
-
-            return lInteger.BinaryXorSameType(rInteger);
-         });
+      public static Integer Mod(LispObject list) => ApplyVariadicIntegerArithmetic("modulo", (l, r) => l.BinaryModSameType(r), list);
+      public static Integer Lsft(LispObject list) => ApplyVariadicIntegerArithmetic("left shift", (l, r) => l.BinaryLsftSameType(r), list);
+      public static Integer BitAnd(LispObject list) => ApplyVariadicIntegerArithmetic("AND", (l, r) => l.BinaryAndSameType(r), list);
+      public static Integer BitOr(LispObject list) => ApplyVariadicIntegerArithmetic("OR", (l, r) => l.BinaryOrSameType(r), list);
+      public static Integer BitXor(LispObject list) => ApplyVariadicIntegerArithmetic("XOR", (l, r) => l.BinaryXorSameType(r), list);
 
       //==============================================================================================================================================
    }

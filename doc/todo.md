@@ -11,10 +11,10 @@ To Do - replicatinc features from C impelemtation of Ælisp:
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] plist handling (data layer/core).
-- [ ] Math comparison functions (probably gen with T4).
-- [ ] ~/bit-not.
+- [ ] Math comparison functions.
 - [ ] DRY up the int-only math methods.
 
 Completed with alterations:
+- [x] ~/bit-not.
 - [x] Math operator functions (probably gen with T4): done without T4.
 - [x] Make princ the default ToString(): solved at Core layer instead, raw is based on ToString while others use ToPrincString / To PrintString.
