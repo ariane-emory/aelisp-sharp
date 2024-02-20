@@ -95,7 +95,6 @@ class Program
          ("write        ", WriteObj, 00000000001, 15, false),
          ("nl           ", Newline, 000000000000, 00, false),
          ("string       ", ObjToString, 00000001, 01, false),
-         ("+            ", NotImplemented, 00000, 15, false),
          ("intern       ", InternString, 0000001, 01, false),
          // set-props
          // props
@@ -241,6 +240,9 @@ class Program
       Do("(princ '(1 \"hello\" 'world))");
       Do("(print '(1 \"hello\" 'world))");
 
+      Do("(+ 2 4)");
+      Do("(+ 2 8/4)");
+      Do("(+ 2 2.0)");
    }
 
    //==============================================================================================================================

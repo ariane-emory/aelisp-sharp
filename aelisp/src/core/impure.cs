@@ -20,7 +20,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT List = (env, argsList) => argsList;
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT NotImplemented = (env, argsList) => 
+      public static readonly CoreFun.FuncT ThrowNotImplemented = (env, argsList) => 
       {
          throw new NotImplementedException("nope");
       };
