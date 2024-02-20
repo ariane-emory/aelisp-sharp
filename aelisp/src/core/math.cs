@@ -17,6 +17,7 @@ static partial class Ae
 
       //================================================================================================================
       public static readonly CoreFun.FuncT NumEquals = (env, argsList) => Truthiness(Number.CmpEqual(argsList));
+      public static readonly CoreFun.FuncT NumNotEquals = (env, argsList) => Truthiness(!Number.CmpEqual(argsList));
 
       //================================================================================================================
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);

@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("!=           ", NumNotEquals, 0000002, 15, false),
          ("=            ", NumEquals, 0000000002, 15, false),
          ("~            ", BitNot, 0000000000001, 01, false),
          ("^            ", BitXor, 0000000000002, 15, false),
