@@ -50,7 +50,7 @@ static partial class Ae
    };
 
    //=================================================================================================================================================
-   public record struct LispTokenizerState(int Line = 0, int Column = 0, LispTokenizerMode Mode = LispTokenizerMode.Normal, int ParenDepth = 0);
+   private record struct LispTokenizerState(int Line = 0, int Column = 0, LispTokenizerMode Mode = LispTokenizerMode.Normal, int ParenDepth = 0);
 
    //=================================================================================================================================================
    public record struct LispToken(LispTokenType Type, string? Text, int Line, int Column, int ParenDepth)
