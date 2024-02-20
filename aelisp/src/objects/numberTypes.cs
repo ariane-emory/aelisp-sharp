@@ -27,7 +27,7 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public static Number MaybeDemote(Number number)
+      private static Number MaybeDemote(Number number)
       {
          if (number is Integer)
             return number;
@@ -55,7 +55,7 @@ static partial class Ae
       //================================================================================================================
       // Abstract instance methods
       //================================================================================================================
-      protected abstract Number AddToSameType(Number other);
+      protected abstract Number AddSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -65,7 +65,7 @@ static partial class Ae
       {
          var (left, right) = MatchRanks(this, other);
 
-         return MaybeDemote(left.AddToSameType(right));
+         return MaybeDemote(left.AddSameType(right));
       }
 
       //================================================================================================================
@@ -95,7 +95,7 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
-      protected override Number AddToSameType(Number that)
+      protected override Number AddSameType(Number that)
       {
          var addend = (Integer)that;
 
@@ -139,7 +139,7 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      protected override Number AddToSameType(Number that)
+      protected override Number AddSameType(Number that)
       {
          var addend = (Rational)that;
 
@@ -177,7 +177,7 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
-      protected override Number AddToSameType(Number that)
+      protected override Number AddSameType(Number that)
       {
          var addend = (Float)that;
 
