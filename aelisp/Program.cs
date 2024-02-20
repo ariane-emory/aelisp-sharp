@@ -88,11 +88,13 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("<<           ", Lsft, 000000000000001, 02, false),
+         (">>           ", Rsft, 000000000000002, 02, false),
          ("%            ", Mod, 0000000000000002, 15, false),
          ("/            ", Div, 0000000000000002, 15, false),
          ("*            ", Mul, 0000000000000001, 15, false),
          ("-            ", Sub, 0000000000000001, 15, false),
-         ("+            ", Add, 0000000000000001, 15 , false),
+         ("+            ", Add, 0000000000000001, 15, false),
          ("print        ", PrintObj, 00000000001, 15, false),
          ("princ        ", PrincObj, 00000000001, 15, false),
          ("raw          ", RawObj, 0000000000001, 15, false),
@@ -338,7 +340,11 @@ class Program
       Do("(% 13 8)");
       Do("(% 13 8 2)");
       Do("(/ 20 -2)");
-      // Do("(% 13 8.0)");
+
+      Do("(<< 4)");
+      Do("(<< 4 3)");
+      Do("(>> 160 1)");
+
       
    }
 
