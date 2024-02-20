@@ -37,7 +37,6 @@ static partial class Ae
       protected abstract Number BinarySubSameType(Number other);
       protected abstract Number BinaryMulSameType(Number other);
       protected abstract Number BinaryDivSameType(Number other);
-      protected abstract Number BinaryModSameType(Number other);
       protected abstract Number Promote();
 
       //==============================================================================================================================================
@@ -142,6 +141,8 @@ static partial class Ae
    //=================================================================================================================================================
    public class Integer : Number
    {
+      protected abstract Number BinaryModSameType(Number other);
+
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
@@ -226,11 +227,11 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected override Number BinaryModSameType(Number that)
-      {
-         throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
-      }
-
+      // protected override Number BinaryModSameType(Number that)
+      // {
+      //    throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
+      // }
+      
       //==============================================================================================================================================
    }
 
@@ -281,10 +282,10 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //==============================================================================================================================================
-      protected override Number BinaryModSameType(Number that)
-      {
-         throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
-      }
+      // protected override Number BinaryModSameType(Number that)
+      // {
+      //    throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
+      // }
 
       //==============================================================================================================================================
    }
