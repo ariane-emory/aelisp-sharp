@@ -37,6 +37,7 @@ static partial class Ae
       protected abstract Number BinarySubSameType(Number other);
       protected abstract Number BinaryMulSameType(Number other);
       protected abstract Number BinaryDivSameType(Number other);
+      protected abstract bool EqualSameStype(Number other);
       protected abstract Number Promote();
 
       //==============================================================================================================================================
@@ -49,6 +50,12 @@ static partial class Ae
             var (left, right) = MatchRanks(l, r);
             return MaybeDemote(op(left, right));
          };
+      }
+
+      public bool Equal(Number that)
+      {
+         var (left, right) = MatchRanks(this, that);
+         return left.EqualSameStype(right);
       }
 
       //==============================================================================================================================================
@@ -168,7 +175,8 @@ static partial class Ae
       protected override Integer BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-
+      protected override bool EqualSameStype(Number other) => Value == ((Integer)other).Value;
+      
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
       {
@@ -180,7 +188,7 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected Integer BinaryModSameType(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "modulo"), (l, r) => l % r);
-      protected Integer BinaryLsftSameType(Integer that)=> ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
+      protected Integer BinaryLsftSameType(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
 
       //==============================================================================================================================================
       protected Integer BinaryAndSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
@@ -191,11 +199,11 @@ static partial class Ae
       // Static methods
       //==============================================================================================================================================
       private static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => (list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) => 
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
             if (!((l is Integer lInteger) && (r is Integer rInteger)))
                throw new ArgumentException($"Can't {opName} non-integers: {l} % {r}.");
-            
+
             return op(lInteger, rInteger);
          });
 
@@ -205,7 +213,7 @@ static partial class Ae
       public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryAndSameType(r));
       public static readonly Func<LispObject, Integer> BitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryOrSameType(r));
       public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryXorSameType(r));
-
+      
       //==============================================================================================================================================
    }
 
@@ -246,6 +254,7 @@ static partial class Ae
       protected override Float BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Float BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Float BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+      protected override bool EqualSameStype(Number other) => Value == ((Float)other).Value;
 
       //==============================================================================================================================================
    }
@@ -295,7 +304,8 @@ static partial class Ae
       protected override Rational BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-
+      protected override bool EqualSameStype(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
+      
       //==============================================================================================================================================
    }
 
