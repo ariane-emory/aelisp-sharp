@@ -25,42 +25,6 @@ static partial class Ae
    public abstract class Number : LispObject
    {
       //================================================================================================================
-      // Static methods
-      //================================================================================================================
-      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
-      {
-         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-         while (leftNumber.Rank < rightNumber.Rank)
-            leftNumber = leftNumber.Promote();
-
-         while (leftNumber.Rank > rightNumber.Rank)
-            rightNumber = rightNumber.Promote();
-
-         return (leftNumber, rightNumber);
-      }
-
-      //================================================================================================================
-      private static Number MaybeDemote(Number number)
-      {
-         if (number is Integer)
-            return number;
-
-         if (number is Rational numberRational)
-            return numberRational.Denominator == 1
-               ? new Integer(numberRational.Numerator)
-               : number;
-
-         if (number is Float numberFloat)
-         {
-            var floor = Math.Floor(numberFloat.Value);
-            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
-         }
-
-         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
-      }
-
-      //================================================================================================================
       // Properties
       //================================================================================================================
       protected abstract int Rank { get; }
@@ -78,19 +42,20 @@ static partial class Ae
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public Number ApplyBinaryOp(Number other, Func<Number, Number, Number> op)
+      private Number ApplyBinaryOp(Number other, Func<Number, Number, Number> op)
       {
          var (left, right) = MatchRanks(this, other);
-         // return op(left, (right));
          return MaybeDemote(op(left, (right)));
       }
 
       //================================================================================================================
-      public Number BinaryAdd(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryAddSameType(r));
-      public Number BinarySub(Number other) => ApplyBinaryOp(other, (l, r) => l.BinarySubSameType(r));
-      public Number BinaryMul(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryMulSameType(r));
-      public Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
+      private Number BinaryAdd(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryAddSameType(r));
+      private Number BinarySub(Number other) => ApplyBinaryOp(other, (l, r) => l.BinarySubSameType(r));
+      private Number BinaryMul(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryMulSameType(r));
+      private Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
+      //================================================================================================================
+      // Static methods
       //================================================================================================================
       public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinaryAdd(r));
       public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinarySub(r));
@@ -98,7 +63,7 @@ static partial class Ae
       public static Number Div(LispObject list) => VariadicArithmetic(list, 1, true,  (l, r) => l.BinaryDiv(r));
 
       //================================================================================================================
-      public static Number VariadicArithmetic(LispObject list,
+      private static Number VariadicArithmetic(LispObject list,
                                               int defaultAccum,
                                               bool forbidArgsEqlToZero,
                                               Func<Number, Number, Number> op)
@@ -135,6 +100,40 @@ static partial class Ae
          }
 
          return accum;
+      }
+
+      //================================================================================================================
+      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
+      {
+         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+         while (leftNumber.Rank < rightNumber.Rank)
+            leftNumber = leftNumber.Promote();
+
+         while (leftNumber.Rank > rightNumber.Rank)
+            rightNumber = rightNumber.Promote();
+
+         return (leftNumber, rightNumber);
+      }
+
+      //================================================================================================================
+      private static Number MaybeDemote(Number number)
+      {
+         if (number is Integer)
+            return number;
+
+         if (number is Rational numberRational)
+            return numberRational.Denominator == 1
+               ? new Integer(numberRational.Numerator)
+               : number;
+
+         if (number is Float numberFloat)
+         {
+            var floor = Math.Floor(numberFloat.Value);
+            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
+         }
+
+         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
       }
 
       //================================================================================================================

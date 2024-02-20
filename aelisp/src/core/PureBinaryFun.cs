@@ -46,37 +46,37 @@ static partial class Ae
       public static readonly CoreFun.FuncT NewRational =
          PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT BinaryAdd =
-         PureBinaryFun<Number, Number>((left, right) => {
-            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+      // //=================================================================================================================
+      // public static readonly CoreFun.FuncT BinaryAdd =
+      //    PureBinaryFun<Number, Number>((left, right) => {
+      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.BinaryAdd(rightNumber);
-         });
+      //       return leftNumber.BinaryAdd(rightNumber);
+      //    });
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT BinarySub =
-         PureBinaryFun<Number, Number>((left, right) => {
-            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+      // //=================================================================================================================
+      // public static readonly CoreFun.FuncT BinarySub =
+      //    PureBinaryFun<Number, Number>((left, right) => {
+      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.BinarySub(rightNumber);
-         });
+      //       return leftNumber.BinarySub(rightNumber);
+      //    });
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT BinaryMul =
-         PureBinaryFun<Number, Number>((left, right) => {
-            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+      // //=================================================================================================================
+      // public static readonly CoreFun.FuncT BinaryMul =
+      //    PureBinaryFun<Number, Number>((left, right) => {
+      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.BinaryMul(rightNumber);
-         });
+      //       return leftNumber.BinaryMul(rightNumber);
+      //    });
 
-      //=================================================================================================================
-      public static readonly CoreFun.FuncT BinaryDiv =
-         PureBinaryFun<Number, Number>((left, right) => {
-            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+      // //=================================================================================================================
+      // public static readonly CoreFun.FuncT BinaryDiv =
+      //    PureBinaryFun<Number, Number>((left, right) => {
+      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.BinaryDiv(rightNumber);
-         });
+      //       return leftNumber.BinaryDiv(rightNumber);
+      //    });
 
       //================================================================================================================
    }
