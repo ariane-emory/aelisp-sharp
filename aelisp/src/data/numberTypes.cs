@@ -64,7 +64,7 @@ static partial class Ae
          {
             var (left, right) = MatchRanks(l, r);
             var result = cmp(left, right);
-            WriteLine($"cmp {left.ToPrincString()} <=> {right.ToPrincString()} result: {result}");
+            // WriteLine($"cmp {left.ToPrincString()} <=> {right.ToPrincString()} result: {result}");
             return result;
          };
       }
@@ -179,12 +179,18 @@ static partial class Ae
             if (!(currentPair.Car is Number currentNumber))
                throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
 
-            if (assignMode == AssignMode.AssignAnd)
-               result &= op(left, currentNumber);
-            else
-               result |= op(left, currentNumber);
-
-            result = op(left, currentNumber);
+                if (assignMode == AssignMode.AssignAnd)
+                {
+                   var tmp = op(left, currentNumber);
+                   // WriteLine($"assign {result} & {tmp}");
+                   result &= tmp;
+                }
+                else
+                {
+                   var tmp = op(left, currentNumber);
+                   // WriteLine($"assign {result} | {tmp}");
+                   result |= tmp;
+                }
 
             // TODO: probably okay to short circuit as soon as result becomes false.
 
