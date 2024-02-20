@@ -18,11 +18,17 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT NumEquals = (env, argsList) => Truthiness(Number.CmpEqual(argsList));
       public static readonly CoreFun.FuncT NumNotEquals = (env, argsList) => Truthiness(!Number.CmpEqual(argsList));
-
+      public static readonly CoreFun.FuncT NumLT = (env, argsList) => Truthiness(Number.CmpLT(argsList));
+      public static readonly CoreFun.FuncT NumGT = (env, argsList) => Truthiness(Number.CmpGT(argsList));
+      public static readonly CoreFun.FuncT NumLTE = (env, argsList) => Truthiness(Number.CmpLTE(argsList));
+      public static readonly CoreFun.FuncT NumGTE = (env, argsList) => Truthiness(Number.CmpGTE(argsList));
+      
       //================================================================================================================
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
       public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.BitXor(argsList);
+
+      //================================================================================================================
       public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~o.Value));
 
       //================================================================================================================

@@ -38,6 +38,10 @@ static partial class Ae
       protected abstract Number BinaryMulSameType(Number other);
       protected abstract Number BinaryDivSameType(Number other);
       protected abstract bool BinaryCmpEqualsSameType(Number other);
+      protected abstract bool BinaryCmpLTSameType(Number other);
+      protected abstract bool BinaryCmpGTSameType(Number other);
+      protected abstract bool BinaryCmpLTESameType(Number other);
+      protected abstract bool BinaryCmpGTESameType(Number other);
       protected abstract Number Promote();
 
       //==============================================================================================================================================
@@ -67,6 +71,34 @@ static partial class Ae
       {
          var (left, right) = MatchRanks(this, that);
          return left.BinaryCmpEqualsSameType(right);
+      }
+
+      //==============================================================================================================================================
+      public bool CmpLT(Number that)
+      {
+         var (left, right) = MatchRanks(this, that);
+         return left.BinaryCmpLTSameType(right);
+      }
+
+      //==============================================================================================================================================
+      public bool CmpGT(Number that)
+      {
+         var (left, right) = MatchRanks(this, that);
+         return left.BinaryCmpGTSameType(right);
+      }
+
+      //==============================================================================================================================================
+      public bool CmpLTE(Number that)
+      {
+         var (left, right) = MatchRanks(this, that);
+         return left.BinaryCmpLTESameType(right);
+      }
+
+      //==============================================================================================================================================
+      public bool CmpGTE(Number that)
+      {
+         var (left, right) = MatchRanks(this, that);
+         return left.BinaryCmpGTESameType(right);
       }
 
       //==============================================================================================================================================
@@ -150,9 +182,9 @@ static partial class Ae
                result |= op(left, currentNumber);
 
             result = op(left, currentNumber);
-            
+
             // TODO: probably okay to short circuit as soon as result becomes false.
-            
+
             current = currentPair.Cdr;
          }
 
@@ -165,6 +197,10 @@ static partial class Ae
       public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMulSameType(r)));
       public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDivSameType(r)));
       public static bool CmpEqual(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpEquals(r)));
+      public static bool CmpLT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpLT(r)));
+      public static bool CmpGT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpGT(r)));
+      public static bool CmpLTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpLTE(r)));
+      public static bool CmpGTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpGTE(r)));
 
       //==============================================================================================================================================
       private static (Number, Number) MatchRanks(LispObject left, LispObject right)
@@ -236,6 +272,10 @@ static partial class Ae
       protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
       protected override bool BinaryCmpEqualsSameType(Number other) => Value == ((Integer)other).Value;
+      protected override bool BinaryCmpLTSameType(Number other) => Value < ((Float)other).Value;
+      protected override bool BinaryCmpGTSameType(Number other) => Value > ((Float)other).Value;
+      protected override bool BinaryCmpLTESameType(Number other) => Value <= ((Float)other).Value;
+      protected override bool BinaryCmpGTESameType(Number other) => Value >= ((Float)other).Value;
 
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
@@ -315,6 +355,10 @@ static partial class Ae
       protected override Float BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Float BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
       protected override bool BinaryCmpEqualsSameType(Number other) => Value == ((Float)other).Value;
+      protected override bool BinaryCmpLTSameType(Number other) => Value < ((Float)other).Value;
+      protected override bool BinaryCmpGTSameType(Number other) => Value > ((Float)other).Value;
+      protected override bool BinaryCmpLTESameType(Number other) => Value <= ((Float)other).Value;
+      protected override bool BinaryCmpGTESameType(Number other) => Value >= ((Float)other).Value;
 
       //==============================================================================================================================================
    }
@@ -360,11 +404,46 @@ static partial class Ae
          new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
 
       //==============================================================================================================================================
+      private bool ThrowNotImplemented()
+      {
+         throw new NotImplementedException("Rational can't do this operation yet");
+         return false;
+      }
+
+      //==============================================================================================================================================
       protected override Rational BinaryAddSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
       protected override bool BinaryCmpEqualsSameType(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
+      //==============================================================================================================================================
+      protected override bool BinaryCmpLTSameType(Number other)
+      {
+         var leftCmpNum = Numerator * ((Rational)other).Denominator;
+         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         return leftCmpNum < rightCmpNum;
+      }
+      //==============================================================================================================================================
+      protected override bool BinaryCmpGTSameType(Number other)
+      {
+         var leftCmpNum = Numerator * ((Rational)other).Denominator;
+         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         return leftCmpNum > rightCmpNum;
+      }
+      //==============================================================================================================================================
+      protected override bool BinaryCmpLTESameType(Number other)
+      {
+         var leftCmpNum = Numerator * ((Rational)other).Denominator;
+         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         return leftCmpNum <= rightCmpNum;
+      }
+      //==============================================================================================================================================
+      protected override bool BinaryCmpGTESameType(Number other)
+      {
+         var leftCmpNum = Numerator * ((Rational)other).Denominator;
+         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         return leftCmpNum >= rightCmpNum;
+      }
 
       //==============================================================================================================================================
    }
