@@ -38,15 +38,14 @@ static partial class Ae
       //================================================================================================================
       public override string PrincString()
       {
-
          if (IsQuoteForm)
             return $"'{((Pair)Cdr).Car.PrincString()}";
-
-         LispObject current = this;
 
          var sb = new StringBuilder();
 
          sb.Append("(");
+
+         LispObject current = this;
 
          while (current is Pair currentCons)
          {
