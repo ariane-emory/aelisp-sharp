@@ -43,7 +43,7 @@ static partial class Ae
       //==============================================================================================================================================
       // Instance methods
       //==============================================================================================================================================
-      private static Func<Number, Number, Number> ApplyBinaryOpFunc(Func<Number, Number, Number> op)
+      protected static Func<Number, Number, Number> ApplyBinaryOpFunc(Func<Number, Number, Number> op)
       {
          return (l, r) =>
          {
@@ -59,10 +59,9 @@ static partial class Ae
       public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
       public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFunc((l, r) => l.BinaryMulSameType(r)));
       public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryDivSameType(r)));
-      public static Number Mod(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryModSameType(r)));
 
       //==============================================================================================================================================
-      private static Number ApplyVariadicArithmetic(LispObject list,
+      protected static Number ApplyVariadicArithmetic(LispObject list,
                                                     int defaultAccum,
                                                     bool forbidArgsEqlToZero,
                                                     Func<Number, Number, Number> op)
@@ -143,6 +142,11 @@ static partial class Ae
    //=================================================================================================================================================
    public class Integer : Number
    {
+      //==============================================================================================================================================
+      // Static methods
+      //==============================================================================================================================================
+      public static Number Mod(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType(r)));
+
       //==============================================================================================================================================
       // Constructor
       //==============================================================================================================================================
