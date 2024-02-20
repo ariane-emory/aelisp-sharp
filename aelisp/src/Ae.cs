@@ -14,7 +14,7 @@ static partial class Ae
    // Static fields
    //====================================================================================================================
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
-   public static LispObject SymbolsList = Nil;
+   private static LispObject SymbolsList = Nil;
    public static readonly LispObject True = Intern("t");
 
    //====================================================================================================================
