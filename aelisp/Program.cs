@@ -89,7 +89,7 @@ class Program
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
          ("-            ", Add, 0000000000000002, 02, false),
-         ("+            ", Add, 0000000000000002, 02, false),
+         ("+            ", Sub, 0000000000000002, 02, false),
          ("print        ", PrintObj, 00000000001, 15, false),
          ("princ        ", PrincObj, 00000000001, 15, false),
          ("raw          ", RawObj, 0000000000001, 15, false),
@@ -260,6 +260,26 @@ class Program
       Do("(+ 2.0 10/4)");
       Do("(+ 2.0 2.0)");
       Do("(+ 2.0 2.5)");
+
+      WriteLine("");
+
+      Do("(- 20 4)");
+      Do("(- 20 8/4)");
+      Do("(- 20 10/4)");
+      Do("(- 20 2.0)");
+      Do("(- 20 2.5)");
+
+      Do("(- 60/3 4)");
+      Do("(- 60/3 8/4)");
+      Do("(- 60/3 10/4)");
+      Do("(- 60/3 2.0)");
+      Do("(- 60/3 2.5)");
+
+      Do("(- 20.0 4)");
+      Do("(- 20.0 8/4)");
+      Do("(- 20.0 10/4)");
+      Do("(- 20.0 2.0)");
+      Do("(- 20.0 2.5)");
 
       Do("(eql? 9/2 4.5)");
    }
