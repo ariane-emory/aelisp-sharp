@@ -204,15 +204,14 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => 
-         (list) =>
-            (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) => 
-            {
-               if (!((l is Integer lInteger) && (r is Integer rInteger)))
-                  throw new ArgumentException($"Can't {opName} non-integers: {l} % {r}.");
-               
-               return op(lInteger, rInteger);
-            });
+      private static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => (list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) => 
+         {
+            if (!((l is Integer lInteger) && (r is Integer rInteger)))
+               throw new ArgumentException($"Can't {opName} non-integers: {l} % {r}.");
+            
+            return op(lInteger, rInteger);
+         });
 
       //==============================================================================================================================================
       public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryModSameType(r));
