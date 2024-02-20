@@ -189,6 +189,9 @@ static partial class Ae
          Denominator = denominator / gcd;
       }
 
+      //================================================================================================================ 
+      public Rational((int Numerator, int Denominator) pair) : this(pair.Numerator, pair.Denominator) {}
+
       //================================================================================================================
       // Properties
       //================================================================================================================
@@ -204,30 +207,14 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      private Number ApplyBinaryOp(Rational that, Func<int, int, int> op)
-      {
-         int commonDenominator = Denominator * that.Denominator / GCD(Denominator, that.Denominator);
-         int newNumerator = Numerator * (commonDenominator / Denominator);
-         int newThatNumerator = that.Numerator * (commonDenominator / that.Denominator);
-         int sumNumerator = op(newNumerator, newThatNumerator);
-
-         return new Rational(sumNumerator, commonDenominator);
-      }
-
-      private Number ApplyBinaryOp2(Rational that, Func<int, int, int, int, (int, int)> op)
-      {
-         var other = (Rational)that;
-         var (newNumerator, newDenominator) = op(Numerator, Denominator, that.Numerator, that.Denominator);
-
-         return new Rational(newNumerator, newDenominator);
-      }
+      private Number ApplyBinaryOp(Rational that, Func<int, int, int, int, (int, int)> op) =>
+         new Rational(op(Numerator, Denominator, that.Numerator, that.Denominator));
 
       //================================================================================================================
-      protected override Number MulSameType(Number that) => ApplyBinaryOp2((Rational)that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
-      protected override Number DivSameType(Number that) => ApplyBinaryOp2((Rational)that, (ln, ld, rn, rd) => (ln * rd, ld * rn));    
-      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, rn) => ln + rn);
-      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, rn) => ln - rn);
-
+      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Number MulSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
+      protected override Number DivSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //================================================================================================================
    }
