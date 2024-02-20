@@ -41,8 +41,8 @@ static partial class Ae
          WriteOutput(env, argsList, o => o.Princ());
 
       //================================================================================================================
-      public static LispObject PrintObj(Env env, LispObject argsList) =>       
-         WriteOutput(env, argsList, o => o.Print());
+      public static LispObject PrintObj(Env env, LispObject argsList) => 
+         WriteOutput(env, argsList, o => $"\n{o.Print()}");
 
       //================================================================================================================
       public static LispObject PutObj(Env env, LispObject argsList) =>       

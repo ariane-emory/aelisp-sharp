@@ -173,53 +173,60 @@ class Program
       // Core.ConsDebugWrite = true;
 
       //==============================================================================================================================
-      void Do(string input) => WriteLine(Eval(child_env, input, true).Princ());
-
       WriteLine("");
 
-      Do("((lambda (x) (cons x x)) 8)");
-      Do("(setq qq 88 ww 77 *ee* 66)");
-      Do("(progn 2 3 4)");
+      // Do("((lambda (x) (cons x x)) 8)");
+      // Do("(setq qq 88 ww 77 *ee* 66)");
+      // Do("(progn 2 3 4)");
 
-      WriteLine($"\n{Root}");
-      WriteLine($"\n{parent_env}");
-      WriteLine($"\n{child_env}");
+      // WriteLine($"\n{Root}");
+      // WriteLine($"\n{parent_env}");
+      // WriteLine($"\n{child_env}");
 
-      Do("(cond (nil 8) (else 14))");
-      Do("(type 22)");
-      Do("(type 4.3)");
-      Do("(type (lambda (x) (x x)))");
-      Do("(type '(1 . 2))");
-      Do("(eq? :asd :asd :asd)");
-      Do("(eq? :asd :asd :qwe)");
-      Do("(eql? 2 2 2/1)");
-      Do("(eql? 2 2 3)");
-      Do("(bound? :asd)");
-      Do("(rational 3 4)");
-      Do("(car (cons 3 4))");
-      Do("(cdr (cons 3 4))");
-      Do("(cdr (cdr (cons 3 (cons 4 nil))))");
-      Do("(concat)");
-      Do("(concat \"hello\" \"world\")");
-      Do("(concat \"hello\" nil \"world\")");
-      Do("(concat nil \"hello\" nil \"world\")");
-      Do("(setq x 2)");
-      Do("(setq y 3)");
-      Do("(setq lst '(3 4))");
-      Do("(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do("(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do("$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
-      WriteLine("----");
-      Do("(apply list '1 'x x '(y 4))");
-      WriteLine("----");
-      Do("(apply list 1 x (list y 4))");
-      WriteLine("----");
-      Do("(apply list 1 x '(y 4))");
-      WriteLine("----");
-      Do("(setq z '(2 3 4))");
-      Do("(apply list 1 z)");
-      WriteLine("");
+      // Do("(cond (nil 8) (else 14))");
+      // Do("(type 22)");
+      // Do("(type 4.3)");
+      // Do("(type (lambda (x) (x x)))");
+      // Do("(type '(1 . 2))");
+      // Do("(eq? :asd :asd :asd)");
+      // Do("(eq? :asd :asd :qwe)");
+      // Do("(eql? 2 2 2/1)");
+      // Do("(eql? 2 2 3)");
+      // Do("(bound? :asd)");
+      // Do("(rational 3 4)");
+      // Do("(car (cons 3 4))");
+      // Do("(cdr (cons 3 4))");
+      // Do("(cdr (cdr (cons 3 (cons 4 nil))))");
+      // Do("(concat)");
+      // Do("(concat \"hello\" \"world\")");
+      // Do("(concat \"hello\" nil \"world\")");
+      // Do("(concat nil \"hello\" nil \"world\")");
+      // Do("(setq x 2)");
+      // Do("(setq y 3)");
+      // Do("(setq lst '(3 4))");
+      // Do("(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      // Do("(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      // Do("$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
+      // WriteLine("----");
+      // Do("(apply list '1 'x x '(y 4))");
+      // WriteLine("----");
+      // Do("(apply list 1 x (list y 4))");
+      // WriteLine("----");
+      // Do("(apply list 1 x '(y 4))");
+      // WriteLine("----");
+      // Do("(setq z '(2 3 4))");
+      // Do("(apply list 1 z)");
+      // WriteLine("");
 
+      void Do(string input) {
+         WriteLine($"Æ#> {input}");
+         var result = Eval(child_env, input);
+         Write("⇒ ");
+         WriteLine($"{result.Princ()}");
+         //WriteLine($"'{result.Princ()}'");
+         //WriteLine("");
+      }
+      
       // Do("(raw \"hello\")");
       Do("(write \"hello\")");
       Do("(princ \"hello\")");
