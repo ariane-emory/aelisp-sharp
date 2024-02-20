@@ -58,7 +58,7 @@ static partial class Ae
       protected abstract Number AddSameType(Number other);
       protected abstract Number SubSameType(Number other);
       protected abstract Number MulSameType(Number other);
-      protected abstract Number Div ameType(Number other);
+      protected abstract Number DivSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -118,19 +118,23 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) => 
-         new Integer(this.Value + ((Integer)that).Value);
-  
+      private Number ApplyBinaryOp(Integer that, Func<int, int, int> op) => 
+         new Integer(op(this.Value, that.Value));
+
       //================================================================================================================
-      protected override Number SubSameType(Number that) => 
+      protected override Number AddSameType(Number that) =>
+       new Integer(this.Value + ((Integer)that).Value);
+
+      //================================================================================================================
+      protected override Number SubSameType(Number that) =>
          new Integer(this.Value - ((Integer)that).Value);
 
       //================================================================================================================
-      protected override Number MulSameType(Number that) => 
+      protected override Number MulSameType(Number that) =>
          new Integer(this.Value * ((Integer)that).Value);
 
       //================================================================================================================
-      protected override Number DivSameType(Number that) => 
+      protected override Number DivSameType(Number that) =>
          new Integer(this.Value / ((Integer)that).Value);
 
       //================================================================================================================
@@ -170,12 +174,12 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      private Number ApplyBinaryOp(Rational that, Func<int, int, int> fun)
+      private Number ApplyBinaryOp(Rational that, Func<int, int, int> op)
       {
          int commonDenominator = Denominator * that.Denominator / GCD(Denominator, that.Denominator);
          int newNumerator = Numerator * (commonDenominator / Denominator);
          int newThatNumerator = that.Numerator * (commonDenominator / that.Denominator);
-         int sumNumerator = newNumerator + newThatNumerator;
+         int sumNumerator = op(newNumerator, newThatNumerator);
 
          return new Rational(sumNumerator, commonDenominator);
       }
@@ -183,11 +187,11 @@ static partial class Ae
       //================================================================================================================
       protected override Number AddSameType(Number that) =>
          ApplyBinaryOp((Rational)that, (l, r) => l + r);
-      
+
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
          ApplyBinaryOp((Rational)that, (l, r) => l - r);
-      
+
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
          ApplyBinaryOp((Rational)that, (l, r) => l * r);
@@ -228,7 +232,7 @@ static partial class Ae
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
          new Float(Value - ((Float)that).Value);
-      
+
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
          new Float(Value * ((Float)that).Value);
