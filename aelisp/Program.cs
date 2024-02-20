@@ -226,27 +226,29 @@ class Program
          //WriteLine($"'{result.ToPrincString()}'");
          //WriteLine("");
       }
-      
-      Do("(raw \"hello\")");
-      Do("(write \"hello\")");
-      Do("(princ \"hello\")");
-      Do("(print \"hello\")");
-      Do("(raw 'hello)");
-      Do("(write 'hello)");
-      Do("(princ 'hello)");
-      Do("(print 'hello)");
-      Do("(raw '(1 \"hello\" 'world))");
-      Do("(write '(1 \"hello\" 'world))");
-      Do("(princ '(1 \"hello\" 'world))");
-      Do("(print '(1 \"hello\" 'world))");
 
-      Do("(+ 2 4)");
-      Do("(+ 2 8/4)");
-      Do("(+ 2 10/4)");
-      Do("(+ 2 2.0)");
-      Do("(+ 2 2.5)");
+      // Do("(raw \"hello\")");
+      // Do("(write \"hello\")");
+      // Do("(princ \"hello\")");
+      // Do("(print \"hello\")");
+      // Do("(raw 'hello)");
+      // Do("(write 'hello)");
+      // Do("(princ 'hello)");
+      // Do("(print 'hello)");
+      // Do("(raw '(1 \"hello\" 'world))");
+      // Do("(write '(1 \"hello\" 'world))");
+      // Do("(princ '(1 \"hello\" 'world))");
+      // Do("(print '(1 \"hello\" 'world))");
 
-      Do("(+ 6/3 4)");
+      WriteLine("");
+
+      //Do("(+ 2 4)");
+      //Do("(+ 2 8/4)");
+      //Do("(+ 2 10/4)");
+      //Do("(+ 2 2.0)");
+      // Do("(+ 2 2.5)");
+
+      //Do("(+ 6/3 4)");
       Do("(+ 6/3 8/4)");
       Do("(+ 6/3 10/4)");
       Do("(+ 6/3 2.0)");

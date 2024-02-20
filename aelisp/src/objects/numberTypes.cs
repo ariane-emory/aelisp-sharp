@@ -44,7 +44,12 @@ static partial class Ae
       {
          var (left, right) = MatchRanks(this, other);
 
-         return left.AddToSameType(right);
+         var result = left.AddToSameType(right);
+         
+         if (result is Rational resultRational && resultRational.Denominator == 1)
+            result = new Integer(resultRational.Numerator);
+
+         return result;
       }
 
       //================================================================================================================
@@ -154,7 +159,7 @@ static partial class Ae
       // Instance methods
       //================================================================================================================
       protected override string? StringRepresentation => $"{Value}";
-      public override string ToPrincString() => $"{Value}";
+      public override string ToPrincString() => $"{Value:.1f}";
 
       //================================================================================================================
       protected override Number AddToSameType(Number that)
