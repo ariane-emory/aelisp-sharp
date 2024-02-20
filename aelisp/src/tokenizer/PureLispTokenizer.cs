@@ -42,7 +42,7 @@ static partial class Ae
    };
 
    //=================================================================================================================================================
-   public enum LispTokenizerMode
+   private enum LispTokenizerMode
    {
       Normal,
       InMultilineComment,
