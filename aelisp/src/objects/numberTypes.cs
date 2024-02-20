@@ -54,11 +54,11 @@ static partial class Ae
       private Number BinaryMul(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryMulSameType(r));
       private Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
-      //================================================================================================================
-      // Static methods
-      //================================================================================================================
-      public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.ApplyBinaryOp(r, (l, r) => l.BinaryAddSameType(r));
-      public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinarySub(r));
+        //================================================================================================================
+        // Static methods
+        //================================================================================================================
+        public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.ApplyBinaryOp(r, (l, r) => l.BinaryAddSameType(r)));
+        public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.ApplyBinaryOp(r, (l, r) => l.BinarySubSameType(r)));
       public static Number Mul(LispObject list) => VariadicArithmetic(list, 1, false, (l, r) => l.BinaryMul(r));
       public static Number Div(LispObject list) => VariadicArithmetic(list, 1, true,  (l, r) => l.BinaryDiv(r));
 
