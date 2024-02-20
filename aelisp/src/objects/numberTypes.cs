@@ -58,7 +58,7 @@ static partial class Ae
       protected abstract Number AddSameType(Number other);
       protected abstract Number SubSameType(Number other);
       protected abstract Number MulSameType(Number other);
-      protected abstract Number DivSameType(Number other);
+      protected abstract Number Div ameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -170,7 +170,7 @@ static partial class Ae
       protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
-      private Number DoBinaryOp(Rational that, Func<int, int, int> fun)
+      private Number ApplyBinaryOp(Rational that, Func<int, int, int> fun)
       {
          int commonDenominator = Denominator * that.Denominator / GCD(Denominator, that.Denominator);
          int newNumerator = Numerator * (commonDenominator / Denominator);
@@ -182,19 +182,19 @@ static partial class Ae
 
       //================================================================================================================
       protected override Number AddSameType(Number that) =>
-         DoBinaryOp((Rational)that, (l, r) => l + r);
+         ApplyBinaryOp((Rational)that, (l, r) => l + r);
       
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
-         DoBinaryOp((Rational)that, (l, r) => l - r);
+         ApplyBinaryOp((Rational)that, (l, r) => l - r);
       
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
-         DoBinaryOp((Rational)that, (l, r) => l * r);
+         ApplyBinaryOp((Rational)that, (l, r) => l * r);
 
       //================================================================================================================
       protected override Number DivSameType(Number that) =>
-         DoBinaryOp((Rational)that, (l, r) => l / r);
+         ApplyBinaryOp((Rational)that, (l, r) => l / r);
 
       //================================================================================================================
    }
