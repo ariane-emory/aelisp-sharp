@@ -88,11 +88,11 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
-         ("print        ", PrintObj,    00000001, 15, false),
-         ("princ        ", PrincObj,    00000001, 15, false),
-         ("put-raw      ", PutObj,      00000001, 15, false),
-         ("write        ", WriteObj,    00000001, 15, false), // add quoting to write!
-         ("nl           ", Newline,     00000000, 00, false),
+         ("print        ", PrintObj, 00000001, 15, false),
+         ("princ        ", PrincObj, 00000001, 15, false),
+         ("put-raw      ", PutObj, 00000001, 15, false),
+         ("write        ", WriteObj, 00000001, 15, false), // add quoting to write!
+         ("nl           ", Newline, 00000000, 00, false),
          ("string       ", ObjToString, 00000001, 01, false),
          ("+            ", NotImplemented, 00000, 15, false),
          ("intern       ", InternString, 0000001, 01, false),
@@ -219,6 +219,20 @@ class Program
       Do("(setq z '(2 3 4))");
       Do("(apply list 1 z)");
       WriteLine("");
+
+      // Do("(raw \"hello\")");
+      Do("(write \"hello\")");
+      Do("(princ \"hello\")");
+      Do("(print \"hello\")");
+      // Do("(raw 'hello)");
+      Do("(write 'hello)");
+      Do("(princ 'hello)");
+      Do("(print 'hello)");
+      // Do("(raw '(1 \"hello\" 'world))");
+      Do("(write '(1 \"hello\" 'world))");
+      Do("(princ '(1 \"hello\" 'world))");
+      Do("(print '(1 \"hello\" 'world))");
+
    }
 
    //==============================================================================================================================
