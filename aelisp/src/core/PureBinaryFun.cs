@@ -47,7 +47,7 @@ static partial class Ae
          PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Add =
+      public static readonly CoreFun.FuncT BinaryAdd =
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
@@ -55,7 +55,7 @@ static partial class Ae
          });
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Sub =
+      public static readonly CoreFun.FuncT BinarySub =
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
@@ -63,7 +63,7 @@ static partial class Ae
          });
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Mul =
+      public static readonly CoreFun.FuncT BinaryMul =
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
@@ -71,7 +71,7 @@ static partial class Ae
          });
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Div =
+      public static readonly CoreFun.FuncT BinaryDiv =
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
