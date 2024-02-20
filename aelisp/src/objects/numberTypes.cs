@@ -170,7 +170,15 @@ static partial class Ae
       protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-      protected override Number BinaryModSameType(Number that) => ApplyBinaryOp(that, (l, r) => l % r);
+
+      //==============================================================================================================================================
+      protected override Number BinaryModSameType(Number that)
+      {
+         if (that is Integer thatInteger && thatInteger.Value <= 0)
+            throw new ArgumentException($"Modulo by zero or negative number: {that}.");
+         
+         return ApplyBinaryOp(that, (l, r) => l % r);
+      }
 
       //==============================================================================================================================================
    }
