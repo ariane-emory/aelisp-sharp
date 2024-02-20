@@ -37,20 +37,32 @@ static partial class Ae
       protected abstract Number AddToSameType(Number other);
       protected abstract Number Promote();
 
-      //================================================================================================================
-      // Instance methods
-      //================================================================================================================
-      public Number Add(Number other)
-      {
-         var (left, right) = MatchRanks(this, other);
+        //================================================================================================================
+        // Instance methods
+        //================================================================================================================
+        public Number Add(Number other)
+        {
+            var (left, right) = MatchRanks(this, other);
 
-         var result = left.AddToSameType(right);
+            var result = left.AddToSameType(right);
 
-         if (result is Rational resultRational && resultRational.Denominator == 1)
-            result = new Integer(resultRational.Numerator);
+            if (result is Integer)
+                return result;
 
-         return result;
-      }
+            if (result is Rational resultRational)
+                return resultRational.Denominator == 1
+                   ? new Integer(resultRational.Numerator)
+                   : result;
+
+            if (result is Float resultFloat)
+            {
+               var floor = Math.Floor(resultFloat.Value);
+
+               return (resultFloat.Value == floor) ? new Integer((int)floor) : result;
+            }
+            
+            throw new ApplicationException($"something is wrong, this throw should be unrachable, result is {result}.");
+        }
 
       //================================================================================================================
    }
@@ -138,7 +150,6 @@ static partial class Ae
       //================================================================================================================
    }
 
-
    //===================================================================================================================
    // Float class
    //===================================================================================================================
@@ -190,88 +201,88 @@ static partial class Ae
       return (leftNumber, rightNumber);
    }
 
-   //===================================================================================================================
-   public static LispObject BinaryAdd(LispObject left, LispObject right)
-   {
-      var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-      var result = Nil;
+   // //===================================================================================================================
+   // public static LispObject BinaryAdd(LispObject left, LispObject right)
+   // {
+   //    var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+   //    var result = Nil;
 
-      //================================================================================================================
-      // Integer     Integer      Integer
-      //================================================================================================================
-      {
-         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-            result = new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
-      }
-      //================================================================================================================
-      // Integer     Rational     Rational
-      //================================================================================================================
-      {
-         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-            result = new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
-                                rightTypedNumber.Denominator);
-      }
-      //================================================================================================================
-      // Integer     Float        Float
-      //================================================================================================================
-      {
-         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+   //    //================================================================================================================
+   //    // Integer     Integer      Integer
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+   //          result = new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
+   //    }
+   //    //================================================================================================================
+   //    // Integer     Rational     Rational
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+   //          result = new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
+   //                              rightTypedNumber.Denominator);
+   //    }
+   //    //================================================================================================================
+   //    // Integer     Float        Float
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
 
-      }
-      //================================================================================================================
-      // Rational     Integer      Rational
-      //================================================================================================================
-      {
-         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-            result = new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value * leftTypedNumber.Denominator,
-                                leftTypedNumber.Denominator);
-      }
-      //================================================================================================================
-      // Rational     Rational     Rational
-      //================================================================================================================
-      {
-         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-            result = new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
-                                (leftTypedNumber.Denominator * rightTypedNumber.Denominator));
-      }
-      //================================================================================================================
-      // Rational     Float        Float
-      //================================================================================================================
-      {
-         if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-            result = new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
-                             rightTypedNumber.Value);
+   //    }
+   //    //================================================================================================================
+   //    // Rational     Integer      Rational
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+   //          result = new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value * leftTypedNumber.Denominator,
+   //                              leftTypedNumber.Denominator);
+   //    }
+   //    //================================================================================================================
+   //    // Rational     Rational     Rational
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+   //          result = new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
+   //                              (leftTypedNumber.Denominator * rightTypedNumber.Denominator));
+   //    }
+   //    //================================================================================================================
+   //    // Rational     Float        Float
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+   //          result = new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
+   //                           rightTypedNumber.Value);
 
-      }
-      //================================================================================================================
-      // Float     Integer      Float
-      //================================================================================================================
-      {
-         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
-      }
-      //================================================================================================================
-      // Float     Rational     Float
-      //================================================================================================================
-      {
-         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-            result = new Float(leftTypedNumber.Value + (((float)rightTypedNumber.Numerator) / ((float)rightTypedNumber.Denominator)));
-      }
-      //================================================================================================================
-      // Float     Float        Float
-      //================================================================================================================
-      {
-         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
-      }
-      //================================================================================================================
+   //    }
+   //    //================================================================================================================
+   //    // Float     Integer      Float
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+   //    }
+   //    //================================================================================================================
+   //    // Float     Rational     Float
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+   //          result = new Float(leftTypedNumber.Value + (((float)rightTypedNumber.Numerator) / ((float)rightTypedNumber.Denominator)));
+   //    }
+   //    //================================================================================================================
+   //    // Float     Float        Float
+   //    //================================================================================================================
+   //    {
+   //       if ((leftNumber is Float leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+   //          result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+   //    }
+   //    //================================================================================================================
 
-      if (result is Rational resultRational && resultRational.Denominator == 1)
-         return new Integer(resultRational.Numerator);
+   //    if (result is Rational resultRational && resultRational.Denominator == 1)
+   //       return new Integer(resultRational.Numerator);
 
-      return result;
-   }
+   //    return result;
+   // }
 
    //===================================================================================================================
 }
