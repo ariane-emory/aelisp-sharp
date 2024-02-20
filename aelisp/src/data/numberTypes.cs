@@ -37,7 +37,7 @@ static partial class Ae
       protected abstract Number BinarySubSameType(Number other);
       protected abstract Number BinaryMulSameType(Number other);
       protected abstract Number BinaryDivSameType(Number other);
-      protected abstract bool EqualSameType(Number other);
+      protected abstract bool BinaryCmpEqualsSameType(Number other);
       protected abstract Number Promote();
 
       //==============================================================================================================================================
@@ -63,10 +63,10 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public bool Equal(Number that)
+      public bool CmpEquals(Number that)
       {
          var (left, right) = MatchRanks(this, that);
-         return left.EqualSameType(right);
+         return left.BinaryCmpEqualsSameType(right);
       }
 
       //==============================================================================================================================================
@@ -112,7 +112,7 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      private enum AssignMode { AndEquals, OrEquals, };
+      private enum AssignMode { AssignAnd, AssignOr, };
 
       //==============================================================================================================================================
       private static bool ApplyVariadicComparison(LispObject list,
@@ -144,7 +144,7 @@ static partial class Ae
             if (!(currentPair.Car is Number currentNumber))
                throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
 
-            if (assignMode == AssignMode.AndEquals)
+            if (assignMode == AssignMode.AssignAnd)
                result &= op(left, currentNumber);
             else
                result |= op(left, currentNumber);
@@ -164,7 +164,7 @@ static partial class Ae
       public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySubSameType(r)));
       public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMulSameType(r)));
       public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDivSameType(r)));
-      public static bool CmpEqual(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AndEquals, ApplyBinaryCmpFun((l, r) => l.Equals(r)));
+      public static bool CmpEqual(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpEquals(r)));
 
       //==============================================================================================================================================
       private static (Number, Number) MatchRanks(LispObject left, LispObject right)
@@ -235,7 +235,7 @@ static partial class Ae
       protected override Integer BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Integer BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-      protected override bool EqualSameType(Number other) => Value == ((Integer)other).Value;
+      protected override bool BinaryCmpEqualsSameType(Number other) => Value == ((Integer)other).Value;
 
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
@@ -314,7 +314,7 @@ static partial class Ae
       protected override Float BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Float BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Float BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-      protected override bool EqualSameType(Number other) => Value == ((Float)other).Value;
+      protected override bool BinaryCmpEqualsSameType(Number other) => Value == ((Float)other).Value;
 
       //==============================================================================================================================================
    }
@@ -364,7 +364,7 @@ static partial class Ae
       protected override Rational BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-      protected override bool EqualSameType(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
+      protected override bool BinaryCmpEqualsSameType(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
 
       //==============================================================================================================================================
    }
