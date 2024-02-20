@@ -73,7 +73,7 @@ static partial class Ae
    //=================================================================================================================================================
    // Ae's extension methods
    //=================================================================================================================================================
-   public static void ToPrintString(this IEnumerable<LispToken> self, int countOffset = 0)
+   private static void ToPrintString(this IEnumerable<LispToken> self, int countOffset = 0)
    {
       foreach (var (token, index) in self.Select((value, index) => (value, index + countOffset)))
          WriteLine($"#{index}: {token}");
