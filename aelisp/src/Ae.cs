@@ -11,11 +11,15 @@ using static Pidgin.Parser<Ae.LispToken>;
 static partial class Ae
 {
    //====================================================================================================================
-   // Ae's static fields
+   // Static fields
    //====================================================================================================================
    public static readonly LispObject Nil = (LispObject)new Symbol("nil");
    public static LispObject SymbolsList = Nil;
    public static readonly LispObject True = Intern("t");
+
+   //====================================================================================================================
+   // Static properties
+   //====================================================================================================================
    public static Env Root { get; } = new Env(Nil);
 
    //====================================================================================================================
@@ -28,7 +32,7 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   // Ae's static methods
+   // Static methods
    //====================================================================================================================
    public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
    public static LispObject Eval(Env env, string input, bool progn = true) => Read(input, progn).Eval(env);

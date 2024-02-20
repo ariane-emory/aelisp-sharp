@@ -124,29 +124,29 @@ static partial class Ae
 
       //=====================================================================================================================================
       private static readonly LispObjectParser ParseList =
-      TypedToken(LispTokenType.LParen)
-      .Then(ParseListElements)
-      .Before(TypedToken(LispTokenType.RParen));
+         TypedToken(LispTokenType.LParen)
+         .Then(ParseListElements)
+         .Before(TypedToken(LispTokenType.RParen));
 
       private static readonly LispObjectParser ParseQuotedSExp =
-        TypedToken(LispTokenType.Quote)
-        .Then(ParseSExp, (_, exp) => Cons(Intern("quote"), Cons(exp, Nil)));
-
+         TypedToken(LispTokenType.Quote)
+         .Then(ParseSExp, (_, exp) => Cons(Intern("quote"), Cons(exp, Nil)));
+      
       private static readonly LispObjectParser ParseQuasiQuotedSExp =
-        TypedToken(LispTokenType.Backtick)
-        .Then(ParseSExp, (_, exp) => Cons(Intern("quasiquote"), Cons(exp, Nil)));
-
+         TypedToken(LispTokenType.Backtick)
+         .Then(ParseSExp, (_, exp) => Cons(Intern("quasiquote"), Cons(exp, Nil)));
+      
       private static readonly LispObjectParser ParseUnquotedSExp =
-        TypedToken(LispTokenType.Comma)
-        .Then(ParseSExp, (_, exp) => Cons(Intern("unquote"), Cons(exp, Nil)));
-
+         TypedToken(LispTokenType.Comma)
+         .Then(ParseSExp, (_, exp) => Cons(Intern("unquote"), Cons(exp, Nil)));
+      
       private static readonly LispObjectParser ParseSplicedSExp =
-        TypedToken(LispTokenType.CommaAt)
-        .Then(ParseSExp, (_, exp) => Cons(Intern("unquote-splicing"), Cons(exp, Nil)));
-
+         TypedToken(LispTokenType.CommaAt)
+         .Then(ParseSExp, (_, exp) => Cons(Intern("unquote-splicing"), Cons(exp, Nil)));
+      
       private static readonly LispObjectParser ParseLitListSExp =
-        TypedToken(LispTokenType.Dollar)
-        .Then(ParseSExp, (_, exp) => Cons(Intern("list"), exp));
+         TypedToken(LispTokenType.Dollar)
+         .Then(ParseSExp, (_, exp) => Cons(Intern("list"), exp));
    }
 
    //=======================================================================================================================================
