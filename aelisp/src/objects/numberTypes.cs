@@ -141,13 +141,13 @@ static partial class Ae
    //=================================================================================================================================================
    public class Integer : Number
    {
-      // protected abstract Number BinaryModSameType(Number other);
+      // protected abstract Number BinaryMod(Number other);
 
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
       public static Integer Mod(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType((Integer)r)));
+         (Integer)ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryMod((Integer)r)));
       
       //==============================================================================================================================================
       // Constructor
@@ -178,9 +178,9 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected Integer BinaryModSameType(Integer that)
+      protected Integer BinaryMod(Integer that)
       {
-         if (that is Integer thatInteger && thatInteger.Value <= 0)
+         if (that.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
 
          return (Integer)ApplyBinaryOp(that, (l, r) => l % r);
@@ -227,12 +227,6 @@ static partial class Ae
       protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
-      //==============================================================================================================================================
-      // protected override Number BinaryModSameType(Number that)
-      // {
-      //    throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
-      // }
-      
       //==============================================================================================================================================
    }
 
@@ -281,12 +275,6 @@ static partial class Ae
       protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-
-      //==============================================================================================================================================
-      // protected override Number BinaryModSameType(Number that)
-      // {
-      //    throw new ArgumentException($"Can't modulo non-Integers: {this} % {that}.");
-      // }
 
       //==============================================================================================================================================
    }
