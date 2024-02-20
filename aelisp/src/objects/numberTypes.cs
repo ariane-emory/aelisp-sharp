@@ -118,24 +118,24 @@ static partial class Ae
       protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
-      private Number ApplyBinaryOp(Integer that, Func<int, int, int> op) => 
+      private Number ApplyBinaryOp(Integer that, Func<int, int, int> op) =>
          new Integer(op(this.Value, that.Value));
 
       //================================================================================================================
       protected override Number AddSameType(Number that) =>
-       new Integer(this.Value + ((Integer)that).Value);
+         ApplyBinaryOp(that, (l, r) => l.Value + r.Value);
 
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
-         new Integer(this.Value - ((Integer)that).Value);
+         ApplyBinaryOp(that, (l, r) => l.Value - r.Value);
 
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
-         new Integer(this.Value * ((Integer)that).Value);
+         ApplyBinaryOp(that, (l, r) => l.Value * r.Value);
 
       //================================================================================================================
       protected override Number DivSameType(Number that) =>
-         new Integer(this.Value / ((Integer)that).Value);
+         ApplyBinaryOp(that, (l, r) => l.Value / r.Value);
 
       //================================================================================================================
    }
