@@ -13,18 +13,23 @@ static partial class Ae
       protected abstract int Rank { get; }
    }
 
-   //===================================================================================================================
-   // Integer class
-   //===================================================================================================================
-   public class Integer : Number
+    public interface IPromotableToRational
+    {
+       public abstract Rational ToRational();
+    }
+   
+    //===================================================================================================================
+    // Integer class
+    //===================================================================================================================
+    public class Integer : Number, IPromotableToRational
    {
       protected override int Rank => 1;
       public int Value { get; }
       public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
-
-   }
+      public Rational ToRational() => new Rational(Value, 1);
+    }
 
    //===================================================================================================================
    // Float class
