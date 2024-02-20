@@ -37,11 +37,7 @@ static partial class Ae
       }
 
       //==================================================================================================================
-      public LispTokenizer(string? input, Func<LispToken, bool>? exclude) : this(input)
-      {
-         //         _input = input;
-         _exclude = exclude;
-      }
+      public LispTokenizer(string? input, Func<LispToken, bool>? exclude) : this(input) => _exclude = exclude;
 
       //==================================================================================================================
       // Instance methods
