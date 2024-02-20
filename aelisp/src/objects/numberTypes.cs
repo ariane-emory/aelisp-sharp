@@ -17,6 +17,12 @@ static partial class Ae
       {
          var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
+         while (leftNumber.Rank < rightNumber.Rank)
+            leftNumber = leftNumber.Promote();
+
+         while (leftNumber.Rank > rightNumber.Rank)
+            rightNumber = rightNumber.Promote();
+
          return (leftNumber, rightNumber);
       }
 
@@ -29,7 +35,7 @@ static partial class Ae
       // Abstract instance methods
       //================================================================================================================
       protected abstract Number AddToSameType(Number other);
-      protected abstract Number Promote(Number other);
+      protected abstract Number Promote();
 
       //================================================================================================================
       // Instance methods
@@ -39,40 +45,33 @@ static partial class Ae
          var (left, right) = MatchRanks(this, other);
 
          return left.AddToSameType(right);
-      } 
+      }
+
+      //================================================================================================================
    }
-
-   // //================================================================================================================
-   // public interface IPromotableToRational
-   // {
-   //    public abstract Rational ToRational();
-   // }
-
-   // //================================================================================================================
-   // public interface IPromotableToFloat
-   // {
-   //    public abstract Float ToFloat();
-   // }
-
-   // //================================================================================================================
-   // public interface IPromotableTo<T>
-   // {
-   //    public abstract T Promote();
-   // }
 
    //===================================================================================================================
    // Integer class
    //===================================================================================================================
    public class Integer : Number //, IPromotableToRational, IPromotableToFloat, IPromotableTo<Rational>
    {
+      //================================================================================================================
+      // Constructor
+      //================================================================================================================
+      public Integer(int value) => Value = value;
+
+      //================================================================================================================
+      // Properties
+      //================================================================================================================
       protected override int Rank => 1;
       public int Value { get; }
-      public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
+
+      //================================================================================================================
+      // Instance methods 
+      //================================================================================================================
       public override string ToPrincString() => $"{Value}";
-      // public Rational ToRational() => new Rational(Value, 1);
-      // public Float ToFloat() => new Float(Value);
-      // public Rational Promote() => ToRational();
+      protected override Number Promote() => new Rational(Value, 1);
 
       //================================================================================================================
       protected override Number AddToSameType(Number other)
@@ -81,8 +80,6 @@ static partial class Ae
       }
 
       //================================================================================================================
-      protected override Number Promote(Number other) =>
-         new Rational(Value, 1);
    }
 
    //===================================================================================================================
@@ -90,31 +87,6 @@ static partial class Ae
    //===================================================================================================================
    public class Rational : Number //, IPromotableToFloat, IPromotableTo<Float>
    {
-      //================================================================================================================
-      // Properties
-      //================================================================================================================
-      public int Numerator { get; }
-      public int Denominator { get; }
-      protected override int Rank => 2;
-
-      //================================================================================================================
-      // Instance methods
-      //================================================================================================================
-      protected override string? StringRepresentation => $"{ToPrincString()}";
-      public override string ToPrincString() => $"{Numerator}/{Denominator}";
-      // public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
-      // public Float Promote() => ToFloat();
-
-      //================================================================================================================
-      protected override Number AddToSameType(Number other)
-      {
-         throw new NotImplementedException("not implemented");
-      }
-
-      //================================================================================================================
-      protected override Number Promote(Number other) =>
-         new Float((((float)Numerator) / ((float)Denominator)));
-
       //================================================================================================================
       // Constructor
       //================================================================================================================ 
@@ -128,6 +100,28 @@ static partial class Ae
          Numerator = numerator / gcd;
          Denominator = denominator / gcd;
       }
+
+      //================================================================================================================
+      // Properties
+      //================================================================================================================
+      public int Numerator { get; }
+      public int Denominator { get; }
+      protected override int Rank => 2;
+
+      //================================================================================================================
+      // Instance methods
+      //================================================================================================================
+      protected override string? StringRepresentation => $"{ToPrincString()}";
+      public override string ToPrincString() => $"{Numerator}/{Denominator}";
+      protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
+
+      //================================================================================================================
+      protected override Number AddToSameType(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
+
+      //================================================================================================================
    }
 
    //===================================================================================================================
@@ -135,9 +129,20 @@ static partial class Ae
    //===================================================================================================================
    public class Float : Number
    {
+      //================================================================================================================
+      // Properties
+      //================================================================================================================
       protected override int Rank => 3;
       public double Value { get; }
+
+      //================================================================================================================
+      // Constructor
+      //================================================================================================================
       public Float(double value) => Value = value;
+
+      //================================================================================================================
+      // Instance methods
+      //================================================================================================================
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
 
@@ -148,11 +153,12 @@ static partial class Ae
       }
 
       //================================================================================================================
-      protected override Number Promote(Number other)
+      protected override Number Promote()
       {
          throw new NotImplementedException("float can't be promoted further");
       }
 
+      //================================================================================================================
    }
 
    //===================================================================================================================
@@ -249,7 +255,6 @@ static partial class Ae
 
       return result;
    }
-
 
    //===================================================================================================================
 }
