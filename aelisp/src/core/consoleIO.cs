@@ -36,6 +36,10 @@ static partial class Ae
       public static LispObject WriteObj(Env env, LispObject argsList) =>       
          WriteOutput(env, argsList, o =>
          {
+            if (o is String)
+               return $"\"{o.Princ()}\"";
+            if (o is Char)
+               return $"'{o.Princ()}'";
             return o.Princ();
          });
       
