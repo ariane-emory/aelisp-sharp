@@ -46,6 +46,10 @@ static partial class Ae
       public static readonly CoreFun.FuncT NewRational =
          PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
 
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Add =
+         PureBinaryFun<Number, Number>((left, right) => BinaryAdd(left, right));
+
       //================================================================================================================
    }
    //===================================================================================================================

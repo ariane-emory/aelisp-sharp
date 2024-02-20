@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("+            ", Add, 0000000000000002, 02, false),
          ("print        ", PrintObj, 00000000001, 15, false),
          ("princ        ", PrincObj, 00000000001, 15, false),
          ("raw          ", RawObj, 0000000000001, 15, false),

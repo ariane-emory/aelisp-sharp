@@ -88,14 +88,14 @@ static partial class Ae
       //================================================================================================================
       {
          if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-            return new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
+            result = new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
       }
       //================================================================================================================
       // Integer     Rational     Rational
       //================================================================================================================
       {
          if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-            return new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
+            result = new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
                                 rightTypedNumber.Denominator);
       }
       //================================================================================================================
@@ -103,7 +103,7 @@ static partial class Ae
       //================================================================================================================
       {
          if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-            return new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
 
       }
       //================================================================================================================
@@ -111,7 +111,7 @@ static partial class Ae
       //================================================================================================================
       {
          if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
-            return new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value *  leftTypedNumber.Denominator,
+            result = new Rational(leftTypedNumber.Numerator + rightTypedNumber.Value * leftTypedNumber.Denominator,
                                 leftTypedNumber.Denominator);
       }
       //================================================================================================================
@@ -119,7 +119,7 @@ static partial class Ae
       //================================================================================================================
       {
          if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
-            return new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
+            result = new Rational(((leftTypedNumber.Numerator * rightTypedNumber.Denominator) + (rightTypedNumber.Numerator * leftTypedNumber.Denominator)),
                                 (leftTypedNumber.Denominator * rightTypedNumber.Denominator));
       }
       //================================================================================================================
@@ -127,22 +127,35 @@ static partial class Ae
       //================================================================================================================
       {
          if ((leftNumber is Rational leftTypedNumber) && (rightNumber is Float rightTypedNumber))
-            return new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
+            result = new Float((((float)leftTypedNumber.Numerator) / ((float)leftTypedNumber.Denominator)) +
                              rightTypedNumber.Value);
 
       }
+      //================================================================================================================
+      // Float     Integer      Float
+      //================================================================================================================
+      {
+         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+      }
+      //================================================================================================================
+      // Float     Rational     Float
+      //================================================================================================================
+      {
+         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+            result = new Float(leftTypedNumber.Value + (((float)rightTypedNumber.Numerator) / ((float)rightTypedNumber.Denominator)));
+      }
+      //================================================================================================================
+      // Float     Float        Float
+      //================================================================================================================
+      {
+         if ((leftNumber is Float leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+            result = new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+      }
+      //================================================================================================================
 
-
-      //================================================================================================================
-      // Float       Integer      Float
-      //================================================================================================================
-      //================================================================================================================
-      // Float       Rational     Float
-      //================================================================================================================
-      //================================================================================================================
-      // Float       Float        Float
-      //================================================================================================================
-
+      if (result is Rational resultRational && resultRational.Denominator == 1)
+         return new Integer(resultRational.Numerator);
 
       return result;
    }
