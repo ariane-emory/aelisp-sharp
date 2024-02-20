@@ -56,38 +56,33 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public bool CmpEqls(Number that)
+      public bool CmpEql(Number that)
       {
-         var (left, right) = MatchRanks(this, that);
-         return left.BinaryCmpEqlSameType(right);
+         return BinaryCmpEqlSameType(that);
       }
 
       //==============================================================================================================================================
       public bool CmpLT(Number that)
       {
-         var (left, right) = MatchRanks(this, that);
-         return left.BinaryCmpLTSameType(right);
+         return BinaryCmpLTSameType(that);
       }
 
       //==============================================================================================================================================
       public bool CmpGT(Number that)
       {
-         var (left, right) = MatchRanks(this, that);
-         return left.BinaryCmpGTSameType(right);
+         return BinaryCmpGTSameType(that);
       }
 
       //==============================================================================================================================================
       public bool CmpLTE(Number that)
       {
-         var (left, right) = MatchRanks(this, that);
-         return left.BinaryCmpLTESameType(right);
+         return BinaryCmpLTESameType(that);
       }
 
       //==============================================================================================================================================
       public bool CmpGTE(Number that)
       {
-         var (left, right) = MatchRanks(this, that);
-         return left.BinaryCmpGTESameType(right);
+         return BinaryCmpGTESameType(that); 
       }
 
       //==============================================================================================================================================
@@ -205,7 +200,7 @@ static partial class Ae
       public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySubSameType(r)));
       public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMulSameType(r)));
       public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDivSameType(r)));
-      public static bool CmpEql(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpEqls(r)));
+      public static bool CmpEql(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpEql(r)));
       public static bool CmpLT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpLT(r)));
       public static bool CmpGT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpGT(r)));
       public static bool CmpLTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.CmpLTE(r)));
