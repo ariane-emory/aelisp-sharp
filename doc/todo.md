@@ -11,9 +11,9 @@ To Do - replicatinc features from C impelemtation of Ælisp:
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] plist handling (data layer/core).
-- [ ] Math comparison functions.
 
 Completed with alterations:
+- [x] Math comparison functions.
 - [x] DRY up the int-only math methods.
 - [x] ~/bit-not.
 - [x] Math operator functions (probably gen with T4): done without T4.
