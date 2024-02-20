@@ -34,6 +34,7 @@ static partial class Ae
       protected abstract Number BinarySub(Number other);
       protected abstract Number BinaryMul(Number other);
       protected abstract Number BinaryDiv(Number other);
+      //==============================================================================================================================================
       protected abstract bool BinaryCmpEql(Number other);
       protected abstract bool BinaryCmpLT(Number other);
       protected abstract bool BinaryCmpGT(Number other);
