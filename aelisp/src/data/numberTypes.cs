@@ -170,31 +170,17 @@ static partial class Ae
       protected override Integer BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected Integer BinaryModSameType(Integer that)
+      private static Integer GreaterThanZero(Integer that, string opName)
       {
          if (that.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
 
-         return ApplyBinaryOp(that, (l, r) => l % r);
+         return that;
       }
 
       //==============================================================================================================================================
-      protected Integer BinaryLsftSameType(Integer that)
-      {
-         if (that.Value < 0)
-            throw new ArgumentException($"Left shift by negative number: {that}.");
-
-         return ApplyBinaryOp(that, (l, r) => l << r);
-      }
-
-      // //==============================================================================================================================================
-      // protected Integer BinaryRsftSameType(Integer that)
-      // {
-      //    if (that.Value < 0)
-      //       throw new ArgumentException($"Right shift by negative number: {that}.");
-
-      //    return ApplyBinaryOp(that, (l, r) => l >> r);
-      // }
+      protected Integer BinaryModSameType(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "modulo"), (l, r) => l % r);
+      protected Integer BinaryLsftSameType(Integer that)=> ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
 
       //==============================================================================================================================================
       protected Integer BinaryAndSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
