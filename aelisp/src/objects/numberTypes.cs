@@ -272,7 +272,7 @@ static partial class Ae
 
       //==============================================================================================================================================
       private Rational ApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
-         new Rational(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
+         new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
 
       //==============================================================================================================================================
       protected override Rational BinaryAddSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
