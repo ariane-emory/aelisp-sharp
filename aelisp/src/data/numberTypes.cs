@@ -187,14 +187,14 @@ static partial class Ae
          return ApplyBinaryOp(that, (l, r) => l << r);
       }
 
-      //==============================================================================================================================================
-      protected Integer BinaryRsftSameType(Integer that)
-      {
-         if (that.Value < 0)
-            throw new ArgumentException($"Right shift by negative number: {that}.");
+      // //==============================================================================================================================================
+      // protected Integer BinaryRsftSameType(Integer that)
+      // {
+      //    if (that.Value < 0)
+      //       throw new ArgumentException($"Right shift by negative number: {that}.");
 
-         return ApplyBinaryOp(that, (l, r) => l >> r);
-      }
+      //    return ApplyBinaryOp(that, (l, r) => l >> r);
+      // }
 
       //==============================================================================================================================================
       protected Integer BinaryAndSameType(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
@@ -223,15 +223,15 @@ static partial class Ae
             return lInteger.BinaryLsftSameType(rInteger);
          });
 
-      //==============================================================================================================================================
-      public static Integer Rsft(LispObject list) =>
-         (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
-         {
-            if (!((l is Integer lInteger) && (r is Integer rInteger)))
-               throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
+      // //==============================================================================================================================================
+      // public static Integer Rsft(LispObject list) =>
+      //    (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
+      //    {
+      //       if (!((l is Integer lInteger) && (r is Integer rInteger)))
+      //          throw new ArgumentException($"Can't shift non-integers: {l} % {r}.");
 
-            return lInteger.BinaryRsftSameType(rInteger);
-         });
+      //       return lInteger.BinaryRsftSameType(rInteger);
+      //    });
 
       //==============================================================================================================================================
       public static Integer BitAnd(LispObject list) =>
