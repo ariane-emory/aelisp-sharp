@@ -176,7 +176,7 @@ static partial class Ae
       {
          if (that is Integer thatInteger && thatInteger.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
-         
+
          return ApplyBinaryOp(that, (l, r) => l % r);
       }
 
@@ -228,7 +228,7 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-    }
+   }
 
    //=================================================================================================================================================
    // Rational class
