@@ -83,16 +83,37 @@ static partial class Ae
 
       var result = Nil;
 
-      // left      right    ressult
-      // integer   integer  integer
-      // integer   rational rational
-      // integer   float    float
-      // rational  integer  rational
-      // rational  rational rational
-      // rational  float    float
-      // float     integer  float
-      // float     rational float
-      // float     float    float
+      //================================================================================================================
+      // Integer     Integer      Integer
+      //================================================================================================================
+      {
+         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Integer rightTypedNumber))
+            return new Integer(leftTypedNumber.Value + rightTypedNumber.Value);
+      }
+      //================================================================================================================
+      // Integer     Rational     Rational
+      //================================================================================================================
+      {
+         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Rational rightTypedNumber))
+            return new Rational((leftTypedNumber.Value * rightTypedNumber.Denominator) + rightTypedNumber.Numerator,
+                                rightTypedNumber.Denominator);
+      }
+      //================================================================================================================
+      // Integer     Float        Float
+      //================================================================================================================
+      {
+         if ((leftNumber is Integer leftTypedNumber) && (rightNumber is Float rightTypedNumber))
+            return new Float(leftTypedNumber.Value + rightTypedNumber.Value);
+
+      }
+
+      // Rational    Integer      Rational
+      // Rational    Rational     Rational
+      // Rational    Float        Float
+      // Float       Integer      Float
+      // Float       Rational     Float
+      // Float       Float        Float
+      // Left Type:  Right Type:  Result Type:
 
       return result;
    }
