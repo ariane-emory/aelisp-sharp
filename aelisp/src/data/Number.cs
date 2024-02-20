@@ -56,34 +56,11 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public bool CmpEql(Number that)
-      {
-         return BinaryCmpEqlSameType(that);
-      }
-
-      //==============================================================================================================================================
-      public bool CmpLT(Number that)
-      {
-         return BinaryCmpLTSameType(that);
-      }
-
-      //==============================================================================================================================================
-      public bool CmpGT(Number that)
-      {
-         return BinaryCmpGTSameType(that);
-      }
-
-      //==============================================================================================================================================
-      public bool CmpLTE(Number that)
-      {
-         return BinaryCmpLTESameType(that);
-      }
-
-      //==============================================================================================================================================
-      public bool CmpGTE(Number that)
-      {
-         return BinaryCmpGTESameType(that); 
-      }
+      public bool CmpEql(Number that) {return BinaryCmpEqlSameType(that);}
+      public bool CmpLT(Number that) {return BinaryCmpLTSameType(that);}
+      public bool CmpGT(Number that) {return BinaryCmpGTSameType(that);}
+      public bool CmpLTE(Number that) {return BinaryCmpLTESameType(that);}
+      public bool CmpGTE(Number that) {return BinaryCmpGTESameType(that);}
 
       //==============================================================================================================================================
       // Static methods
