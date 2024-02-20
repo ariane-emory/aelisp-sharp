@@ -39,34 +39,47 @@ static partial class Ae
       {
          var sb = new StringBuilder();
 
-         sb.Append("(");
 
          LispObject current = this;
 
-         while (current is Pair currentCons)
+         var currentIsQuoteForm = current is Pair currentPair && currentPair.Car == Intern("quote");
+
+         if (currentIsQuoteForm)
          {
-            sb.Append(currentCons.Car.Print());
+            var cadr = ((Pair)((Pair)current).Cdr).Car;
 
-            if (currentCons.Cdr is Pair)
-            {
-               sb.Append(" ");
-               current = currentCons.Cdr;
-            }
-            else if (currentCons.Cdr != Nil)
-            {
-
-               sb.Append(" . ");
-               sb.Append(currentCons.Cdr.PrincString());
-
-               break;
-            }
-            else
-            {
-               break;
-            }
+            sb.Append("'");
+            sb.Append(cadr.PrincString());
          }
+         else
+         {
+            sb.Append("(");
 
-         sb.Append(")");
+            while (current is Pair currentCons)
+            {
+               sb.Append(currentCons.Car.Print());
+
+               if (currentCons.Cdr is Pair)
+               {
+                  sb.Append(" ");
+                  current = currentCons.Cdr;
+               }
+               else if (currentCons.Cdr != Nil)
+               {
+
+                  sb.Append(" . ");
+                  sb.Append(currentCons.Cdr.PrincString());
+
+                  break;
+               }
+               else
+               {
+                  break;
+               }
+            }
+
+            sb.Append(")");
+         }
 
          return sb.ToString();
       }
@@ -171,7 +184,7 @@ static partial class Ae
             }
          }
       }
-      
+
       //================================================================================================================
       public override LispObject Eval(Env env)
       {
@@ -180,7 +193,7 @@ static partial class Ae
 
          // WriteLine($"\nhead: {head.PrincString()}");
          // WriteLine($"args: {args.PrincString()}");
-         
+
          if (!args.IsList)
             throw new ArgumentException($"{nameof(args)} is {args}, not a list, something has gone very wrong!");
 
