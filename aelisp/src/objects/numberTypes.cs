@@ -146,8 +146,9 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Number Mod(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType((Integer)r)));
-
+      public static Number Mod(LispObject list) =>
+         ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType((Integer)r)));
+      
       //==============================================================================================================================================
       // Constructor
       //==============================================================================================================================================
@@ -177,12 +178,12 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected  Number BinaryModSameType(Integer that)
+      protected Integer BinaryModSameType(Integer that)
       {
          if (that is Integer thatInteger && thatInteger.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
 
-         return ApplyBinaryOp(that, (l, r) => l % r);
+         return (Integer)ApplyBinaryOp(that, (l, r) => l % r);
       }
 
       //==============================================================================================================================================
