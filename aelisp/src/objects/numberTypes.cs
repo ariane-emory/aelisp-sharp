@@ -222,14 +222,14 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      private Number ApplyBinaryOp(Number that, Func<double, double, double> op) =>
+      private Float ApplyBinaryOp(Number that, Func<double, double, double> op) =>
          new Float(op(this.Value, ((Float)that).Value));
 
       //==============================================================================================================================================
-      protected override Number BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
-      protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
-      protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
-      protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+      protected override Float BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
+      protected override Float BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
+      protected override Float BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
+      protected override Float BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
    }
