@@ -217,13 +217,21 @@ static partial class Ae
       //================================================================================================================
       protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l + r);
       protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l - r);
-      protected override Number DivSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l / r);
 
       protected override Number MulSameType(Number that)
       {
          var multiplier = (Rational)that;
          int newNumerator = this.Numerator * multiplier.Numerator;
          int newDenominator = this.Denominator * multiplier.Denominator;
+
+         return new Rational(newNumerator, newDenominator);
+      }
+
+      protected override Number DivSameType(Number that)
+      {
+         var divisor = (Rational)that;
+         int newNumerator = this.Numerator / divisor.Numerator;
+         int newDenominator = this.Denominator * divisor.Denominator;
 
          return new Rational(newNumerator, newDenominator);
       }
