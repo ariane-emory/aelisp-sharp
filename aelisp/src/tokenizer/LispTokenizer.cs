@@ -30,7 +30,7 @@ static partial class Ae
       //==================================================================================================================
       // Constructor
       //==================================================================================================================
-      public LispTokenizer(string? input)
+      public LispTokenizer(string? input) : this(input, null)
       {
          _input = input;
          _exclude = IsWhitespaceToken;
