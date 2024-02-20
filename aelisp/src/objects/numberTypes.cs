@@ -12,6 +12,7 @@ static partial class Ae
    {
       protected abstract int Rank { get; }
       protected abstract Number AddToSameType(Number other);
+      protected abstract Number Promote(Number other);
    }
 
    // //===================================================================================================================
@@ -51,6 +52,12 @@ static partial class Ae
       {
          throw new NotImplementedException("not implemented");
       }
+
+      //================================================================================================================
+      protected override Number Promote(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
    }
 
    //===================================================================================================================
@@ -75,6 +82,12 @@ static partial class Ae
 
       //================================================================================================================
       protected override Number AddToSameType(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
+
+      //================================================================================================================
+      protected override Number Promote(Number other)
       {
          throw new NotImplementedException("not implemented");
       }
@@ -110,6 +123,13 @@ static partial class Ae
       {
          throw new NotImplementedException("not implemented");
       }
+
+      //================================================================================================================
+      protected override Number Promote(Number other)
+      {
+         throw new NotImplementedException("not implemented");
+      }
+
    }
 
    //===================================================================================================================
