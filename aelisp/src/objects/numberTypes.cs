@@ -57,7 +57,7 @@ static partial class Ae
       //================================================================================================================
       // Static methods
       //================================================================================================================
-      public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinaryAddSameType(r));
+      public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinaryAdd(r));
       public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinarySub(r));
       public static Number Mul(LispObject list) => VariadicArithmetic(list, 1, false, (l, r) => l.BinaryMul(r));
       public static Number Div(LispObject list) => VariadicArithmetic(list, 1, true,  (l, r) => l.BinaryDiv(r));
