@@ -17,7 +17,7 @@ static partial class Ae
       public override string TypeName => "Cons";
       public LispObject Car { get; set; }
       public LispObject Cdr { get; set; }
-
+      
       //================================================================================================================
       // Constructor
       //================================================================================================================
@@ -44,7 +44,7 @@ static partial class Ae
 
          var currentIsQuoteForm = current is Pair currentPair && currentPair.Car == Intern("quote");
 
-         if (currentIsQuoteForm)
+         if (current.IsQuoteForm)
          {
             var cadr = ((Pair)((Pair)current).Cdr).Car;
 

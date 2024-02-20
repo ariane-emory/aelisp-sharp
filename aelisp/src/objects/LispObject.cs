@@ -26,6 +26,7 @@ static partial class Ae
       public bool IsImproperList => IsList && !IsProperList;
       public bool IsAtom => this is not Pair;
       public int Id { get; }
+      public bool IsQuoteForm  => this is Pair thisPair && thisPair.Car == Intern("quote");
 
       //==================================================================================================================
       public int Length
