@@ -26,9 +26,15 @@ static partial class Ae
    }
 
    //===================================================================================================================
+   public interface IPromotableTo<T>
+   {
+      public abstract T Promote();
+   }
+
+   //===================================================================================================================
    // Integer class
    //===================================================================================================================
-   public class Integer : Number, IPromotableToRational, IPromotableToFloat
+   public class Integer : Number, IPromotableToRational, IPromotableToFloat, IPromotableTo<Rational>
    {
       protected override int Rank => 1;
       public int Value { get; }
@@ -36,32 +42,21 @@ static partial class Ae
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
       public Rational ToRational() => new Rational(Value, 1);
+      public Rational Promote() => ToRational();
       public Float ToFloat() => new Float(Value);
-   }
-
-   //===================================================================================================================
-   // Float class
-   //===================================================================================================================
-   public class Float : Number
-   {
-      protected override int Rank => 2;
-      public double Value { get; }
-      public Float(double value) => Value = value;
-      protected override string? StringRepresentation => $"{Value}";
-      public override string ToPrincString() => $"{Value}";
    }
 
    //===================================================================================================================
    // Rational class
    //===================================================================================================================
-   public class Rational : Number
+   public class Rational : Number, IPromotableToFloat, IPromotableTo<Float>
    {
       //================================================================================================================
       // Properties
       //================================================================================================================
       public int Numerator { get; }
       public int Denominator { get; }
-      protected override int Rank => 3;
+      protected override int Rank => 2;
 
       //================================================================================================================
       // Instance methods
@@ -69,6 +64,7 @@ static partial class Ae
       protected override string? StringRepresentation => $"{ToPrincString()}";
       public override string ToPrincString() => $"{Numerator}/{Denominator}";
       public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
+      public Float Promote() => ToFloat();
 
       //================================================================================================================
       // Constructor
@@ -86,7 +82,19 @@ static partial class Ae
    }
 
    //===================================================================================================================
-   static LispObject BinaryAdd(LispObject left, LispObject right)
+   // Float class
+   //===================================================================================================================
+   public class Float : Number
+   {
+      protected override int Rank => 3;
+      public double Value { get; }
+      public Float(double value) => Value = value;
+      protected override string? StringRepresentation => $"{Value}";
+      public override string ToPrincString() => $"{Value}";
+   }
+
+   //===================================================================================================================
+   public static (Number, Number) ThrowUnlessNumbers(LispObject left, LispObject right)
    {
       if (!(left is Number leftNumber))
          throw new ArgumentException($"left must be a Number, not {left}.");
@@ -94,6 +102,21 @@ static partial class Ae
       if (!(right is Number rightNumber))
          throw new ArgumentException($"right must be a Number, not {right}.");
 
+      return (leftNumber, rightNumber);
+   }
+   
+   //===================================================================================================================
+   public static LispObject MatchRanks(LispObject left, LispObject right)
+   {
+      var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+      return Nil;
+   }
+   
+   //===================================================================================================================
+   public static LispObject BinaryAdd(LispObject left, LispObject right)
+   {
+      var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
       var result = Nil;
 
       //================================================================================================================
