@@ -365,6 +365,8 @@ class Program
       Do("(= 3 3)");
       Do("(= 3 3 2)");
 
+      Do("(< 3 4 5)");
+
       foreach (var tok in Tokenize("(== 2 3)"))
          WriteLine(tok);
     }
