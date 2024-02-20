@@ -222,11 +222,11 @@ class Program
       // WriteLine("");
 
       void Do(string input) {
-         WriteLine($"Æ#> {input}");
+         WriteLine($"\nÆ#> {input}");
          var result = Eval(child_env, input);
          Write("⇒ ");
-         WriteLine($"{result.ToPrincString()}");
-         //WriteLine($"'{result.ToPrincString()}'");
+         WriteLine(result);
+         // WriteLine($"{result.ToPrincString()}");
          //WriteLine("");
       }
 
