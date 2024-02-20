@@ -10,24 +10,39 @@ static partial class Ae
    //===================================================================================================================
    public abstract class Number : LispObject
    {
+      //================================================================================================================
+      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
+      {
+         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+         return (leftNumber, rightNumber);
+      }
+
+      //================================================================================================================
       protected abstract int Rank { get; }
       protected abstract Number AddToSameType(Number other);
       protected abstract Number Promote(Number other);
+      protected Number Add(Number other)
+      {
+         var (left, right) = MatchRanks(this, other);
+
+         return left.AddToSameType(right);
+      } 
    }
 
-   // //===================================================================================================================
+   // //================================================================================================================
    // public interface IPromotableToRational
    // {
    //    public abstract Rational ToRational();
    // }
 
-   // //===================================================================================================================
+   // //================================================================================================================
    // public interface IPromotableToFloat
    // {
    //    public abstract Float ToFloat();
    // }
 
-   // //===================================================================================================================
+   // //================================================================================================================
    // public interface IPromotableTo<T>
    // {
    //    public abstract T Promote();
@@ -54,10 +69,8 @@ static partial class Ae
       }
 
       //================================================================================================================
-      protected override Number Promote(Number other)
-      {
-         throw new NotImplementedException("not implemented");
-      }
+      protected override Number Promote(Number other) =>
+         new Rational(Value, 1);
    }
 
    //===================================================================================================================
@@ -87,10 +100,8 @@ static partial class Ae
       }
 
       //================================================================================================================
-      protected override Number Promote(Number other)
-      {
-         throw new NotImplementedException("not implemented");
-      }
+      protected override Number Promote(Number other) =>
+         new Float((((float)Numerator) / ((float)Denominator)));
 
       //================================================================================================================
       // Constructor
@@ -127,7 +138,7 @@ static partial class Ae
       //================================================================================================================
       protected override Number Promote(Number other)
       {
-         throw new NotImplementedException("not implemented");
+         throw new NotImplementedException("float can't be promoted further");
       }
 
    }
@@ -142,14 +153,6 @@ static partial class Ae
          throw new ArgumentException($"right must be a Number, not {right}.");
 
       return (leftNumber, rightNumber);
-   }
-
-   //===================================================================================================================
-   public static LispObject MatchRanks(LispObject left, LispObject right)
-   {
-      var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-      return Nil;
    }
 
    //===================================================================================================================
