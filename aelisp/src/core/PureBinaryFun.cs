@@ -62,6 +62,22 @@ static partial class Ae
             return leftNumber.Sub(rightNumber);
          });
 
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Mul =
+         PureBinaryFun<Number, Number>((left, right) => {
+            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+            return leftNumber.Mul(rightNumber);
+         });
+
+      //=================================================================================================================
+      public static readonly CoreFun.FuncT Div =
+         PureBinaryFun<Number, Number>((left, right) => {
+            var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
+
+            return leftNumber.Div(rightNumber);
+         });
+
       //================================================================================================================
    }
    //===================================================================================================================

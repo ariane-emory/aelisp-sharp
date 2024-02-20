@@ -58,6 +58,7 @@ static partial class Ae
       protected abstract Number AddSameType(Number other);
       protected abstract Number SubSameType(Number other);
       protected abstract Number MulSameType(Number other);
+      protected abstract Number DivSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -81,6 +82,13 @@ static partial class Ae
       {
          var (left, right) = MatchRanks(this, other);
          return MaybeDemote(left.MulSameType(right));
+      }
+
+      //================================================================================================================
+      public Number Div(Number other)
+      {
+         var (left, right) = MatchRanks(this, other);
+         return MaybeDemote(left.DivSameType(right));
       }
 
       //================================================================================================================
@@ -120,6 +128,10 @@ static partial class Ae
       //================================================================================================================
       protected override Number MulSameType(Number that) => 
          new Integer(this.Value * ((Integer)that).Value);
+
+      //================================================================================================================
+      protected override Number DivSameType(Number that) => 
+         new Integer(this.Value / ((Integer)that).Value);
 
       //================================================================================================================
    }
@@ -181,6 +193,10 @@ static partial class Ae
          DoBinaryOp((Rational)that, (l, r) => l * r);
 
       //================================================================================================================
+      protected override Number DivSameType(Number that) =>
+         DoBinaryOp((Rational)that, (l, r) => l / r);
+
+      //================================================================================================================
    }
 
    //===================================================================================================================
@@ -215,6 +231,10 @@ static partial class Ae
       
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
+         new Float(Value * ((Float)that).Value);
+
+      //================================================================================================================
+      protected override Number DivSameType(Number that) =>
          new Float(Value * ((Float)that).Value);
 
       //================================================================================================================
