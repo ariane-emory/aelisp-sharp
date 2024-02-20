@@ -33,6 +33,7 @@ static partial class Ae
       //==============================================================================================================================================
       // Abstract instance methods
       //==============================================================================================================================================
+      protected abstract Number Promote();
       protected abstract Number BinaryAddSameType(Number other);
       protected abstract Number BinarySubSameType(Number other);
       protected abstract Number BinaryMulSameType(Number other);
@@ -42,7 +43,6 @@ static partial class Ae
       protected abstract bool BinaryCmpGTSameType(Number other);
       protected abstract bool BinaryCmpLTESameType(Number other);
       protected abstract bool BinaryCmpGTESameType(Number other);
-      protected abstract Number Promote();
 
       //==============================================================================================================================================
       // Instance methods
