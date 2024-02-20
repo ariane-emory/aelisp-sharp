@@ -305,7 +305,7 @@ class Program
       Do("(* 2.0 2.0)");
       Do("(* 2.0 2.5)");
 
-      WriteLine("\n:Divide:");
+      WriteLine("\nDivide:");
 
       Do("(/ 20 4)");
       Do("(/ 20 8/4)");
