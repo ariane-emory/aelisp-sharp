@@ -403,12 +403,12 @@ static partial class Ae
       private Rational ApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
          new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
 
-      //==============================================================================================================================================
-      private bool ThrowNotImplemented()
-      {
-         throw new NotImplementedException("Rational can't do this operation yet");
-         return false;
-      }
+      // //==============================================================================================================================================
+      // private bool ThrowNotImplemented()
+      // {
+      //    throw new NotImplementedException("Rational can't do this operation yet");
+      //    return false;
+      // }
 
       //==============================================================================================================================================
       protected override Rational BinaryAddSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
