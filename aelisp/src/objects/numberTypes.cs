@@ -6,6 +6,12 @@ using System.Text;
 static partial class Ae
 {
    //===================================================================================================================
+   // Number class
+   //===================================================================================================================
+   public abstract class Number : LispObject
+   { }
+
+   //===================================================================================================================
    // Integer class
    //===================================================================================================================
    public class Integer : LispObject
@@ -45,7 +51,7 @@ static partial class Ae
       {
          if (denominator == 0)
             throw new ArgumentException("denominator can't be 0");
-         
+
          int gcd = GCD(numerator, denominator);
 
          Numerator = numerator / gcd;
@@ -59,6 +65,13 @@ static partial class Ae
       public override string ToPrincString() => $"{Numerator}/{Denominator}";
 
    }
+
+   //===================================================================================================================
+   static LispObject BinaryAdd(LispObject left, LispObject right)
+   {
+      return Nil;
+   }
+
 
    //===================================================================================================================
 }
