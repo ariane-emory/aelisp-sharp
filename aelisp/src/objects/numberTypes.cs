@@ -220,18 +220,18 @@ static partial class Ae
 
       protected override Number MulSameType(Number that)
       {
-         var multiplier = (Rational)that;
-         int newNumerator = this.Numerator * multiplier.Numerator;
-         int newDenominator = this.Denominator * multiplier.Denominator;
+         var other = (Rational)that;
+         int newNumerator = this.Numerator * other.Numerator;
+         int newDenominator = this.Denominator * other.Denominator;
 
          return new Rational(newNumerator, newDenominator);
       }
 
       protected override Number DivSameType(Number that)
       {
-         var divisor = (Rational)that;
-         int newNumerator = this.Numerator / divisor.Numerator;
-         int newDenominator = this.Denominator * divisor.Denominator;
+         var other = (Rational)that;
+         int newNumerator = this.Numerator * other.Denominator;
+         int newDenominator = this.Denominator * other.Numerator;
 
          return new Rational(newNumerator, newDenominator);
       }
