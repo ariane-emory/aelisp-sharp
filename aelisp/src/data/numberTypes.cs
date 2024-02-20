@@ -213,6 +213,7 @@ static partial class Ae
             return lInteger.BinaryModSameType(rInteger);
          });
 
+      //==============================================================================================================================================
       public static Integer Lsft(LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
@@ -222,6 +223,7 @@ static partial class Ae
             return lInteger.BinaryLsftSameType(rInteger);
          });
 
+      //==============================================================================================================================================
       public static Integer Rsft(LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
@@ -231,7 +233,8 @@ static partial class Ae
             return lInteger.BinaryRsftSameType(rInteger);
          });
 
-      public static Integer And(LispObject list) =>
+      //==============================================================================================================================================
+      public static Integer BitAnd(LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
             if (!((l is Integer lInteger) && (r is Integer rInteger)))
@@ -240,7 +243,8 @@ static partial class Ae
             return lInteger.BinaryAndSameType(rInteger);
          });
 
-      public static Integer Or(LispObject list) =>
+      //==============================================================================================================================================
+      public static Integer BitOr(LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
             if (!((l is Integer lInteger) && (r is Integer rInteger)))
@@ -249,7 +253,8 @@ static partial class Ae
             return lInteger.BinaryOrSameType(rInteger);
          });
 
-      public static Integer Xor(LispObject list) =>
+      //==============================================================================================================================================
+      public static Integer BitXor(LispObject list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
          {
             if (!((l is Integer lInteger) && (r is Integer rInteger)))

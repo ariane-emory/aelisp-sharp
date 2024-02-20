@@ -15,9 +15,9 @@ static partial class Ae
       public static readonly CoreFun.FuncT Mod = (env, argsList) => Integer.Mod(argsList);
       public static readonly CoreFun.FuncT Lsft = (env, argsList) => Integer.Lsft(argsList);
       public static readonly CoreFun.FuncT Rsft = (env, argsList) => Integer.Rsft(argsList);
-      public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.And(argsList);
-      public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.Or(argsList);
-      public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.Xor(argsList);
+      public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
+      public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
+      public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.BitXor(argsList);
 
       //================================================================================================================
    }
