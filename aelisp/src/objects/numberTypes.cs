@@ -268,7 +268,7 @@ static partial class Ae
       //==============================================================================================================================================
       protected override string? StringRepresentation => $"{ToPrincString()}";
       public override string ToPrincString() => $"{Numerator}/{Denominator}";
-      protected override Number Promote() => new Float((((float)Numerator) / ((float)Denominator)));
+      protected override Float Promote() => new((((float)Numerator) / ((float)Denominator)));
 
       //==============================================================================================================================================
       private Rational ApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
