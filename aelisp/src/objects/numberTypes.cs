@@ -80,8 +80,8 @@ static partial class Ae
       public Number ApplyBinaryOp(Number other, Func<Number, Number, Number> op)
       {
          var (left, right) = MatchRanks(this, other);
-         return op(left, (right));
-         // return MaybeDemote(op(left, (right)));
+         // return op(left, (right));
+         return MaybeDemote(op(left, (right)));
       }
 
       //================================================================================================================
