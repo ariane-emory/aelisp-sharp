@@ -34,8 +34,11 @@ static partial class Ae
       //================================================================================================================
       // TODO: Needs quoting corrected!
       public static LispObject WriteObj(Env env, LispObject argsList) =>       
-         WriteOutput(env, argsList, o => o.Princ());
-
+         WriteOutput(env, argsList, o =>
+         {
+            return o.Princ();
+         });
+      
       //================================================================================================================
       public static LispObject PrincObj(Env env, LispObject argsList) =>       
          WriteOutput(env, argsList, o => o.Princ());
@@ -45,7 +48,7 @@ static partial class Ae
          WriteOutput(env, argsList, o => $"\n{o.Print()}");
 
       //================================================================================================================
-      public static LispObject PutObj(Env env, LispObject argsList) =>       
+      public static LispObject RawObj(Env env, LispObject argsList) =>       
          WriteOutput(env, argsList, o => o.ToString());
 
       //================================================================================================================
@@ -53,7 +56,7 @@ static partial class Ae
       {
          WriteLine("");
 
-         return Nil;
+return Nil;
       }
 
       //================================================================================================================

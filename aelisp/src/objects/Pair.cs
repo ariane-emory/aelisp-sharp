@@ -14,6 +14,7 @@ static partial class Ae
       //================================================================================================================
       // Public properties
       //================================================================================================================
+      public override string TypeName => "Cons";
       public LispObject Car { get; set; }
       public LispObject Cdr { get; set; }
 
@@ -29,7 +30,7 @@ static partial class Ae
       //================================================================================================================
       // Protected instance properties
       //================================================================================================================
-      protected override string? StringRepresentation => $"{Car}, {Cdr}";
+      protected override string? StringRepresentation => $"#{Car.Id}, #{Cdr.Id}, {Length}";
 
       //================================================================================================================
       // Public instance methods

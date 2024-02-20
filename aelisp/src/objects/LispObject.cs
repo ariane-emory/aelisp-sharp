@@ -18,7 +18,7 @@ static partial class Ae
       //==================================================================================================================
       // Instance properties
       //==================================================================================================================
-      public string TypeName => GetType().Name;
+      public virtual string TypeName => GetType().Name;
       protected abstract string? StringRepresentation { get; }
       public virtual bool IsSelfEvaluating => true;
       public bool IsNil => this == Nil;
@@ -174,8 +174,8 @@ static partial class Ae
          var repr = StringRepresentation;
 
          return repr is null
-            ? $"{TypeName}(#{Id})"
-            : $"{TypeName}(#{Id}, {repr})";
+            ? $"{TypeName.ToUpper()}<#{Id}>"
+            : $"{TypeName.ToUpper()}<#{Id}, {repr}>";
       }
 
       //================================================================================================================

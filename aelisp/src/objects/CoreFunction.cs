@@ -29,6 +29,7 @@ static partial class Ae
       //================================================================================================================
       // Public properties
       //================================================================================================================
+      public override string TypeName => "Core";
       public override string Name => CoreName;
       public override bool Special => CoreSpecial;
       public byte MinArgs { get; }
