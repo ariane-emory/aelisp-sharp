@@ -37,6 +37,7 @@ static partial class Ae
       protected abstract Number BinarySubSameType(Number other);
       protected abstract Number BinaryMulSameType(Number other);
       protected abstract Number BinaryDivSameType(Number other);
+      protected abstract Number BinaryModSameType(Number other);
       protected abstract Number Promote();
 
       //==============================================================================================================================================
@@ -52,24 +53,19 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      //private Number BinaryAdd(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryAddSameType(r));
-      //private Number BinarySub(Number other) => ApplyBinaryOp(other, (l, r) => l.BinarySubSameType(r));
-      //private Number BinaryMul(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryMulSameType(r));
-      //private Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
-
-      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinaryAddSameType(r)));
-      public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
-      public static Number Mul(LispObject list) => VariadicArithmetic(list, 1, false, ApplyBinaryOpFunc((l, r) => l.BinaryMulSameType(r)));
-      public static Number Div(LispObject list) => VariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryDivSameType(r)));
+      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinaryAddSameType(r)));
+      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFunc((l, r) => l.BinarySubSameType(r)));
+      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFunc((l, r) => l.BinaryMulSameType(r)));
+      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryDivSameType(r)));
+      public static Number Mod(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => l.BinaryModSameType(r)));
 
       //==============================================================================================================================================
-      private static Number VariadicArithmetic(LispObject list,
-                                          int defaultAccum,
-                                          bool forbidArgsEqlToZero,
-                                          Func<Number, Number, Number> op)
+      private static Number ApplyVariadicArithmetic(LispObject list,
+                                                    int defaultAccum,
+                                                    bool forbidArgsEqlToZero,
+                                                    Func<Number, Number, Number> op)
       {
          if (!list.IsProperList)
             throw new ArgumentException($"Can't do math on an improper list: {list}");
@@ -174,6 +170,7 @@ static partial class Ae
       protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+      protected override Number BinaryModSameType(Number that) => ApplyBinaryOp(that, (l, r) => l % r);
 
       //==============================================================================================================================================
    }
@@ -217,7 +214,13 @@ static partial class Ae
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-   }
+      protected override Number BinaryModSameType(Number that)
+      {
+         throw new ArgumentException($"Can't modulo by non-Integer {this}.");
+      }
+
+      //==============================================================================================================================================
+    }
 
    //=================================================================================================================================================
    // Rational class
@@ -264,6 +267,12 @@ static partial class Ae
       protected override Number BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
+
+      //==============================================================================================================================================
+      protected override Number BinaryModSameType(Number that)
+      {
+         throw new ArgumentException($"Can't modulo by non-Integer {this}.");
+      }
 
       //==============================================================================================================================================
    }
