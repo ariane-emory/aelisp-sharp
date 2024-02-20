@@ -226,20 +226,24 @@ static partial class Ae
       public override string ToPrincString() => Value.ToString("0.0");
 
       //================================================================================================================
+      private Number ApplyBinaryOp(Float that, Func<double, double, double> op) =>
+         new Float(op(this.Value, that.Value));
+
+      //================================================================================================================
       protected override Number AddSameType(Number that) =>
-         new Float(Value + ((Float)that).Value);
+         ApplyBinaryOp((Float)that, (l, r) => l + r);
 
       //================================================================================================================
       protected override Number SubSameType(Number that) =>
-         new Float(Value - ((Float)that).Value);
+         ApplyBinaryOp((Float)that, (l, r) => l - r);
 
       //================================================================================================================
       protected override Number MulSameType(Number that) =>
-         new Float(Value * ((Float)that).Value);
+         ApplyBinaryOp((Float)that, (l, r) => l * r);
 
       //================================================================================================================
       protected override Number DivSameType(Number that) =>
-         new Float(Value * ((Float)that).Value);
+         ApplyBinaryOp((Float)that, (l, r) => l / r);
 
       //================================================================================================================
       protected override Number Promote()
