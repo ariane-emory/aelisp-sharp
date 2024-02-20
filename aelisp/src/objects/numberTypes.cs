@@ -27,6 +27,27 @@ static partial class Ae
       }
 
       //================================================================================================================
+      public static Number MaybeDemote(Number number)
+      {
+         if (number is Integer)
+            return number;
+
+         if (number is Rational numberRational)
+            return numberRational.Denominator == 1
+               ? new Integer(numberRational.Numerator)
+               : number;
+
+         if (number is Float numberFloat)
+         {
+            var floor = Math.Floor(numberFloat.Value);
+
+            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
+         }
+
+         throw new ApplicationException($"something is wrong, this throw should be unrachable, number is {number}.");
+      }
+
+      //================================================================================================================
       // Properties
       //================================================================================================================
       protected abstract int Rank { get; }
@@ -37,32 +58,15 @@ static partial class Ae
       protected abstract Number AddToSameType(Number other);
       protected abstract Number Promote();
 
-        //================================================================================================================
-        // Instance methods
-        //================================================================================================================
-        public Number Add(Number other)
-        {
-            var (left, right) = MatchRanks(this, other);
+      //================================================================================================================
+      // Instance methods
+      //================================================================================================================
+      public Number Add(Number other)
+      {
+         var (left, right) = MatchRanks(this, other);
 
-            var result = left.AddToSameType(right);
-
-            if (result is Integer)
-                return result;
-
-            if (result is Rational resultRational)
-                return resultRational.Denominator == 1
-                   ? new Integer(resultRational.Numerator)
-                   : result;
-
-            if (result is Float resultFloat)
-            {
-               var floor = Math.Floor(resultFloat.Value);
-
-               return (resultFloat.Value == floor) ? new Integer((int)floor) : result;
-            }
-            
-            throw new ApplicationException($"something is wrong, this throw should be unrachable, result is {result}.");
-        }
+         return MaybeDemote(left.AddToSameType(right));
+      }
 
       //================================================================================================================
    }
