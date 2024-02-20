@@ -16,8 +16,8 @@ static partial class Ae
       public static readonly CoreFun.FuncT Lsft = (env, argsList) => Integer.Lsft(argsList);
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT NumEquals = (env, argsList) => Truthiness(Number.CmpEqual(argsList));
-      public static readonly CoreFun.FuncT NumNotEquals = (env, argsList) => Truthiness(!Number.CmpEqual(argsList));
+      public static readonly CoreFun.FuncT NumEql = (env, argsList) => Truthiness(Number.CmpEql(argsList));
+      public static readonly CoreFun.FuncT NumNotEql = (env, argsList) => Truthiness(!Number.CmpEql(argsList));
       public static readonly CoreFun.FuncT NumLT = (env, argsList) => Truthiness(Number.CmpLT(argsList));
       public static readonly CoreFun.FuncT NumGT = (env, argsList) => Truthiness(Number.CmpGT(argsList));
       public static readonly CoreFun.FuncT NumLTE = (env, argsList) => Truthiness(Number.CmpLTE(argsList));
