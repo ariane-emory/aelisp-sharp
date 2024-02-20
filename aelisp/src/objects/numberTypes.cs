@@ -14,37 +14,37 @@ static partial class Ae
       protected abstract Number AddToSameType(Number other);
    }
 
-   //===================================================================================================================
-   public interface IPromotableToRational
-   {
-      public abstract Rational ToRational();
-   }
+   // //===================================================================================================================
+   // public interface IPromotableToRational
+   // {
+   //    public abstract Rational ToRational();
+   // }
 
-   //===================================================================================================================
-   public interface IPromotableToFloat
-   {
-      public abstract Float ToFloat();
-   }
+   // //===================================================================================================================
+   // public interface IPromotableToFloat
+   // {
+   //    public abstract Float ToFloat();
+   // }
 
-   //===================================================================================================================
-   public interface IPromotableTo<T>
-   {
-      public abstract T Promote();
-   }
+   // //===================================================================================================================
+   // public interface IPromotableTo<T>
+   // {
+   //    public abstract T Promote();
+   // }
 
    //===================================================================================================================
    // Integer class
    //===================================================================================================================
-   public class Integer : Number, IPromotableToRational, IPromotableToFloat, IPromotableTo<Rational>
+   public class Integer : Number //, IPromotableToRational, IPromotableToFloat, IPromotableTo<Rational>
    {
       protected override int Rank => 1;
       public int Value { get; }
       public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
-      public Rational ToRational() => new Rational(Value, 1);
-      public Rational Promote() => ToRational();
-      public Float ToFloat() => new Float(Value);
+      // public Rational ToRational() => new Rational(Value, 1);
+      // public Float ToFloat() => new Float(Value);
+      // public Rational Promote() => ToRational();
 
       //================================================================================================================
       protected override Number AddToSameType(Number other)
@@ -56,7 +56,7 @@ static partial class Ae
    //===================================================================================================================
    // Rational class
    //===================================================================================================================
-   public class Rational : Number, IPromotableToFloat, IPromotableTo<Float>
+   public class Rational : Number //, IPromotableToFloat, IPromotableTo<Float>
    {
       //================================================================================================================
       // Properties
@@ -70,8 +70,8 @@ static partial class Ae
       //================================================================================================================
       protected override string? StringRepresentation => $"{ToPrincString()}";
       public override string ToPrincString() => $"{Numerator}/{Denominator}";
-      public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
-      public Float Promote() => ToFloat();
+      // public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
+      // public Float Promote() => ToFloat();
 
       //================================================================================================================
       protected override Number AddToSameType(Number other)
