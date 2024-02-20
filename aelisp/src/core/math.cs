@@ -21,10 +21,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~o.Value));
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Rsft =
-         PureBinaryFun<Integer, Integer>((val, sft) =>
-                                         new Integer(val.Value >> sft.Value));
-
+      public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
 
       //================================================================================================================
    }
