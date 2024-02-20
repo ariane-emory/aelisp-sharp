@@ -9,24 +9,29 @@ static partial class Ae
    // Number class
    //===================================================================================================================
    public abstract class Number : LispObject
-   { }
+   {
+      protected abstract int Rank { get; }
+   }
 
    //===================================================================================================================
    // Integer class
    //===================================================================================================================
-   public class Integer : LispObject
+   public class Integer : Number
    {
+      protected override int Rank => 1;
       public int Value { get; }
       public Integer(int value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
+
    }
 
    //===================================================================================================================
    // Float class
    //===================================================================================================================
-   public class Float : LispObject
+   public class Float : Number
    {
+      protected override int Rank => 2;
       public double Value { get; }
       public Float(double value) => Value = value;
       protected override string? StringRepresentation => $"{Value}";
@@ -36,13 +41,14 @@ static partial class Ae
    //===================================================================================================================
    // Rational class
    //===================================================================================================================
-   public class Rational : LispObject
+   public class Rational : Number
    {
       //================================================================================================================
-      // Public properties
+      // Properties
       //================================================================================================================
       public int Numerator { get; }
       public int Denominator { get; }
+      protected override int Rank => 3;
 
       //================================================================================================================
       // Constructor
@@ -69,7 +75,26 @@ static partial class Ae
    //===================================================================================================================
    static LispObject BinaryAdd(LispObject left, LispObject right)
    {
-      return Nil;
+      if (!(left is Number leftNumber))
+         throw new ArgumentException($"left must be a Number, not {left}.");
+
+      if (!(right is Number rightNumber))
+         throw new ArgumentException($"right must be a Number, not {right}.");
+
+      var result = Nil;
+
+      // left      right    ressult
+      // integer   integer  integer
+      // integer   rational rational
+      // integer   float    float
+      // rational  integer  rational
+      // rational  rational rational
+      // rational  float    float
+      // float     integer  float
+      // float     rational float
+      // float     float    float
+
+      return result;
    }
 
 
