@@ -13,15 +13,22 @@ static partial class Ae
       protected abstract int Rank { get; }
    }
 
-    public interface IPromotableToRational
-    {
-       public abstract Rational ToRational();
-    }
-   
-    //===================================================================================================================
-    // Integer class
-    //===================================================================================================================
-    public class Integer : Number, IPromotableToRational
+   //===================================================================================================================
+   public interface IPromotableToRational
+   {
+      public abstract Rational ToRational();
+   }
+
+   //===================================================================================================================
+   public interface IPromotableToFloat
+   {
+      public abstract Float ToFloat();
+   }
+
+   //===================================================================================================================
+   // Integer class
+   //===================================================================================================================
+   public class Integer : Number, IPromotableToRational, IPromotableToFloat
    {
       protected override int Rank => 1;
       public int Value { get; }
@@ -29,7 +36,8 @@ static partial class Ae
       protected override string? StringRepresentation => $"{Value}";
       public override string ToPrincString() => $"{Value}";
       public Rational ToRational() => new Rational(Value, 1);
-    }
+      public Float ToFloat() => new Float(Value);
+   }
 
    //===================================================================================================================
    // Float class
@@ -56,6 +64,13 @@ static partial class Ae
       protected override int Rank => 3;
 
       //================================================================================================================
+      // Instance methods
+      //================================================================================================================
+      protected override string? StringRepresentation => $"{ToPrincString()}";
+      public override string ToPrincString() => $"{Numerator}/{Denominator}";
+      public Float ToFloat() => new Float((((float)Numerator) / ((float)Denominator)));
+
+      //================================================================================================================
       // Constructor
       //================================================================================================================ 
       public Rational(int numerator, int denominator)
@@ -68,13 +83,6 @@ static partial class Ae
          Numerator = numerator / gcd;
          Denominator = denominator / gcd;
       }
-
-      //================================================================================================================
-      // Instance methods
-      //================================================================================================================
-      protected override string? StringRepresentation => $"{ToPrincString()}";
-      public override string ToPrincString() => $"{Numerator}/{Denominator}";
-
    }
 
    //===================================================================================================================
