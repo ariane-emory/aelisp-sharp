@@ -54,7 +54,6 @@ static partial class Ae
          if (number is Float numberFloat)
          {
             var floor = Math.Floor(numberFloat.Value);
-
             return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
          }
 
@@ -218,8 +217,17 @@ static partial class Ae
       //================================================================================================================
       protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l + r);
       protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l - r);
-      protected override Number MulSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l * r);
       protected override Number DivSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l / r);
+
+      protected override Number MulSameType(Number that)
+      {
+         var multiplier = (Rational)that;
+         int newNumerator = this.Numerator * multiplier.Numerator;
+         int newDenominator = this.Denominator * multiplier.Denominator;
+
+         return new Rational(newNumerator, newDenominator);
+      }
+
 
       //================================================================================================================
    }
