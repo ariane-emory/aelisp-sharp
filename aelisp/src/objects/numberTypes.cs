@@ -44,7 +44,7 @@ static partial class Ae
             return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
          }
 
-         throw new ApplicationException($"something is wrong, this throw should be unrachable, number is {number}.");
+         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
       }
 
       //================================================================================================================
