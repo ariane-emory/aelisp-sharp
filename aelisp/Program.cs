@@ -173,51 +173,51 @@ class Program
       // Core.ConsDebugWrite = true;
 
       //==============================================================================================================================
-      static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
+      void Do(string input) => WriteLine(Eval(child_env, input, true).Princ());
 
       WriteLine("");
 
-      Do(child_env, "((lambda (x) (cons x x)) 8)");
-      Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
-      Do(child_env, "(progn 2 3 4)");
+      Do("((lambda (x) (cons x x)) 8)");
+      Do("(setq qq 88 ww 77 *ee* 66)");
+      Do("(progn 2 3 4)");
 
       WriteLine($"\n{Root}");
       WriteLine($"\n{parent_env}");
       WriteLine($"\n{child_env}");
 
-      Do(child_env, "(cond (nil 8) (else 14))");
-      Do(child_env, "(type 22)");
-      Do(child_env, "(type 4.3)");
-      Do(child_env, "(type (lambda (x) (x x)))");
-      Do(child_env, "(type '(1 . 2))");
-      Do(child_env, "(eq? :asd :asd :asd)");
-      Do(child_env, "(eq? :asd :asd :qwe)");
-      Do(child_env, "(eql? 2 2 2/1)");
-      Do(child_env, "(eql? 2 2 3)");
-      Do(child_env, "(bound? :asd)");
-      Do(child_env, "(rational 3 4)");
-      Do(child_env, "(car (cons 3 4))");
-      Do(child_env, "(cdr (cons 3 4))");
-      Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
-      Do(child_env, "(concat)");
-      Do(child_env, "(concat \"hello\" \"world\")");
-      Do(child_env, "(concat \"hello\" nil \"world\")");
-      Do(child_env, "(concat nil \"hello\" nil \"world\")");
-      Do(child_env, "(setq x 2)");
-      Do(child_env, "(setq y 3)");
-      Do(child_env, "(setq lst '(3 4))");
-      Do(child_env, "(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do(child_env, "(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
-      Do(child_env, "$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
+      Do("(cond (nil 8) (else 14))");
+      Do("(type 22)");
+      Do("(type 4.3)");
+      Do("(type (lambda (x) (x x)))");
+      Do("(type '(1 . 2))");
+      Do("(eq? :asd :asd :asd)");
+      Do("(eq? :asd :asd :qwe)");
+      Do("(eql? 2 2 2/1)");
+      Do("(eql? 2 2 3)");
+      Do("(bound? :asd)");
+      Do("(rational 3 4)");
+      Do("(car (cons 3 4))");
+      Do("(cdr (cons 3 4))");
+      Do("(cdr (cdr (cons 3 (cons 4 nil))))");
+      Do("(concat)");
+      Do("(concat \"hello\" \"world\")");
+      Do("(concat \"hello\" nil \"world\")");
+      Do("(concat nil \"hello\" nil \"world\")");
+      Do("(setq x 2)");
+      Do("(setq y 3)");
+      Do("(setq lst '(3 4))");
+      Do("(write 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      Do("(put-raw 1 ?  \"hello\" ?  33 ?  :nil ?\n)");
+      Do("$($(1 2) $(3 4) $(5 6) '(1 2 . 3))");
       WriteLine("----");
-      Do(child_env, "(apply list '1 'x x '(y 4))");
+      Do("(apply list '1 'x x '(y 4))");
       WriteLine("----");
-      Do(child_env, "(apply list 1 x (list y 4))");
+      Do("(apply list 1 x (list y 4))");
       WriteLine("----");
-      Do(child_env, "(apply list 1 x '(y 4))");
+      Do("(apply list 1 x '(y 4))");
       WriteLine("----");
-      Do(child_env, "(setq z '(2 3 4))");
-      Do(child_env, "(apply list 1 z)");
+      Do("(setq z '(2 3 4))");
+      Do("(apply list 1 z)");
       WriteLine("");
    }
 
