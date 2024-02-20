@@ -28,29 +28,29 @@ static partial class Ae
          if (!argsList.IsProperList)
             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
 
-         ApplyLog($"argList:        {argsList.Princ()}");
+         ApplyLog($"argList:        {argsList.PrincString()}");
 
          var arg1 = ((Pair)argsList)[0];
 
          if (!(argsList is Pair argsListPair))
             throw new ArgumentException($"argsList must be a pair, not {argsList}!");
 
-         ApplyLog($"argListPair:    {argsListPair.Princ()}");
+         ApplyLog($"argListPair:    {argsListPair.PrincString()}");
 
          Pair newExpr = (Pair)Ae.Cons(argsListPair.Car, Nil);
          LispObject newExprTail = newExpr;
          LispObject current = argsListPair.Cdr;
          LispObject evaledArg = Nil;
 
-         ApplyLog($"newExpr:        {newExpr.Princ()}");
-         ApplyLog($"newExprTail:    {newExprTail.Princ()}");
-         ApplyLog($"current:        {current.Princ()}");
-         // ApplyLog($"evaledArg:   {evaledArg.Princ()}");
+         ApplyLog($"newExpr:        {newExpr.PrincString()}");
+         ApplyLog($"newExprTail:    {newExprTail.PrincString()}");
+         ApplyLog($"current:        {current.PrincString()}");
+         // ApplyLog($"evaledArg:   {evaledArg.PrincString()}");
 
          while (current is Pair currentPair && !currentPair.Cdr.IsNil)
          {
             var arg = currentPair.Car;
-            ApplyLog($"\narg:            {arg.Princ()}");
+            ApplyLog($"\narg:            {arg.PrincString()}");
 
             var argIsQuoteForm = arg is Pair argPair && argPair.Car == Intern("quote");
             ApplyLog($"argIsQuoteForm: {argIsQuoteForm}");
@@ -58,12 +58,12 @@ static partial class Ae
             // if (argIsQuoteForm)
             // {
             //    arg = ((Pair)(((Pair)arg).Cdr)).Car;
-            //    ApplyLog($"arg 2:          {arg.Princ()}");
+            //    ApplyLog($"arg 2:          {arg.PrincString()}");
             // }
 
             if (!argIsQuoteForm)
             {
-               ApplyLog($"evaluating:     {currentPair.Car.Princ()}");
+               ApplyLog($"evaluating:     {currentPair.Car.PrincString()}");
                evaledArg = currentPair.Car.Eval(env);
             }
             else
@@ -71,27 +71,27 @@ static partial class Ae
                evaledArg = currentPair.Car; // 'Eval(env);.Car;
             }
 
-            ApplyLog($"evaledArg:      {evaledArg.Princ()}");
+            ApplyLog($"evaledArg:      {evaledArg.PrincString()}");
 
             var elem = Ae.Cons(evaledArg, Nil);
 
-            ApplyLog($"elem:           {elem.Princ()}");
+            ApplyLog($"elem:           {elem.PrincString()}");
 
             ((Pair)newExprTail).Cdr = elem;
             newExprTail = ((Pair)newExprTail).Cdr;
-            ApplyLog($"newExpr:        {newExpr.Princ()}");
+            ApplyLog($"newExpr:        {newExpr.PrincString()}");
             current = currentPair.Cdr;
          }
 
          LispObject last = ((Pair)current).Car;
 
-         ApplyLog($"last:           {last.Princ()}");
+         ApplyLog($"last:           {last.PrincString()}");
 
          var lastIsQuoteForm = last is Pair lastPair && lastPair.Car == Intern("quote");
          ApplyLog($"lastIsQForm:    {lastIsQuoteForm}");
 
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
-         ApplyLog($"last 2:         {last.Princ()}");
+         ApplyLog($"last 2:         {last.PrincString()}");
 
          if (!last.IsProperList)
             throw new ArgumentException($"last must be a proper list, not {last}!");
@@ -108,8 +108,8 @@ static partial class Ae
             last = ((Pair)last).Cdr;
          }
 
-         ApplyLog($"last 3:         {last.Princ()}");
-         ApplyLog($"newExpr:        {newExpr.Princ()}");
+         ApplyLog($"last 3:         {last.PrincString()}");
+         ApplyLog($"newExpr:        {newExpr.PrincString()}");
 
          return newExpr.Eval(env);
          // return Nil;

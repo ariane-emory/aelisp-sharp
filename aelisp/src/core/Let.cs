@@ -58,10 +58,10 @@ static partial class Ae
       private static void ValidateLetArguments(LispObject arg0, LispObject body)
       {
          if (!(arg0 is Pair varlist))
-            throw new ArgumentException($"varlist must be a list, not {arg0.Princ()}!");
+            throw new ArgumentException($"varlist must be a list, not {arg0.PrincString()}!");
 
          if (varlist.IsImproperList)
-            throw new ArgumentException($"varlist must be a proper list, not {varlist.Princ()}!");
+            throw new ArgumentException($"varlist must be a proper list, not {varlist.PrincString()}!");
 
          LispObject current = varlist;
 
@@ -86,7 +86,7 @@ static partial class Ae
             }
 
          if (body.IsImproperList)
-            throw new ArgumentException($"body must be a proper list, not {body.Princ()}!");
+            throw new ArgumentException($"body must be a proper list, not {body.PrincString()}!");
 
          if (body.IsNil)
             throw new ArgumentException("body cannot be empty");

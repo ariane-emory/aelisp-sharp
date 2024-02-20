@@ -31,12 +31,12 @@ static partial class Ae
       //================================================================================================================
       // Protected instance properties
       //================================================================================================================
-      protected override string? StringRepresentation => $"{Parameters.Princ()} {Body.Princ()}";
+      protected override string? StringRepresentation => $"{Parameters.PrincString()} {Body.PrincString()}";
 
       //================================================================================================================
       // Instance methods
       //================================================================================================================
-      public override string Princ() => ToString();
+      public override string PrincString() => ToString();
    }
 
    //===================================================================================================================

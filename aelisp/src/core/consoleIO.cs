@@ -34,16 +34,17 @@ static partial class Ae
       //================================================================================================================
       // TODO: Needs quoting corrected!
       public static LispObject WriteObj(Env env, LispObject argsList) =>
-         WriteOutput(env, argsList, o => o switch
+         WriteOutput(env, argsList,
+                     o => o switch
                      {
-                        String s => $"\"{s.Princ()}\"",
-                        Char c => $"'{c.Princ()}'",
-                        _ => o.Princ()
+                        String s => $"\"{s.PrincString()}\"",
+                        Char c => $"'{c.PrincString()}'",
+                        _ => o.PrincString()
                      });
       
       //================================================================================================================
-      public static LispObject PrincObj(Env env, LispObject argsList) =>       
-         WriteOutput(env, argsList, o => o.Princ());
+      public static LispObject PrincStringObj(Env env, LispObject argsList) =>       
+         WriteOutput(env, argsList, o => o.PrincString());
 
       //================================================================================================================
       public static LispObject PrintObj(Env env, LispObject argsList) => 

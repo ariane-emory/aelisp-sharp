@@ -47,13 +47,13 @@ class Program
       //    var obj = ParseProgram.ParseOrThrow(tokens);
 
       //    // WriteLine($"obj.toString(): {obj}");
-      //    // WriteLine($"obj.Princ(): {obj.Princ()}");
+      //    // WriteLine($"obj.PrincString(): {obj.PrincString()}");
 
       //    // if (obj is Pair pair)
       //    //    foreach (var o in pair)
-      //    //       WriteLine(o.Princ());
+      //    //       WriteLine(o.PrincString());
       //    // else
-      //    WriteLine(obj.Princ());
+      //    WriteLine(obj.PrincString());
       // }
       // catch (ParseException e)
       // {
@@ -89,7 +89,7 @@ class Program
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
          ("print        ", PrintObj, 00000000001, 15, false),
-         ("princ        ", PrincObj, 00000000001, 15, false),
+         ("princ        ", PrincStringObj, 00000000001, 15, false),
          ("raw          ", RawObj, 0000000000001, 15, false),
          ("write        ", WriteObj, 00000000001, 15, false),
          ("nl           ", Newline, 000000000000, 00, false),
@@ -165,9 +165,9 @@ class Program
 
       // var (found, fobj) = Root.Lookup(Env.LookupMode.Global, Intern("cons"));
       // var args = Cons(new Integer(1), Cons(new Integer(2), Nil));
-      // WriteLine(((CoreFun)fobj).Apply(Root, args).Princ());
+      // WriteLine(((CoreFun)fobj).Apply(Root, args).PrincString());
 
-      // WriteLine(new Rational(2, 4).Princ());
+      // WriteLine(new Rational(2, 4).PrincString());
 
       // ConsDebugWrite = false;
       // Core.ConsDebugWrite = true;
@@ -222,8 +222,8 @@ class Program
          WriteLine($"Æ#> {input}");
          var result = Eval(child_env, input);
          Write("⇒ ");
-         WriteLine($"{result.Princ()}");
-         //WriteLine($"'{result.Princ()}'");
+         WriteLine($"{result.PrincString()}");
+         //WriteLine($"'{result.PrincString()}'");
          //WriteLine("");
       }
       

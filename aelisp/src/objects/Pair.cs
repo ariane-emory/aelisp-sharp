@@ -35,7 +35,7 @@ static partial class Ae
       //================================================================================================================
       // Public instance methods
       //================================================================================================================
-      public override string Princ()
+      public override string PrincString()
       {
          var sb = new StringBuilder();
 
@@ -56,7 +56,7 @@ static partial class Ae
             {
 
                sb.Append(" . ");
-               sb.Append(currentCons.Cdr.Princ());
+               sb.Append(currentCons.Cdr.PrincString());
 
                break;
             }
@@ -178,8 +178,8 @@ static partial class Ae
          LispObject head = Car;
          LispObject args = Cdr;
 
-         // WriteLine($"\nhead: {head.Princ()}");
-         // WriteLine($"args: {args.Princ()}");
+         // WriteLine($"\nhead: {head.PrincString()}");
+         // WriteLine($"args: {args.PrincString()}");
          
          if (!args.IsList)
             throw new ArgumentException($"{nameof(args)} is {args}, not a list, something has gone very wrong!");

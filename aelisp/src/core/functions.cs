@@ -29,26 +29,26 @@ static partial class Ae
          var body = ((Pair)argsList)[1];
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
-            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.Princ()}!");
+            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.PrincString()}!");
 
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
-            throw new ArgumentException($"Can't use {symbol.Princ()} as a parameter!");
+            throw new ArgumentException($"Can't use {symbol.PrincString()} as a parameter!");
 
          if (!body.IsProperList)
-            throw new ArgumentException($"body must be a proper list, not {body.Princ()}");
+            throw new ArgumentException($"body must be a proper list, not {body.PrincString()}");
 
          var currentParam = lambdaList;
 
          while (currentParam is Pair currentParamPair)
          {
             if (!IsPermittedParamSymbol(currentParamPair.Car))
-               throw new ArgumentException($"Can't use {currentParamPair.Car.Princ()} as a parameter!");
+               throw new ArgumentException($"Can't use {currentParamPair.Car.PrincString()} as a parameter!");
 
             currentParam = currentParamPair.Cdr;
          }
 
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
-            throw new ArgumentException($"Can't use {currentParam.Princ()} as a parameter!");
+            throw new ArgumentException($"Can't use {currentParam.PrincString()} as a parameter!");
 
          return create(env, lambdaList, body);
       }
