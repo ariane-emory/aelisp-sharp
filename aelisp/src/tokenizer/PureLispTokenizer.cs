@@ -80,7 +80,7 @@ static partial class Ae
    }
 
    //=================================================================================================================================================
-   public static IEnumerable<LispToken> ExcludingComments(this IEnumerable<LispToken> self) =>
+   private static IEnumerable<LispToken> ExcludingComments(this IEnumerable<LispToken> self) =>
      self.Where(t => (t.Type != LispTokenType.Comment)
                 && (t.Type != LispTokenType.LineComment)
                 && !MultilineCommentLispTokenTypes.Contains(t.Type));
