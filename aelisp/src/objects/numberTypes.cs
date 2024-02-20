@@ -91,14 +91,17 @@ static partial class Ae
       public Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
       //================================================================================================================
-      public Number Add(Pair pair)
+      public static Number Add(LispObject list)
       {
+         if (!list.IsProperList)
+            throw new ArgumentException($"Can't do math on an improper list: {list}");
+
          Number accum = new Integer(0);
 
-         if (!pair.IsProperList)
-            throw new ArgumentException($"Can't do math on an improper list: {pair}");
+         if (!(list is Pair head))
+             return accum;
 
-         LispObject current = pair;
+         LispObject current = head;
 
          while (current is Pair currentPair)
          {
