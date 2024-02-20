@@ -21,15 +21,15 @@ static partial class Ae
       // Abstract instance methods
       //==============================================================================================================================================
       protected abstract Number Promote();
-      protected abstract Number BinaryAddSameType(Number other);
-      protected abstract Number BinarySubSameType(Number other);
-      protected abstract Number BinaryMulSameType(Number other);
-      protected abstract Number BinaryDivSameType(Number other);
-      protected abstract bool BinaryCmpEqlSameType(Number other);
-      protected abstract bool BinaryCmpLTSameType(Number other);
-      protected abstract bool BinaryCmpGTSameType(Number other);
-      protected abstract bool BinaryCmpLTESameType(Number other);
-      protected abstract bool BinaryCmpGTESameType(Number other);
+      protected abstract Number BinaryAdd(Number other);
+      protected abstract Number BinarySub(Number other);
+      protected abstract Number BinaryMul(Number other);
+      protected abstract Number BinaryDiv(Number other);
+      protected abstract bool BinaryCmpEql(Number other);
+      protected abstract bool BinaryCmpLT(Number other);
+      protected abstract bool BinaryCmpGT(Number other);
+      protected abstract bool BinaryCmpLTE(Number other);
+      protected abstract bool BinaryCmpGTE(Number other);
 
       //==============================================================================================================================================
       // Instance methods
@@ -166,17 +166,17 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinaryAddSameType(r)));
-      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySubSameType(r)));
-      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMulSameType(r)));
-      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDivSameType(r)));
+      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinaryAdd(r)));
+      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySub(r)));
+      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMul(r)));
+      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDiv(r)));
 
       //==============================================================================================================================================
-      public static bool CmpEql(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEqlSameType(r)));
-      public static bool CmpLT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTSameType(r)));
-      public static bool CmpGT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTSameType(r)));
-      public static bool CmpLTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTESameType(r)));
-      public static bool CmpGTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTESameType(r)));
+      public static bool CmpEql(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r)));
+      public static bool CmpLT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r)));
+      public static bool CmpGT(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
+      public static bool CmpLTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
+      public static bool CmpGTE(LispObject list) => ApplyVariadicComparison(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
 
       //==============================================================================================================================================
       private static (Number, Number) MatchRanks(LispObject left, LispObject right)

@@ -39,15 +39,15 @@ static partial class Ae
          new(op(this.Value, ((Float)that).Value));
 
       //==============================================================================================================================================
-      protected override Float BinaryAddSameType(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
-      protected override Float BinarySubSameType(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
-      protected override Float BinaryMulSameType(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
-      protected override Float BinaryDivSameType(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-      protected override bool BinaryCmpEqlSameType(Number other) => Value == ((Float)other).Value;
-      protected override bool BinaryCmpLTSameType(Number other) => Value < ((Float)other).Value;
-      protected override bool BinaryCmpGTSameType(Number other) => Value > ((Float)other).Value;
-      protected override bool BinaryCmpLTESameType(Number other) => Value <= ((Float)other).Value;
-      protected override bool BinaryCmpGTESameType(Number other) => Value >= ((Float)other).Value;
+      protected override Float BinaryAdd(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
+      protected override Float BinarySub(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
+      protected override Float BinaryMul(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
+      protected override Float BinaryDiv(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+      protected override bool BinaryCmpEql(Number other) => Value == ((Float)other).Value;
+      protected override bool BinaryCmpLT(Number other) => Value < ((Float)other).Value;
+      protected override bool BinaryCmpGT(Number other) => Value > ((Float)other).Value;
+      protected override bool BinaryCmpLTE(Number other) => Value <= ((Float)other).Value;
+      protected override bool BinaryCmpGTE(Number other) => Value >= ((Float)other).Value;
 
       //==============================================================================================================================================
    }

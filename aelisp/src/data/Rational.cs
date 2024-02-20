@@ -55,34 +55,34 @@ static partial class Ae
       // }
 
       //==============================================================================================================================================
-      protected override Rational BinaryAddSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Rational BinarySubSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Rational BinaryMulSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
-      protected override Rational BinaryDivSameType(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-      protected override bool BinaryCmpEqlSameType(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
+      protected override Rational BinaryAdd(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Rational BinarySub(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Rational BinaryMul(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
+      protected override Rational BinaryDiv(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
+      protected override bool BinaryCmpEql(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
       //==============================================================================================================================================
-      protected override bool BinaryCmpLTSameType(Number other)
+      protected override bool BinaryCmpLT(Number other)
       {
          var leftCmpNum = Numerator * ((Rational)other).Denominator;
          var rightCmpNum = Denominator * ((Rational)other).Numerator;
          return leftCmpNum < rightCmpNum;
       }
       //==============================================================================================================================================
-      protected override bool BinaryCmpGTSameType(Number other)
+      protected override bool BinaryCmpGT(Number other)
       {
          var leftCmpNum = Numerator * ((Rational)other).Denominator;
          var rightCmpNum = Denominator * ((Rational)other).Numerator;
          return leftCmpNum > rightCmpNum;
       }
       //==============================================================================================================================================
-      protected override bool BinaryCmpLTESameType(Number other)
+      protected override bool BinaryCmpLTE(Number other)
       {
          var leftCmpNum = Numerator * ((Rational)other).Denominator;
          var rightCmpNum = Denominator * ((Rational)other).Numerator;
          return leftCmpNum <= rightCmpNum;
       }
       //==============================================================================================================================================
-      protected override bool BinaryCmpGTESameType(Number other)
+      protected override bool BinaryCmpGTE(Number other)
       {
          var leftCmpNum = Numerator * ((Rational)other).Denominator;
          var rightCmpNum = Denominator * ((Rational)other).Numerator;
