@@ -68,10 +68,10 @@ static partial class Ae
       //================================================================================================================
       // Abstract instance methods
       //================================================================================================================
-      protected abstract Number AddSameType(Number other);
-      protected abstract Number SubSameType(Number other);
-      protected abstract Number MulSameType(Number other);
-      protected abstract Number DivSameType(Number other);
+      protected abstract Number BinaryAddSameType(Number other);
+      protected abstract Number BinarySubSameType(Number other);
+      protected abstract Number BinaryMulSameType(Number other);
+      protected abstract Number BinaryDivSameType(Number other);
       protected abstract Number Promote();
 
       //================================================================================================================
@@ -85,10 +85,10 @@ static partial class Ae
       }
 
       //================================================================================================================
-      public Number Add(Number other) => ApplyBinaryOp(other, (l, r) => l.AddSameType(r));
-      public Number Sub(Number other) => ApplyBinaryOp(other, (l, r) => l.SubSameType(r));
-      public Number Mul(Number other) => ApplyBinaryOp(other, (l, r) => l.MulSameType(r));
-      public Number Div(Number other) => ApplyBinaryOp(other, (l, r) => l.DivSameType(r));
+      public Number BinaryAdd(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryAddSameType(r));
+      public Number BinarySub(Number other) => ApplyBinaryOp(other, (l, r) => l.BinarySubSameType(r));
+      public Number BinaryMul(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryMulSameType(r));
+      public Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
       //================================================================================================================
    }
@@ -121,10 +121,10 @@ static partial class Ae
          new Integer(op(this.Value, that.Value));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l + r);
-      protected override Number SubSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l - r);
-      protected override Number MulSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l * r);
-      protected override Number DivSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l / r);
+      protected override Number BinaryAddSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l + r);
+      protected override Number BinarySubSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l - r);
+      protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l * r);
+      protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp((Integer)that, (l, r) => l / r);
 
       //================================================================================================================
    }
@@ -162,10 +162,10 @@ static partial class Ae
          new Float(op(this.Value, that.Value));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l + r);
-      protected override Number SubSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l - r);
-      protected override Number MulSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l * r);
-      protected override Number DivSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l / r);
+      protected override Number BinaryAddSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l + r);
+      protected override Number BinarySubSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l - r);
+      protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l * r);
+      protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp((Float)that, (l, r) => l / r);
 
       //================================================================================================================
    }
@@ -211,10 +211,10 @@ static partial class Ae
          new Rational(op(Numerator, Denominator, that.Numerator, that.Denominator));
 
       //================================================================================================================
-      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Number MulSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
-      protected override Number DivSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
+      protected override Number BinaryAddSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Number BinarySubSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Number BinaryMulSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
+      protected override Number BinaryDivSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //================================================================================================================
    }

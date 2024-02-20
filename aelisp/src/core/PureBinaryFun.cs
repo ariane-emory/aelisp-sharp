@@ -51,7 +51,7 @@ static partial class Ae
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.Add(rightNumber);
+            return leftNumber.BinaryAdd(rightNumber);
          });
 
       //=================================================================================================================
@@ -59,7 +59,7 @@ static partial class Ae
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.Sub(rightNumber);
+            return leftNumber.BinarySub(rightNumber);
          });
 
       //=================================================================================================================
@@ -67,7 +67,7 @@ static partial class Ae
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.Mul(rightNumber);
+            return leftNumber.BinaryMul(rightNumber);
          });
 
       //=================================================================================================================
@@ -75,7 +75,7 @@ static partial class Ae
          PureBinaryFun<Number, Number>((left, right) => {
             var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
-            return leftNumber.Div(rightNumber);
+            return leftNumber.BinaryDiv(rightNumber);
          });
 
       //================================================================================================================
