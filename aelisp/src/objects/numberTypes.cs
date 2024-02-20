@@ -64,6 +64,7 @@ static partial class Ae
       // Properties
       //================================================================================================================
       protected abstract int Rank { get; }
+      private static Integer Zero => new Integer(0);
 
       //================================================================================================================
       // Abstract instance methods
@@ -91,25 +92,45 @@ static partial class Ae
       public Number BinaryDiv(Number other) => ApplyBinaryOp(other, (l, r) => l.BinaryDivSameType(r));
 
       //================================================================================================================
-      public static Number Add(LispObject list)
+      public static Number Add(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinaryAdd(r));
+      public static Number Sub(LispObject list) => VariadicArithmetic(list, 0, false, (l, r) => l.BinarySub(r));
+      public static Number Mul(LispObject list) => VariadicArithmetic(list, 1, false, (l, r) => l.BinaryMul(r));
+      public static Number Div(LispObject list) => VariadicArithmetic(list, 1, true,  (l, r) => l.BinaryDiv(r));
+
+      //================================================================================================================
+      public static Number VariadicArithmetic(LispObject list,
+                                              int defaultAccum,
+                                              bool forbidArgsEqlToZero,
+                                              Func<Number, Number, Number> op)
       {
          if (!list.IsProperList)
             throw new ArgumentException($"Can't do math on an improper list: {list}");
 
-         Number accum = new Integer(0);
+         Number accum = new Integer(defaultAccum);
 
          if (!(list is Pair head))
-             return accum;
+            return accum;
 
          LispObject current = head;
+
+         if (!head.Cdr.IsNil)
+         {
+            if (!(head.Car is Number headNum))
+               throw new ArgumentException($"head.Car is not a number: {head.Car}");
+
+            accum = headNum;
+            current = head.Cdr;
+         }
 
          while (current is Pair currentPair)
          {
             if (!(currentPair.Car is Number currentNumber))
                throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
 
-            accum = accum.BinaryAdd(currentNumber);
+            if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
+               throw new ArgumentException($"Possible division by zero: {currentNumber}");
 
+            accum = accum.BinaryAdd(currentNumber);
             current = currentPair.Cdr;
          }
 
