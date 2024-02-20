@@ -146,8 +146,8 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static Number Mod(LispObject list) =>
-         ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType((Integer)r)));
+      public static Integer Mod(LispObject list) =>
+         (Integer)ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFunc((l, r) => ((Integer)l).BinaryModSameType((Integer)r)));
       
       //==============================================================================================================================================
       // Constructor
