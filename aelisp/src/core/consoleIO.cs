@@ -43,7 +43,7 @@ static partial class Ae
                      });
       
       //================================================================================================================
-      public static LispObject PrincStringObj(Env env, LispObject argsList) =>       
+      public static LispObject PrincObj(Env env, LispObject argsList) =>       
          WriteOutput(env, argsList, o => o.PrincString());
 
       //================================================================================================================
