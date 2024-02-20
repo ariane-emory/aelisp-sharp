@@ -172,15 +172,11 @@ class Program
       // ConsDebugWrite = false;
       // Core.ConsDebugWrite = true;
 
+      //==============================================================================================================================
+      static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
+
       WriteLine("");
 
-      // while (true)
-      // {
-      // WriteLine(Eval(child_env, "(cons 2 (cons 3 (cons 4 (list 5 6 (progn 8 7)))))", false).Princ());
-      // WriteLine(Eval(child_env, "(progn 10 20 30)", true).Princ());
-      // WriteLine(Eval(child_env, "(cons 1 (cons 2 3))").Princ());
-      // WriteLine(Eval(child_env, "(length (cons 1 (cons 2 3)))").Princ());
-      // WriteLine(Eval(child_env, "(lambda (x) (cons x x))", true).Princ());
       Do(child_env, "((lambda (x) (cons x x)) 8)");
       Do(child_env, "(setq qq 88 ww 77 *ee* 66)");
       Do(child_env, "(progn 2 3 4)");
@@ -190,30 +186,23 @@ class Program
       WriteLine($"\n{child_env}");
 
       Do(child_env, "(cond (nil 8) (else 14))");
-
       Do(child_env, "(type 22)");
       Do(child_env, "(type 4.3)");
       Do(child_env, "(type (lambda (x) (x x)))");
       Do(child_env, "(type '(1 . 2))");
-
       Do(child_env, "(eq? :asd :asd :asd)");
       Do(child_env, "(eq? :asd :asd :qwe)");
-
       Do(child_env, "(eql? 2 2 2/1)");
       Do(child_env, "(eql? 2 2 3)");
-
       Do(child_env, "(bound? :asd)");
-
       Do(child_env, "(rational 3 4)");
       Do(child_env, "(car (cons 3 4))");
       Do(child_env, "(cdr (cons 3 4))");
       Do(child_env, "(cdr (cdr (cons 3 (cons 4 nil))))");
-
       Do(child_env, "(concat)");
       Do(child_env, "(concat \"hello\" \"world\")");
       Do(child_env, "(concat \"hello\" nil \"world\")");
       Do(child_env, "(concat nil \"hello\" nil \"world\")");
-
       Do(child_env, "(setq x 2)");
       Do(child_env, "(setq y 3)");
       Do(child_env, "(setq lst '(3 4))");
@@ -229,14 +218,8 @@ class Program
       WriteLine("----");
       Do(child_env, "(setq z '(2 3 4))");
       Do(child_env, "(apply list 1 z)");
-      // Do(child_env, "(apply list '1 'x x (list y 4))");
-      // WriteLine("----");
-      // Do(child_env, "(apply list '1 'x x lst)");
       WriteLine("");
    }
-
-   //==============================================================================================================================
-   static void Do(Env env, string input) => WriteLine(Eval(env, input, true).Princ());
 
    //==============================================================================================================================
 }
