@@ -177,23 +177,25 @@ static partial class Ae
          while (current is Pair currentPair)
          {
             if (!(currentPair.Car is Number currentNumber))
-               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+               throw new ArgumentException($"Can't do math on a list with non-numbers: {currentPair.Car}");
 
-                if (assignMode == AssignMode.AssignAnd)
-                {
-                   var tmp = op(left, currentNumber);
-                   WriteLine($"assign {result} & {tmp}");
-                   result &= tmp;
-                }
-                else
-                {
-                   var tmp = op(left, currentNumber);
-                   WriteLine($"assign {result} | {tmp}");
-                   result |= tmp;
-                }
+            if (assignMode == AssignMode.AssignAnd)
+            {
+               var tmp = op(left, currentNumber);
+               // WriteLine($"assign {result} & {tmp}");
+               result &= tmp;
+            }
+            else
+            {
+               var tmp = op(left, currentNumber);
+               // WriteLine($"assign {result} | {tmp}");
+               result |= tmp;
+            }
 
-            // TODO: probably okay to short circuit as soon as result becomes false.
-
+            if (!result)
+               return false;
+            
+            left = currentNumber;
             current = currentPair.Cdr;
          }
 
