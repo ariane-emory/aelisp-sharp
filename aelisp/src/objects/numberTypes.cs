@@ -214,27 +214,19 @@ static partial class Ae
          return new Rational(sumNumerator, commonDenominator);
       }
 
+      private Number ApplyBinaryOp2(Rational that, Func<int, int, int, int, (int, int)> op)
+      {
+         var other = (Rational)that;
+         var (newNumerator, newDenominator) = op(Numerator, Denominator, that.Numerator, that.Denominator);
+
+         return new Rational(newNumerator, newDenominator);
+      }
+
       //================================================================================================================
-      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l + r);
-      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (l, r) => l - r);
-
-      protected override Number MulSameType(Number that)
-      {
-         var other = (Rational)that;
-         int newNumerator = this.Numerator * other.Numerator;
-         int newDenominator = this.Denominator * other.Denominator;
-
-         return new Rational(newNumerator, newDenominator);
-      }
-
-      protected override Number DivSameType(Number that)
-      {
-         var other = (Rational)that;
-         int newNumerator = this.Numerator * other.Denominator;
-         int newDenominator = this.Denominator * other.Numerator;
-
-         return new Rational(newNumerator, newDenominator);
-      }
+      protected override Number MulSameType(Number that) => ApplyBinaryOp2((Rational)that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
+      protected override Number DivSameType(Number that) => ApplyBinaryOp2((Rational)that, (ln, ld, rn, rd) => (ln * rd, ld * rn));    
+      protected override Number AddSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, rn) => ln + rn);
+      protected override Number SubSameType(Number that) => ApplyBinaryOp((Rational)that, (ln, rn) => ln - rn);
 
 
       //================================================================================================================
