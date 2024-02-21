@@ -12,13 +12,39 @@ static partial class Ae
    public class Pair : LispObject, IEnumerable<LispObject>
    {
       //================================================================================================================
-      // Public properties
+      // Properties
       //================================================================================================================
       public override string TypeName => "Cons";
       public LispObject Car { get; set; }
       public LispObject Cdr { get; set; }
       public bool IsQuoteForm  => Car == Intern("quote");
       
+      //================================================================================================================
+      protected override string? StringRepresentation => $"#{Car.Id}, #{Cdr.Id}, {Length}";
+
+      //================================================================================================================
+      public int PairListLength
+      {
+         get
+         {
+            // NOTE: Remember, the Listlength of both (1 2 3) and (1 2 3 . 4 ) is 3 in this language at present.
+
+            int length = 0;
+            LispObject current = this;
+
+            while (current is Pair pair)
+            {
+               length++;
+               current = pair.Cdr;
+
+               if (!(current is Pair) && current != Nil)
+                  break;
+            }
+
+            return length;
+         }
+      }
+
       //================================================================================================================
       // Constructor
       //================================================================================================================
@@ -29,12 +55,7 @@ static partial class Ae
       }
 
       //================================================================================================================
-      // Protected instance properties
-      //================================================================================================================
-      protected override string? StringRepresentation => $"#{Car.Id}, #{Cdr.Id}, {Length}";
-
-      //================================================================================================================
-      // Public instance methods
+      // Methods
       //================================================================================================================
       public override string ToPrincString()
       {
@@ -75,6 +96,9 @@ static partial class Ae
       }
 
       //================================================================================================================
+      IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+      //================================================================================================================
       public IEnumerator<LispObject> GetEnumerator()
       {
          LispObject current = this;
@@ -93,32 +117,6 @@ static partial class Ae
 
                // throw new InvalidOperationException("Enumerated improper list!");
             }
-      }
-
-      //================================================================================================================
-      IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
-      //================================================================================================================
-      public int PairListLength
-      {
-         get
-         {
-            // NOTE: Remember, the Listlength of both (1 2 3) and (1 2 3 . 4 ) is 3 in this language at present.
-
-            int length = 0;
-            LispObject current = this;
-
-            while (current is Pair pair)
-            {
-               length++;
-               current = pair.Cdr;
-
-               if (!(current is Pair) && current != Nil)
-                  break;
-            }
-
-            return length;
-         }
       }
 
       //================================================================================================================
