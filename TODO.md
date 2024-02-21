@@ -6,6 +6,7 @@ To Do - replicating features from C impelemtation of Ælisp:
 - [ ] C#-level unit tests (XUnit?).
 
 To Do:
+- [ ] Find an excuse to use T4 somewhere (just to learn how to work with it).
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
 - [ ] Organize/tidy up building the root and make Main sensible, it's a construction zone ATM.
 - [ ] Binary/hex number tokens?
