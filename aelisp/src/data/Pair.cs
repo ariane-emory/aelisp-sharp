@@ -23,7 +23,7 @@ static partial class Ae
       protected override string? StringRepresentation => $"#{Car.Id}, #{Cdr.Id}, {Length}";
 
       //================================================================================================================
-      public int PairListLength
+      public override int Length
       {
          get
          {

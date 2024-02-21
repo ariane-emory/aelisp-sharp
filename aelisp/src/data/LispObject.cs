@@ -11,31 +11,33 @@ static partial class Ae
    public abstract class LispObject
    {
       //==================================================================================================================
-      // Private static properties
+      // Static properties
       //==================================================================================================================
       private static int NextId { get; set; } = 0;
 
       //==================================================================================================================
-      // Instance properties
+      // Properties
       //==================================================================================================================
       public virtual string TypeName => GetType().Name;
-      protected abstract string? StringRepresentation { get; }
       public virtual bool IsSelfEvaluating => true;
+      public int Id { get; }
+      protected abstract string? StringRepresentation { get; }
+
+      //==================================================================================================================
       public bool IsNil => this == Nil;
       public bool IsList => IsNil || this is Pair;
       public bool IsImproperList => IsList && !IsProperList;
       public bool IsAtom => this is not Pair;
-      public int Id { get; }
 
       //==================================================================================================================
-      public int Length
+      public virtual int Length
       {
          get
          {
             if (this == Nil)
                return 0;
-            else if (this is Pair pair)
-               return pair.PairListLength;
+            // else if (this is Pair pair)
+            //    return pair.PairListLength;
             else
                throw new InvalidOperationException("Not a list");
          }
