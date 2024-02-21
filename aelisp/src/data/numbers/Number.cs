@@ -47,42 +47,17 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
-      {
-         if (!(left is Number leftNumber))
-            throw new ArgumentException($"left must be a Number, not {left}.");
-
-         if (!(right is Number rightNumber))
-            throw new ArgumentException($"right must be a Number, not {right}.");
-
-         while (leftNumber.Rank < rightNumber.Rank)
-            leftNumber = leftNumber.Promote();
-
-         while (leftNumber.Rank > rightNumber.Rank)
-            rightNumber = rightNumber.Promote();
-
-         return (leftNumber, rightNumber);
-      }
+      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinaryAdd(r)));
+      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySub(r)));
+      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMul(r)));
+      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDiv(r)));
 
       //==============================================================================================================================================
-      private static Number MaybeDemote(Number number)
-      {
-         if (number is Integer)
-            return number;
-
-         if (number is Rational numberRational)
-            return numberRational.Denominator == 1
-               ? new Integer(numberRational.Numerator)
-               : number;
-
-         if (number is Float numberFloat)
-         {
-            var floor = Math.Floor(numberFloat.Value);
-            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
-         }
-
-         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
-      }
+      public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r)));
+      public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r)));
+      public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
+      public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
+      public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
 
       //==============================================================================================================================================
       private static Func<Number, Number, Number> ApplyBinaryOpFun(Func<Number, Number, Number> op)
@@ -197,17 +172,42 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public static Number Add(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinaryAdd(r)));
-      public static Number Sub(LispObject list) => ApplyVariadicArithmetic(list, 0, false, ApplyBinaryOpFun((l, r) => l.BinarySub(r)));
-      public static Number Mul(LispObject list) => ApplyVariadicArithmetic(list, 1, false, ApplyBinaryOpFun((l, r) => l.BinaryMul(r)));
-      public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDiv(r)));
+      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
+      {
+         if (!(left is Number leftNumber))
+            throw new ArgumentException($"left must be a Number, not {left}.");
+
+         if (!(right is Number rightNumber))
+            throw new ArgumentException($"right must be a Number, not {right}.");
+
+         while (leftNumber.Rank < rightNumber.Rank)
+            leftNumber = leftNumber.Promote();
+
+         while (leftNumber.Rank > rightNumber.Rank)
+            rightNumber = rightNumber.Promote();
+
+         return (leftNumber, rightNumber);
+      }
 
       //==============================================================================================================================================
-      public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r)));
-      public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r)));
-      public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
-      public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
-      public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
+      private static Number MaybeDemote(Number number)
+      {
+         if (number is Integer)
+            return number;
+
+         if (number is Rational numberRational)
+            return numberRational.Denominator == 1
+               ? new Integer(numberRational.Numerator)
+               : number;
+
+         if (number is Float numberFloat)
+         {
+            var floor = Math.Floor(numberFloat.Value);
+            return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
+         }
+
+         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
+      }
 
       //==============================================================================================================================================
    }
