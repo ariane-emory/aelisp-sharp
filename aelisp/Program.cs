@@ -88,6 +88,7 @@ class Program
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
          // exit
+         ("floor        ", Floor,  0000000000001, 01, false),
          (">=           ", NumGTE, 0000000000002, 15, false),
          ("<=           ", NumLTE, 0000000000002, 15, false),
          (">            ", NumGT, 00000000000002, 15, false),
@@ -394,6 +395,11 @@ class Program
       Do("(== 3 3 3)");
       Do("(!= 3 2 1)");
       Do("(!= 3 2 1 1)");
+
+      Do("(floor 2)");
+      Do("(floor 2.0)");
+      Do("(floor 2.4)");
+      Do("(floor 9/4)");
     }
 
    //==============================================================================================================================

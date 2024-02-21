@@ -35,6 +35,21 @@ static partial class Ae
       public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
 
       //================================================================================================================
+      public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num  =>
+      {
+         if (num is Integer integer)
+            return integer;
+
+         if (num is Float floatObj)
+            return new Integer((int)floatObj.Value);
+
+         if (num is Rational rational)
+            return new Integer(rational.Numerator / rational.Denominator);
+
+         return Nil; // should be unreachable since arg will have been pre-checked to be a Number.
+      });
+
+      //================================================================================================================
    }
    //===================================================================================================================
 }
