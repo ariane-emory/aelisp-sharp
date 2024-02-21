@@ -44,11 +44,11 @@ static partial class Ae
       protected override Float BinaryMul(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Float BinaryDiv(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
       //==============================================================================================================================================
-      protected override bool BinaryCmpEql(Number other) => Value == ((Float)other).Value;
-      protected override bool BinaryCmpLT(Number other) => Value < ((Float)other).Value;
-      protected override bool BinaryCmpGT(Number other) => Value > ((Float)other).Value;
-      protected override bool BinaryCmpLTE(Number other) => Value <= ((Float)other).Value;
-      protected override bool BinaryCmpGTE(Number other) => Value >= ((Float)other).Value;
+      protected override bool BinaryCmpEql(Number other) => CompareWithSameType(other, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number other) => CompareWithSameType(other, (l, r)  => l < r);
+      protected override bool BinaryCmpGT(Number other) => CompareWithSameType(other, (l, r)  => l > r);
+      protected override bool BinaryCmpLTE(Number other) => CompareWithSameType(other, (l, r)  => l <= r);
+      protected override bool BinaryCmpGTE(Number other) => CompareWithSameType(other, (l, r)  => l >= r);
       //==============================================================================================================================================
       private bool CompareWithSameType(Number other, Func<double, double, bool> cmp) => 
          cmp(Value, ((Float)other).Value);
