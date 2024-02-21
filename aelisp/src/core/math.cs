@@ -22,7 +22,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT NumGT = (env, argsList) => Truthiness(Number.CmpGT(argsList));
       public static readonly CoreFun.FuncT NumLTE = (env, argsList) => Truthiness(Number.CmpLTE(argsList));
       public static readonly CoreFun.FuncT NumGTE = (env, argsList) => Truthiness(Number.CmpGTE(argsList));
-      
+
       //================================================================================================================
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
@@ -35,19 +35,15 @@ static partial class Ae
       public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num  =>
-      {
-         if (num is Integer integer)
-            return integer;
+      public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num =>
+         num switch
+         {
+            Integer numInteger => numInteger,
+            Float numFloat => new Integer((int)Math.Floor(numFloat.Value)),
+            Rational numRational => new Integer((int)Math.Floor((double)numRational.Numerator / numRational.Denominator)),
+            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+         });
 
-         if (num is Float floatObj)
-            return new Integer((int)floatObj.Value);
-
-         if (num is Rational rational)
-            return new Integer(rational.Numerator / rational.Denominator);
-
-         return Nil; // should be unreachable since arg will have been pre-checked to be a Number.
-      });
 
       //================================================================================================================
    }
