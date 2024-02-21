@@ -50,8 +50,8 @@ static partial class Ae
       private bool ApplyBinaryCmp(Number other, Func<int, int,bool> cmp) => 
          cmp(Value, ((Integer)other).Value);
 
-      //==============================================================================================================================================
-      private static Integer GreaterThanZero(Integer that, string opName)
+      //=============================================================================================================================================
+      private static Integer ThrowwUnlessGreaterThanZero(Integer that, string opName)
       {
          if (that.Value <= 0)
             throw new ArgumentException($"Modulo by zero or negative number: {that}.");
@@ -63,8 +63,8 @@ static partial class Ae
       protected Integer BinaryAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
       protected Integer BinaryOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
       protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
-      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "modulo"), (l, r) => l % r);
-      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
+      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
+      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
 
       //==============================================================================================================================================
       // Static methods

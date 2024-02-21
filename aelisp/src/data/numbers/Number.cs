@@ -30,10 +30,13 @@ static partial class Ae
       // Abstract instance methods
       //==============================================================================================================================================
       protected abstract Number Promote();
+
+      //==============================================================================================================================================
       protected abstract Number BinaryAdd(Number other);
       protected abstract Number BinarySub(Number other);
       protected abstract Number BinaryMul(Number other);
       protected abstract Number BinaryDiv(Number other);
+
       //==============================================================================================================================================
       protected abstract bool BinaryCmpEql(Number other);
       protected abstract bool BinaryCmpLT(Number other);
@@ -44,21 +47,13 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static (Number, Number) ThrowUnlessNumbers(LispObject left, LispObject right)
+      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
       {
          if (!(left is Number leftNumber))
             throw new ArgumentException($"left must be a Number, not {left}.");
 
          if (!(right is Number rightNumber))
             throw new ArgumentException($"right must be a Number, not {right}.");
-
-         return (leftNumber, rightNumber);
-      }
-
-      //==============================================================================================================================================
-      private static (Number, Number) MatchRanks(LispObject left, LispObject right)
-      {
-         var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
 
          while (leftNumber.Rank < rightNumber.Rank)
             leftNumber = leftNumber.Promote();
