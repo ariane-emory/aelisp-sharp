@@ -5,7 +5,7 @@
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] OS interaction functions (data layer/core):
-  - [ ] load/require/provide/read.
+  - [ ] `load`/`require`/`provide`/`read`.
   - [ ] the rest of 'em.
 - [ ] C#-level unit tests (XUnit?).
 
