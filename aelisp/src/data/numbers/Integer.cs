@@ -12,16 +12,16 @@ static partial class Ae
    public class Integer : Number
    {
       //==============================================================================================================================================
-      // Constructor
-      //==============================================================================================================================================
-      public Integer(int value) => Value = value;
-
-      //==============================================================================================================================================
       // Properties
       //==============================================================================================================================================
       protected override int Rank => 1;
       public int Value { get; }
       protected override string? StringRepresentation => $"{Value}";
+
+      //==============================================================================================================================================
+      // Constructor
+      //==============================================================================================================================================
+      public Integer(int value) => Value = value;
 
       //==============================================================================================================================================
       // Instance methods 
@@ -38,22 +38,17 @@ static partial class Ae
       protected override Integer BinarySub(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Integer BinaryMul(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Integer BinaryDiv(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number other) => ApplyBinaryCmp(other, (l, r) => l == r);
       protected override bool BinaryCmpLT(Number other) => ApplyBinaryCmp(other, (l, r)  => l < r);
       protected override bool BinaryCmpGT(Number other) => ApplyBinaryCmp(other, (l, r)  => l > r);
       protected override bool BinaryCmpLTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l <= r);
       protected override bool BinaryCmpGTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l >= r);
+
       //==============================================================================================================================================
       private bool ApplyBinaryCmp(Number other, Func<int, int,bool> cmp) => 
          cmp(Value, ((Integer)other).Value);
-
-      //==============================================================================================================================================
-      protected Integer BinaryAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
-      protected Integer BinaryOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
-      protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
-      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "modulo"), (l, r) => l % r);
-      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
 
       //==============================================================================================================================================
       private static Integer GreaterThanZero(Integer that, string opName)
@@ -65,13 +60,20 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
+      protected Integer BinaryAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
+      protected Integer BinaryOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
+      protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
+      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "modulo"), (l, r) => l % r);
+      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(GreaterThanZero(that, "left shift"), (l, r) => l << r);
+
+      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
-      public static readonly Func<LispObject, Integer> Lsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
       public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryAnd(r));
       public static readonly Func<LispObject, Integer> BitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryOr(r));
       public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryXor(r));
+      public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
+      public static readonly Func<LispObject, Integer> Lsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
       //==============================================================================================================================================
       private static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => (list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>

@@ -43,16 +43,18 @@ static partial class Ae
       protected override Float BinarySub(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
       protected override Float BinaryMul(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
       protected override Float BinaryDiv(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
+
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number other) => ApplyBinaryCmp(other, (l, r) => l == r);
       protected override bool BinaryCmpLT(Number other) => ApplyBinaryCmp(other, (l, r)  => l < r);
       protected override bool BinaryCmpGT(Number other) => ApplyBinaryCmp(other, (l, r)  => l > r);
       protected override bool BinaryCmpLTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l <= r);
       protected override bool BinaryCmpGTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l >= r);
+
       //==============================================================================================================================================
       private bool ApplyBinaryCmp(Number other, Func<double, double, bool> cmp) => 
          cmp(Value, ((Float)other).Value);
-
+ 
       //==============================================================================================================================================
    }
 
