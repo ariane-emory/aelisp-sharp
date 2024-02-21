@@ -24,7 +24,7 @@
 - [ ] A radically different (whitespace sensitive?) non-Lispy syntax option that might just evolve into a 2nd language.
 
 ## To Do - implementation-neutral:
-- [ ] Extend the stdlib's structs into an object system (which could turn out to look a lot like [tinyclos](https://github.com/kstephens/tinyclos/blob/master/tiny-clos.scm), possibly just ammounting to successfully running a forked version of [tinyclos](https://github.com/kstephens/tinyclos/blob/master/tiny-clos.scm)).
+- [ ] Extend the stdlib's structs into an object system (which could turn out to look a lot like [tinyclos](https://github.com/kstephens/tinyclos), possibly just ammounting to successfully running a forked version of [tinyclos](https://github.com/kstephens/tinyclos)).
 
 ## Completed:
 - [x] Math comparison functions.
