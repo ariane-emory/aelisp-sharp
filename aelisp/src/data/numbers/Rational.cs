@@ -59,33 +59,40 @@ static partial class Ae
       protected override Rational BinarySub(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinaryMul(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDiv(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-      protected override bool BinaryCmpEql(Number other) => Denominator == ((Rational)other).Denominator && Numerator == ((Rational)other).Numerator;
+      //==============================================================================================================================================
+      private (int Left, int Right) ComparableNumeratorsWith(Number other) {
+         var leftCmpNum = Numerator * ((Rational)other).Denominator;
+         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         return (leftCmpNum, rightCmpNum);
+      }
+      //==============================================================================================================================================
+      protected override bool BinaryCmpEql(Number other)
+      {
+         var (leftCmpNum, rightCmpNum) = ComparableNumeratorsWith(other);
+         return leftCmpNum == rightCmpNum;
+      }
       //==============================================================================================================================================
       protected override bool BinaryCmpLT(Number other)
       {
-         var leftCmpNum = Numerator * ((Rational)other).Denominator;
-         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         var (leftCmpNum, rightCmpNum) = ComparableNumeratorsWith(other);
          return leftCmpNum < rightCmpNum;
       }
       //==============================================================================================================================================
       protected override bool BinaryCmpGT(Number other)
       {
-         var leftCmpNum = Numerator * ((Rational)other).Denominator;
-         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         var (leftCmpNum, rightCmpNum) = ComparableNumeratorsWith(other);
          return leftCmpNum > rightCmpNum;
       }
       //==============================================================================================================================================
       protected override bool BinaryCmpLTE(Number other)
       {
-         var leftCmpNum = Numerator * ((Rational)other).Denominator;
-         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         var (leftCmpNum, rightCmpNum) = ComparableNumeratorsWith(other);
          return leftCmpNum <= rightCmpNum;
       }
       //==============================================================================================================================================
       protected override bool BinaryCmpGTE(Number other)
       {
-         var leftCmpNum = Numerator * ((Rational)other).Denominator;
-         var rightCmpNum = Denominator * ((Rational)other).Numerator;
+         var (leftCmpNum, rightCmpNum) = ComparableNumeratorsWith(other);
          return leftCmpNum >= rightCmpNum;
       }
 
