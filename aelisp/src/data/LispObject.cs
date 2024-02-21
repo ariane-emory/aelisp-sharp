@@ -64,6 +64,34 @@ static partial class Ae
             return false;
          }
       }
+
+      //==================================================================================================================
+      // Constructor
+      //==================================================================================================================
+      protected LispObject() => Id = NextId++;
+ 
+      //==================================================================================================================
+      // methods
+      //==================================================================================================================
+      public LispObject Properties { get; set; } = Nil;
+      public abstract string ToPrincString();
+      public virtual string ToPrintString() => ToPrincString();
+      public virtual LispObject Eval(Env _) => this;
+
+      //================================================================================================================
+      public override string ToString()
+      {
+         var repr = StringRepresentation;
+
+         // return repr is null
+         //    ? $"{TypeName.ToUpper()}<#{Id}>"
+         //    : $"{TypeName.ToUpper()}<#{Id}, {repr}>";
+
+         return repr is null
+            ? $"{TypeName}(#{Id})"
+            : $"{TypeName}(#{Id}, {repr})";
+      }
+
       //==================================================================================================================
       public bool Eql(LispObject that)
       {
@@ -152,36 +180,6 @@ static partial class Ae
          }
 
          return false;
-      }
-
-      //==================================================================================================================
-      // Constructor
-      //==================================================================================================================
-      protected LispObject()
-      {
-         Id = NextId++;
-      }
-
-      //==================================================================================================================
-      // Instance methods
-      //==================================================================================================================
-      public LispObject Properties { get; set; } = Nil;
-      public abstract string ToPrincString();
-      public virtual string ToPrintString() => ToPrincString();
-      public virtual LispObject Eval(Env _) => this;
-
-      //================================================================================================================
-      public override string ToString()
-      {
-         var repr = StringRepresentation;
-
-         // return repr is null
-         //    ? $"{TypeName.ToUpper()}<#{Id}>"
-         //    : $"{TypeName.ToUpper()}<#{Id}, {repr}>";
-
-         return repr is null
-            ? $"{TypeName}(#{Id})"
-            : $"{TypeName}(#{Id}, {repr})";
       }
 
       //================================================================================================================
