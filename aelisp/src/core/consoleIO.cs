@@ -23,8 +23,8 @@ static partial class Ae
             var str = fun(elem);
 
             Write(str);
+            
             written += str.Length;
-
             current = pair.Cdr;
          }
 
