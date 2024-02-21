@@ -94,6 +94,45 @@ static partial class Ae
          };
       }
 
+      //=================================================================================================================================================
+      protected static Number ApplyVariadicArithmetic(LispObject list,
+                                                      int defaultAccum,
+                                                      bool forbidArgsEqlToZero,
+                                                      Func<Number, Number, Number> op)
+      {
+         if (!list.IsProperList)
+            throw new ArgumentException($"Can't do math on an improper list: {list}");
+
+         Number accum = new Integer(defaultAccum);
+
+         if (!(list is Pair head))
+            return accum;
+
+         LispObject current = head;
+
+         if (!head.Cdr.IsNil)
+         {
+            if (!(head.Car is Number headNum))
+               throw new ArgumentException($"head.Car is not a number: {head.Car}");
+
+            accum = headNum;
+            current = head.Cdr;
+         }
+
+         while (current is Pair currentPair)
+         {
+            if (!(currentPair.Car is Number currentNumber))
+               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+
+            if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
+               throw new ArgumentException($"Possible division by zero: {currentNumber}");
+
+            accum = op(accum, currentNumber);
+            current = currentPair.Cdr;
+         }
+
+         return accum;
+      }
       //==============================================================================================================================================
       private static Func<Number, Number, bool> ApplyBinaryCmpFun(Func<Number, Number, bool> cmp)
       {
@@ -155,46 +194,6 @@ static partial class Ae
          }
 
          return result;
-      }
-
-      //=================================================================================================================================================
-      protected static Number ApplyVariadicArithmetic(LispObject list,
-                                                      int defaultAccum,
-                                                      bool forbidArgsEqlToZero,
-                                                      Func<Number, Number, Number> op)
-      {
-         if (!list.IsProperList)
-            throw new ArgumentException($"Can't do math on an improper list: {list}");
-
-         Number accum = new Integer(defaultAccum);
-
-         if (!(list is Pair head))
-            return accum;
-
-         LispObject current = head;
-
-         if (!head.Cdr.IsNil)
-         {
-            if (!(head.Car is Number headNum))
-               throw new ArgumentException($"head.Car is not a number: {head.Car}");
-
-            accum = headNum;
-            current = head.Cdr;
-         }
-
-         while (current is Pair currentPair)
-         {
-            if (!(currentPair.Car is Number currentNumber))
-               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
-
-            if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
-               throw new ArgumentException($"Possible division by zero: {currentNumber}");
-
-            accum = op(accum, currentNumber);
-            current = currentPair.Cdr;
-         }
-
-         return accum;
       }
 
       //==============================================================================================================================================
