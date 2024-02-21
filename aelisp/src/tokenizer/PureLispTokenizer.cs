@@ -88,8 +88,9 @@ static partial class Ae
    //=================================================================================================================================================
    private static bool IsNonwhitespaceToken(this LispToken token) => !IsWhitespaceToken(token);
    private static bool IsWhitespaceToken(this LispToken token) => WhitespaceLispTokenTypes.Contains(token.Type);
-   private static bool IsWhitespaceOrCommentToken(this LispToken token) =>
-      WhitespaceLispTokenTypes.Contains(token.Type) || (token.Type == LispTokenType.Comment) || (token.Type == LispTokenType.LineComment);
+   //=================================================================================================================================================
+   private static bool IsWhitespaceOrCommentToken(this LispToken token) => 
+    WhitespaceLispTokenTypes.Contains(token.Type) || (token.Type == LispTokenType.Comment) || (token.Type == LispTokenType.LineComment);
 
    //=================================================================================================================================================
    // private static IEnumerable<LispToken> Whitespace(this IEnumerable<LispToken> self) => self.Where(t => t.IsWhitespaceToken());
