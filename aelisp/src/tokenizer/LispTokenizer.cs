@@ -35,8 +35,8 @@ static partial class Ae
       public LispTokenizer(string? input)
       {
          _input = input;
-         _exclude ??= IsWhitespaceToken;
-      }
+         _exclude ??= IsWhitespaceOrCommentToken;
+        }
 
       //==================================================================================================================
       // Instance methods

@@ -32,9 +32,9 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   // Static methods
+   // Static methods 
    //====================================================================================================================
-   public static List<LispToken> Tokenize(string input) => new LispTokenizer(input).ReadAll();
+   public static List<LispToken> Tokenize(string input) => new LispTokenizer(input, IsWhitespaceToken).ReadAll().ExcludingComments().ToList();
    public static LispObject Eval(Env env, string input, bool progn = true) => Read(input, progn).Eval(env);
    public static LispObject Read(string input, bool progn) => (progn ? ParseProgram : ParseSExp).ParseOrThrow(Tokenize(input));
    public static LispObject Cons(LispObject car, LispObject cdr) =>  (LispObject)new Pair(car, cdr);
