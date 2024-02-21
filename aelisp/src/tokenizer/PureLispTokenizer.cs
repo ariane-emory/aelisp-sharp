@@ -61,6 +61,9 @@ static partial class Ae
    //=================================================================================================================================================
    // Ae's static fields
    //=================================================================================================================================================
+   private static readonly ImmutableArray<LispTokenType> CommentLispTokenTypes =
+      ImmutableArray.Create(LispTokenType.Comment, LispTokenType.LineComment);
+   
    private static readonly ImmutableArray<LispTokenType> MultilineCommentLispTokenTypes =
       ImmutableArray.Create(LispTokenType.MultilineCommentBegin, LispTokenType.MultilineCommentContent, LispTokenType.MultilineCommentEnd);
    
@@ -69,6 +72,8 @@ static partial class Ae
 
    private static readonly ImmutableArray<LispTokenType> WhitespaceLispTokenTypes =
       ImmutableArray.Create(LispTokenType.Whitespace, LispTokenType.Newline);
+
+   
 
    //=================================================================================================================================================
    // Ae's extension methods
@@ -90,7 +95,9 @@ static partial class Ae
    private static bool IsWhitespaceToken(this LispToken token) => WhitespaceLispTokenTypes.Contains(token.Type);
    //=================================================================================================================================================
    private static bool IsWhitespaceOrCommentToken(this LispToken token) => 
-    WhitespaceLispTokenTypes.Contains(token.Type) || (token.Type == LispTokenType.Comment) || (token.Type == LispTokenType.LineComment);
+    WhitespaceLispTokenTypes.Contains(token.Type)
+      || CommentLispTokenTypes.Contains(token.Type)
+      || MultilineCommentLispTokenTypes.Contains(token.Type);
 
    //=================================================================================================================================================
    // private static IEnumerable<LispToken> Whitespace(this IEnumerable<LispToken> self) => self.Where(t => t.IsWhitespaceToken());
