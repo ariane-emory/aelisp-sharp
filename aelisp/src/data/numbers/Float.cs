@@ -49,6 +49,9 @@ static partial class Ae
       protected override bool BinaryCmpGT(Number other) => Value > ((Float)other).Value;
       protected override bool BinaryCmpLTE(Number other) => Value <= ((Float)other).Value;
       protected override bool BinaryCmpGTE(Number other) => Value >= ((Float)other).Value;
+      //==============================================================================================================================================
+      private bool CompareWithSameType(Number other, Func<double, double, bool> cmp) => 
+         cmp(Value, ((Float)other).Value);
 
       //==============================================================================================================================================
    }
