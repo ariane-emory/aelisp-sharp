@@ -135,10 +135,10 @@ static partial class Ae
    //===================================================================================================================
    public class String : LispObjectWithStringValue
    {
-      public String(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string ToPrincString() => $"{Value}";
       public override string ToPrintString() => $"\"{ToPrincString()}\"";
+      public String(string value) : base(value) { }
    }
 
    //===================================================================================================================
@@ -147,9 +147,9 @@ static partial class Ae
 
    public class Error : LispObjectWithStringValue
    {
-      public Error(string value) : base(value) { }
       protected override string? StringRepresentation => $"\"{Value.EscapeChars()}\"";
       public override string ToPrincString() => ToString();
+      public Error(string value) : base(value) { }
    }
 
    //===================================================================================================================
@@ -158,9 +158,9 @@ static partial class Ae
    public class Char : LispObject
    {
       public char Value { get; }
+      protected override string? StringRepresentation => $"\'{Value}\'".EscapeChars();
       public Char(char value) => Value = value;
-        protected override string? StringRepresentation => $"\'{Value}\'".EscapeChars();
-        public override string ToPrincString() => $"{Value}";
+      public override string ToPrincString() => $"{Value}";
       public override string ToPrintString() => $"\'{ToPrincString()}\'";
    }
 
