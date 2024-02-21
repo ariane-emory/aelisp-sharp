@@ -1,10 +1,9 @@
 To Do - replicatinc features from C impelemtation of Ælisp:
 - [ ] Rearrange APIs:
-  - Let's make Envs the main entry point for user-level interaction.
-  - Eliminate mutable globals.
+  - [ ] Let's make Envs the main entry point for user-level interaction.
+  - [ ] Eliminate mutable globals.
   - [ ] Binary/hex number tokens?
-- [ ] C#-level unit tests.
-- [ ] Try running stdlib's tests package.
+- [ ] C#-level unit tests (XUnit?).
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
 - [ ] OS interaction functions (data layer/core).
 - [ ] Organize building the root and make Main sensible, it's a construction zone ATM.
