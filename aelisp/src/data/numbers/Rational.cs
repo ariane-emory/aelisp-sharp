@@ -60,26 +60,15 @@ static partial class Ae
       protected override Rational BinaryMul(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
       protected override Rational BinaryDiv(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
       //==================================================== ==========================================================================================
-      private bool CompareWith(Number other, Func<int, int, bool> cmp) {
-         var leftCmpNum = Numerator * ((Rational)other).Denominator;
-         var rightCmpNum = Denominator * ((Rational)other).Numerator;
-         return cmp(leftCmpNum, rightCmpNum);
-      }
+      protected override bool BinaryCmpEql(Number other) => CompareWithSameType(other, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number other) => CompareWithSameType(other, (l, r)  => l < r);
+      protected override bool BinaryCmpGT(Number other) => CompareWithSameType(other, (l, r)  => l > r);
+      protected override bool BinaryCmpLTE(Number other) => CompareWithSameType(other, (l, r)  => l <= r);
+      protected override bool BinaryCmpGTE(Number other) => CompareWithSameType(other, (l, r)  => l >= r);
       //==============================================================================================================================================
-      protected override bool BinaryCmpEql(Number other) => 
-         CompareWith(other, (l, r) => l == r);
+      private bool CompareWithSameType(Number other, Func<int, int, bool> cmp) => 
+         cmp(Numerator * ((Rational)other).Denominator, Denominator * ((Rational)other).Numerator);
       //==============================================================================================================================================
-      protected override bool BinaryCmpLT(Number other) => 
-         CompareWith(other, (l, r)  => l < r);
-      //==============================================================================================================================================
-      protected override bool BinaryCmpGT(Number other) => 
-         CompareWith(other, (l, r)  => l > r);
-      //==============================================================================================================================================
-      protected override bool BinaryCmpLTE(Number other) => 
-         CompareWith(other, (l, r)  => l <= r);
-      //==============================================================================================================================================
-      protected override bool BinaryCmpGTE(Number other) => 
-         CompareWith(other, (l, r)  => l >= r);
 
       //==============================================================================================================================================
    }
