@@ -35,4 +35,4 @@
 
 ## Completed with alterations:
 - [x] Math operator functions (probably gen with T4): done without T4.
-- [x] Make princ the default ToString(): solved at Core layer instead, raw is based on ToString while others use ToPrincString / To PrintString.
+- [x] Make princ the default ToString(): solved at Core layer instead, raw is based on ToString while other core funs use ToPrincString / To PrintString.
