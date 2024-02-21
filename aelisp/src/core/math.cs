@@ -14,6 +14,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT Div = (env, argsList) => Number.Div(argsList);
       public static readonly CoreFun.FuncT Mod = (env, argsList) => Integer.Mod(argsList);
       public static readonly CoreFun.FuncT Lsft = (env, argsList) => Integer.Lsft(argsList);
+      public static readonly CoreFun.FuncT Rsft = (env, argsList) => Integer.Rsft(argsList);
 
       //================================================================================================================
       public static readonly CoreFun.FuncT NumEql = (env, argsList) => Truthiness(Number.CmpEql(argsList));
@@ -32,7 +33,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~o.Value));
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
+      // public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
 
       //================================================================================================================
       public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num =>

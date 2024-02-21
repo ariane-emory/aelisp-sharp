@@ -65,6 +65,7 @@ static partial class Ae
       protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
       protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
       protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
+      protected Integer BinaryRsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
 
       //==============================================================================================================================================
       // Impl operators
@@ -74,7 +75,7 @@ static partial class Ae
       public static Integer operator | (Integer left, Integer right) => left.BinaryOr(right);
       public static Integer operator ^ (Integer left, Integer right) => left.BinaryXor(right);
       public static Integer operator << (Integer left, Integer right) => left.BinaryLsft(right);
-      
+      public static Integer operator >> (Integer left, Integer right) => left.BinaryRsft(right);
       
       //==============================================================================================================================================
       // Static methods
@@ -84,6 +85,7 @@ static partial class Ae
       public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryXor(r));
       public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
       public static readonly Func<LispObject, Integer> Lsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
+      public static readonly Func<LispObject, Integer> Rsft = ApplyVariadicIntegerArithmeticFun("right shift", (l, r) => l.BinaryRsft(r));
       //==============================================================================================================================================
       private static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => (list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
