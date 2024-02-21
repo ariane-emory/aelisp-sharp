@@ -83,11 +83,7 @@ static partial class Ae
       {
          var repr = StringRepresentation;
 
-         // return repr is null
-         //    ? $"{TypeName.ToUpper()}<#{Id}>"
-         //    : $"{TypeName.ToUpper()}<#{Id}, {repr}>";
-
-         return repr is null
+          return repr is null
             ? $"{TypeName}(#{Id})"
             : $"{TypeName}(#{Id}, {repr})";
       }
