@@ -9,16 +9,18 @@
   - [ ] the rest of 'em.
 - [ ] C#-level unit tests (XUnit?).
 
-## To Do:
-- [ ] Find an excuse to use T4 somewhere (just to learn how to work with it).
+## To Do - practical:
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
+- [ ] Find an excuse to use T4 somewhere (just to learn how to work with it).
 - [ ] Organize/tidy up building the root and make Main sensible, it's a construction zone ATM.
-- [ ] Sensible/useful command line arguments (maybe find a getopt-like package?).
-- [ ] Binary/hex number tokens?
-- [ ] Rearrange APIs:
+- [ ] Sensible/useful command line arguments, probably similar to Ælisp-C's - maybe find a getopt-like package?.
+- [ ] Rearrange/tidy APIs:
   - [ ] Let's make Envs the main entry point for user-level interaction.
   - [ ] Eliminate mutable globals.
   - [ ] Possibility of multiple, independant 'root' environments.
+
+## To Do - language improvements/'Ælisp 2.0'-ish features:
+- [ ] Binary/hex number tokens?
 - [ ] A radically different (whitespace sensitive?) non-Lispy syntax option that might just evolve into a 2nd language.
 
 ## Completed:
