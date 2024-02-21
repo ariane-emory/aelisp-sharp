@@ -70,6 +70,11 @@ static partial class Ae
       // Impl operators
       //==============================================================================================================================================
       public static Integer operator % (Integer left, Integer right) => left.BinaryMod(right);
+      public static Integer operator & (Integer left, Integer right) => left.BinaryAnd(right);
+      public static Integer operator | (Integer left, Integer right) => left.BinaryOr(right);
+      public static Integer operator ^ (Integer left, Integer right) => left.BinaryXor(right);
+      public static Integer operator << (Integer left, Integer right) => left.BinaryLsft(right);
+      
       
       //==============================================================================================================================================
       // Static methods
