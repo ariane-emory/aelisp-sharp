@@ -21,7 +21,7 @@ static partial class Ae
          {
             var elem = pair.Car;
             var str = fun(elem);
-            
+
             Write(str);
             written += str.Length;
 
@@ -41,17 +41,17 @@ static partial class Ae
                         Char c => $"'{c.ToPrincString()}'",
                         _ => o.ToPrincString()
                      });
-      
+
       //================================================================================================================
-      public static LispObject PrincObj(Env env, LispObject argsList) =>       
+      public static LispObject PrincObj(Env env, LispObject argsList) =>
          WriteOutput(env, argsList, o => o.ToPrincString());
 
       //================================================================================================================
-      public static LispObject PrintObj(Env env, LispObject argsList) => 
+      public static LispObject PrintObj(Env env, LispObject argsList) =>
          WriteOutput(env, argsList, o => $"\n{o.ToPrintString()}");
 
       //================================================================================================================
-      public static LispObject RawObj(Env env, LispObject argsList) =>       
+      public static LispObject RawObj(Env env, LispObject argsList) =>
          WriteOutput(env, argsList, o => o.ToString());
 
       //================================================================================================================
@@ -59,7 +59,7 @@ static partial class Ae
       {
          WriteLine("");
 
-return Nil;
+         return Nil;
       }
 
       //================================================================================================================
