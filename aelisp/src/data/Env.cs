@@ -136,7 +136,6 @@ static partial class Ae
       //================================================================================================================
       public void Set(LookupMode mode, Symbol symbol, LispObject value)
       {
-         // Self-evaluating symbols (nil, t and keywords) cannot be set.
          ThrowIfSymbolIsSelfEvaluating(symbol);
 
          Env current = mode == LookupMode.Global ? GetRoot() : this;
