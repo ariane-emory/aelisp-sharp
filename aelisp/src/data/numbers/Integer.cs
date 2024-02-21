@@ -67,6 +67,11 @@ static partial class Ae
       protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
 
       //==============================================================================================================================================
+      // Impl operators
+      //==============================================================================================================================================
+      public static Integer operator % (Integer left, Integer right) => left.BinaryMod(right);
+      
+      //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
       public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryAnd(r));

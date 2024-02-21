@@ -66,6 +66,10 @@ static partial class Ae
       public static bool operator <= (Number left, Number right) => left.BinaryCmpLTE(right);
       public static bool operator == (Number left, Number right) => left.BinaryCmpEql(right);
       public static bool operator != (Number left, Number right) => !left.BinaryCmpEql(right);
+      public static Number operator + (Number left, Number right) => left.BinaryAdd(right);
+      public static Number operator - (Number left, Number right) => left.BinarySub(right);
+      public static Number operator * (Number left, Number right) => left.BinaryMul(right);
+      public static Number operator / (Number left, Number right) => left.BinaryDiv(right);
       
       //==============================================================================================================================================
       // Abstract instance methods
