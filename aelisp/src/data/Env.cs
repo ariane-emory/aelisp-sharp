@@ -53,18 +53,14 @@ static partial class Ae
       }
 
       //================================================================================================================
-      // Instance methods
+      // Methods
       //================================================================================================================
       public override string ToPrincString() => ToString();
       public bool IsRoot => Parent == Nil;
 
       //================================================================================================================
-      public Env Spawn()
-         => new Env(this, Nil, Nil);
-
-      //================================================================================================================
-      public Env Spawn(LispObject symbols, LispObject values)
-         => new Env(this, symbols, values);
+      public Env Spawn(LispObject symbols, LispObject values) => new Env(this, symbols, values);
+      public Env Spawn() => new Env(this, Nil, Nil);
       
       //================================================================================================================
       protected override string? StringRepresentation
@@ -129,6 +125,33 @@ static partial class Ae
       }
 
       //================================================================================================================
+      public void Set(LookupMode mode, LispObject symbol, LispObject value)
+      {
+         if (symbol is not Symbol)
+            throw new ArgumentException($"{nameof(symbol)} must be a Symbol, got: {symbol}.");
+
+         Set(mode, (Symbol)symbol, value);
+      }
+
+      //================================================================================================================
+      public void Set(LookupMode mode, Symbol symbol, LispObject value)
+      {
+         // Self-evaluating symbols (nil, t and keywords) cannot be set.
+         ThrowIfSymbolIsSelfEvaluating(symbol);
+
+         Env current = mode == LookupMode.Global ? GetRoot() : this;
+
+         var (found, pairOrNil) = current.LookupPair(mode, symbol);
+
+         if (found)
+            ((Pair)pairOrNil).Car = value;
+         else if (mode == LookupMode.Nearest)
+            Add(symbol, value);
+         else
+            current.Add(symbol, value);
+      }
+
+      //================================================================================================================
       private (bool Found, LispObject PairOrNil) LookupPair(LookupMode mode, Symbol symbol)
       {
          DebugWrite($"\nLooking up {symbol} in {this}...");
@@ -176,34 +199,6 @@ static partial class Ae
       {
          if (symbol.IsSelfEvaluating)
             throw new ArgumentException($"Cannot set self-evaluating symbol {this}.");
-      }
-
-
-      //================================================================================================================
-      public void Set(LookupMode mode, LispObject symbol, LispObject value)
-      {
-         if (symbol is not Symbol)
-            throw new ArgumentException($"{nameof(symbol)} must be a Symbol, got: {symbol}.");
-
-         Set(mode, (Symbol)symbol, value);
-      }
-
-      //================================================================================================================
-      public void Set(LookupMode mode, Symbol symbol, LispObject value)
-      {
-         // Self-evaluating symbols (nil, t and keywords) cannot be set.
-         ThrowIfSymbolIsSelfEvaluating(symbol);
-
-         Env current = mode == LookupMode.Global ? GetRoot() : this;
-
-         var (found, pairOrNil) = current.LookupPair(mode, symbol);
-
-         if (found)
-            ((Pair)pairOrNil).Car = value;
-         else if (mode == LookupMode.Nearest)
-            Add(symbol, value);
-         else
-            current.Add(symbol, value);
       }
 
       //================================================================================================================
