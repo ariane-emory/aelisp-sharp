@@ -8,8 +8,8 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred)
-       => (Env env, LispObject argsList) =>
+      private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred) =>
+         (Env env, LispObject argsList) =>
        {
           if (argsList.IsImproperList)
              throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -18,8 +18,8 @@ static partial class Ae
        };
 
       //=================================================================================================================
-      private static CoreFun.FuncT UnaryPredicateFun<T1>(Func<T1, bool> pred)
-       => (Env env, LispObject argsList) =>
+      private static CoreFun.FuncT UnaryPredicateFun<T1>(Func<T1, bool> pred) =>
+         (Env env, LispObject argsList) =>
        {
           if (argsList.IsImproperList)
              throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
@@ -32,25 +32,25 @@ static partial class Ae
           throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
        };
 
-        //=================================================================================================================
-        public static LispObject PositiveP(Env env, LispObject argsList) =>
-           UnaryPredicateFun(num => num switch
-           {
-               Integer integer => integer.Value > 0,
-               Float floatObj => floatObj.Value > 0,
-               Rational rational => rational.Numerator > 0,
-               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-           })(env, argsList);
-
-        //=================================================================================================================
-        public static LispObject NegativeP(Env env, LispObject argsList) =>
+      //=================================================================================================================
+      public static LispObject PositiveP(Env env, LispObject argsList) =>
          UnaryPredicateFun(num => num switch
          {
-            Integer integer => integer.Value < 0,
-            Float floatObj => floatObj.Value < 0,
-            Rational rational => rational.Numerator < 0,
+            Integer integer => integer.Value > 0,
+            Float floatObj => floatObj.Value > 0,
+            Rational rational => rational.Numerator > 0,
             _ => throw new ArgumentException($"Argument must be a number, not {num}!")
          })(env, argsList);
+
+      //=================================================================================================================
+      public static LispObject NegativeP(Env env, LispObject argsList) =>
+       UnaryPredicateFun(num => num switch
+       {
+          Integer integer => integer.Value < 0,
+          Float floatObj => floatObj.Value < 0,
+          Rational rational => rational.Numerator < 0,
+          _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+       })(env, argsList);
 
       //=================================================================================================================
       public static LispObject KeywordP(Env env, LispObject argsList) =>
@@ -71,7 +71,7 @@ static partial class Ae
       public static LispObject TailP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsList)
          (env, argsList);
-      
+
       //=================================================================================================================
       public static LispObject AtomP(Env env, LispObject argsList) =>
          UnaryPredicateFun(o => o.IsAtom)
