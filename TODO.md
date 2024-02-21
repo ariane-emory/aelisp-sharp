@@ -12,6 +12,7 @@
 - [ ] C#-level unit tests (XUnit?).
 
 ## To Do - practical:
+- [ ] Public op/cmp methods on Number might warrant friendlier names. Uncertain about overriding actual operators, I kinda like the explicit methods.
 - [ ] Make sure the main tokenizer call entry points are all using appropriate _exclude filters, whitespace and all comments are boring for now.
 - [ ] Make that test of handling ParseErrors nicely more useful. Move it into LispTokenizer and use in Next()/ReadAll() probably?
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
