@@ -1,4 +1,4 @@
-using static System.Console;
+susing static System.Console;
 using static Ae;
 
 //======================================================================================================================
@@ -28,12 +28,7 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
       public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.BitXor(argsList);
-
-      //================================================================================================================
       public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~o.Value));
-
-      //================================================================================================================
-      // public static readonly CoreFun.FuncT Rsft = PureBinaryFun<Integer, Integer>((val, sft) => new Integer(val.Value >> sft.Value));
 
       //================================================================================================================
       public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num =>
