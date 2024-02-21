@@ -1,5 +1,7 @@
 ## To Do - replicating features from the C impelemtation of Ælisp:
-- [ ] plist handling (data layer/core).
+- [ ] plist handling:
+  - [ ] data layer.
+  - [ ] core layer.
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] OS interaction functions (data layer/core).
