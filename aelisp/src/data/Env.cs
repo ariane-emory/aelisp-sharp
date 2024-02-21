@@ -7,17 +7,17 @@ static partial class Ae
    public class Env : LispObject
    {
       //================================================================================================================
-      // Public types
+      // Types
       //================================================================================================================
       public enum LookupMode { Local, Nearest, Global };
 
       //================================================================================================================
-      // Public static properties
+      // Static properties
       //================================================================================================================
       public static bool EnableDebugWrite { get; set; } = false;
 
       //================================================================================================================
-      // Public static methods
+      // Static methods
       //================================================================================================================
       private static void DebugWrite(string s)
       {
@@ -26,7 +26,7 @@ static partial class Ae
       }
 
       //================================================================================================================
-      // Public properties
+      // Properties
       //================================================================================================================
       public LispObject Parent { get; }
       public LispObject Symbols { get; private set; }
@@ -35,6 +35,7 @@ static partial class Ae
       //================================================================================================================
       // Constructor
       //================================================================================================================
+      public Env(LispObject parent): this(parent, Nil, Nil) {}
       public Env(LispObject parent, LispObject symbols, LispObject values)
       {
          if (!((parent is Env) || parent == Nil))
@@ -49,17 +50,6 @@ static partial class Ae
          Parent = parent;
          Symbols = symbols;
          Values = values;
-      }
-
-      //================================================================================================================
-      public Env(LispObject parent)
-      {
-         if (!((parent is Env) || parent.IsNil))
-            throw new ArgumentException("Parent must be an Env or Nil");
-
-         Parent = parent;
-         Symbols = Nil;
-         Values = Nil;
       }
 
       //================================================================================================================
