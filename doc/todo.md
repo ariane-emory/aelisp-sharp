@@ -1,15 +1,19 @@
-To Do - replicatinc features from C impelemtation of Ælisp:
+To Do - replicating features from C impelemtation of Ælisp:
+- [ ] plist handling (data layer/core).
+- [ ] Implement REPL, maybe use ReadLine package?
+- [ ] Find sensible/useful things for this implementation to put in object properties.
+- [ ] OS interaction functions (data layer/core).
+- [ ] C#-level unit tests (XUnit?).
+
+To Do:
+- [ ] Refactor the stdlib and tests into it's own repo and try running it.
+- [ ] Organize/tidy up building the root and make Main sensible, it's a construction zone ATM.
+- [ ] Binary/hex number tokens?
 - [ ] Rearrange APIs:
   - [ ] Let's make Envs the main entry point for user-level interaction.
   - [ ] Eliminate mutable globals.
-  - [ ] Binary/hex number tokens?
-- [ ] C#-level unit tests (XUnit?).
-- [ ] Refactor the stdlib and tests into it's own repo and try running it.
-- [ ] OS interaction functions (data layer/core).
-- [ ] Organize building the root and make Main sensible, it's a construction zone ATM.
-- [ ] Find sensible/useful things for this implementation to put in object properties.
-- [ ] Implement REPL, maybe use ReadLine package?
-- [ ] plist handling (data layer/core).
+  - [ ] Possibility of multiple, independant 'root' environments.
+- [ ] A radically different (whitespace sensitive?) non-Lispy syntax option that might just evolve into a 2nd language.
 
 Completed with alterations:
 - [x] Math comparison functions.
