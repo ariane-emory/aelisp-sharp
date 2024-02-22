@@ -22,8 +22,8 @@ static partial class Ae
             if (arg1 is Rational rational)
                return Truthiness(val == rational.Numerator);
 
-            throw new ArgumentException($"Argument must be a symbol, not {arg1}!");
-         };
+            throw new ArgumentException($"argument must be a Number, not {arg1}!");
+          };
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ZeroP = NumericEqualityPredicateFun(0);

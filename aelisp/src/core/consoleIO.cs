@@ -11,8 +11,7 @@ static partial class Ae
       //================================================================================================================
       public static LispObject WriteOutput(Env env, LispObject argsList, Func<LispObject, string> fun)
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          int written = 0;
          LispObject current = argsList;
@@ -23,7 +22,7 @@ static partial class Ae
             var str = fun(elem);
 
             Write(str);
-            
+
             written += str.Length;
             current = pair.Cdr;
          }

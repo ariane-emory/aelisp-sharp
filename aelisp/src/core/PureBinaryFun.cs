@@ -11,8 +11,7 @@ static partial class Ae
       private static CoreFun.FuncT PureBinaryFun(Func<LispObject, LispObject, LispObject> func)
          => (Env env, LispObject argsList) =>
           {
-             if (argsList.IsImproperList)
-                throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+             ThrowUnlessIsProperList("argsList", argsList);
 
              var arg1 = ((Pair)argsList)[0];
              var arg2 = ((Pair)argsList)[1];
@@ -26,8 +25,7 @@ static partial class Ae
           where T2 : LispObject
           => (Env env, LispObject argsList) =>
           {
-             if (argsList.IsImproperList)
-                throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+             ThrowUnlessIsProperList("argsList", argsList);;
 
              var arg1 = ((Pair)argsList)[0];
              var arg2 = ((Pair)argsList)[1];
@@ -35,7 +33,7 @@ static partial class Ae
              if (arg1 is T1 typedArg1 && arg2 is T2 typedArg2)
                 return func(typedArg1, typedArg2);
 
-             throw new ArgumentException($"Arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}");
+             throw new ArgumentException($"arguments must be of types {typeof(T1).Name} and {typeof(T2).Name}!");
           };
 
       //=================================================================================================================
@@ -45,38 +43,6 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT NewRational =
          PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT BinaryAdd =
-      //    PureBinaryFun<Number, Number>((left, right) => {
-      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-      //       return leftNumber.BinaryAdd(rightNumber);
-      //    });
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT BinarySub =
-      //    PureBinaryFun<Number, Number>((left, right) => {
-      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-      //       return leftNumber.BinarySub(rightNumber);
-      //    });
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT BinaryMul =
-      //    PureBinaryFun<Number, Number>((left, right) => {
-      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-      //       return leftNumber.BinaryMul(rightNumber);
-      //    });
-
-      // //=================================================================================================================
-      // public static readonly CoreFun.FuncT BinaryDiv =
-      //    PureBinaryFun<Number, Number>((left, right) => {
-      //       var (leftNumber, rightNumber) = ThrowUnlessNumbers(left, right);
-
-      //       return leftNumber.BinaryDiv(rightNumber);
-      //    });
 
       //================================================================================================================
    }

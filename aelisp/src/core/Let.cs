@@ -57,10 +57,9 @@ static partial class Ae
       private static void ValidateLetArguments(LispObject arg0, LispObject body)
       {
          if (!(arg0 is Pair varlist))
-            throw new ArgumentException($"varlist must be a list, not {arg0.ToPrincString()}!");
+            throw new ArgumentException($"varlist must be a non-empty list, not {arg0.ToPrincString()}!");
 
-         if (varlist.IsImproperList)
-            throw new ArgumentException($"varlist must be a proper list, not {varlist.ToPrincString()}!");
+         ThrowUnlessIsProperList("varlist", varlist);
 
          LispObject current = varlist;
 
@@ -68,7 +67,7 @@ static partial class Ae
             if (current is Pair currentVarPair)
             {
                if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
-                  throw new ArgumentException($"varlist items must be pairs with two elements, not {currentVarPair}");
+                  throw new ArgumentException($"varlist items must be proper lists with two elements, not {currentVarPair}!");
 
                if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
                   throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
@@ -80,20 +79,22 @@ static partial class Ae
             }
             else
             {
-               throw new ArgumentException($"varlist items must be symbols or pairs whose first element is a "
-                                           + $"let-bindable symbol, not {current}");
+               throw new ArgumentException($"varlist items must be symbols or proper lists with two elements " +
+                                           "pairs whose first element is a "
+                                           + $"let-bindable symbol, not {current}!");
             }
 
-         if (body.IsImproperList)
-            throw new ArgumentException($"body must be a proper list, not {body.ToPrincString()}!");
+         ThrowUnlessIsProperList("body", body);
 
          if (body.IsNil)
-            throw new ArgumentException("body cannot be empty");
+            throw new ArgumentException("body cannot be empty!");
       }
 
       //================================================================================================================
       private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
       {
+         ThrowUnlessIsProperList("varlist", varlist);
+
          while (!varlist.IsNil)
          {
             var sym = Nil;

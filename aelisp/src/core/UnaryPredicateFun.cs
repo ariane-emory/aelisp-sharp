@@ -11,9 +11,7 @@ static partial class Ae
       private static CoreFun.FuncT UnaryPredicateFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList) =>
        {
-          if (argsList.IsImproperList)
-             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
-
+          ThrowUnlessIsProperList("argsList", argsList);
           return Truthiness(pred(((Pair)argsList)[0]));
        };
 
@@ -21,25 +19,24 @@ static partial class Ae
       private static CoreFun.FuncT UnaryPredicateFun<T1>(Func<T1, bool> pred) =>
          (Env env, LispObject argsList) =>
        {
-          if (argsList.IsImproperList)
-             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
-
+          ThrowUnlessIsProperList("argsList", argsList);
+          
           var arg1 = ((Pair)argsList)[0];
 
           if (arg1 is T1 typedArg1)
              return Truthiness(pred(typedArg1));
 
-          throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
+          throw new ArgumentException($"argument must be of type {typeof(T1).Name}!");
        };
 
       //=================================================================================================================
       public static LispObject PositiveP(Env env, LispObject argsList) =>
          UnaryPredicateFun(num => num switch
          {
-            Integer integer => integer.Value > 0,
-            Float floatObj => floatObj.Value > 0,
-            Rational rational => rational.Numerator > 0,
-            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+            Integer integer => integer.Value >= 0,
+            Float floatObj => floatObj.Value >= 0,
+            Rational rational => rational.Numerator >= 0,
+            _ => throw new ArgumentException($"argument must be a Number, not {num}!")
          })(env, argsList);
 
       //=================================================================================================================
@@ -49,7 +46,7 @@ static partial class Ae
           Integer integer => integer.Value < 0,
           Float floatObj => floatObj.Value < 0,
           Rational rational => rational.Numerator < 0,
-          _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+          _ => throw new ArgumentException($"argument must be a Number, not {num}!")
        })(env, argsList);
 
       //=================================================================================================================

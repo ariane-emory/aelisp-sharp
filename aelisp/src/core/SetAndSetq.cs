@@ -10,8 +10,7 @@ static partial class Ae
       //=================================================================================================================
       private static LispObject SetInternal(Env env, LispObject argsList, bool evaluateValues)
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          if (argsList.Length % 2 != 0)
             throw new ArgumentException("setq requires an even number of arguments!");
@@ -24,10 +23,10 @@ static partial class Ae
             var valueOrValueExpression = ((Pair)currentPair.Cdr).Car;
 
             if (!(pairHead is Symbol sym))
-               throw new ArgumentException($"The first element of each pair must be a symbol, not {pairHead}.");
+               throw new ArgumentException($"first element of each pair must be a symbol, not {pairHead}!");
 
             if (sym.IsKeyword || sym.IsSelfEvaluating)
-               throw new ArgumentException($"symbol {sym} may not be set.");
+               throw new ArgumentException($"symbol {sym} may not be set!");
 
             var evaluatedValue = evaluateValues ? valueOrValueExpression.Eval(env) : valueOrValueExpression;
 

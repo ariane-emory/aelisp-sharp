@@ -11,8 +11,7 @@ static partial class Ae
       private static CoreFun.FuncT ShortCircuitingSpecialFun(Func<LispObject, bool> pred) =>
          (env, argsList) =>
          {
-            if (argsList.IsImproperList)
-               throw new ArgumentException($"argList must be a proper list, not {argsList}!");
+            ThrowUnlessIsProperList("argsList", argsList);
 
             var result = Nil;
 

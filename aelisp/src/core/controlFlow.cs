@@ -167,8 +167,7 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Case = (env, argsList) =>
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          // if (!(argsList is Pair argsPair))
          //   throw new ArgumentException($"{nameof(argsList)} is not a list, something has gone wrong.");
@@ -181,22 +180,21 @@ static partial class Ae
          bool elseFound = false;
          var current = caseForms;
 
-         if (caseForms.IsImproperList)
-            throw new ArgumentException("case forms must be a proper list");
+         ThrowUnlessIsProperList("caseForms", caseForms);
 
          while (current is Pair currentPair)
          {
             var caseItem = currentPair.Car;
 
             if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
-               throw new ArgumentException("case forms elements must be proper lists");
+               throw new ArgumentException("caseForms elements must be proper lists!");
 
             var caseItemCar = caseItemPair.Car;
 
             if (caseItemCar == Intern("else"))
             {
                if (elseFound)
-                  throw new ArgumentException("Only one else clause is allowed in a case expression");
+                  throw new ArgumentException("only one else clause is allowed in a case expression!");
 
                elseFound = true;
             }

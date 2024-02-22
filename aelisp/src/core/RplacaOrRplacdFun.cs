@@ -11,14 +11,13 @@ static partial class Ae
       private static CoreFun.FuncT RplacaOrRplacdFun(Action<Pair, LispObject> action) =>
          (Env env, LispObject argsList) =>
          {
-            if (argsList.IsImproperList)
-               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+            ThrowUnlessIsProperList("argsList", argsList);
 
             var arg1 = ((Pair)argsList)[0];
             var arg2 = ((Pair)argsList)[1];
 
             if (arg1 is not Pair pair)
-               throw new ArgumentException("First argument must be a cons cell!");
+               throw new ArgumentException("first argument must be a cons cell!");
 
             action(pair, arg2);
 

@@ -28,10 +28,10 @@ static partial class Ae
          var body = ((Pair)argsList)[1];
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
-            throw new ArgumentException($"Lambda list must be a list or a symbol, not {lambdaList.ToPrincString()}!");
+            throw new ArgumentException($"lambda list must be a list or a symbol, not {lambdaList.ToPrincString()}!");
 
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
-            throw new ArgumentException($"Can't use {symbol.ToPrincString()} as a parameter!");
+            throw new ArgumentException($"can't use {symbol.ToPrincString()} as a parameter!");
 
          ThrowUnlessIsProperList("body", body);
 
@@ -40,13 +40,13 @@ static partial class Ae
          while (currentParam is Pair currentParamPair)
          {
             if (!IsPermittedParamSymbol(currentParamPair.Car))
-               throw new ArgumentException($"Can't use {currentParamPair.Car.ToPrincString()} as a parameter!");
+               throw new ArgumentException($"can't use {currentParamPair.Car.ToPrincString()} as a parameter!");
 
             currentParam = currentParamPair.Cdr;
          }
 
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
-            throw new ArgumentException($"Can't use {currentParam.ToPrincString()} as a parameter!");
+            throw new ArgumentException($"can't use {currentParam.ToPrincString()} as a parameter!");
 
          return create(env, lambdaList, body);
       }

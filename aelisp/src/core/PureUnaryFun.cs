@@ -11,8 +11,7 @@ static partial class Ae
       private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func)
          => (Env env, LispObject argsList) =>
          {
-            if (argsList.IsImproperList)
-               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+            ThrowUnlessIsProperList("argsList", argsList);
 
             return func(((Pair)argsList)[0]);
          };
@@ -22,15 +21,14 @@ static partial class Ae
        where T1 : LispObject
        => (Env env, LispObject argsList) =>
        {
-          if (argsList.IsImproperList)
-             throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+          ThrowUnlessIsProperList("argsList", argsList);
 
           var arg1 = ((Pair)argsList)[0];
 
           if (arg1 is T1 typedArg1)
              return func(typedArg1);
 
-          throw new ArgumentException($"Argument must be of type {typeof(T1).Name}");
+          throw new ArgumentException($"argument must be of type {typeof(T1).Name}, not {arg1}!");
        };
 
       //=================================================================================================================
@@ -41,7 +39,7 @@ static partial class Ae
                Integer integer => (LispObject)new Integer(integer.Value + 1),
                Float floatObj => (LispObject)new Float(floatObj.Value + 1),
                Rational rational => (LispObject)new Rational(rational.Numerator + rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+               _ => throw new ArgumentException($"argument must be a Number, not {num}!")
             });
 
       //=================================================================================================================
@@ -52,7 +50,7 @@ static partial class Ae
                Integer integer => (LispObject)new Integer(integer.Value - 1),
                Float floatObj => (LispObject)new Float(floatObj.Value - 1),
                Rational rational => (LispObject)new Rational(rational.Numerator - rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+               _ => throw new ArgumentException($"argument must be a Number, not {num}!")
             });
 
       //=================================================================================================================
