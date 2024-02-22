@@ -408,6 +408,7 @@ class Program
       Do("(length '(1 2 3))");
 
       WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
+      WriteLine(new Integer(1).Eql(new Float(1.0)));
     }
 
    //==============================================================================================================================

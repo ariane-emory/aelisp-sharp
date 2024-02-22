@@ -112,7 +112,8 @@ static partial class Ae
 
          if ((this is Number thisNumber) &&
              (that is Number thatNumber) &&
-             Number.CmpEql(Cons(this, Cons(that, Nil))))
+             thisNumber == thatNumber)
+             //Number.CmpEql(Cons(this, Cons(that, Nil))))
             return true;
          
          return false;
