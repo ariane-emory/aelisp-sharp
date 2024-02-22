@@ -37,7 +37,7 @@ static partial class Ae
                return func(typedArg1, typedArg2, typedArg3);
             
             throw new ArgumentException($"arguments must be of types {typeof(T1).Name}, {typeof(T2).Name} " +
-                                        "and {typeof(T3).Name}!");
+                                        "and {typeof(T3).Name}, not {argsList.ToPrincString()}!");
          };
       
       //================================================================================================================

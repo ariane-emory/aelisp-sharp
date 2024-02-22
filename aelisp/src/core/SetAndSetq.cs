@@ -13,7 +13,7 @@ static partial class Ae
          ThrowUnlessIsProperList("argsList", argsList);
 
          if (argsList.Length % 2 != 0)
-            throw new ArgumentException("setq requires an even number of arguments!");
+            throw new ArgumentException("setq requires an even number of arguments, not {argsList.ToPrincString()}!");
 
          var result = Nil;
 
@@ -23,10 +23,10 @@ static partial class Ae
             var valueOrValueExpression = ((Pair)currentPair.Cdr).Car;
 
             if (!(pairHead is Symbol sym))
-               throw new ArgumentException($"first element of each pair must be a symbol, not {pairHead}!");
+               throw new ArgumentException($"first element of each pair must be a symbol, not {pairHead.ToPrincString()}!");
 
             if (sym.IsKeyword || sym.IsSelfEvaluating)
-               throw new ArgumentException($"symbol {sym} may not be set!");
+               throw new ArgumentException($"symbol {sym.ToPrincString()} may not be set!");
 
             var evaluatedValue = evaluateValues ? valueOrValueExpression.Eval(env) : valueOrValueExpression;
 

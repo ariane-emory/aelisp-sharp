@@ -13,16 +13,10 @@ static partial class Ae
          {
             var arg1 = ((Pair)argsList)[0];
 
-            if (arg1 is Integer integer)
-               return Truthiness(val == integer.Value);
+            if (arg1 is Number number)
+               return Truthiness(new Integer(val) == number);
 
-            if (arg1 is Float floatObj)
-               return Truthiness(val == floatObj.Value);
-
-            if (arg1 is Rational rational)
-               return Truthiness(val == rational.Numerator);
-
-            throw new ArgumentException($"argument must be a Number, not {arg1}!");
+            throw new ArgumentException($"argument must be a Number, not {arg1.ToPrincString()}!");
           };
 
       //=================================================================================================================

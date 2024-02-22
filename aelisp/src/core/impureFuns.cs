@@ -13,7 +13,7 @@ static partial class Ae
          ThrowUnlessIsProperList("argsList", argsList);
 
          if (argsList.Length > 1)
-            throw new ArgumentException($"argsList must have exactly one element, not {argsList}!");
+            throw new ArgumentException($"argsList must have exactly one element, not {argsList.ToPrincString()}!");
          
          return ((Pair)argsList)[0].Eval(env);
       };
@@ -24,7 +24,7 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT ThrowNotImplemented = (env, argsList) => 
       {
-         throw new NotImplementedException("not implementes!");
+         throw new NotImplementedException("not implemented!");
       };
 
    //=================================================================================================================
@@ -35,7 +35,7 @@ static partial class Ae
         var arg1 = ((Pair)argsList)[0];
 
          if (arg1 is not Symbol sym)
-           throw new ArgumentException($"argument must be a symbol, not {arg1}!");
+           throw new ArgumentException($"argument must be a symbol, not {arg1.ToPrincString()}!");
 
         var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
 

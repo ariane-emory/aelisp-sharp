@@ -17,7 +17,7 @@ static partial class Ae
             var arg2 = ((Pair)argsList)[1];
 
             if (arg1 is not Pair pair)
-               throw new ArgumentException("first argument must be a cons cell!");
+               throw new ArgumentException("first argument must be a cons cell, not {arg1.ToPrincString()}!");
 
             action(pair, arg2);
 

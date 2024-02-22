@@ -39,7 +39,7 @@ static partial class Ae
           Integer numInteger => numInteger,
           Float numFloat => new Integer((int)Math.Floor(numFloat.Value)),
           Rational numRational => new Integer((int)Math.Floor((double)numRational.Numerator / numRational.Denominator)),
-          _ => throw new ArgumentException($"argument must be a number, not {num}!")
+          _ => throw new ArgumentException($"argument must be a number, not {num.ToPrincString()}!")
        });
 
 

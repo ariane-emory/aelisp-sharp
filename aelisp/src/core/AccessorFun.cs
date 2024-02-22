@@ -15,7 +15,7 @@ static partial class Ae
           if (o is ThisLispObjT typed)
              return construct(getField(typed));
 
-          throw new ArgumentException($"argument must be a string, not {o}!");
+          throw new ArgumentException($"argument must be a string, not {o.ToPrincString()}!");
        });
 
       //=================================================================================================================

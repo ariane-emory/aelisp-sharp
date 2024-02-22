@@ -11,17 +11,17 @@ static partial class Ae
       public static readonly CoreFun.FuncT Repeat = (env, argsList) =>
       {
          if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+            throw new ArgumentException($"argsList must be a proper list, not {argsList.ToPrincString()}!");
 
          var first_arg = ((Pair)argsList).Car.Eval(env);
          var body = ((Pair)argsList).Cdr;
          var result = Nil;
 
          if (body.IsImproperList)
-            throw new ArgumentException("body must be a proper list");
+            throw new ArgumentException("body must be a proper list, not {body.ToPrincString()}!");
 
          if (!((first_arg is Integer times) && (times.Value >= 0)))
-            throw new ArgumentException($"repeat requires a positive integer as its first argument, not {first_arg}!");
+            throw new ArgumentException($"repeat requires a positive integer as its first argument, not {first_arg.ToPrincString()}!");
 
          for (int ix = 0; ix < times.Value; ix++)
             result = Progn(env, body);
@@ -33,15 +33,13 @@ static partial class Ae
       private static CoreFun.FuncT WhileOrUntilSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList) =>
          {
-            if (argsList.IsImproperList)
-               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+            ThrowUnlessIsProperList("argsList", argsList);
 
             var test = ((Pair)argsList).Car;
             var body = ((Pair)argsList).Cdr;
             var result = Nil;
 
-            if (body.IsImproperList)
-               throw new ArgumentException("body must be a proper list");
+            ThrowUnlessIsProperList("body", body);
 
             while (pred(test.Eval(env)))
                result = Progn(env, body);
@@ -61,15 +59,13 @@ static partial class Ae
       private static CoreFun.FuncT WhenOrUnlessSpecialFun(Func<LispObject, bool> pred) =>
          (Env env, LispObject argsList) =>
          {
-            if (argsList.IsImproperList)
-               throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+            ThrowUnlessIsProperList("argsList", argsList);
 
             var test = ((Pair)argsList).Car;
             var body = ((Pair)argsList).Cdr;
 
-            if (body.IsImproperList)
-               throw new ArgumentException("body must be a proper list");
-
+            ThrowUnlessIsProperList("body", body);
+            
             return pred(test.Eval(env))
                ? Progn(env, body)
                : Nil;
@@ -86,15 +82,13 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT If = (env, argsList) =>
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          var if_cond = ((Pair)argsList).Car;
          var then_branch = ((Pair)((Pair)argsList).Cdr).Car;
          var else_branch = ((Pair)((Pair)argsList).Cdr).Cdr;
 
-         if (else_branch.IsImproperList)
-            throw new ArgumentException("else body must be a proper list");
+         ThrowUnlessIsProperList("else_branch", else_branch);
 
          return !if_cond.Eval(env).IsNil
             ? then_branch.Eval(env)
@@ -104,22 +98,20 @@ static partial class Ae
       //================================================================================================================
       public static readonly CoreFun.FuncT Cond = (env, argsList) =>
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          // First pass: Validation
          bool elseFound = false;
          var current = argsList;
 
-         if (current.IsImproperList)
-            throw new ArgumentException("cond arguments must be a proper list");
+         ThrowUnlessIsProperList("cond argumentss", current);
 
          while (current is Pair currentPair)
          {
             var condItem = currentPair.Car;
 
             if (!(condItem is Pair condItemPair) || condItemPair.Cdr.IsNil)
-               throw new ArgumentException("cond arguments must be proper lists with at least two elements");
+               throw new ArgumentException("cond arguments must be proper lists with at least two elements, not {condItem.ToPrincString()}!");
 
             var itemCar = condItemPair.Car;
 
@@ -187,7 +179,7 @@ static partial class Ae
             var caseItem = currentPair.Car;
 
             if (!(caseItem is Pair caseItemPair && caseItemPair.IsProperList))
-               throw new ArgumentException("caseForms elements must be proper lists!");
+               throw new ArgumentException("caseForms elements must be proper lists, not {caseItem.ToPrincString()}!");
 
             var caseItemCar = caseItemPair.Car;
 

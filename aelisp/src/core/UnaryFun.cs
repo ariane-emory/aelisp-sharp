@@ -28,7 +28,7 @@ static partial class Ae
           if (arg1 is T1 typedArg1)
              return func(typedArg1);
 
-          throw new ArgumentException($"argument must be of type {typeof(T1).Name}, not {arg1}!");
+          throw new ArgumentException($"argument must be of type {typeof(T1).Name}, not {arg1.ToPrincString()}!");
        };
 
       //=================================================================================================================
@@ -39,7 +39,7 @@ static partial class Ae
                Integer integer => (LispObject)new Integer(integer.Value + 1),
                Float floatObj => (LispObject)new Float(floatObj.Value + 1),
                Rational rational => (LispObject)new Rational(rational.Numerator + rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"argument must be a Number, not {num}!")
+               _ => throw new ArgumentException($"argument must be a Number, not {num.ToPrincString()}!")
             });
 
       //=================================================================================================================
@@ -50,7 +50,7 @@ static partial class Ae
                Integer integer => (LispObject)new Integer(integer.Value - 1),
                Float floatObj => (LispObject)new Float(floatObj.Value - 1),
                Rational rational => (LispObject)new Rational(rational.Numerator - rational.Denominator, rational.Denominator),
-               _ => throw new ArgumentException($"argument must be a Number, not {num}!")
+               _ => throw new ArgumentException($"argument must be a Number, not {num.ToPrincString()}!")
             });
 
       //=================================================================================================================

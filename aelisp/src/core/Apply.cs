@@ -32,7 +32,7 @@ static partial class Ae
          var arg1 = ((Pair)argsList)[0];
 
          if (!(argsList is Pair argsListPair))
-            throw new ArgumentException($"argsList must be a pair, not {argsList}!");
+            throw new ArgumentException($"argsList must be a pair, not {argsList.ToPrincString()}!");
 
          ApplyLog($"argListPair:    {argsListPair.ToPrincString()}");
 

@@ -26,7 +26,7 @@ static partial class Ae
           if (arg1 is T1 typedArg1)
              return Truthiness(pred(typedArg1));
 
-          throw new ArgumentException($"argument must be of type {typeof(T1).Name}!");
+          throw new ArgumentException($"argument must be of type {typeof(T1).Name}, not {arg1.ToPrincString()}!");
        };
 
       //=================================================================================================================
@@ -36,7 +36,7 @@ static partial class Ae
             Integer integer => integer.Value >= 0,
             Float floatObj => floatObj.Value >= 0,
             Rational rational => rational.Numerator >= 0,
-            _ => throw new ArgumentException($"argument must be a Number, not {num}!")
+            _ => throw new ArgumentException($"argument must be a Number, not {num.ToPrincString()}!")
          })(env, argsList);
 
       //=================================================================================================================
@@ -46,7 +46,7 @@ static partial class Ae
           Integer integer => integer.Value < 0,
           Float floatObj => floatObj.Value < 0,
           Rational rational => rational.Numerator < 0,
-          _ => throw new ArgumentException($"argument must be a Number, not {num}!")
+          _ => throw new ArgumentException($"argument must be a Number, not {num.ToPrincString()}!")
        })(env, argsList);
 
       //=================================================================================================================
