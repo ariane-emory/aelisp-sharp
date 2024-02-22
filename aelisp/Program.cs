@@ -455,15 +455,16 @@ class Program
 (naive-fib 10)
 
 (setq memo-plist '(2 1 1 1))
-(sstq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
-(setq memo-fib        
-  (lambda (nth) 
-   (let* ((fib (lambda (xxx)
-                (let ((memoized (plist-get memo-plist  xxx)))
-                 (or memoized (memoize  xxx (+ (fib (- xxx 1)) (fib (- xxx 2)))))))))
-   (fib nth))))
+(setq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
+(setq fib        
+  (lambda (nth)
+    (princ ""\nmemo-plist is: "" memo-plist)
+    (princ ""nth is:          "" nth)
+    (let ((memoized (plist-get memo-plist nth)))
+      (or memoized
+          (+ (fib (- nth 1)) (fib (- nth 2)))))))
 
-(memo-fib 5)
+(fib 5)
 ";
 
       var tokens = Tokenize(fib);
