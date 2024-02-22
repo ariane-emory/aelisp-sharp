@@ -36,7 +36,7 @@ static partial class Ae
       };
 
       //===================================================================================================================
-      private static LispObject LetInternal(Env env, LispObject argsList, bool bindInNewEnv)
+      private static LispObject LetInternal(Env env, LispObject argsList, bool lookupInNewEnv)
       {
          ThrowUnlessIsProperList("argsList", argsList);
 
@@ -48,7 +48,7 @@ static partial class Ae
          var varlist = (Pair)arg0;
          var newEnv = env.Spawn(Nil, Nil);
 
-         BindVarlistInEnv(varlist, bindInNewEnv ? newEnv : env, newEnv);
+         BindVarlistInEnv(varlist, lookupInNewEnv ? newEnv : env, newEnv);
 
          return Core.Progn(newEnv, body);
       }
@@ -97,6 +97,12 @@ static partial class Ae
       //================================================================================================================
       private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
       {
+         WriteLine($"lookupEnv: {lookupEnv.ToPrincString()}");
+         WriteLine($"bindEnv: {bindEnv.ToPrincString()}");
+
+         if (lookupEnv == bindEnv)
+            WriteLine("(same env)");
+
          ThrowUnlessIsProperList("varlist", varlist);
 
          var current = varlist;
