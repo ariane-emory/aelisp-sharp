@@ -438,6 +438,9 @@ class Program
       plist = PlistNonmutatingSet(plist, Intern("category"), new String("Dog"));
       WriteLine(plist.ToPrincString());
       
+      plist = PlistNonmutatingSet(plist, Intern("color"), new String("brown"));
+      WriteLine(plist.ToPrincString());
+      
     }
 
    //==============================================================================================================================

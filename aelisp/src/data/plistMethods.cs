@@ -101,17 +101,18 @@ static partial class Ae
       // first, we'll loop through the last adding all items before the key to reversedNewList (in reverse order, for now):
       while (current is Pair currentPair)
       {
+         reversedNewList = Cons(currentPair.Car, reversedNewList);
+
          if (currentPair.Car.Equals(key))
             break;
 
-         reversedNewList = Cons(currentPair.Car, reversedNewList);
          current = currentPair.Cdr;
       }
 
-      // then, we'll add the new key/value pair to reversedNewList, also in reverse:
-      reversedNewList = Cons(value, Cons(key, reversedNewList));
+      // then, we'll add the new value onto reversedNewList:
+      reversedNewList = Cons(value, reversedNewList);
 
-      // now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
+      // by now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
       // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList:
 
       current = ((Pair)((Pair)current).Cdr).Cdr;
