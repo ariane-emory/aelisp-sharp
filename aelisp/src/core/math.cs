@@ -1,4 +1,4 @@
-susing static System.Console;
+using static System.Console;
 using static Ae;
 
 //======================================================================================================================
@@ -28,17 +28,17 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.BitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.BitOr(argsList);
       public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.BitXor(argsList);
-      public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => new Integer(~o.Value));
+      public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => ~o);
 
       //================================================================================================================
       public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num =>
-         num switch
-         {
-            Integer numInteger => numInteger,
-            Float numFloat => new Integer((int)Math.Floor(numFloat.Value)),
-            Rational numRational => new Integer((int)Math.Floor((double)numRational.Numerator / numRational.Denominator)),
-            _ => throw new ArgumentException($"Argument must be a number, not {num}!")
-         });
+       num switch
+       {
+          Integer numInteger => numInteger,
+          Float numFloat => new Integer((int)Math.Floor(numFloat.Value)),
+          Rational numRational => new Integer((int)Math.Floor((double)numRational.Numerator / numRational.Denominator)),
+          _ => throw new ArgumentException($"Argument must be a number, not {num}!")
+       });
 
 
       //================================================================================================================

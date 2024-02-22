@@ -60,6 +60,12 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
+      public static Number operator ~ (Integer right) => right.UnaryBitNot();
+
+      //==============================================================================================================================================
+      protected Integer UnaryBitNot() => new Integer(~ Value);
+
+      //==============================================================================================================================================
       protected Integer BinaryAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
       protected Integer BinaryOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
       protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
