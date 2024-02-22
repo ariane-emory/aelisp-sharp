@@ -47,10 +47,6 @@ static partial class Ae
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number that) => ApplyBinaryCmp(that, (l, r) => l == r);
       protected override bool BinaryCmpLT(Number that) => ApplyBinaryCmp(that, (l, r)  => l < r);
-      protected override bool BinaryCmpGT(Number that) => ApplyBinaryCmp(that, (l, r)  => l > r);
-      protected override bool BinaryCmpLTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l <= r);
-      protected override bool BinaryCmpGTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l >= r);
-
       //==============================================================================================================================================
       private bool ApplyBinaryCmp(Number that, Func<double, double, bool> cmp) => 
          cmp(Value, ((Float)that).Value);

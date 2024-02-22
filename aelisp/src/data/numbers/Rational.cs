@@ -42,24 +42,20 @@ static partial class Ae
       protected override Float Promote() => new((((float)Numerator) / ((float)Denominator)));
 
       //==============================================================================================================================================
-      private Rational ApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
+      private Rational CastAndApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
          new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
       
       //==============================================================================================================================================
-      protected override Rational BinaryAdd(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Rational BinarySub(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
-      protected override Rational BinaryMul(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
-      protected override Rational BinaryDiv(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
-
-      //==================================================== ==========================================================================================
-      protected override bool BinaryCmpEql(Number that) => ApplyBinaryCmp(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => ApplyBinaryCmp(that, (l, r)  => l < r);
-      protected override bool BinaryCmpGT(Number that) => ApplyBinaryCmp(that, (l, r)  => l > r);
-      protected override bool BinaryCmpLTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l <= r);
-      protected override bool BinaryCmpGTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l >= r);
+      protected override Rational BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Rational BinarySub(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
+      protected override Rational BinaryMul(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rn, ld * rd));
+      protected override Rational BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //==============================================================================================================================================
-      private bool ApplyBinaryCmp(Number that, Func<int, int, bool> cmp) => 
+      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
+      //==============================================================================================================================================
+      private bool CastAndApplyBinaryCmp(Number that, Func<int, int, bool> cmp) => 
          cmp(Numerator * ((Rational)that).Denominator, Denominator * ((Rational)that).Numerator);
 
       //==============================================================================================================================================

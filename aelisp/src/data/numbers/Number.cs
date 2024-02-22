@@ -87,9 +87,10 @@ static partial class Ae
       //==============================================================================================================================================
       protected abstract bool BinaryCmpEql(Number that);
       protected abstract bool BinaryCmpLT(Number that);
-      protected abstract bool BinaryCmpGT(Number that);
-      protected abstract bool BinaryCmpLTE(Number that);
-      protected abstract bool BinaryCmpGTE(Number that);
+      //==============================================================================================================================================
+      // protected abstract bool BinaryCmpGT(Number that);
+      // protected abstract bool BinaryCmpLTE(Number that);
+      // protected abstract bool BinaryCmpGTE(Number that);
 
       //==============================================================================================================================================
       // Static methods
@@ -246,7 +247,7 @@ static partial class Ae
             return (numberFloat.Value == floor) ? new Integer((int)floor) : number;
          }
 
-         throw new ApplicationException($"something is wrong, this throw should be unreachable, number is {number}.");
+         throw new ApplicationException($"this throw should be unreachable, something strange has happened, number is {number}!");
       }
 
       //==============================================================================================================================================
