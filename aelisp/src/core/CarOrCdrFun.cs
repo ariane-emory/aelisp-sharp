@@ -10,7 +10,7 @@ static partial class Ae
       //=================================================================================================================
       private static CoreFun.FuncT CarOrCdrFun(Func<LispObject, LispObject> func) =>
          (Env env, LispObject argsList) =>
-         PureUnaryFun((o) =>
+         UnaryFun((o) =>
          {
             ThrowUnlessIsList("argument", o);
             

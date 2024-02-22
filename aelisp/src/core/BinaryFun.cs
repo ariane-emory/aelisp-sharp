@@ -8,7 +8,7 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      private static CoreFun.FuncT PureBinaryFun(Func<LispObject, LispObject, LispObject> func)
+      private static CoreFun.FuncT BinaryFun(Func<LispObject, LispObject, LispObject> func)
          => (Env env, LispObject argsList) =>
           {
              ThrowUnlessIsProperList("argsList", argsList);
@@ -20,7 +20,7 @@ static partial class Ae
           };
 
       //=================================================================================================================
-      private static CoreFun.FuncT PureBinaryFun<T1, T2>(Func<T1, T2, LispObject> func)
+      private static CoreFun.FuncT BinaryFun<T1, T2>(Func<T1, T2, LispObject> func)
           where T1 : LispObject
           where T2 : LispObject
           => (Env env, LispObject argsList) =>
@@ -38,11 +38,11 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Cons =
-         PureBinaryFun((arg1, arg2) => Ae.Cons(arg1, arg2));
+         BinaryFun((arg1, arg2) => Ae.Cons(arg1, arg2));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT NewRational =
-         PureBinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
+         BinaryFun<Integer, Integer>((num, den) => new Rational(num.Value, den.Value));
 
       //================================================================================================================
    }

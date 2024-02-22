@@ -8,7 +8,7 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      private static CoreFun.FuncT PureUnaryFun(Func<LispObject, LispObject> func)
+      private static CoreFun.FuncT UnaryFun(Func<LispObject, LispObject> func)
          => (Env env, LispObject argsList) =>
          {
             ThrowUnlessIsProperList("argsList", argsList);
@@ -17,7 +17,7 @@ static partial class Ae
          };
 
       //=================================================================================================================
-      private static CoreFun.FuncT PureUnaryFun<T1>(Func<T1, LispObject> func)
+      private static CoreFun.FuncT UnaryFun<T1>(Func<T1, LispObject> func)
        where T1 : LispObject
        => (Env env, LispObject argsList) =>
        {
@@ -33,7 +33,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Plus1 =
-         PureUnaryFun(num =>
+         UnaryFun(num =>
             num switch
             {
                Integer integer => (LispObject)new Integer(integer.Value + 1),
@@ -44,7 +44,7 @@ static partial class Ae
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Minus1 =
-         PureUnaryFun(num =>
+         UnaryFun(num =>
             num switch
             {
                Integer integer => (LispObject)new Integer(integer.Value - 1),
@@ -54,27 +54,27 @@ static partial class Ae
             });
 
       //=================================================================================================================
-      public static readonly CoreFun.FuncT Id = PureUnaryFun(o => o);
+      public static readonly CoreFun.FuncT Id = UnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Quote =
-         PureUnaryFun(o => o);
+         UnaryFun(o => o);
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT Length =
-         PureUnaryFun(o => new Integer(o.Length));
+         UnaryFun(o => new Integer(o.Length));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT ObjToString =
-         PureUnaryFun(o => new String(o.ToPrincString()));
+         UnaryFun(o => new String(o.ToPrincString()));
 
       //=================================================================================================================
       public static readonly CoreFun.FuncT InternString =
-         PureUnaryFun<String>(str => Intern(str.Value));
+         UnaryFun<String>(str => Intern(str.Value));
 
       //===================================================================================================================
       public static readonly CoreFun.FuncT Type =
-         PureUnaryFun(o => Intern(o is Pair
+         UnaryFun(o => Intern(o is Pair
                                   ? ":cons"
                                   : ":" + o.TypeName.ToLower()));
 

@@ -30,10 +30,10 @@ static partial class Ae
       public static readonly CoreFun.FuncT Mod = (env, argsList) => Integer.VariadicMod(argsList);
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => ~o);
+      public static readonly CoreFun.FuncT BitNot = UnaryFun<Integer>(o => ~o);
 
       //================================================================================================================
-      public static readonly CoreFun.FuncT Floor = PureUnaryFun<Number>(num =>
+      public static readonly CoreFun.FuncT Floor = UnaryFun<Number>(num =>
        num switch
        {
           Integer numInteger => numInteger,

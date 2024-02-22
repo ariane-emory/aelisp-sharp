@@ -10,7 +10,7 @@ static partial class Ae
       //=================================================================================================================
       private static CoreFun.FuncT
          AccessorFun<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField, Func<FieldT, LispObject> construct)
-       => PureUnaryFun(o =>
+       => UnaryFun(o =>
        {
           if (o is ThisLispObjT typed)
              return construct(getField(typed));

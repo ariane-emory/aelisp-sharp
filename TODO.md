@@ -13,6 +13,7 @@
 
 ## To Do - practical:
 - [ ] Might as well have built in min and max.
+- [ ] If plist set methods find a (nil nil) sentinel, they could remove it.
 - [ ] Make sure the main tokenizer call entry points are all using appropriate _exclude filters, whitespace and all comments are boring for now.
 - [ ] Make that test of handling ParseErrors nicely more useful. Move it into LispTokenizer and use in Next()/ReadAll() probably?
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
