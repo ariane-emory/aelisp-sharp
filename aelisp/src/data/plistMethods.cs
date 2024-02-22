@@ -97,17 +97,35 @@ static partial class Ae
       if (plist.IsNil)
          throw new InvalidOperationException("mutating removeis not permitted on Nil!");
 
+      var current = plist;
+      var next = ((Pair)plist).Cdr;
+      
       // first, we'll handle the case where the key is the first element of the plist:
-      if (((Pair)plist).Car.Equals(key))
+      if (((Pair)current).Car.Equals(key))
       {
-         var cdr = ((Pair)plist).Cdr;
+         var afterPair = ((Pair)next).Cdr;
 
-         if (cdr.IsNil)
-            return;
-
-         if (cdr is Pair cdrPair)
+         if (afterPair.IsNil) // key matches the only pair in the list.
          {
-            cdrPair.Car = cdrPair.Cdr;
+            // we can't actually remove the last pair, so we'll just replace it with an ugly subtitute:
+            ((Pair)current).Car = Nil;
+            ((Pair)current).Cdr = Cons(Nil, Nil);
+         }
+         else
+         {
+            ((Pair)current).Car = ((Pair)afterPair).Car;
+            ((Pair)current).Cdr = ((Pair)afterPair).Cdr;
+         }
+
+         return;
+      }
+
+      while (! next.IsNil && ! ((Pair)next).Cdr.IsNil)
+      {
+         if (((Pair)next).Car.Eql(key))
+         {
+            ((Pair)current).Cdr = ((Pair)((Pair)next).Cdr).Cdr;
+            
             return;
          }
       }
