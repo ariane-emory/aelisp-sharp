@@ -406,7 +406,9 @@ class Program
       Do("(length nil)");
       Do("(length '(1 2 . 3))");
       Do("(length '(1 2 3))");
-   }
+
+      WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
+    }
 
    //==============================================================================================================================
 }

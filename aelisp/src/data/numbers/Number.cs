@@ -77,17 +77,17 @@ static partial class Ae
       protected abstract Number Promote();
 
       //==============================================================================================================================================
-      protected abstract Number BinaryAdd(Number other);
-      protected abstract Number BinarySub(Number other);
-      protected abstract Number BinaryMul(Number other);
-      protected abstract Number BinaryDiv(Number other);
+      protected abstract Number BinaryAdd(Number that);
+      protected abstract Number BinarySub(Number that);
+      protected abstract Number BinaryMul(Number that);
+      protected abstract Number BinaryDiv(Number that);
 
       //==============================================================================================================================================
-      protected abstract bool BinaryCmpEql(Number other);
-      protected abstract bool BinaryCmpLT(Number other);
-      protected abstract bool BinaryCmpGT(Number other);
-      protected abstract bool BinaryCmpLTE(Number other);
-      protected abstract bool BinaryCmpGTE(Number other);
+      protected abstract bool BinaryCmpEql(Number that);
+      protected abstract bool BinaryCmpLT(Number that);
+      protected abstract bool BinaryCmpGT(Number that);
+      protected abstract bool BinaryCmpLTE(Number that);
+      protected abstract bool BinaryCmpGTE(Number that);
 
       //==============================================================================================================================================
       // Static methods

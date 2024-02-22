@@ -52,15 +52,15 @@ static partial class Ae
       protected override Rational BinaryDiv(Number that) => ApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //==================================================== ==========================================================================================
-      protected override bool BinaryCmpEql(Number other) => ApplyBinaryCmp(other, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number other) => ApplyBinaryCmp(other, (l, r)  => l < r);
-      protected override bool BinaryCmpGT(Number other) => ApplyBinaryCmp(other, (l, r)  => l > r);
-      protected override bool BinaryCmpLTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l <= r);
-      protected override bool BinaryCmpGTE(Number other) => ApplyBinaryCmp(other, (l, r)  => l >= r);
+      protected override bool BinaryCmpEql(Number that) => ApplyBinaryCmp(that, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number that) => ApplyBinaryCmp(that, (l, r)  => l < r);
+      protected override bool BinaryCmpGT(Number that) => ApplyBinaryCmp(that, (l, r)  => l > r);
+      protected override bool BinaryCmpLTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l <= r);
+      protected override bool BinaryCmpGTE(Number that) => ApplyBinaryCmp(that, (l, r)  => l >= r);
 
       //==============================================================================================================================================
-      private bool ApplyBinaryCmp(Number other, Func<int, int, bool> cmp) => 
-         cmp(Numerator * ((Rational)other).Denominator, Denominator * ((Rational)other).Numerator);
+      private bool ApplyBinaryCmp(Number that, Func<int, int, bool> cmp) => 
+         cmp(Numerator * ((Rational)that).Denominator, Denominator * ((Rational)that).Numerator);
 
       //==============================================================================================================================================
    }
