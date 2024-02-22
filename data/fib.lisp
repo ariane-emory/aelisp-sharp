@@ -15,4 +15,4 @@
       
       )))
 
-(princ "Final fib: " (fib 25)) (nl)
+(princ "Final fib: " (fib 15)) (nl)
