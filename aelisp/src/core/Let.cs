@@ -123,6 +123,8 @@ static partial class Ae
                WriteLine($"Let-bind {sym.ToPrincString()} to {val.ToPrincString()}...");
 
                evaled_val = val.Eval(lookupEnv);
+               
+               WriteLine($"Evaled: {evaled_val.ToPrincString()}...");
 
             }
             else if (currentPair.Car  is Symbol varlistVarSym)
