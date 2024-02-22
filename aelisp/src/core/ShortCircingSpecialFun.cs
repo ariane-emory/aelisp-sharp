@@ -17,7 +17,12 @@ static partial class Ae
 
             while (argsList is Pair argsListPair)
             {
-               result = argsListPair.Car.Eval(env);
+               var head = argsListPair.Car;
+
+               WriteLine($"progn evaling head = {head.ToPrincString()}...");
+
+               result = head.Eval(env);
+               WriteLine($"result = {result.ToPrincString()}");
 
                if (pred(result))
                   return result;
