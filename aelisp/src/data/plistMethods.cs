@@ -154,6 +154,58 @@ static partial class Ae
       return result;
    }
    
+   //====================================================================================================================
+   public static LispObject PurePlistRemove(LispObject plist, LispObject key)
+   {
+      ThrowUnlessPlist(plist);
+      
+      if (plist.IsNil)
+         return Nil;
+
+      var reversedNewList = Nil;
+      var current = plist;
+
+      // we're going to build a whole new plist, sharing no structure with the original plist. 
+      
+      // first, we'll loop through the last adding all items before the key to reversedNewList (in reverse order, for now):
+      while (current is Pair currentPair)
+      {
+         if (currentPair.Car.Equals(key))
+            break;
+
+         reversedNewList = Cons(currentPair.Car, reversedNewList);
+
+         current = currentPair.Cdr;
+      }
+
+      // // then, we'll add the new value onto reversedNewList:
+      // reversedNewList = Cons(value, Cons(key, reversedNewList));
+
+      // by now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
+      // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList:
+      if (!current.IsNil)
+      {
+         current = ((Pair)((Pair)current).Cdr).Cdr;
+         
+         while (current is Pair currentPair)
+         {
+            reversedNewList = Cons(currentPair.Car, reversedNewList);
+            current = currentPair.Cdr;
+         }
+      }
+      
+      var result = Nil;
+
+      // finally, we'll reverse reversedNewList to get the final result:
+      while (reversedNewList is Pair reversedNewListPair)
+      {
+         result = Cons(reversedNewListPair.Car, result);
+         reversedNewList = reversedNewListPair.Cdr;
+      }
+
+      return result;
+   }
+   
 //=====================================================================================================================
 }
 

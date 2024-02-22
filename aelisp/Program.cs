@@ -441,6 +441,9 @@ class Program
       plist = PurePlistSet(plist, Intern("color"), new String("brown"));
       WriteLine(plist.ToPrincString());
       
+      plist = PurePlistRemove(plist, Intern("member"));
+      WriteLine(plist.ToPrincString());
+      
     }
 
    //==============================================================================================================================
