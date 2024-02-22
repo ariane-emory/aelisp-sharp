@@ -93,55 +93,58 @@ static partial class Ae
       if (plist.IsNil)
          return new Pair(key, new Pair(value, Nil));
 
-      var result = Nil;
-      var stash = Nil;
+      var frontPartOfList = Nil;
+      var backPartOfList = Nil;
       var current = plist;
 
-      // first, we'll loop through the last adding all items before the key to stash (in reverse order, for now)
+      // we're going to build a whole new plist, sharing no structure with the original plist.
+      
+      // first, we'll loop through the last adding all items before the key to frontPartOfList (in reverse order, for now)
       while (current is Pair currentPair)
       {
          if (currentPair.Car.Equals(key))
             break;
 
-         stash = Cons(currentPair.Car, stash);
+         frontPartOfList = Cons(currentPair.Car, frontPartOfList);
          current = currentPair.Cdr;
       }
 
-      var resultTail = Nil;
-      
-      // now we'll loop through the stash, adding items to the result in the correct order:
-      while (stash is Pair stashPair)
-      {
-         result = Cons(stashPair.Car, result);
-         stash = stashPair.Cdr;
-      }
+      // now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
+      // we'll advance current past it and then loop through the rest of the list, adding all the items to backPartOfList,
+      // again in reverse order.
 
-      // now we'll add the new key/value pair to the result:
-      result = Cons(key, result);
-
-      // we're going to make a whole new list, sharing no structure with the original, so we repeat the same procedure, collecting all the
-      // elements after where we found the key in the stash, again in reverse order.
-
-      stash = Nil;
       current = ((Pair)((Pair)current).Cdr).Cdr;
-      
+
       while (current is Pair currentPair)
       {
-         stash = Cons(currentPair.Car, stash);
+         backPartOfList = Cons(currentPair.Car, backPartOfList);
          current = currentPair.Cdr;
       }
 
-      var tail = Nil;
+      var result = Nil;
 
-      while (stash is Pair stashPair)
+      // next, we'll stick the backPartOfList onto result.
+      current = backPartOfList;
+
+      while (current is Pair currentPair)
       {
-         tail = Cons(stashPair.Car, tail);
-         stash = stashPair.Cdr;
+         result = Cons(currentPair.Car, result);
+         current = currentPair.Cdr;
       }
 
+      // then, we'll stick the new key/value pair onto result.
+      result = Cons(Cons(key, Cons(value, Nil)), result);
 
-      
-      return Nil;
+      // finally, we'll stick the frontPartOfList onto result.
+      current = frontPartOfList;
+
+      while (current is Pair currentPair)
+      {
+         result = Cons(currentPair.Car, result);
+         current = currentPair.Cdr;
+      }
+
+      return result;
    }
    
 //=====================================================================================================================
