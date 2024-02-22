@@ -426,7 +426,9 @@ class Program
       WriteLine(PlistGet(plist, Intern("city")).ToPrincString());
       WriteLine(PlistGet(plist, Intern("member")).ToPrincString());
       WriteLine(PlistGet(plist, new Integer(33)).ToPrincString());
-     
+      PlistMutatingSet(plist, Intern("city"), new String("Los Angeles"));
+      PlistMutatingSet(plist, Intern("category"), new String("Human"));
+      WriteLine(plist.ToPrincString());
       
     }
 

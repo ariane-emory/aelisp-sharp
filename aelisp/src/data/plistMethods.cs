@@ -20,6 +20,38 @@ static partial class Ae
       Pair? found = PlistFindPair(plist, key);
       return found is null ? Nil : ((Pair)found.Cdr).Car;
    }
+
+   //====================================================================================================================
+   public static void PlistMutatingSet(LispObject plist, LispObject key, LispObject value)
+   {
+      if (plist == Nil)
+         throw new InvalidOperationException("mutating set is not permitted on Nil!");
+      
+      Pair? found = PlistFindPair(plist, key);
+
+      if (found is not null)
+      {
+         ((Pair)found.Cdr).Car = value;
+         return;
+      }
+
+      // if we got this far, then we already know that plist is a non-nil length with an even length.
+      // we'll loop through to find the last pair, and then we'll tack a new key/value pair onto the end.
+      var current = plist;
+
+      while (current is Pair currentPair)
+      {
+         if (currentPair.Cdr.IsNil)
+         {
+            currentPair.Cdr = Cons(key, Cons(value, Nil));
+            return;
+         }
+
+         current = currentPair.Cdr;
+      }
+
+      throw new ApplicationException("This should never happen!");
+   }
    
    //====================================================================================================================
    public static Pair? PlistFindPair(LispObject plist, LispObject key)
