@@ -1,6 +1,6 @@
 # Ælisp# To Do List:
 
-## To Do - replicating features from the C impelemtation of Ælisp:
+## To Do - replicating features from the C implemtation of Ælisp:
 - [ ] plist handling:
   - [ ] data layer.
   - [ ] core layer.
@@ -17,7 +17,7 @@
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
 - [ ] Find an excuse to use T4 somewhere (just to learn how to work with it).
 - [ ] Organize/tidy up building the root and make Main sensible, it's a construction zone ATM.
-- [ ] Sensible/useful command line arguments, probably similar to Ælisp-C's - ~~maybe find a getopt-like package?  ~~ Probably use Mono.Options.
+- [ ] Sensible/useful command line arguments, probably similar to Ælisp-C's - ~~maybe find a getopt-like package?~~ Probably use Mono.Options.
 - [ ] Rearrange/tidy APIs:
   - [ ] Let's make Envs the main entry point for user-level interaction.
   - [ ] Eliminate mutable globals.
