@@ -17,7 +17,7 @@ static partial class Ae
              var arg2 = ((Pair)argsList)[1];
              var arg3 = ((Pair)argsList)[2];
 
-             return func(arg1, arg2);
+             return func(arg1, arg2, arg3);
           };
 
       //=================================================================================================================
