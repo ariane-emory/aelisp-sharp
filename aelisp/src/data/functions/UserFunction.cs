@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Reflection;
 using System.Text;
+using static System.Console;
 
 //======================================================================================================================
 static partial class Ae
@@ -70,6 +71,8 @@ static partial class Ae
 
          // PUT_PROP(fun, "fun", env);
 
+         WriteLine($"evaluating body: {Body.ToPrincString()}");
+         
          return Body.Eval(Environment.Spawn(Parameters, argsList));
       }
 
