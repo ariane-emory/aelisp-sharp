@@ -419,6 +419,7 @@ class Program
 
       Do("(setq plst '(name \"John\" age 33 city \"New York\" member t))");
       Do("(princ plst)");
+      Do("(string plst)");
       Do("plst");
     }
 
