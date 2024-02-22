@@ -103,6 +103,8 @@ static partial class Ae
          
          while (current is Pair currentPair)
          {
+            WriteLine($"this item = {currentPair.Car.ToPrincString()}");
+            
             var sym = Nil;
             var val = Nil;
             var evaled_val = Nil;
