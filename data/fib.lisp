@@ -3,16 +3,16 @@
 
 (setq fib
   (lambda (nth)
-    (princ ?\n "Get fib of " nth ?\n)
+    ; (princ ?\n "Get fib of " nth ?\n)
     
     (let ((memoized (plist-get memo-plist nth)))
       (if memoized
         (progn
-          (princ "Use old value " memoized (nl))
+          ; (princ "Use old value " memoized) (nl)
           memoized)
-        (princ "Calc new value... ") (nl)
+        ; (princ "Calc new value... ") (nl)
         (+ (fib (- nth 1)) (fib (- nth 2))))
       
       )))
 
-(princ "Final fib: " (fib 10) ?\n)
+(princ "Final fib: " (fib 25)) (nl)
