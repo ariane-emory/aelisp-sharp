@@ -63,8 +63,9 @@ static partial class Ae
 
          LispObject current = varlist;
 
-         while (!current.IsNil)
-            if (current is Pair currentVarPair)
+         while (current is Pair currentPair)
+         {
+            if (currentPair.Car is Pair currentVarPair)
             {
                if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
                   throw new ArgumentException($"varlist items must be proper lists with two elements, not {currentVarPair.ToPrincString()}!");
@@ -72,7 +73,7 @@ static partial class Ae
                if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
                   throw new ArgumentException($"let forms cannot bind {currentVarSym.ToPrincString()}!");
             }
-            else if (current is Symbol currentVarSym)
+            else if (currentPair.Car is Symbol currentVarSym)
             {
                if (!currentVarSym.IsLetBindable)
                   throw new ArgumentException($"let forms cannot bind {currentVarSym.ToPrincString()}!");
@@ -80,9 +81,12 @@ static partial class Ae
             else
             {
                throw new ArgumentException($"varlist items must be symbols or proper lists with two elements " +
-                                           "pairs whose first element is a " +
-                                           $"let-bindable symbol, not {current.ToPrincString()}!");
+                                           $"pairs whose first element is a let-bindable symbol, " +
+                                           $"not {current.ToPrincString()}!");
             }
+
+            current = currentPair.Cdr;
+         }
 
          ThrowUnlessIsProperList("body", body);
 
@@ -95,24 +99,33 @@ static partial class Ae
       {
          ThrowUnlessIsProperList("varlist", varlist);
 
-         while (!varlist.IsNil)
+         var current = varlist;
+         
+         while (current is Pair currentPair)
          {
             var sym = Nil;
             var val = Nil;
-
-            if (varlist is Pair varlistVarPair)
+            var evaled_val = Nil;
+            
+            if (currentPair.Car is Pair varlistVarPair)
             {
                sym = varlistVarPair.Car;
-               val = ((Pair)varlistVarPair.Cdr).Car.Eval(lookupEnv);
+               val = ((Pair)varlistVarPair.Cdr).Car;
+
+               WriteLine($"Let-bind {sym.ToPrincString()} to {val.ToPrincString()}...");
+
+               evaled_val = val.Eval(lookupEnv);
+
             }
-            else if (varlist is Symbol varlistVarSym)
+            else if (currentPair.Car  is Symbol varlistVarSym)
             {
                sym = varlistVarSym;
+               evaled_val = val = Nil;
             }
-
+            
             bindEnv.Set(Env.LookupMode.Local, sym, val);
 
-            varlist = ((Pair)varlist).Cdr;
+            current = currentPair.Cdr;
          }
       }
 

@@ -411,49 +411,48 @@ class Program
       // WriteLine(new Integer(1).Eql(new Float(1.0)));
       // WriteLine(new Integer(1) + new Float(3.0));
 
-      Do("(setq plist '(name \"John\" age 33 city \"New York\" member t))");
-      var plist = Do("plist");
-      WriteLine(PlistContains(plist, Intern("city")) ? "contains city" : "does not contain city");
-      WriteLine(PlistContains(plist, Intern("name")) ? "contains name" : "does not contain name");
-      WriteLine(PlistContains(plist, new Integer(33)) ? "contains 33" : "does not contain 33");
-      WriteLine(PlistGet(plist, Intern("name")).ToPrincString());
-      WriteLine(PlistGet(plist, Intern("city")).ToPrincString());
-      WriteLine(PlistGet(plist, Intern("member")).ToPrincString());
-      WriteLine(PlistGet(plist, new Integer(33)).ToPrincString());
-      MutatingPlistSet(plist, Intern("city"), new String("Los Angeles"));
-      MutatingPlistSet(plist, Intern("category"), new String("Human"));
-      WriteLine(plist.ToPrincString());
-      plist = PurePlistSet(plist, Intern("city"), new String("London"));
-      WriteLine(plist.ToPrincString());
+      // Do("(setq plist '(name \"John\" age 33 city \"New York\" member t))");
+      // var plist = Do("plist");
+      // WriteLine(PlistContains(plist, Intern("city")) ? "contains city" : "does not contain city");
+      // WriteLine(PlistContains(plist, Intern("name")) ? "contains name" : "does not contain name");
+      // WriteLine(PlistContains(plist, new Integer(33)) ? "contains 33" : "does not contain 33");
+      // WriteLine(PlistGet(plist, Intern("name")).ToPrincString());
+      // WriteLine(PlistGet(plist, Intern("city")).ToPrincString());
+      // WriteLine(PlistGet(plist, Intern("member")).ToPrincString());
+      // WriteLine(PlistGet(plist, new Integer(33)).ToPrincString());
+      // MutatingPlistSet(plist, Intern("city"), new String("Los Angeles"));
+      // MutatingPlistSet(plist, Intern("category"), new String("Human"));
+      // WriteLine(plist.ToPrincString());
+      // plist = PurePlistSet(plist, Intern("city"), new String("London"));
+      // WriteLine(plist.ToPrincString());
       
-      plist = PurePlistSet(plist, Intern("name"), new String("Bob"));
-      WriteLine(plist.ToPrincString());
+      // plist = PurePlistSet(plist, Intern("name"), new String("Bob"));
+      // WriteLine(plist.ToPrincString());
       
-      plist = PurePlistSet(plist, Intern("category"), new String("Dog"));
-      WriteLine(plist.ToPrincString());
+      // plist = PurePlistSet(plist, Intern("category"), new String("Dog"));
+      // WriteLine(plist.ToPrincString());
       
-      plist = PurePlistSet(plist, Intern("color"), new String("brown"));
-      WriteLine(plist.ToPrincString());
+      // plist = PurePlistSet(plist, Intern("color"), new String("brown"));
+      // WriteLine(plist.ToPrincString());
       
-      plist = PurePlistRemove(plist, Intern("member"));
-      WriteLine(plist.ToPrincString());
+      // plist = PurePlistRemove(plist, Intern("member"));
+      // WriteLine(plist.ToPrincString());
 
 
-      WriteLine(MutatingPlistRemove(plist, Intern("city")).ToPrincString());
-      WriteLine(MutatingPlistRemove(plist, Intern("name")).ToPrincString());
-      WriteLine(MutatingPlistRemove(plist, Intern("color")).ToPrincString());
-      WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
-      WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
+      // WriteLine(MutatingPlistRemove(plist, Intern("city")).ToPrincString());
+      // WriteLine(MutatingPlistRemove(plist, Intern("name")).ToPrincString());
+      // WriteLine(MutatingPlistRemove(plist, Intern("color")).ToPrincString());
+      // WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
+      // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
       
       const string fib = @"
 (setq memo-fib
   (let* ((𝑛 30)
-         (∨ ∨)
-         (*memo* '(2 1 1 1))
-         (memoize (lambda (k v) (cdr (car (setq *memo* (plist-set *memo* k v))))))
+         (memo '(2 1 1 1))
+         (memoize (lambda (k v) (cdr (car (setq memo (plist-set memo k v))))))
          (𝑓       (lambda (𝑥)
-                    (let  ((memoized (plist-get *memo*  𝑥)))
-                      (∨    memoized
+                    (let  ((memoized (plist-get memo  𝑥)))
+                      (or   memoized
                             (memoize  𝑥 (+ (𝑓 (- 𝑥 1))
                                            (𝑓 (- 𝑥 2)))))))))
     (𝑓 𝑛)))
@@ -472,7 +471,8 @@ class Program
          PrintParseErrorLocationAndDie(pe, tokens);
       }
 
-      Do(fib);
+      // Do(fib);
+      Do("(let* ((x 5) (y x)) y)");
    }
 
    //==============================================================================================================================
