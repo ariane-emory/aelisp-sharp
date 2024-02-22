@@ -46,7 +46,7 @@ static partial class Ae
       private bool CastAndApplyBinaryCmpToValues(Number that, Func<double, double, bool> cmp) => cmp(Value, ((Float)that).Value);
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r)  => l < r);
+      protected override bool BinaryCmpLessThan(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r)  => l < r);
  
       //==============================================================================================================================================
    }

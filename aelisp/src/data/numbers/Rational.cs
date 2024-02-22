@@ -55,7 +55,7 @@ static partial class Ae
          cmp(Numerator * ((Rational)that).Denominator, Denominator * ((Rational)that).Numerator);
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r)  => l < r);
+      protected override bool BinaryCmpLessThan(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r)  => l < r);
 
       //==============================================================================================================================================
    }

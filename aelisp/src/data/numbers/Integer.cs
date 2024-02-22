@@ -42,7 +42,7 @@ static partial class Ae
       private bool CastAndApplyBinaryCmp(Number that, Func<int, int,bool> cmp) => cmp(Value, ((Integer)that).Value);
       //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
+      protected override bool BinaryCmpLessThan(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
 
       //=============================================================================================================================================
       private static Integer ThrowUnlessGreaterThanZero(Integer that, string opName)

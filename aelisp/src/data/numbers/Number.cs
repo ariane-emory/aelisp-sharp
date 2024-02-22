@@ -51,7 +51,7 @@ static partial class Ae
          if (BinaryCmpEql(other))
             return 0;
          
-         if (BinaryCmpLT(other))
+         if (BinaryCmpLessThan(other))
             return -1;
          
          return 1;
@@ -67,7 +67,7 @@ static partial class Ae
       
       //==============================================================================================================================================
       public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
-      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
+      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLessThan(r))(left, right);
       public static bool operator <= (Number left, Number right) => (left < right) || (left == right);
       public static bool operator > (Number left, Number right) => ! (left <= right);
       public static bool operator >= (Number left, Number right) => (left == right) || (left > right);
@@ -86,10 +86,10 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected abstract bool BinaryCmpEql(Number that);
-      protected abstract bool BinaryCmpLT(Number that);
+      protected abstract bool BinaryCmpLessThan(Number that);
       //==============================================================================================================================================
       // protected abstract bool BinaryCmpGT(Number that);
-      // protected abstract bool BinaryCmpLTE(Number that);
+      // protected abstract bool BinaryCmpLessThanE(Number that);
       // protected abstract bool BinaryCmpGTE(Number that);
 
       //==============================================================================================================================================
