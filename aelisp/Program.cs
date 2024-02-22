@@ -426,19 +426,19 @@ class Program
       WriteLine(PlistGet(plist, Intern("city")).ToPrincString());
       WriteLine(PlistGet(plist, Intern("member")).ToPrincString());
       WriteLine(PlistGet(plist, new Integer(33)).ToPrincString());
-      PlistMutatingSet(plist, Intern("city"), new String("Los Angeles"));
-      PlistMutatingSet(plist, Intern("category"), new String("Human"));
+      MutatingPlistSet(plist, Intern("city"), new String("Los Angeles"));
+      MutatingPlistSet(plist, Intern("category"), new String("Human"));
       WriteLine(plist.ToPrincString());
-      plist = PlistNonmutatingSet(plist, Intern("city"), new String("London"));
-      WriteLine(plist.ToPrincString());
-      
-      plist = PlistNonmutatingSet(plist, Intern("name"), new String("Bob"));
+      plist = NonmutatingPlistSet(plist, Intern("city"), new String("London"));
       WriteLine(plist.ToPrincString());
       
-      plist = PlistNonmutatingSet(plist, Intern("category"), new String("Dog"));
+      plist = NonmutatingPlistSet(plist, Intern("name"), new String("Bob"));
       WriteLine(plist.ToPrincString());
       
-      plist = PlistNonmutatingSet(plist, Intern("color"), new String("brown"));
+      plist = NonmutatingPlistSet(plist, Intern("category"), new String("Dog"));
+      WriteLine(plist.ToPrincString());
+      
+      plist = NonmutatingPlistSet(plist, Intern("color"), new String("brown"));
       WriteLine(plist.ToPrincString());
       
     }

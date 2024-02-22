@@ -56,7 +56,7 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   public static void PlistMutatingSet(LispObject plist, LispObject key, LispObject value)
+   public static void MutatingPlistSet(LispObject plist, LispObject key, LispObject value)
    {
       if (plist.IsNil)
          throw new InvalidOperationException("mutating set is not permitted on Nil!");
@@ -88,7 +88,7 @@ static partial class Ae
    }
       
    //====================================================================================================================
-   public static LispObject PlistNonmutatingSet(LispObject plist, LispObject key, LispObject value)
+   public static LispObject NonmutatingPlistSet(LispObject plist, LispObject key, LispObject value)
    {
       if (plist.IsNil)
          return new Pair(key, new Pair(value, Nil));
