@@ -43,10 +43,10 @@ static partial class Ae
       protected override Float BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      private bool CastAndApplyBinaryCmp(Number that, Func<double, double, bool> cmp) => cmp(Value, ((Float)that).Value);
+      private bool CastAndApplyBinaryCmpToValues(Number that, Func<double, double, bool> cmp) => cmp(Value, ((Float)that).Value);
       //==============================================================================================================================================
-      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
+      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmpToValues(that, (l, r)  => l < r);
  
       //==============================================================================================================================================
    }
