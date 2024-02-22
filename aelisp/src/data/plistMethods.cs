@@ -158,20 +158,17 @@ static partial class Ae
    }
    
    //====================================================================================================================
-   public static LispObject PurePlistSet(LispObject plist, LispObject key, LispObject value)
-   {
-      return PurePlistTransform(plist, key,
-                                ifNilFunc: () => new Pair(key, new Pair(value, Nil)),
-                                insertFunc: reversedNewList => Cons(value, Cons(key, reversedNewList)));
-   }
+   public static LispObject PurePlistSet(LispObject plist, LispObject key, LispObject value) => 
+      PurePlistTransform(plist, key,
+                         ifNilFunc: () => new Pair(key, new Pair(value, Nil)),
+                         insertFunc: reversedNewList => Cons(value, Cons(key, reversedNewList)));
    
    //====================================================================================================================
-   public static LispObject PurePlistRemove(LispObject plist, LispObject key)
-   {
-      return PurePlistTransform(plist, key,
-                                ifNilFunc: () => Nil,
-                                insertFunc: null);
-   }
+   public static LispObject PurePlistRemove(LispObject plist, LispObject key) => 
+      PurePlistTransform(plist, key,
+                         ifNilFunc: () => Nil,
+                         insertFunc: null);
+   
    
 //=====================================================================================================================
 }
