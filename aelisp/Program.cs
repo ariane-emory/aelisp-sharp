@@ -14,6 +14,35 @@ using String = Ae.String;
 class Program
 {
    //==============================================================================================================================
+   static void PrintParseErrorLocationAndDie(ParseException pe, List<LispToken> tokens)
+   {
+      var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
+      var match = re.Match(pe.Message);
+
+      if (match.Success)
+      {
+         // ParseException reports 1-based index, convert it to 0-based
+         var ix = int.Parse(match.Groups[1].Value) - 1;
+
+         if (ix >= 0 && ix < tokens.Count())
+         {
+            var tok = tokens.ElementAt(ix);
+            WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
+         }
+         else
+         {
+            WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {pe.Message}");
+         }
+      }
+      else
+      {
+         WriteLine($"ERROR: Parse error: {pe.Message}");
+      }
+
+      Die(2, "Dying due to parse error.");
+   }
+   
+   //==============================================================================================================================
    static void Main()
    {
 
@@ -430,8 +459,6 @@ class Program
     (𝑓 𝑛)))
 ";
 
-      // Do(fib);
-
       var tokens = Tokenize(fib);
       
       try
@@ -440,33 +467,12 @@ class Program
          
          WriteLine(obj.ToPrincString());
       }
-      catch (ParseException e)
+      catch (ParseException pe)
       {
-         var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
-         var match = re.Match(e.Message);
-
-         if (match.Success)
-         {
-            // ParseException reports 1-based index, convert it to 0-based
-            var ix = int.Parse(match.Groups[1].Value) - 1;
-
-            if (ix >= 0 && ix < tokens.Count())
-            {
-               var tok = tokens.ElementAt(ix);
-               WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
-            }
-            else
-            {
-               WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
-            }
-         }
-         else
-         {
-            WriteLine($"ERROR: Parse error: {e.Message}");
-         }
-
-         Die(2, "Dying due to parse error.");
+         PrintParseErrorLocationAndDie(pe, tokens);
       }
+
+      Do(fib);
    }
 
    //==============================================================================================================================

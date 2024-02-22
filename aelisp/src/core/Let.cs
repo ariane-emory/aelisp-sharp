@@ -7,11 +7,11 @@ static partial class Ae
    //====================================================================================================================
    public static partial class Core
    {
-      //===================================================================================================================
+      //=================================================================================================================
       public static readonly CoreFun.FuncT Let = (env, argsList) =>
          LetInternal(env, argsList, false);
 
-      //===================================================================================================================
+      //=================================================================================================================
       public static readonly CoreFun.FuncT LetStar = (env, argsList) =>
          LetInternal(env, argsList, true);
 
@@ -67,21 +67,21 @@ static partial class Ae
             if (current is Pair currentVarPair)
             {
                if (currentVarPair.Length != 2 || currentVarPair.IsImproperList)
-                  throw new ArgumentException($"varlist items must be proper lists with two elements, not {currentVarPair}!");
+                  throw new ArgumentException($"varlist items must be proper lists with two elements, not {currentVarPair.ToPrincString()}!");
 
                if (currentVarPair.Car is Symbol currentVarSym && !currentVarSym.IsLetBindable)
-                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym.ToPrincString()}!");
             }
             else if (current is Symbol currentVarSym)
             {
                if (!currentVarSym.IsLetBindable)
-                  throw new ArgumentException($"let forms cannot bind {currentVarSym}!");
+                  throw new ArgumentException($"let forms cannot bind {currentVarSym.ToPrincString()}!");
             }
             else
             {
                throw new ArgumentException($"varlist items must be symbols or proper lists with two elements " +
-                                           "pairs whose first element is a "
-                                           + $"let-bindable symbol, not {current}!");
+                                           "pairs whose first element is a " +
+                                           $"let-bindable symbol, not {current.ToPrincString()}!");
             }
 
          ThrowUnlessIsProperList("body", body);
