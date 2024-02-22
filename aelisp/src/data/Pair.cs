@@ -168,7 +168,7 @@ static partial class Ae
             }
             else if (currentIndex <= index)
             {
-               throw new IndexOutOfRangeException("Index is out of range.");
+               throw new IndexOutOfRangeException("index is out of range.");
             }
          }
       }
@@ -192,7 +192,7 @@ static partial class Ae
                CoreFun coreFun => coreFun.Apply(env, args),
                Lambda lambda => lambda.Apply(env, args),
                Macro macro => macro.Apply(env, args),
-               _ => throw new ApplicationException($"Result of evaluating head is inapplicable object: {fun} of type: {fun.GetType()}")
+               _ => throw new ApplicationException($"result of evaluating head is inapplicable object: {fun} of type: {fun.GetType()}")
             };
 
          if (fun is Macro)

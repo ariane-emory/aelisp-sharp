@@ -68,6 +68,8 @@ static partial class Ae
       //==============================================================================================================================================
       public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
       public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLessThan(r))(left, right);
+
+      //==============================================================================================================================================
       public static bool operator <= (Number left, Number right) => (left < right) || (left == right);
       public static bool operator > (Number left, Number right) => ! (left <= right);
       public static bool operator >= (Number left, Number right) => (left == right) || (left > right);
@@ -132,7 +134,7 @@ static partial class Ae
          if (!head.Cdr.IsNil)
          {
             if (!(head.Car is Number headNum))
-               throw new ArgumentException($"head.Car is not a number: {head.Car}");
+               throw new ArgumentException($"head.Car is not a Number: {head.Car}");
 
             accum = headNum;
             current = head.Cdr;
@@ -141,7 +143,7 @@ static partial class Ae
          while (current is Pair currentPair)
          {
             if (!(currentPair.Car is Number currentNumber))
-               throw new ArgumentException($"Can't do math on a non-number list: {currentPair.Car}");
+               throw new ArgumentException($"Can't do math on a list containing non-Numbers: {currentPair.Car}");
 
             if (forbidArgsEqlToZero && currentNumber.Eql(Zero))
                throw new ArgumentException($"Possible division by zero: {currentNumber}");
