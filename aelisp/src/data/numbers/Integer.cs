@@ -54,7 +54,7 @@ static partial class Ae
       private static Integer ThrowwUnlessGreaterThanZero(Integer that, string opName)
       {
          if (that.Value <= 0)
-            throw new ArgumentException($"Modulo by zero or negative number: {that}.");
+            throw new ArgumentException($"{opName} by zero or negative number: {that}.");
 
          return that;
       }
