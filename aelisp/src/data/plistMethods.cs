@@ -55,15 +55,62 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   public static LispObject MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
+   // The original C version:
+   // void ae_plist_remove_mutating(ae_obj_t * const plist, ae_obj_t * const key) {
+   //   assert(plist);
+   //   assert(key);
+   //   assert(CONSP(plist));
+   //   assert(!(LENGTH(plist) % 2));
+   //
+   //   ae_obj_t * current = plist;
+   //   ae_obj_t * next    = CDR(plist);
+   //
+   //   if (EQL(CAR(current), key)) {
+   //     ae_obj_t * const after_pair = CDR(next);
+   //
+   //     if (NILP(after_pair)) { // key matches the only pair in the list.
+   //       CAR(current) = NIL;
+   //       CDR(current) = CONS(NIL, NIL);
+   //     }
+   //     else {
+   //       CAR(current) = CAR(after_pair);
+   //       CDR(current) = CDR(after_pair);
+   //     }
+   //
+   //     return;
+   //   }
+   //
+   //   while (!NILP(next) && !NILP(CDR(next))) {
+   //     if (EQL(CAR(next), key)) {
+   //       CDR(current) = CDR(CDR(next));
+   //
+   //       return;
+   //     }
+   //     current = CDR(current);
+   //     next = CDR(next);
+   //   }
+   // }
+   public static void MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
    {
       ThrowUnlessPlist(plist);
 
       if (plist.IsNil)
          throw new InvalidOperationException("mutating removeis not permitted on Nil!");
 
-      return Nil;
-      
+      // first, we'll handle the case where the key is the first element of the plist:
+      if (((Pair)plist).Car.Equals(key))
+      {
+         var cdr = ((Pair)plist).Cdr;
+
+         if (cdr.IsNil)
+            return;
+
+         if (cdr is Pair cdrPair)
+         {
+            cdrPair.Car = cdrPair.Cdr;
+            return;
+         }
+      }
    }
 
    //====================================================================================================================
