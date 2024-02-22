@@ -237,9 +237,14 @@ class Program
 
       void Do(string input)
       {
+         input = input.Trim();
+
+         if (! input.StartsWith("("))
+            input = $"({input})";
+         
          // foreach (var tok in Tokenize(input)) WriteLine($"{tok} ");
          WriteLine($"\nÆ#> {input}");
-         var result = Eval(child_env, input);
+         var result = Eval(Root, input);
          Write("⇒ ");
          WriteLine(result);
          // WriteLine($"{result.ToPrincString()}");
@@ -368,48 +373,51 @@ class Program
       // Do("(= 3 3)");
       // Do("(= 3 3 2)");
 
-      Do("(<  0 1 2 3 0 5)");
-      Do("(<  0 1 2 3 4 5)");
-      Do("(<  5 4 3 2 1 0)");
-      Do("(<  5 0 3 2 1 0)");
+      // Do("(<  0 1 2 3 0 5)");
+      // Do("(<  0 1 2 3 4 5)");
+      // Do("(<  5 4 3 2 1 0)");
+      // Do("(<  5 0 3 2 1 0)");
 
-      Do("(>  0 1 2 3 0 5)");
-      Do("(>  0 1 2 3 4 5)");
-      Do("(>  5 4 3 2 1 0)");
-      Do("(>  5 0 3 2 1 0)");
+      // Do("(>  0 1 2 3 0 5)");
+      // Do("(>  0 1 2 3 4 5)");
+      // Do("(>  5 4 3 2 1 0)");
+      // Do("(>  5 0 3 2 1 0)");
 
-      Do("(<= 0 1 2 2 3 0 5)");
-      Do("(<= 0 1 2 2 3 4 5)");
-      Do("(<= 5 4 3 2 2 1 0)");
-      Do("(<= 5 0 3 2 2 1 0)");
+      // Do("(<= 0 1 2 2 3 0 5)");
+      // Do("(<= 0 1 2 2 3 4 5)");
+      // Do("(<= 5 4 3 2 2 1 0)");
+      // Do("(<= 5 0 3 2 2 1 0)");
 
-      Do("(>= 0 1 2 2 3 0 5 5)");
-      Do("(>= 0 1 2 2 3 4 5 5)");
-      Do("(>= 5 4 3 2 2 1 5 0)");
-      Do("(>= 5 0 3 2 2 1 5 0)");
+      // Do("(>= 0 1 2 2 3 0 5 5)");
+      // Do("(>= 0 1 2 2 3 4 5 5)");
+      // Do("(>= 5 4 3 2 2 1 5 0)");
+      // Do("(>= 5 0 3 2 2 1 5 0)");
 
-      Do("(< 2/12 1/4 2/5 1/2 3 7/2)");
-      Do("(< 2/12 1/4 2/5 1/2 4 3 7/2)");
-      Do("(< 2/12 1/4 2/5 1/2 0.6 3 7/2)");
+      // Do("(< 2/12 1/4 2/5 1/2 3 7/2)");
+      // Do("(< 2/12 1/4 2/5 1/2 4 3 7/2)");
+      // Do("(< 2/12 1/4 2/5 1/2 0.6 3 7/2)");
 
-      Do("(== 3 3 3)");
-      Do("(!= 3 2 1)");
-      Do("(!= 3 2 1 1)");
+      // Do("(== 3 3 3)");
+      // Do("(!= 3 2 1)");
+      // Do("(!= 3 2 1 1)");
 
-      Do("(floor 2)");
-      Do("(floor 2.0)");
-      Do("(floor 2.4)");
-      Do("(floor 9/4)");
+      // Do("(floor 2)");
+      // Do("(floor 2.0)");
+      // Do("(floor 2.4)");
+      // Do("(floor 9/4)");
 
-      Do("(<  0 1 2 #| 3 |# 0 5)");
+      // Do("(<  0 1 2 #| 3 |# 0 5)");
 
-      Do("(length nil)");
-      Do("(length '(1 2 . 3))");
-      Do("(length '(1 2 3))");
+      // Do("(length nil)");
+      // Do("(length '(1 2 . 3))");
+      // Do("(length '(1 2 3))");
 
-      WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
-      WriteLine(new Integer(1).Eql(new Float(1.0)));
-      WriteLine(new Integer(1) + new Float(3.0));
+      // WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
+      // WriteLine(new Integer(1).Eql(new Float(1.0)));
+      // WriteLine(new Integer(1) + new Float(3.0));
+
+      Do("setq plst '(name \"John\" age 33 city \"New York\" member t)");
+      Do("princ plst");
     }
 
    //==============================================================================================================================
