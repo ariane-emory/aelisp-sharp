@@ -76,10 +76,10 @@ static partial class Ae
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
+      public static readonly Func<LispObject, Integer> VariadicMod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
       public static readonly Func<LispObject, Integer> VariadicBitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryBitAnd(r));
       public static readonly Func<LispObject, Integer> VariadicBitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryBitOr(r));
       public static readonly Func<LispObject, Integer> VariadicBitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryBitXor(r));
-      public static readonly Func<LispObject, Integer> VariadicMod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
       public static readonly Func<LispObject, Integer> VariadicLsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
       public static readonly Func<LispObject, Integer> VariadicRsft = ApplyVariadicIntegerArithmeticFun("right shift", (l, r) => l.BinaryRsft(r));
 
