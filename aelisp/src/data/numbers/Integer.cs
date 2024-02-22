@@ -55,7 +55,7 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected Integer UnaryBitNot() => new Integer(~ Value);
-      protected Integer BinaryBitAnd(Integer that) => this | that; // CastAndApplyBinaryOp(that, (l, r) => l & r);
+      protected Integer BinaryBitAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
       protected Integer BinaryBitOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
       protected Integer BinaryBitXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
       protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
