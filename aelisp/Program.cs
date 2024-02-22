@@ -432,6 +432,9 @@ class Program
       plist = PlistNonmutatingSet(plist, Intern("city"), new String("London"));
       WriteLine(plist.ToPrincString());
       
+      plist = PlistNonmutatingSet(plist, Intern("name"), new String("Bob"));
+      WriteLine(plist.ToPrincString());
+      
     }
 
    //==============================================================================================================================
