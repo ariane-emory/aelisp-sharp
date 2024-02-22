@@ -42,46 +42,6 @@ class Program
       // // tokens.Print();
 
       // WriteLine("\nSTEP 4 - Parsed objects: ");
-      // try
-      // {
-      //    var obj = ParseProgram.ParseOrThrow(tokens);
-
-      //    // WriteLine($"obj.toString(): {obj}");
-      //    // WriteLine($"obj.ToPrincString(): {obj.ToPrincString()}");
-
-      //    // if (obj is Pair pair)
-      //    //    foreach (var o in pair)
-      //    //       WriteLine(o.ToPrincString());
-      //    // else
-      //    WriteLine(obj.ToPrincString());
-      // }
-      // catch (ParseException e)
-      // {
-      //    var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
-      //    var match = re.Match(e.Message);
-
-      //    if (match.Success)
-      //    {
-      //       // ParseException reports 1-based index, convert it to 0-based
-      //       var ix = int.Parse(match.Groups[1].Value) - 1;
-
-      //       if (ix >= 0 && ix < tokens.Count())
-      //       {
-      //          var tok = tokens.ElementAt(ix);
-      //          WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
-      //       }
-      //       else
-      //       {
-      //          WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
-      //       }
-      //    }
-      //    else
-      //    {
-      //       WriteLine($"ERROR: Parse error: {e.Message}");
-      //    }
-
-      //    Die(2, "Dying due to parse error.");
-      // }
 
       var parent_env = Root.Spawn();
       var child_env = parent_env.Spawn();
@@ -457,10 +417,10 @@ class Program
       WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
       
       const string fib = @"
-         let* ((𝑛 30)
+(let* ((𝑛 30)
        (∨ ∨)
-       (*memo* '((2 . 1) (1 . 1)))
-       (memoize (lambda (k v) (cdr (car (setq *memo* (aset *memo* k v))))))
+       (*memo* '(2 1 1 1))
+       (memoize (lambda (k v) (cdr (car (setq *memo* (plist-set *memo* k v))))))
        (𝑓       (lambda (𝑥)
                   (let  ((memoized (aget *memo*  𝑥)))
                     (∨    memoized
@@ -469,8 +429,43 @@ class Program
   (𝑓 𝑛))
 ";
 
-      Do(fib);
+      // Do(fib);
 
+      var tokens = Tokenize(fib);
+      
+      try
+      {
+         var obj = ParseProgram.ParseOrThrow(tokens);
+         
+         WriteLine(obj.ToPrincString());
+      }
+      catch (ParseException e)
+      {
+         var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
+         var match = re.Match(e.Message);
+
+         if (match.Success)
+         {
+            // ParseException reports 1-based index, convert it to 0-based
+            var ix = int.Parse(match.Groups[1].Value) - 1;
+
+            if (ix >= 0 && ix < tokens.Count())
+            {
+               var tok = tokens.ElementAt(ix);
+               WriteLine($"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.");
+            }
+            else
+            {
+               WriteLine($"ERROR: Error at a position that could not be directly mapped to a token: {e.Message}");
+            }
+         }
+         else
+         {
+            WriteLine($"ERROR: Parse error: {e.Message}");
+         }
+
+         Die(2, "Dying due to parse error.");
+      }
    }
 
    //==============================================================================================================================
