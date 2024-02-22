@@ -445,40 +445,40 @@ class Program
       // WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
       // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
       
-      const string fib = @"
-(setq naive-fib
- (lambda (n)
-  (if (<= n 2)
-   1
-   (+ (naive-fib (- n 1)) (naive-fib (- n 2))))))
+//       const string fib = @"
+// (setq naive-fib
+//  (lambda (n)
+//   (if (<= n 2)
+//    1
+//    (+ (naive-fib (- n 1)) (naive-fib (- n 2))))))
 
-(naive-fib 10)
+// (naive-fib 10)
 
-(setq memo-plist '(2 1 1 1))
-(setq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
-(setq fib        
-  (lambda (nth)
-    (princ ""\nmemo-plist is: "" memo-plist)
-    (princ ""nth is:          "" nth)
-    (let ((memoized (plist-get memo-plist nth)))
-      (or memoized
-          (+ (fib (- nth 1)) (fib (- nth 2)))))))
+// (setq memo-plist '(2 1 1 1))
+// (setq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
+// (setq fib        
+//   (lambda (nth)
+//     (princ ""\nmemo-plist is: "" memo-plist)
+//     (princ ""nth is:          "" nth)
+//     (let ((memoized (plist-get memo-plist nth)))
+//       (or memoized
+//           (+ (fib (- nth 1)) (fib (- nth 2)))))))
 
-(fib 5)
-";
+// (fib 5)
+// ";
 
-      var tokens = Tokenize(fib);
+      // var tokens = Tokenize(fib);
       
-      try
-      {
-         var obj = ParseProgram.ParseOrThrow(tokens);
+      // try
+      // {
+      //    var obj = ParseProgram.ParseOrThrow(tokens);
          
-         WriteLine(obj.ToPrincString());
-      }
-      catch (ParseException pe)
-      {
-         PrintParseErrorLocationAndDie(pe, tokens);
-      }
+      //    WriteLine(obj.ToPrincString());
+      // }
+      // catch (ParseException pe)
+      // {
+      //    PrintParseErrorLocationAndDie(pe, tokens);
+      // }
 
       Do("((lambda () (princ \"hello\") (princ \"world\")))");
       // Do("(let* ((x 5) (y x)) y)");
