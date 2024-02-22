@@ -34,11 +34,25 @@ static partial class Ae
    //====================================================================================================================
    // Static methods 
    //====================================================================================================================
+   public static LispObject Cons(LispObject car, LispObject cdr) => (LispObject)new Pair(car, cdr);
+   public static LispObject Truthiness(bool val) => val ? True : Nil;
    public static List<LispToken> Tokenize(string input) => new LispTokenizer(input, IsWhitespaceOrCommentToken).ReadAll();
    public static LispObject Eval(Env env, string input) => Read(input).Eval(env);
-   public static LispObject Read(string input) => ParseProgram.ParseOrThrow(Tokenize(input));
-   public static LispObject Cons(LispObject car, LispObject cdr) =>  (LispObject)new Pair(car, cdr);
-   public static LispObject Truthiness(bool val) => val ? True : Nil;
+
+   //====================================================================================================================
+   public static LispObject Read(string input)
+   {
+      var tokens = Tokenize(input);
+
+      try
+      {
+         return ParseProgram.ParseOrThrow(tokens);
+      }
+      catch (ParseException e)
+      {
+         throw new InvalidDataException(e.DescribeErrorLocationInTokens(tokens), e);
+      }
+   }
 
    //====================================================================================================================
    public static LispObject Intern(string symbol) => Intern(symbol, ref SymbolsList);
