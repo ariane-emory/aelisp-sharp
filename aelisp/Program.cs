@@ -235,7 +235,7 @@ class Program
       // Do("(apply list 1 z)");
       // WriteLine("");
 
-      void Do(string input)
+      LispObject Do(string input)
       {
          // input = input.Trim();
 
@@ -249,6 +249,7 @@ class Program
          WriteLine($"{result}: {result.ToPrincString()}");
          // WriteLine($"{result.ToPrincString()}");
          //WriteLine("");
+         return result;
       }
 
       // Do("(raw \"hello\")");
@@ -418,9 +419,8 @@ class Program
       string s2 = @"This is \t a ""verbatim"" string";
 
       Do("(setq plst '(name \"John\" age 33 city \"New York\" member t))");
-      Do("(princ plst)");
-      Do("(string plst)");
-      Do("plst");
+      var plst = Do("plst");
+      PlistContains(plst, Intern("city"));
     }
 
    //==============================================================================================================================
