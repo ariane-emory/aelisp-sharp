@@ -107,11 +107,11 @@ static partial class Ae
       // public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
 
       //==============================================================================================================================================
-      public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l == r);
-      public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l < r);
-      public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l <= r);
-      public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l > r);
-      public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l >= r);
+      public static bool VariadicEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l == r);
+      public static bool VariadicLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l < r);
+      public static bool VariadicLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l <= r);
+      public static bool VariadicGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l > r);
+      public static bool VariadicGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l >= r);
 
       //==============================================================================================================================================
       private static Func<Number, Number, Number> ApplyBinaryOpFun(Func<Number, Number, Number> op)
