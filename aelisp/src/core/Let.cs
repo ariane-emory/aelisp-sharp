@@ -97,19 +97,19 @@ static partial class Ae
       //================================================================================================================
       private static void BindVarlistInEnv(LispObject varlist, Env lookupEnv, Env bindEnv)
       {
-         WriteLine($"lookupEnv: {lookupEnv.ToPrincString()}");
-         WriteLine($"bindEnv: {bindEnv.ToPrincString()}");
+         // WriteLine($"lookupEnv: {lookupEnv.ToPrincString()}");
+         // WriteLine($"bindEnv: {bindEnv.ToPrincString()}");
 
-         if (lookupEnv == bindEnv)
-            WriteLine("(same env)");
+         // if (lookupEnv == bindEnv)
+         //    WriteLine("(same env)");
 
-         ThrowUnlessIsProperList("varlist", varlist);
+         // ThrowUnlessIsProperList("varlist", varlist);
 
          var current = varlist;
          
          while (current is Pair currentPair)
          {
-            WriteLine($"\nthis item = {currentPair.Car.ToPrincString()}");
+            // WriteLine($"\nthis item = {currentPair.Car.ToPrincString()}");
             
             var sym = Nil;
             var val = Nil;
@@ -119,11 +119,11 @@ static partial class Ae
                sym = varlistVarPair.Car;
                val = ((Pair)varlistVarPair.Cdr).Car;
 
-               WriteLine($"Let-bind {sym.ToPrincString()} to {val.ToPrincString()}...");
+               // WriteLine($"Let-bind {sym.ToPrincString()} to {val.ToPrincString()}...");
  
                val = val.Eval(lookupEnv);
                
-               WriteLine($"Evaled: {val.ToPrincString()}...");
+               // WriteLine($"Evaled: {val.ToPrincString()}...");
             }
             else if (currentPair.Car  is Symbol varlistVarSym)
             {
@@ -132,7 +132,8 @@ static partial class Ae
             }
 
             bindEnv.Set(Env.LookupMode.Local, sym, val);
-            WriteLine($"bindEnv after: {bindEnv.ToPrincString()}");
+
+            // WriteLine($"bindEnv after: {bindEnv.ToPrincString()}");
             
             current = currentPair.Cdr;
          }
