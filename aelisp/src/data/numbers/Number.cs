@@ -87,10 +87,6 @@ static partial class Ae
       //==============================================================================================================================================
       protected abstract bool BinaryCmpEql(Number that);
       protected abstract bool BinaryCmpLessThan(Number that);
-      //==============================================================================================================================================
-      // protected abstract bool BinaryCmpGT(Number that);
-      // protected abstract bool BinaryCmpLessThanE(Number that);
-      // protected abstract bool BinaryCmpGTE(Number that);
 
       //==============================================================================================================================================
       // Static methods
