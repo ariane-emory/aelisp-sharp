@@ -113,7 +113,6 @@ static partial class Ae
             
             var sym = Nil;
             var val = Nil;
-            var evaled_val = Nil;
             
             if (currentPair.Car is Pair varlistVarPair)
             {
@@ -121,18 +120,17 @@ static partial class Ae
                val = ((Pair)varlistVarPair.Cdr).Car;
 
                WriteLine($"Let-bind {sym.ToPrincString()} to {val.ToPrincString()}...");
-
-               evaled_val = val.Eval(lookupEnv);
+ 
+               val = val.Eval(lookupEnv);
                
-               WriteLine($"Evaled: {evaled_val.ToPrincString()}...");
-
+               WriteLine($"Evaled: {val.ToPrincString()}...");
             }
             else if (currentPair.Car  is Symbol varlistVarSym)
             {
                sym = varlistVarSym;
-               evaled_val = val = Nil;
+               val = Nil;
             }
-            
+
             bindEnv.Set(Env.LookupMode.Local, sym, val);
             WriteLine($"bindEnv after: {bindEnv.ToPrincString()}");
             
