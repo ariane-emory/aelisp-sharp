@@ -25,11 +25,11 @@ static partial class Ae
       public static readonly CoreFun.FuncT BitAnd = (env, argsList) => Integer.VariadicBitAnd(argsList);
       public static readonly CoreFun.FuncT BitOr = (env, argsList) => Integer.VariadicBitOr(argsList);
       public static readonly CoreFun.FuncT BitXor = (env, argsList) => Integer.VariadicBitXor(argsList);
-
-      //================================================================================================================
-      public static readonly CoreFun.FuncT Mod = (env, argsList) => Integer.VariadicMod(argsList);
       public static readonly CoreFun.FuncT Lsft = (env, argsList) => Integer.VariadicLsft(argsList);
       public static readonly CoreFun.FuncT Rsft = (env, argsList) => Integer.VariadicRsft(argsList);
+      public static readonly CoreFun.FuncT Mod = (env, argsList) => Integer.VariadicMod(argsList);
+
+      //================================================================================================================
       public static readonly CoreFun.FuncT BitNot = PureUnaryFun<Integer>(o => ~o);
 
       //================================================================================================================
