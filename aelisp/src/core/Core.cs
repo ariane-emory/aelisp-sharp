@@ -7,18 +7,18 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      private static void ThrowUnlessProperList(string name, LispObject obj)
-       {
-          if (! obj.IsProperList)
-             throw new ArgumentException($"{name} must be a proper list, not {obj}!");
-       }
+      private static void ThrowUnlessIsProperList(string name, LispObject obj)
+      {
+         if (!obj.IsProperList)
+            throw new ArgumentException($"{name} must be a proper list, not {obj}!");
+      }
 
       //=================================================================================================================
-      private static void ThrowUnlessList(string name, LispObject obj)
-       {
-          if (! obj.IsList)
-             throw new ArgumentException($"{name} must be a list, not {obj}!");
-       }
+      private static void ThrowUnlessIsList(string name, LispObject obj)
+      {
+         if (!obj.IsList)
+            throw new ArgumentException($"{name} must be a list, not {obj}!");
+      }
 
       //================================================================================================================
    }

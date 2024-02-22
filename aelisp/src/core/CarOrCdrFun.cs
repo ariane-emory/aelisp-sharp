@@ -12,7 +12,7 @@ static partial class Ae
          (Env env, LispObject argsList) =>
          PureUnaryFun((o) =>
          {
-            ThrowUnlessList("argument", o);
+            ThrowUnlessIsList("argument", o);
             
             if (o.IsNil)
                return Nil;

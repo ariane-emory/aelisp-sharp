@@ -11,7 +11,7 @@ static partial class Ae
       private static CoreFun.FuncT EqualityPredicateFun(Func<LispObject, LispObject, bool> pred) =>
          (env, argsList) =>
          {
-            ThrowUnlessProperList("argsList", argsList);;
+            ThrowUnlessIsProperList("argsList", argsList);;
 
             var arg0 = ((Pair)argsList).Car;
             var current = ((Pair)argsList).Cdr;

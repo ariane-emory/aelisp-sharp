@@ -38,8 +38,7 @@ static partial class Ae
       //===================================================================================================================
       private static LispObject LetInternal(Env env, LispObject argsList, bool bindInNewEnv)
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
          var arg0 = ((Pair)argsList).Car;
          var body = ((Pair)argsList).Cdr;

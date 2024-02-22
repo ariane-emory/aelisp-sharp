@@ -10,9 +10,11 @@ static partial class Ae
       //=================================================================================================================
       public static readonly CoreFun.FuncT Eval = (env, argsList) =>
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessIsProperList("argsList", argsList);
 
+         if (argsList.Length > 1)
+            throw new ArgumentException($"argsList must have exactly one element, not {argsList}!");
+         
          return ((Pair)argsList)[0].Eval(env);
       };
 
@@ -28,12 +30,11 @@ static partial class Ae
    //=================================================================================================================
    public static readonly CoreFun.FuncT BoundP = (env, argsList) =>
      {
-        if (argsList.IsImproperList)
-           throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+      ThrowUnlessIsList("argsList", argsList);
 
         var arg1 = ((Pair)argsList)[0];
 
-        if (arg1 is not Symbol sym)
+         if (arg1 is not Symbol sym)
            throw new ArgumentException($"Argument must be a symbol, not {arg1}!");
 
         var (found, _) = env.Lookup(Env.LookupMode.Nearest, sym);
