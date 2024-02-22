@@ -453,6 +453,17 @@ class Program
    (+ (naive-fib (- n 1)) (naive-fib (- n 2))))))
 
 (naive-fib 10)
+
+(setq memo-plist '(2 1 1 1))
+(sstq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
+(setq memo-fib        
+  (lambda (nth) 
+   (let* ((fib (lambda (xxx)
+                (let ((memoized (plist-get memo-plist  xxx)))
+                 (or memoized (memoize  xxx (+ (fib (- xxx 1)) (fib (- xxx 2)))))))))
+   (fib nth))))
+
+(memo-fib 5)
 ";
 
       var tokens = Tokenize(fib);
