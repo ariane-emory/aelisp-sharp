@@ -8,9 +8,10 @@ static partial class Ae
    public static partial class Core
    {
       //=================================================================================================================
-      private static CoreFun.FuncT AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
-                                                                                     Func<FieldT, LispObject> construct,
-                                                                                     Func<LispObject> thunk) =>
+      private static CoreFun.FuncT
+         AccessorFunWithZeroArgsCase<ThisLispObjT, FieldT>(Func<ThisLispObjT, FieldT> getField,
+                                                           Func<FieldT, LispObject> construct,
+                                                           Func<LispObject> thunk) =>
          (Env env, LispObject argsList) =>
           (argsList.Length == 0)
                ? thunk()

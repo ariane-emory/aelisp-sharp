@@ -13,6 +13,13 @@ static partial class Ae
              throw new ArgumentException($"{name} must be a proper list, not {obj}!");
        }
 
+      //=================================================================================================================
+      private static void ThrowUnlessList(string name, LispObject obj)
+       {
+          if (! obj.IsList)
+             throw new ArgumentException($"{name} must be a list, not {obj}!");
+       }
+
       //================================================================================================================
    }
    //===================================================================================================================

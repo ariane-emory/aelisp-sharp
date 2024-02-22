@@ -12,8 +12,7 @@ static partial class Ae
          (Env env, LispObject argsList) =>
          PureUnaryFun((o) =>
          {
-            if (!o.IsList)
-               throw new ArgumentException($"Argument must be a list, not {o}!");
+            ThrowUnlessList("argument", o);
             
             if (o.IsNil)
                return Nil;

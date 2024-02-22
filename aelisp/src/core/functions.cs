@@ -22,8 +22,7 @@ static partial class Ae
       //=================================================================================================================
       private static LispObject NewFunction<T>(Env env, LispObject argsList, Func<Env, LispObject, LispObject, LispObject> create)
       {
-         if (argsList.IsImproperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessProperList("argsList", argsList);
 
          var lambdaList = ((Pair)argsList)[0];
          var body = ((Pair)argsList)[1];
@@ -33,6 +32,7 @@ static partial class Ae
 
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
             throw new ArgumentException($"Can't use {symbol.ToPrincString()} as a parameter!");
+
 
          if (!body.IsProperList)
             throw new ArgumentException($"body must be a proper list, not {body.ToPrincString()}");

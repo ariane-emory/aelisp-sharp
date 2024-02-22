@@ -25,8 +25,7 @@ static partial class Ae
       //================================================================================================================
       public static LispObject Apply(Env env, LispObject argsList)
       {
-         if (!argsList.IsProperList)
-            throw new ArgumentException($"argsList must be a proper list, not {argsList}!");
+         ThrowUnlessProperList("argsList", argsList);
 
          ApplyLog($"argList:        {argsList.ToPrincString()}");
 
@@ -93,8 +92,7 @@ static partial class Ae
          last = lastIsQuoteForm ? ((Pair)((Pair)last).Cdr).Car : last.Eval(env);
          ApplyLog($"last 2:         {last.ToPrincString()}");
 
-         if (!last.IsProperList)
-            throw new ArgumentException($"last must be a proper list, not {last}!");
+         ThrowUnlessProperList("last", last);
          
          while (!last.IsNil)
          {
