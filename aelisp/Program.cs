@@ -87,7 +87,12 @@ class Program
       var child_env = parent_env.Spawn();
 
       List<(string name, CoreFun.FuncT fun, byte minArgs, byte maxArgs, bool special)> coreFuns = [
-         // exit
+         ("plist-remove!", CorePlistRemoveB, 002, 02, false),
+         ("plist-remove ", CorePlistRemove, 0002, 02, false),
+         ("plist-set!   ", CorePlistSetB, 000003, 03, false),
+         ("plist-set    ", CorePlistSet, 0000003, 03, false),
+         ("plist-has?   ", CorePlistContains, 02, 02, false),
+         ("plist-get    ", CorePlistGet,  000002, 02, false),
          ("floor        ", Floor,  0000000000001, 01, false),
          (">=           ", NumGTE, 0000000000002, 15, false),
          ("<=           ", NumLTE, 0000000000002, 15, false),
