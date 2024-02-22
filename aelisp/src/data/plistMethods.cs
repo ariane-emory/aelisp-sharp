@@ -4,9 +4,43 @@ using System.Collections;
 //======================================================================================================================
 static partial class Ae
 {
-  //====================================================================================================================
-  // plist related methods
-  //====================================================================================================================
+   //===================================================================================================================
+   // plist related methods
+   //===================================================================================================================
+   
+   //===================================================================================================================
+   public static void ThrowUnlessPlist(LispObject plist)
+   {
+      if (!plist.IsList)
+         throw new ArgumentException($"plist must be a list, not {plist}!");
+
+      if (!(plist is Pair plistHeadPair)) // plist must be Nil.
+         return;
+
+      if (plistHeadPair.Length % 2 != 0)
+         throw new ArgumentException($"plist must have an even number of elements, not {plistHeadPair.Length}!");
+   }
+   
+   //===================================================================================================================
+   public static Pair? PlistFindPair(LispObject plist, LispObject key)
+   {
+      ThrowUnlessPlist(plist);
+      
+      LispObject current = plist;
+      
+      while (current is Pair currentPair)
+      {         
+         if (currentPair.Car.Equals(key))
+            return currentPair;
+
+         // we already made sure the length was even, so this case should be safe:
+         current = ((Pair)currentPair.Cdr).Cdr;
+      }
+      
+      return null; 
+   }
+   
+   //====================================================================================================================   
    public static bool PlistContains(LispObject plist, LispObject key)
    {
       Pair? found = PlistFindPair(plist, key);
@@ -24,7 +58,7 @@ static partial class Ae
    //====================================================================================================================
    public static void PlistMutatingSet(LispObject plist, LispObject key, LispObject value)
    {
-      if (plist == Nil)
+      if (plist.IsNil)
          throw new InvalidOperationException("mutating set is not permitted on Nil!");
       
       Pair? found = PlistFindPair(plist, key);
@@ -52,34 +86,20 @@ static partial class Ae
 
       throw new ApplicationException("This should never happen!");
    }
-   
+      
    //====================================================================================================================
-   public static Pair? PlistFindPair(LispObject plist, LispObject key)
+   public static LispObject PlistNonmutatingSet(LispObject plist, LispObject key, LispObject value)
    {
-      if (!plist.IsList)
-         throw new ArgumentException($"plist must be a list, not {plist}!");
-      
-      if (!(plist is Pair plistHeadPair)) // plist must be Nil.
-          return null;
-          
-      if (plistHeadPair.Length % 2 != 0)
-         throw new ArgumentException($"plist must have an even number of elements, not {plistHeadPair.Length}!");
-      
-      LispObject current = plist;
-      
-      while (current is Pair currentPair)
-      {         
-         if (currentPair.Car.Equals(key))
-            return currentPair;
+      if (plist.IsNil)
+         return new Pair(key, new Pair(value, Nil));
 
-         // we already made sure the length was even, so this case should be safe:
-         current = ((Pair)currentPair.Cdr).Cdr;
-      }
-      
-      return null; 
+      var stash = Nil;
+      var current = plist;
+      // first, we'll loop through the last adding all items before the key to stash (in reverse order, for now)
+
+      return Nil;
    }
    
-   
-}
 //=====================================================================================================================
+}
 
