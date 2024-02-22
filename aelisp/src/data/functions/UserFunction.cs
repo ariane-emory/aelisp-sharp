@@ -47,7 +47,7 @@ static partial class Ae
          if ((Parameters is Pair pair) &&
              ((argsList.Length < Parameters.Length) ||
               (Parameters.IsProperList && argsList.Length > Parameters.Length)))
-            throw new ArgumentException($"user fun requires {(Parameters.IsProperList ? "exactly" : "at least")} "
+            throw new ArgumentException($"{GetType().Name} requires {(Parameters.IsProperList ? "exactly" : "at least")} "
                                         + $"{Parameters.Length} args, but got {argsList.Length}");
 
          if (!Special)
