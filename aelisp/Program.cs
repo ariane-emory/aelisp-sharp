@@ -246,7 +246,7 @@ class Program
          WriteLine($"\nÆ#> {input}");
          var result = Eval(Root, input);
          Write("⇒ ");
-         WriteLine(result);
+         WriteLine($"{result}: {result.ToPrincString()}");
          // WriteLine($"{result.ToPrincString()}");
          //WriteLine("");
       }
