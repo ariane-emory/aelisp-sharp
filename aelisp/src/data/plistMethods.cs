@@ -115,14 +115,17 @@ static partial class Ae
       // by now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
       // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList:
 
-      current = ((Pair)((Pair)current).Cdr).Cdr;
-
-      while (current is Pair currentPair)
+      if (!current.IsNil)
       {
-         reversedNewList = Cons(currentPair.Car, reversedNewList);
-         current = currentPair.Cdr;
+         current = ((Pair)((Pair)current).Cdr).Cdr;
+         
+         while (current is Pair currentPair)
+         {
+            reversedNewList = Cons(currentPair.Car, reversedNewList);
+            current = currentPair.Cdr;
+         }
       }
-
+      
       var result = Nil;
 
       // finally, we'll reverse reversedNewList to get the final result:
