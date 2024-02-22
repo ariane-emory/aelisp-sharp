@@ -416,13 +416,18 @@ class Program
       // WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
       // WriteLine(new Integer(1).Eql(new Float(1.0)));
       // WriteLine(new Integer(1) + new Float(3.0));
-      string s2 = @"This is \t a ""verbatim"" string";
 
-      Do("(setq plst '(name \"John\" age 33 city \"New York\" member t))");
-      var plst = Do("plst");
-      WriteLine(PlistContains(plst, Intern("city")) ? "contains city" : "does not contain city");
-      WriteLine(PlistContains(plst, Intern("name")) ? "contains name" : "does not contain name");
-      WriteLine(PlistContains(plst, new Integer(33)) ? "contains 33" : "does not contain 33");
+      Do("(setq plist '(name \"John\" age 33 city \"New York\" member t))");
+      var plist = Do("plist");
+      WriteLine(PlistContains(plist, Intern("city")) ? "contains city" : "does not contain city");
+      WriteLine(PlistContains(plist, Intern("name")) ? "contains name" : "does not contain name");
+      WriteLine(PlistContains(plist, new Integer(33)) ? "contains 33" : "does not contain 33");
+      WriteLine(PlistGet(plist, Intern("name")).ToPrincString());
+      WriteLine(PlistGet(plist, Intern("city")).ToPrincString());
+      WriteLine(PlistGet(plist, Intern("member")).ToPrincString());
+      WriteLine(PlistGet(plist, new Integer(33)).ToPrincString());
+     
+      
     }
 
    //==============================================================================================================================
