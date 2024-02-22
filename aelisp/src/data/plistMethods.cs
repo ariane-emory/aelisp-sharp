@@ -93,6 +93,7 @@ static partial class Ae
       if (plist.IsNil)
          return new Pair(key, new Pair(value, Nil));
 
+      var result = Nil;
       var stash = Nil;
       var current = plist;
 
@@ -105,6 +106,40 @@ static partial class Ae
          stash = Cons(currentPair.Car, stash);
          current = currentPair.Cdr;
       }
+
+      var resultTail = Nil;
+      
+      // now we'll loop through the stash, adding items to the result in the correct order:
+      while (stash is Pair stashPair)
+      {
+         result = Cons(stashPair.Car, result);
+         stash = stashPair.Cdr;
+      }
+
+      // now we'll add the new key/value pair to the result:
+      result = Cons(key, result);
+
+      // we're going to make a whole new list, sharing no structure with the original, so we repeat the same procedure, collecting all the
+      // elements after where we found the key in the stash, again in reverse order.
+
+      stash = Nil;
+      current = ((Pair)((Pair)current).Cdr).Cdr;
+      
+      while (current is Pair currentPair)
+      {
+         stash = Cons(currentPair.Car, stash);
+         current = currentPair.Cdr;
+      }
+
+      var tail = Nil;
+
+      while (stash is Pair stashPair)
+      {
+         tail = Cons(stashPair.Car, tail);
+         stash = stashPair.Cdr;
+      }
+
+
       
       return Nil;
    }
