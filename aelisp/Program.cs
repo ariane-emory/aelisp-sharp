@@ -452,10 +452,9 @@ class Program
    1
    (+ (naive-fib (- n 1)) (naive-fib (- n 2))))))
 
-(naive-fib 10)
-
 (setq memo-plist '(2 1 1 1))
 (setq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
+
 (setq fib        
   (lambda (nth)
     (princ ""\nmemo-plist is: "" memo-plist)
@@ -480,8 +479,8 @@ class Program
          PrintParseErrorLocationAndDie(pe, tokens);
       }
 
-      Do("((lambda () (princ \"hello\") (princ \"world\")))");
-      // Do("(let* ((x 5) (y x)) y)");
+// Do("((lambda () (princ \"hello\") (princ \"world\")))");
+      Do("(fib 5)");
    }
 
    //==============================================================================================================================
