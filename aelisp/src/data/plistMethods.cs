@@ -55,6 +55,18 @@ static partial class Ae
    }
 
    //====================================================================================================================
+   public static LispObject MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
+   {
+      ThrowUnlessPlist(plist);
+
+      if (plist.IsNil)
+         throw new InvalidOperationException("mutating removeis not permitted on Nil!");
+
+      return Nil;
+      
+   }
+
+   //====================================================================================================================
    public static LispObject MutatingPlistSet(LispObject plist, LispObject key, LispObject value)
    {
       ThrowUnlessPlist(plist);
