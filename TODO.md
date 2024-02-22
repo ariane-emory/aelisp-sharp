@@ -2,6 +2,7 @@
 
 ## To Do - replicating features from the C implemtation of Ælisp:
 - [ ] Core 'properties' methods.
+- [ ] ImplApply for Macros.
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] OS interaction functions (data layer/core):
