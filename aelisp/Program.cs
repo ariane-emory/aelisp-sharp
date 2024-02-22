@@ -446,6 +446,10 @@ class Program
 
 
       WriteLine(MutatingPlistRemove(plist, Intern("city")).ToPrincString());
+      WriteLine(MutatingPlistRemove(plist, Intern("name")).ToPrincString());
+      WriteLine(MutatingPlistRemove(plist, Intern("color")).ToPrincString());
+      WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
+      WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
       
     }
 
