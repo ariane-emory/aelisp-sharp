@@ -96,9 +96,9 @@ static partial class Ae
       var reversedNewList = Nil;
       var current = plist;
 
-      // we're going to build a whole new plist, sharing no structure with the original plist.
+      // we're going to build a whole new plist, sharing no structure with the original plist. 
       
-      // first, we'll loop through the last adding all items before the key to reversedNewList (in reverse order, for now)
+      // first, we'll loop through the last adding all items before the key to reversedNewList (in reverse order, for now):
       while (current is Pair currentPair)
       {
          if (currentPair.Car.Equals(key))
@@ -108,11 +108,11 @@ static partial class Ae
          current = currentPair.Cdr;
       }
 
-      // then, we'll add the new key/value pair to reversedNewList, also in reverse.
+      // then, we'll add the new key/value pair to reversedNewList, also in reverse:
       reversedNewList = Cons(value, Cons(key, reversedNewList));
 
       // now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
-      // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList.
+      // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList:
 
       current = ((Pair)((Pair)current).Cdr).Cdr;
 
@@ -124,8 +124,7 @@ static partial class Ae
 
       var result = Nil;
 
-      // finally, we'll reverse reversedNewList to get the final result.
-
+      // finally, we'll reverse reversedNewList to get the final result:
       while (reversedNewList is Pair reversedNewListPair)
       {
          result = Cons(reversedNewListPair.Car, result);
