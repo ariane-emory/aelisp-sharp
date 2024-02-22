@@ -95,8 +95,17 @@ static partial class Ae
 
       var stash = Nil;
       var current = plist;
-      // first, we'll loop through the last adding all items before the key to stash (in reverse order, for now)
 
+      // first, we'll loop through the last adding all items before the key to stash (in reverse order, for now)
+      while (current is Pair currentPair)
+      {
+         if (currentPair.Car.Equals(key))
+            break;
+
+         stash = Cons(currentPair.Car, stash);
+         current = currentPair.Cdr;
+      }
+      
       return Nil;
    }
    
