@@ -60,12 +60,12 @@ static partial class Ae
       //==============================================================================================================================================
       // Impl operators
       //==============================================================================================================================================
-      public static bool operator > (Number left, Number right) => left.BinaryCmpGT(right);
-      public static bool operator < (Number left, Number right) => left.BinaryCmpLT(right);
-      public static bool operator >= (Number left, Number right) => left.BinaryCmpGTE(right);
-      public static bool operator <= (Number left, Number right) => left.BinaryCmpLTE(right);
-      public static bool operator == (Number left, Number right) => left.BinaryCmpEql(right);
-      public static bool operator != (Number left, Number right) => !left.BinaryCmpEql(right);
+      public static bool operator > (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r))(left, right);
+      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
+      public static bool operator >= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r))(left, right);
+      public static bool operator <= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r))(left, right);
+      public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
+      public static bool operator != (Number left, Number right) => !ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
       public static Number operator + (Number left, Number right) => left.BinaryAdd(right);
       public static Number operator - (Number left, Number right) => left.BinarySub(right);
       public static Number operator * (Number left, Number right) => left.BinaryMul(right);
