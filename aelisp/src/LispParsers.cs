@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 using Pidgin;
 using static Pidgin.Parser;
 using static Pidgin.Parser<Ae.LispToken>;
@@ -9,6 +10,31 @@ using LispTokenParser = Pidgin.Parser<Ae.LispToken, Ae.LispToken>;
 //==========================================================================================================================================
 static partial class Ae
 {
+   //==============================================================================================================================
+   public static string DescribeErrorLocationInTokens(this ParseException pe, List<LispToken> tokens)
+   {
+      var re = new Regex(@"unexpected[\s\S]*at line \d+, col (\d+)", RegexOptions.Multiline);
+      var match = re.Match(pe.Message);
+
+      if (match.Success)
+      {
+         // ParseException reports 1-based index, convert it to 0-based
+         var ix = int.Parse(match.Groups[1].Value) - 1;
+
+         if (ix >= 0 && ix < tokens.Count())
+         {
+            var tok = tokens.ElementAt(ix);
+            return $"ERROR: Unexpected token at line {tok.Line + 1}, column {tok.Column}: {tok}.";
+         }
+         else
+         {
+            return $"ERROR: Error at a position that could not be directly mapped to a token: {pe.Message}";
+         }
+      }
+
+      return ($"ERROR: Parse error: {pe.Message}");
+   }
+   
    //=======================================================================================================================================
    // LispParsers
    //=======================================================================================================================================
