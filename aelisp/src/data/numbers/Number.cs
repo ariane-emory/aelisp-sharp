@@ -66,11 +66,11 @@ static partial class Ae
       public static Number operator / (Number left, Number right) => ApplyBinaryOpFun((l, r) => l.BinaryDiv(r))(left, right);
       
       //==============================================================================================================================================
-      public static bool operator > (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r))(left, right);
-      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
-      public static bool operator >= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r))(left, right);
-      public static bool operator <= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r))(left, right);
       public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
+      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
+      public static bool operator <= (Number left, Number right) => (left < right) || (left == right);
+      public static bool operator > (Number left, Number right) => ! (left <= right);
+      public static bool operator >= (Number left, Number right) => (left == right) || (left > right);
       public static bool operator != (Number left, Number right) => ! (left == right);
 
       //==============================================================================================================================================
@@ -100,11 +100,18 @@ static partial class Ae
       public static Number Div(LispObject list) => ApplyVariadicArithmetic(list, 1, true, ApplyBinaryOpFun((l, r) => l.BinaryDiv(r)));
 
       //==============================================================================================================================================
-      public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r)));
-      public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r)));
-      public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
-      public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
-      public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
+      // public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r)));
+      // public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r)));
+      // public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r)));
+      // public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r)));
+      // public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r)));
+
+      //==============================================================================================================================================
+      public static bool CmpEql(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l == r);
+      public static bool CmpLT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l < r);
+      public static bool CmpLTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l <= r);
+      public static bool CmpGT(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l > r);
+      public static bool CmpGTE(LispObject list) => ApplyVariadicCmp(list, true, AssignMode.AssignAnd, (l, r) => l >= r);
 
       //==============================================================================================================================================
       private static Func<Number, Number, Number> ApplyBinaryOpFun(Func<Number, Number, Number> op)
@@ -167,9 +174,9 @@ static partial class Ae
 
       //==============================================================================================================================================
       private static bool ApplyVariadicCmp(LispObject list,
-                                                  bool defaultResult,
-                                                  AssignMode assignMode,
-                                                  Func<Number, Number, bool> op)
+                                           bool defaultResult,
+                                           AssignMode assignMode,
+                                           Func<Number, Number, bool> op)
       {
          if (!list.IsProperList)
             throw new ArgumentException($"Can't do math on an improper list: {list}");
@@ -195,19 +202,12 @@ static partial class Ae
             if (!(currentPair.Car is Number currentNumber))
                throw new ArgumentException($"Can't do math on a list with non-numbers: {currentPair.Car}");
 
-            if (assignMode == AssignMode.AssignAnd)
-            {
-               var tmp = op(left, currentNumber);
-               // WriteLine($"assign {result} & {tmp}");
-               result &= tmp;
-            }
-            else
-            {
-               var tmp = op(left, currentNumber);
-               // WriteLine($"assign {result} | {tmp}");
-               result |= tmp;
-            }
-
+            var tmp = op(left, currentNumber);
+            
+            result = assignMode == AssignMode.AssignAnd
+               ? result & tmp
+               : result | tmp;
+            
             if (!result)
                return false;
 
