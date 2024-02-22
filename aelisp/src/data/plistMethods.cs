@@ -24,8 +24,9 @@ static partial class Ae
       {         
          if (currentPair.Car.Equals(key))
             return true;
-            
-         current = currentPair.Cdr;
+
+         // we already made sure the length was even, so this case should be safe:
+         current = ((Pair)currentPair.Cdr).Cdr;
       }
       
       return false; 
