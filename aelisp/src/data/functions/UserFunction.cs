@@ -71,7 +71,7 @@ static partial class Ae
 
          // PUT_PROP(fun, "fun", env);
 
-         WriteLine($"evaluating body: {Body.ToPrincString()}");
+         // WriteLine($"evaluating body: {Body.ToPrincString()}");
          
          return Body.Eval(Environment.Spawn(Parameters, argsList));
       }

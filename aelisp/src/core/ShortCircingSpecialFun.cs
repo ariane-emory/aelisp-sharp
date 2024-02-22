@@ -19,10 +19,10 @@ static partial class Ae
             {
                var head = argsListPair.Car;
 
-               WriteLine($"progn evaling head = {head.ToPrincString()}...");
+               // WriteLine($"progn evaling head = {head.ToPrincString()}...");
 
                result = head.Eval(env);
-               WriteLine($"result = {result.ToPrincString()}");
+               // WriteLine($"result = {result.ToPrincString()}");
 
                if (pred(result))
                   return result;

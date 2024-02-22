@@ -26,8 +26,8 @@ static partial class Ae
 
          var lambdaList = ((Pair)argsList)[0];
          var body = ((Pair)argsList).Cdr;
-         
-         WriteLine($"body is: {body.ToPrincString()}");
+
+         // WriteLine($"body is: {body.ToPrincString()}");
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
             throw new ArgumentException($"lambda list must be a list or a symbol, not {lambdaList.ToPrincString()}!");
@@ -50,7 +50,7 @@ static partial class Ae
          if (currentParam != Nil && !IsPermittedParamSymbol(currentParam))
             throw new ArgumentException($"can't use {currentParam.ToPrincString()} as a parameter!");
 
-         return create(env, lambdaList, body);
+         return create(env, lambdaList, Ae.Cons(Intern("progn"), body));
       }
 
       //================================================================================================================
