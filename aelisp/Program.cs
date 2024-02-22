@@ -445,7 +445,7 @@ class Program
       WriteLine(plist.ToPrincString());
 
 
-      WriteLine(MutatingPlistRemove(plist, Intern("city")));
+      WriteLine(MutatingPlistRemove(plist, Intern("city")).ToPrincString());
       
     }
 
