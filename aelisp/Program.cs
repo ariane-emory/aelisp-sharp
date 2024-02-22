@@ -429,16 +429,16 @@ class Program
       MutatingPlistSet(plist, Intern("city"), new String("Los Angeles"));
       MutatingPlistSet(plist, Intern("category"), new String("Human"));
       WriteLine(plist.ToPrincString());
-      plist = NonmutatingPlistSet(plist, Intern("city"), new String("London"));
+      plist = PurePlistSet(plist, Intern("city"), new String("London"));
       WriteLine(plist.ToPrincString());
       
-      plist = NonmutatingPlistSet(plist, Intern("name"), new String("Bob"));
+      plist = PurePlistSet(plist, Intern("name"), new String("Bob"));
       WriteLine(plist.ToPrincString());
       
-      plist = NonmutatingPlistSet(plist, Intern("category"), new String("Dog"));
+      plist = PurePlistSet(plist, Intern("category"), new String("Dog"));
       WriteLine(plist.ToPrincString());
       
-      plist = NonmutatingPlistSet(plist, Intern("color"), new String("brown"));
+      plist = PurePlistSet(plist, Intern("color"), new String("brown"));
       WriteLine(plist.ToPrincString());
       
     }

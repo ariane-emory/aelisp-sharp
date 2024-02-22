@@ -22,7 +22,7 @@ static partial class Ae
    }
    
    //===================================================================================================================
-   public static Pair? PlistFindPair(LispObject plist, LispObject key)
+   private static Pair? PlistFindPair(LispObject plist, LispObject key)
    {
       ThrowUnlessPlist(plist);
       
@@ -44,7 +44,6 @@ static partial class Ae
    public static bool PlistContains(LispObject plist, LispObject key)
    {
       Pair? found = PlistFindPair(plist, key);
-
       return found is not null;
    }
    
@@ -56,8 +55,10 @@ static partial class Ae
    }
 
    //====================================================================================================================
-   public static void MutatingPlistSet(LispObject plist, LispObject key, LispObject value)
+   public static LispObject MutatingPlistSet(LispObject plist, LispObject key, LispObject value)
    {
+      ThrowUnlessPlist(plist);
+
       if (plist.IsNil)
          throw new InvalidOperationException("mutating set is not permitted on Nil!");
       
@@ -66,7 +67,8 @@ static partial class Ae
       if (found is not null)
       {
          ((Pair)found.Cdr).Car = value;
-         return;
+
+         return plist;
       }
 
       // if we got this far, then we already know that plist is a non-nil length with an even length.
@@ -78,18 +80,33 @@ static partial class Ae
          if (currentPair.Cdr.IsNil)
          {
             currentPair.Cdr = Cons(key, Cons(value, Nil));
-            return;
+            break;
          }
 
          current = currentPair.Cdr;
       }
 
-      throw new ApplicationException("This should never happen!");
+      return plist;
    }
       
    //====================================================================================================================
-   public static LispObject NonmutatingPlistSet(LispObject plist, LispObject key, LispObject value)
+   public static LispObject UnsafePlistSet(LispObject plist, LispObject key, LispObject value)
    {
+      ThrowUnlessPlist(plist);
+      
+      if (plist.IsNil)
+         return new Pair(key, new Pair(value, Nil));
+
+      MutatingPlistSet(plist, key, value);
+      
+      return plist;
+   }    
+      
+   //====================================================================================================================
+   public static LispObject PurePlistSet(LispObject plist, LispObject key, LispObject value)
+   {
+      ThrowUnlessPlist(plist);
+      
       if (plist.IsNil)
          return new Pair(key, new Pair(value, Nil));
 
@@ -114,7 +131,6 @@ static partial class Ae
 
       // by now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
       // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList:
-
       if (!current.IsNil)
       {
          current = ((Pair)((Pair)current).Cdr).Cdr;
