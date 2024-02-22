@@ -93,55 +93,43 @@ static partial class Ae
       if (plist.IsNil)
          return new Pair(key, new Pair(value, Nil));
 
-      var frontPartOfList = Nil;
-      var backPartOfList = Nil;
+      var reversedNewList = Nil;
       var current = plist;
 
       // we're going to build a whole new plist, sharing no structure with the original plist.
       
-      // first, we'll loop through the last adding all items before the key to frontPartOfList (in reverse order, for now)
+      // first, we'll loop through the last adding all items before the key to reversedNewList (in reverse order, for now)
       while (current is Pair currentPair)
       {
          if (currentPair.Car.Equals(key))
             break;
 
-         frontPartOfList = Cons(currentPair.Car, frontPartOfList);
+         reversedNewList = Cons(currentPair.Car, reversedNewList);
          current = currentPair.Cdr;
       }
 
+      // then, we'll add the new key/value pair to reversedNewList, also in reverse.
+      reversedNewList = Cons(value, Cons(key, reversedNewList));
+
       // now, we should have found either the end of the list or the key/value pair. if we found the key value pair,
-      // we'll advance current past it and then loop through the rest of the list, adding all the items to backPartOfList,
-      // again in reverse order.
+      // we'll advance current past it and then loop through the rest of the list, adding all the items to onto reveredNewList.
 
       current = ((Pair)((Pair)current).Cdr).Cdr;
 
       while (current is Pair currentPair)
       {
-         backPartOfList = Cons(currentPair.Car, backPartOfList);
+         reversedNewList = Cons(currentPair.Car, reversedNewList);
          current = currentPair.Cdr;
       }
 
       var result = Nil;
 
-      // next, we'll stick the backPartOfList onto result.
-      current = backPartOfList;
+      // finally, we'll reverse reversedNewList to get the final result.
 
-      while (current is Pair currentPair)
+      while (reversedNewList is Pair reversedNewListPair)
       {
-         result = Cons(currentPair.Car, result);
-         current = currentPair.Cdr;
-      }
-
-      // then, we'll stick the new key/value pair onto result.
-      result = Cons(Cons(key, Cons(value, Nil)), result);
-
-      // finally, we'll stick the frontPartOfList onto result.
-      current = frontPartOfList;
-
-      while (current is Pair currentPair)
-      {
-         result = Cons(currentPair.Car, result);
-         current = currentPair.Cdr;
+         result = Cons(reversedNewListPair.Car, result);
+         reversedNewList = reversedNewListPair.Cdr;
       }
 
       return result;
