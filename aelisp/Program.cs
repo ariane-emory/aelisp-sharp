@@ -416,23 +416,24 @@ class Program
       // WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
       // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
 
-      var tokens = Tokenize(File.ReadAllText("data/fib.lisp"));
-      var obj = Nil;
       
-      try
-      {
-         obj = ParseProgram.ParseOrThrow(tokens);
+      Do(File.ReadAllText("data/fib.lisp"));
+      // var obj = Nil;
       
-         WriteLine(obj.ToPrincString());
-      }
-      catch (ParseException pe)
-      {
-         WriteLine(pe.DescribeErrorLocationInTokens(tokens));
+      // try
+      // {
+      //    obj = ParseProgram.ParseOrThrow(tokens);
+      
+      //    WriteLine(obj.ToPrincString());
+      // }
+      // catch (ParseException pe)
+      // {
+      //    WriteLine(pe.DescribeErrorLocationInTokens(tokens));
 
-         Die(2, "Dying due to parse error.");
-      }
+      //    Die(2, "Dying due to parse error.");
+      // }
 
-      obj.Eval(Root);
+      // obj.Eval(Root);
    }
 
    //==============================================================================================================================
