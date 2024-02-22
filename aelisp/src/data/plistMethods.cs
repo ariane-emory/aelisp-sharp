@@ -14,6 +14,14 @@ static partial class Ae
       return found is not null;
    }
    
+  //====================================================================================================================
+   public static bool PlistGet(LispObject plist, LispObject key)
+   {
+      Pair? found = PlistFindPair(plist, key);
+
+      return found.Cdr.Car;
+   }
+   
    //====================================================================================================================
    public static Pair? PlistFindPair(LispObject plist, LispObject key)
    {
