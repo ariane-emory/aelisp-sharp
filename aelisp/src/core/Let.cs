@@ -109,7 +109,7 @@ static partial class Ae
          
          while (current is Pair currentPair)
          {
-            WriteLine($"this item = {currentPair.Car.ToPrincString()}");
+            WriteLine($"\nthis item = {currentPair.Car.ToPrincString()}");
             
             var sym = Nil;
             var val = Nil;
@@ -132,7 +132,8 @@ static partial class Ae
             }
             
             bindEnv.Set(Env.LookupMode.Local, sym, val);
-
+            WriteLine($"bindEnv after: {bindEnv.ToPrincString()}");
+            
             current = currentPair.Cdr;
          }
       }
