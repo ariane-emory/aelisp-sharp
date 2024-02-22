@@ -444,33 +444,13 @@ class Program
       // WriteLine(MutatingPlistRemove(plist, Intern("color")).ToPrincString());
       // WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
       // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
-      
-      const string fib = @"
-(setq naive-fib
- (lambda (n)
-  (if (<= n 2)
-   1
-   (+ (naive-fib (- n 1)) (naive-fib (- n 2))))))
 
-(setq memo-plist '(2 1 1 1))
-(setq memoize    (lambda (key value) (cdr (car (setq memo-plist (plist-set memo-plist key value))))))
-
-(setq fib        
-  (lambda (nth)
-    (princ ""\nmemo-plist is: "" memo-plist)
-    (princ ""nth is:          "" nth)
-    (let ((memoized (plist-get memo-plist nth)))
-      (or memoized
-          (+ (fib (- nth 1)) (fib (- nth 2)))))))
-
-(fib 5)
-";
-
-      var tokens = Tokenize(fib);
+      var tokens = Tokenize(File.ReadAllText("data/fib.lisp"));
+      var obj = Nil;
       
       try
       {
-         var obj = ParseProgram.ParseOrThrow(tokens);
+         obj = ParseProgram.ParseOrThrow(tokens);
       
          WriteLine(obj.ToPrincString());
       }
@@ -479,8 +459,7 @@ class Program
          PrintParseErrorLocationAndDie(pe, tokens);
       }
 
-// Do("((lambda () (princ \"hello\") (princ \"world\")))");
-      Do(fib);
+      obj.Eval(Root);
    }
 
    //==============================================================================================================================
