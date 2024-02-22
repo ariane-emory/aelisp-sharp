@@ -12,7 +12,6 @@
 - [ ] C#-level unit tests (XUnit?).
 
 ## To Do - practical:
-- [x] Public op/cmp methods on Number might warrant friendlier names. Uncertain about overriding actual operators, I kinda like the explicit methods.
 - [ ] Make sure the main tokenizer call entry points are all using appropriate _exclude filters, whitespace and all comments are boring for now.
 - [ ] Make that test of handling ParseErrors nicely more useful. Move it into LispTokenizer and use in Next()/ReadAll() probably?
 - [ ] Refactor the stdlib and tests into it's own repo and try running it.
@@ -32,6 +31,7 @@
 - [ ] Extend the stdlib's structs into an object system (which could turn out to look a lot like [tinyclos](https://github.com/kstephens/tinyclos), possibly just ammounting to successfully running a forked version of [tinyclos](https://github.com/kstephens/tinyclos)).
 
 ## Completed:
+- [x] Public op/cmp methods on Number might warrant friendlier names and operator implementations.
 - [x] Math comparison functions.
 - [x] DRY up the int-only math methods.
 - [x] ~/bit-not.

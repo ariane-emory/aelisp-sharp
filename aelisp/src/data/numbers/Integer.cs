@@ -60,15 +60,10 @@ static partial class Ae
       }
 
       //==============================================================================================================================================
-      public static Number operator ~ (Integer right) => right.UnaryBitNot();
-
-      //==============================================================================================================================================
       protected Integer UnaryBitNot() => new Integer(~ Value);
-
-      //==============================================================================================================================================
-      protected Integer BinaryAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
-      protected Integer BinaryOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
-      protected Integer BinaryXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
+      protected Integer BinaryBitAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
+      protected Integer BinaryBitOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
+      protected Integer BinaryBitXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
       protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
       protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
       protected Integer BinaryRsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
@@ -76,19 +71,20 @@ static partial class Ae
       //==============================================================================================================================================
       // Impl operators
       //==============================================================================================================================================
+      public static Number operator ~ (Integer right) => right.UnaryBitNot();
       public static Integer operator % (Integer left, Integer right) => left.BinaryMod(right);
-      public static Integer operator & (Integer left, Integer right) => left.BinaryAnd(right);
-      public static Integer operator | (Integer left, Integer right) => left.BinaryOr(right);
-      public static Integer operator ^ (Integer left, Integer right) => left.BinaryXor(right);
+      public static Integer operator & (Integer left, Integer right) => left.BinaryBitAnd(right);
+      public static Integer operator | (Integer left, Integer right) => left.BinaryBitOr(right);
+      public static Integer operator ^ (Integer left, Integer right) => left.BinaryBitXor(right);
       public static Integer operator << (Integer left, Integer right) => left.BinaryLsft(right);
       public static Integer operator >> (Integer left, Integer right) => left.BinaryRsft(right);
       
       //==============================================================================================================================================
       // Static methods
       //==============================================================================================================================================
-      public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryAnd(r));
-      public static readonly Func<LispObject, Integer> BitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryOr(r));
-      public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryXor(r));
+      public static readonly Func<LispObject, Integer> BitAnd = ApplyVariadicIntegerArithmeticFun("AND", (l, r) => l.BinaryBitAnd(r));
+      public static readonly Func<LispObject, Integer> BitOr = ApplyVariadicIntegerArithmeticFun("OR", (l, r) => l.BinaryBitOr(r));
+      public static readonly Func<LispObject, Integer> BitXor = ApplyVariadicIntegerArithmeticFun("XOR", (l, r) => l.BinaryBitXor(r));
       public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
       public static readonly Func<LispObject, Integer> Lsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
       public static readonly Func<LispObject, Integer> Rsft = ApplyVariadicIntegerArithmeticFun("right shift", (l, r) => l.BinaryRsft(r));
