@@ -460,8 +460,8 @@ class Program
          let* ((𝑛 30)
        (∨ ∨)
        (*memo* '((2 . 1) (1 . 1)))
-       (memoize (λ (k v) (cdr (car (setq *memo* (aset *memo* k v))))))
-       (𝑓       (λ (𝑥)
+       (memoize (lambda (k v) (cdr (car (setq *memo* (aset *memo* k v))))))
+       (𝑓       (lambda (𝑥)
                   (let  ((memoized (aget *memo*  𝑥)))
                     (∨    memoized
                           (memoize  𝑥 (+ (𝑓 (- 𝑥 1))
