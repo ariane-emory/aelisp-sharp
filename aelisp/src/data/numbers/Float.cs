@@ -31,25 +31,22 @@ static partial class Ae
       //==============================================================================================================================================
       protected override Number Promote()
       {
-         throw new NotImplementedException("float can't be promoted further");
+         throw new NotImplementedException("Float can't be promoted further!");
       }
 
       //==============================================================================================================================================
-      private Float ApplyBinaryOp(Number that, Func<double, double, double> op) =>
-         new(op(this.Value, ((Float)that).Value));
+      private Float CastAndApplyBinaryOp(Number that, Func<double, double, double> op) => new(op(this.Value, ((Float)that).Value));
+      //==============================================================================================================================================
+      protected override Float BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (l, r) => l + r);
+      protected override Float BinarySub(Number that) => CastAndApplyBinaryOp(that, (l, r) => l - r);
+      protected override Float BinaryMul(Number that) => CastAndApplyBinaryOp(that, (l, r) => l * r);
+      protected override Float BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
-      protected override Float BinaryAdd(Number that) => ApplyBinaryOp(that, (l, r) => l + r);
-      protected override Float BinarySub(Number that) => ApplyBinaryOp(that, (l, r) => l - r);
-      protected override Float BinaryMul(Number that) => ApplyBinaryOp(that, (l, r) => l * r);
-      protected override Float BinaryDiv(Number that) => ApplyBinaryOp(that, (l, r) => l / r);
-
+      private bool CastAndApplyBinaryCmp(Number that, Func<double, double, bool> cmp) => cmp(Value, ((Float)that).Value);
       //==============================================================================================================================================
-      protected override bool BinaryCmpEql(Number that) => ApplyBinaryCmp(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => ApplyBinaryCmp(that, (l, r)  => l < r);
-      //==============================================================================================================================================
-      private bool ApplyBinaryCmp(Number that, Func<double, double, bool> cmp) => 
-         cmp(Value, ((Float)that).Value);
+      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
  
       //==============================================================================================================================================
    }

@@ -43,8 +43,7 @@ static partial class Ae
 
       //==============================================================================================================================================
       private Rational CastAndApplyBinaryOp(Number that, Func<int, int, int, int, (int, int)> op) =>
-         new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));
-      
+         new(op(Numerator, Denominator, ((Rational)that).Numerator, ((Rational)that).Denominator));     
       //==============================================================================================================================================
       protected override Rational BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
       protected override Rational BinarySub(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => ((ln * rd) + (rn * ld), ld * rd));
@@ -52,11 +51,11 @@ static partial class Ae
       protected override Rational BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (ln, ld, rn, rd) => (ln * rd, ld * rn));
 
       //==============================================================================================================================================
-      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
-      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
-      //==============================================================================================================================================
       private bool CastAndApplyBinaryCmp(Number that, Func<int, int, bool> cmp) => 
          cmp(Numerator * ((Rational)that).Denominator, Denominator * ((Rational)that).Numerator);
+      //==============================================================================================================================================
+      protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
+      protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
 
       //==============================================================================================================================================
    }

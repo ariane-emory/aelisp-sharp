@@ -30,9 +30,7 @@ static partial class Ae
       protected override Rational Promote() => new(Value, 1);
 
       //==============================================================================================================================================
-      private Integer CastAndApplyBinaryOp(Number that, Func<int, int, int> op) =>
-         new(op(this.Value, ((Integer)that).Value));
-
+      private Integer CastAndApplyBinaryOp(Number that, Func<int, int, int> op) => new(op(this.Value, ((Integer)that).Value));
       //==============================================================================================================================================
       protected override Integer BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (l, r) => l + r);
       protected override Integer BinarySub(Number that) => CastAndApplyBinaryOp(that, (l, r) => l - r);
@@ -40,11 +38,10 @@ static partial class Ae
       protected override Integer BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (l, r) => l / r);
 
       //==============================================================================================================================================
+      private bool CastAndApplyBinaryCmp(Number that, Func<int, int,bool> cmp) => cmp(Value, ((Integer)that).Value);
+      //==============================================================================================================================================
       protected override bool BinaryCmpEql(Number that) => CastAndApplyBinaryCmp(that, (l, r) => l == r);
       protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
-      //==============================================================================================================================================
-      private bool CastAndApplyBinaryCmp(Number that, Func<int, int,bool> cmp) => 
-         cmp(Value, ((Integer)that).Value);
 
       //=============================================================================================================================================
       private static Integer ThrowwUnlessGreaterThanZero(Integer that, string opName)
