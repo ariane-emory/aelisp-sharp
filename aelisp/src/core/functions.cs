@@ -33,9 +33,7 @@ static partial class Ae
          if (lambdaList is Symbol symbol && (symbol.IsSpecial || symbol.IsKeyword || symbol == True))
             throw new ArgumentException($"Can't use {symbol.ToPrincString()} as a parameter!");
 
-
-         if (!body.IsProperList)
-            throw new ArgumentException($"body must be a proper list, not {body.ToPrincString()}");
+         ThrowUnlessProperList("body", body);
 
          var currentParam = lambdaList;
 
