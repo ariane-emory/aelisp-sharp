@@ -1,9 +1,7 @@
 # Ælisp# To Do List:
 
 ## To Do - replicating features from the C implemtation of Ælisp:
-- [ ] plist handling:
-  - [ ] data layer.
-  - [ ] core layer.
+- [ ] Core 'properties' methods.
 - [ ] Implement REPL, maybe use ReadLine package?
 - [ ] Find sensible/useful things for this implementation to put in object properties.
 - [ ] OS interaction functions (data layer/core):
@@ -33,6 +31,9 @@
 - [ ] Extend the stdlib's structs into an object system (which could turn out to look a lot like [tinyclos](https://github.com/kstephens/tinyclos), possibly just ammounting to successfully running a forked version of [tinyclos](https://github.com/kstephens/tinyclos)).
 
 ## Completed:
+- [x] plist handling:
+  - [x] data layer.
+  - [x] core layer.
 - [x] Public op/cmp methods on Number might warrant friendlier names and operator implementations.
 - [x] Math comparison functions.
 - [x] DRY up the int-only math methods.
