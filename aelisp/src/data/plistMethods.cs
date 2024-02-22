@@ -122,6 +122,8 @@ static partial class Ae
 
       while (! next.IsNil && ! ((Pair)next).Cdr.IsNil)
       {
+         WriteLine("tick");
+         
          if (((Pair)next).Car.Eql(key))
          {
             ((Pair)current).Cdr = ((Pair)((Pair)next).Cdr).Cdr;
