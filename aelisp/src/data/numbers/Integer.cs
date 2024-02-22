@@ -30,13 +30,13 @@ static partial class Ae
       protected override Rational Promote() => new(Value, 1);
 
       //==============================================================================================================================================
-      private Integer ApplyBinaryOp(Integer that, Func<int, int, int> op) => new(op(this.Value, that.Value));
-      private Integer CastAndApplyBinaryOp(Number that, Func<int, int, int> op) => ApplyBinaryOp((Integer)that, op);
+      private Integer ApplyBinaryOpToValues(Integer that, Func<int, int, int> op) => new(op(this.Value, that.Value));
+      private Integer CastAndApplyBinaryOpToValues(Number that, Func<int, int, int> op) => ApplyBinaryOpToValues((Integer)that, op);
       //==============================================================================================================================================
-      protected override Integer BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (l, r) => l + r);
-      protected override Integer BinarySub(Number that) => CastAndApplyBinaryOp(that, (l, r) => l - r);
-      protected override Integer BinaryMul(Number that) => CastAndApplyBinaryOp(that, (l, r) => l * r);
-      protected override Integer BinaryDiv(Number that) => CastAndApplyBinaryOp(that, (l, r) => l / r);
+      protected override Integer BinaryAdd(Number that) => CastAndApplyBinaryOpToValues(that, (l, r) => l + r);
+      protected override Integer BinarySub(Number that) => CastAndApplyBinaryOpToValues(that, (l, r) => l - r);
+      protected override Integer BinaryMul(Number that) => CastAndApplyBinaryOpToValues(that, (l, r) => l * r);
+      protected override Integer BinaryDiv(Number that) => CastAndApplyBinaryOpToValues(that, (l, r) => l / r);
 
       //==============================================================================================================================================
       private bool CastAndApplyBinaryCmp(Number that, Func<int, int,bool> cmp) => cmp(Value, ((Integer)that).Value);
@@ -45,7 +45,7 @@ static partial class Ae
       protected override bool BinaryCmpLT(Number that) => CastAndApplyBinaryCmp(that, (l, r)  => l < r);
 
       //=============================================================================================================================================
-      private static Integer ThrowwUnlessGreaterThanZero(Integer that, string opName)
+      private static Integer ThrowUnlessGreaterThanZero(Integer that, string opName)
       {
          if (that.Value <= 0)
             throw new ArgumentException($"{opName} by zero or negative number: {that}.");
@@ -55,12 +55,12 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected Integer UnaryBitNot() => new Integer(~ Value);
-      protected Integer BinaryBitAnd(Integer that) => ApplyBinaryOp(that, (l, r) => l & r);
-      protected Integer BinaryBitOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
-      protected Integer BinaryBitXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
-      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
-      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
-      protected Integer BinaryRsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
+      protected Integer BinaryBitAnd(Integer that) => ApplyBinaryOpToValues(that, (l, r) => l & r);
+      protected Integer BinaryBitOr(Integer that) => ApplyBinaryOpToValues(that, (l, r) => l | r);
+      protected Integer BinaryBitXor(Integer that) => ApplyBinaryOpToValues(that, (l, r) => l ^ r);
+      protected Integer BinaryMod(Integer that) => ApplyBinaryOpToValues(ThrowUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
+      protected Integer BinaryLsft(Integer that) => ApplyBinaryOpToValues(ThrowUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
+      protected Integer BinaryRsft(Integer that) => ApplyBinaryOpToValues(ThrowUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
 
       //==============================================================================================================================================
       // Impl operators
