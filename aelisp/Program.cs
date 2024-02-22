@@ -429,6 +429,8 @@ class Program
       PlistMutatingSet(plist, Intern("city"), new String("Los Angeles"));
       PlistMutatingSet(plist, Intern("category"), new String("Human"));
       WriteLine(plist.ToPrincString());
+      plist = PlistNonmutatingSet(plist, Intern("city"), new String("Los Angeles"));
+      WriteLine(plist.ToPrincString());
       
     }
 
