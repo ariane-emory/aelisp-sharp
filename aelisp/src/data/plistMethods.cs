@@ -90,7 +90,7 @@ static partial class Ae
    //     next = CDR(next);
    //   }
    // }
-   public static LispObject MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
+   public static LispObject MutatingPlistRemove(LispObject plist, LispObject key)
    {
       ThrowUnlessPlist(plist);
 

@@ -443,6 +443,9 @@ class Program
       
       plist = PurePlistRemove(plist, Intern("member"));
       WriteLine(plist.ToPrincString());
+
+
+      WriteLine(MutatingPlistRemove(plist, Intern("city")));
       
     }
 
