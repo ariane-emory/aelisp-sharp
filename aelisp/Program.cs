@@ -420,7 +420,9 @@ class Program
 
       Do("(setq plst '(name \"John\" age 33 city \"New York\" member t))");
       var plst = Do("plst");
-      PlistContains(plst, Intern("city"));
+      WriteLine(PlistContains(plst, Intern("city")) ? "contains city" : "does not contain city");
+      WriteLine(PlistContains(plst, Intern("name")) ? "contains name" : "does not contain name");
+      WriteLine(PlistContains(plst, new Integer(33)) ? "contains 33" : "does not contain 33");
     }
 
    //==============================================================================================================================

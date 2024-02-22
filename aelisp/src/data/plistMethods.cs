@@ -12,26 +12,23 @@ static partial class Ae
       if (!plist.IsList)
          throw new ArgumentException($"plist must be a list, not {plist}!");
       
-      if (plist is Pair plistHeadPair)
-      {
-         if (plistHeadPair.Length % 2 != 0)
+      if (!(plist is Pair plistHeadPair)) // plist must be Nil.
+          return false;
+          
+      if (plistHeadPair.Length % 2 != 0)
          throw new ArgumentException($"plist must have an even number of elements, not {plistHeadPair.Length}!");
-         
-         LispObject current = plist;
-
-         while (current is Pair currentPair)
-         {
-
-            LispObject currentKey = currentPair.Car;
-
-            if (currentKey.Equals(key))
-               return true; // Key found.
+      
+      LispObject current = plist;
+      
+      while (current is Pair currentPair)
+      {         
+         if (currentPair.Car.Equals(key))
+            return true;
             
-            current = (currentPair.Cdr is Pair cdrPair) ? cdrPair.Cdr : Nil;
-         }
+         current = currentPair.Cdr;
       }
       
-      return false; // Key not found.
+      return false; 
    }
    
 }
