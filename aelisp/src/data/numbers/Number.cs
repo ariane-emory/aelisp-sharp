@@ -60,17 +60,19 @@ static partial class Ae
       //==============================================================================================================================================
       // Impl operators
       //==============================================================================================================================================
-      public static bool operator > (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r))(left, right);
-      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
-      public static bool operator >= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r))(left, right);
-      public static bool operator <= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r))(left, right);
-      public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
-      public static bool operator != (Number left, Number right) => !ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
       public static Number operator + (Number left, Number right) => ApplyBinaryOpFun((l, r) => l.BinaryAdd(r))(left, right);
       public static Number operator - (Number left, Number right) => ApplyBinaryOpFun((l, r) => l.BinarySub(r))(left, right);
       public static Number operator * (Number left, Number right) => ApplyBinaryOpFun((l, r) => l.BinaryMul(r))(left, right);
       public static Number operator / (Number left, Number right) => ApplyBinaryOpFun((l, r) => l.BinaryDiv(r))(left, right);
       
+      //==============================================================================================================================================
+      public static bool operator > (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGT(r))(left, right);
+      public static bool operator < (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLT(r))(left, right);
+      public static bool operator >= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpGTE(r))(left, right);
+      public static bool operator <= (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpLTE(r))(left, right);
+      public static bool operator == (Number left, Number right) => ApplyBinaryCmpFun((l, r) => l.BinaryCmpEql(r))(left, right);
+      public static bool operator != (Number left, Number right) => ! (left == right);
+
       //==============================================================================================================================================
       // Abstract instance methods
       //==============================================================================================================================================

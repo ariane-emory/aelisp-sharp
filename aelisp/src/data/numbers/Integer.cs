@@ -88,6 +88,7 @@ static partial class Ae
       public static readonly Func<LispObject, Integer> Mod = ApplyVariadicIntegerArithmeticFun("modulo", (l, r) => l.BinaryMod(r));
       public static readonly Func<LispObject, Integer> Lsft = ApplyVariadicIntegerArithmeticFun("left shift", (l, r) => l.BinaryLsft(r));
       public static readonly Func<LispObject, Integer> Rsft = ApplyVariadicIntegerArithmeticFun("right shift", (l, r) => l.BinaryRsft(r));
+
       //==============================================================================================================================================
       private static Func<LispObject, Integer> ApplyVariadicIntegerArithmeticFun(string opName, Func<Integer, Integer, Integer> op) => (list) =>
          (Integer)ApplyVariadicArithmetic(list, 1, true, (l, r) =>
