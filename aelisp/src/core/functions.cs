@@ -26,6 +26,8 @@ static partial class Ae
 
          var lambdaList = ((Pair)argsList)[0];
          var body = ((Pair)argsList).Cdr;
+         
+         WriteLine($"body is: {body.ToPrincString()}");
 
          if (!(lambdaList.IsList || IsPermittedParamSymbol(lambdaList)))
             throw new ArgumentException($"lambda list must be a list or a symbol, not {lambdaList.ToPrincString()}!");
