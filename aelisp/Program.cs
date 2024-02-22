@@ -190,7 +190,7 @@ class Program
       // Core.ConsDebugWrite = true;
 
       //==============================================================================================================================
-      WriteLine("");
+      // WriteLine("");
 
       // Do("((lambda (x) (cons x x)) 8)");
       // Do("(setq qq 88 ww 77 *ee* 66)");
@@ -237,10 +237,10 @@ class Program
 
       void Do(string input)
       {
-         input = input.Trim();
+         // input = input.Trim();
 
-         if (! input.StartsWith("("))
-            input = $"({input})";
+         // if (! input.StartsWith("("))
+         //    input = $"({input})";
          
          // foreach (var tok in Tokenize(input)) WriteLine($"{tok} ");
          WriteLine($"\nÆ#> {input}");
@@ -415,9 +415,11 @@ class Program
       // WriteLine(new Integer(255) & (Integer)(new Integer(77) + new Integer(11) * new Integer(2)));
       // WriteLine(new Integer(1).Eql(new Float(1.0)));
       // WriteLine(new Integer(1) + new Float(3.0));
+      string s2 = @"This is \t a ""verbatim"" string";
 
-      Do("setq plst '(name \"John\" age 33 city \"New York\" member t)");
-      Do("princ plst");
+      Do("(setq plst '(name \"John\" age 33 city \"New York\" member t))");
+      Do("(princ plst)");
+      Do("plst");
     }
 
    //==============================================================================================================================
