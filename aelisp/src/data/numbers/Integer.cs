@@ -30,7 +30,8 @@ static partial class Ae
       protected override Rational Promote() => new(Value, 1);
 
       //==============================================================================================================================================
-      private Integer CastAndApplyBinaryOp(Number that, Func<int, int, int> op) => new(op(this.Value, ((Integer)that).Value));
+      private Integer ApplyBinaryOp(Integer that, Func<int, int, int> op) => new(op(this.Value, that.Value));
+      private Integer CastAndApplyBinaryOp(Number that, Func<int, int, int> op) => ApplyBinaryOp((Integer)that, op);
       //==============================================================================================================================================
       protected override Integer BinaryAdd(Number that) => CastAndApplyBinaryOp(that, (l, r) => l + r);
       protected override Integer BinarySub(Number that) => CastAndApplyBinaryOp(that, (l, r) => l - r);
@@ -54,12 +55,12 @@ static partial class Ae
 
       //==============================================================================================================================================
       protected Integer UnaryBitNot() => new Integer(~ Value);
-      protected Integer BinaryBitAnd(Integer that) => CastAndApplyBinaryOp(that, (l, r) => l & r);
-      protected Integer BinaryBitOr(Integer that) => CastAndApplyBinaryOp(that, (l, r) => l | r);
-      protected Integer BinaryBitXor(Integer that) => CastAndApplyBinaryOp(that, (l, r) => l ^ r);
-      protected Integer BinaryMod(Integer that) => CastAndApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
-      protected Integer BinaryLsft(Integer that) => CastAndApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
-      protected Integer BinaryRsft(Integer that) => CastAndApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
+      protected Integer BinaryBitAnd(Integer that) => this | that; // CastAndApplyBinaryOp(that, (l, r) => l & r);
+      protected Integer BinaryBitOr(Integer that) => ApplyBinaryOp(that, (l, r) => l | r);
+      protected Integer BinaryBitXor(Integer that) => ApplyBinaryOp(that, (l, r) => l ^ r);
+      protected Integer BinaryMod(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "modulo"), (l, r) => l % r);
+      protected Integer BinaryLsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "left shift"), (l, r) => l << r);
+      protected Integer BinaryRsft(Integer that) => ApplyBinaryOp(ThrowwUnlessGreaterThanZero(that, "right shift"), (l, r) => l >> r);
 
       //==============================================================================================================================================
       // Impl operators
