@@ -480,7 +480,7 @@ class Program
          PrintParseErrorLocationAndDie(pe, tokens);
       }
 
-      Do(fib);
+      Do("((lambda () (princ \"hello\") (princ \"world\")))");
       // Do("(let* ((x 5) (y x)) y)");
    }
 
