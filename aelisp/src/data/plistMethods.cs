@@ -90,7 +90,7 @@ static partial class Ae
    //     next = CDR(next);
    //   }
    // }
-   public static void MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
+   public static LispObject MutatingPlistRemove(LispObject plist, LispObject key, LispObject value)
    {
       ThrowUnlessPlist(plist);
 
@@ -117,7 +117,7 @@ static partial class Ae
             ((Pair)current).Cdr = ((Pair)afterPair).Cdr;
          }
 
-         return;
+         return plist;
       }
 
       while (! next.IsNil && ! ((Pair)next).Cdr.IsNil)
@@ -126,9 +126,11 @@ static partial class Ae
          {
             ((Pair)current).Cdr = ((Pair)((Pair)next).Cdr).Cdr;
             
-            return;
+            return plist;
          }
       }
+
+      return plist;
    }
 
    //====================================================================================================================
