@@ -2,9 +2,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": ".NET Core Launch (web)",
+      "name": ".NET Core Launch",
       "type": "coreclr",
       "request": "launch",
+      "preLaunchTask": "build",
       "program": "${workspaceFolder}/aelisp/bin/Debug/net8.0/aelisp.dll",
       // Other configuration settings
       "justMyCode": false // Ensure this is set according to your preference
