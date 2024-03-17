@@ -1,7 +1,13 @@
 {
-   // Use IntelliSense to learn about possible attributes.
-   // Hover to view descriptions of existing attributes.
-   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-   "version": "0.2.0",
-   "configurations": []
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/aelisp/bin/Debug/net8.0/aelisp.dll",
+      // Other configuration settings
+      "justMyCode": false // Ensure this is set according to your preference
+    }
+  ]
 }
