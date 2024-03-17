@@ -77,42 +77,44 @@ static partial class Ae
 
 
 
-  //=================================================================================================================================================
+  //====================================================================================================================
   // Ae's extension methods
-  //=================================================================================================================================================
+  //====================================================================================================================
   private static void ToPrintString(this IEnumerable<LispToken> self, int countOffset = 0)
   {
     foreach (var (token, index) in self.Select((value, index) => (value, index + countOffset)))
       WriteLine($"#{index}: {token}");
   }
 
-  //=================================================================================================================================================
+  //====================================================================================================================
   private static IEnumerable<LispToken> ExcludingComments(this IEnumerable<LispToken> self) =>
     self.Where(t => (t.Type != LispTokenType.Comment)
                && (t.Type != LispTokenType.LineComment)
                && !MultilineCommentLispTokenTypes.Contains(t.Type));
 
-  //=================================================================================================================================================
+  //====================================================================================================================
   private static bool IsNonwhitespaceToken(this LispToken token) => !IsWhitespaceToken(token);
   private static bool IsWhitespaceToken(this LispToken token) => WhitespaceLispTokenTypes.Contains(token.Type);
-  //=================================================================================================================================================
+  //====================================================================================================================
   private static bool IsWhitespaceOrCommentToken(this LispToken token) =>
    WhitespaceLispTokenTypes.Contains(token.Type)
      || CommentLispTokenTypes.Contains(token.Type)
      || MultilineCommentLispTokenTypes.Contains(token.Type);
 
-  //=================================================================================================================================================
-  // private static IEnumerable<LispToken> Whitespace(this IEnumerable<LispToken> self) => self.Where(t => t.IsWhitespaceToken());
-  private static IEnumerable<LispToken> Nonwhitespace(this IEnumerable<LispToken> self) => self.Where(t => t.IsNonwhitespaceToken());
+  //====================================================================================================================
+  private static IEnumerable<LispToken> Whitespace(this IEnumerable<LispToken> self) =>
+    self.Where(t => t.IsWhitespaceToken());
+  private static IEnumerable<LispToken> Nonwhitespace(this IEnumerable<LispToken> self) =>
+    self.Where(t => t.IsNonwhitespaceToken());
 
-  //=================================================================================================================================================
+  //====================================================================================================================
   // PureLispTokenizer class
-  //=================================================================================================================================================
+  //====================================================================================================================
   private class PureLispTokenizer : PureStringTokenizer<LispTokenType, LispToken, LispTokenizerState>
   {
-    //==============================================================================================================================================
+    //==================================================================================================================
     // Private constructor
-    //==============================================================================================================================================
+    //==================================================================================================================
     private PureLispTokenizer() : base(createToken: (tokenType, text) => new(tokenType, text, 0, 0, 0),
                                        createTokenizerStateFun: () => new())
     {
@@ -125,9 +127,9 @@ static partial class Ae
             active is null ? Normal : active);
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     // Private constants
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static readonly
       ImmutableArray<(LispTokenType Type,
                       bool Discrete,
@@ -173,12 +175,12 @@ static partial class Ae
       .Add((Type: LispTokenType.MultilineCommentContent, Discrete: false, Process: ProcCountLine, IsActive: InMultilineComment, Pattern: @"[^\n]*\n"));
     //.Add((Type: LispTokenType.Garbage,                   Discrete: false, Process: null,              IsActive: null,               Pattern: @".+"));
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     public static PureLispTokenizer Instance { get; } = new();
 
-    //=========================================================== ==================================================================================
+    //=========================================================== ======================================================
     // LispToken callbacks
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
       ProcUnescapeChars((LispTokenizerState State, LispToken Token) tup)
     {
@@ -186,7 +188,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
       ProcLParen((LispTokenizerState State, LispToken Token) tup)
     {
@@ -196,7 +198,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
       ProcRParen((LispTokenizerState State, LispToken Token) tup)
     {
@@ -206,7 +208,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcStringLike((LispTokenizerState State, LispToken Token) tup)
     {
@@ -214,12 +216,12 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcLispStyleChar((LispTokenizerState State, LispToken Token) tup)
       => ProcUnescapeChars(ProcTrimFirst(tup));
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcTrimFirst((LispTokenizerState State, LispToken Token) tup)
     {
@@ -227,7 +229,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
         TrimLast((LispTokenizerState State, LispToken Token) tup)
     {
@@ -235,7 +237,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
         ProcNumber((LispTokenizerState State, LispToken Token) tup)
     {
@@ -253,7 +255,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcFloat((LispTokenizerState State, LispToken Token) tup)
     {
@@ -273,7 +275,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcRational((LispTokenizerState State, LispToken Token) tup)
     {
@@ -294,7 +296,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcStripCommas((LispTokenizerState State, LispToken Token) tup)
     {
@@ -302,7 +304,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcComment((LispTokenizerState State, LispToken Token) tup)
     {
@@ -311,9 +313,9 @@ static partial class Ae
       return ProcCountLine(tup);
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     // LispToken callbacks (multiline comments)
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcBeginMLC((LispTokenizerState State, LispToken Token) tup)
     {
@@ -323,7 +325,7 @@ static partial class Ae
       return ProcCountLine(tup);
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcEndMLC((LispTokenizerState State, LispToken Token) tup)
     {
@@ -332,9 +334,9 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     // LispToken callbacks (multiline strings)
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcBeginMLS((LispTokenizerState State, LispToken Token) tup)
     {
@@ -343,7 +345,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcEndMLS((LispTokenizerState State, LispToken Token) tup)
     {
@@ -352,17 +354,17 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcMLSContent((LispTokenizerState State, LispToken Token) tup) =>
        ProcUnescapeChars(ProcCountLine(tup));
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcNewline((LispTokenizerState State, LispToken Token) tup)
       => ProcDiscardText(ProcCountLine(tup));
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcCountLine((LispTokenizerState State, LispToken Token) tup)
     {
@@ -371,7 +373,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        CountColumns((LispTokenizerState State, LispToken Token) tup)
     {
@@ -380,7 +382,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        SetTokenLinesAndColumns((LispTokenizerState State, LispToken Token) tup)
     {
@@ -390,7 +392,7 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     private static (LispTokenizerState, LispToken)
        ProcDiscardText((LispTokenizerState State, LispToken Token) tup)
     {
@@ -398,16 +400,18 @@ static partial class Ae
       return tup;
     }
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     // 'Is active?' callbacks
-    //==============================================================================================================================================
-    private static bool InMultilineComment(LispTokenizerState state) => state.Mode == LispTokenizerMode.InMultilineComment;
-    private static bool InMultilineString(LispTokenizerState state) => state.Mode == LispTokenizerMode.InMultilineString;
+    //==================================================================================================================
+    private static bool InMultilineComment(LispTokenizerState state) =>
+      state.Mode == LispTokenizerMode.InMultilineComment;
+    private static bool InMultilineString(LispTokenizerState state) =>
+      state.Mode == LispTokenizerMode.InMultilineString;
     private static bool Normal(LispTokenizerState state) => state.Mode == LispTokenizerMode.Normal;
 
-    //==============================================================================================================================================
+    //==================================================================================================================
     // Patterns are down here since they can confuse csharp-mode's indentation logic:
-    //==============================================================================================================================================
+    //==================================================================================================================
     private const string DigitSeparatedInteger = @"(?:" + ZeroPaddedInteger + @"(?:," + ZeroPaddedInteger + @")*)";
     private const string Float = @"(?:" + MaybeSigned + DigitSeparatedInteger + @"?\.\d+)";
     private const string FollowedByTokenBarrierOrEOF = @"(?=\s|\)|$|(?:#\|))";
@@ -421,7 +425,8 @@ static partial class Ae
     private const string ShiftLeft = @"(?:\<\<)";
     private const string ShiftRight = @"(?:\>\>)";
     private const string Sign = @"(?:[\-+])";
-    private const string SymBody = @"(?:" + MaybeSymLeader + SymFirstWord + @"(?:" + SymSeparator + SymWord + @")*" + MaybePunctuationSuffix + @")";
+    private const string SymBody =
+      @"(?:" + MaybeSymLeader + SymFirstWord + @"(?:" + SymSeparator + SymWord + @")*" + MaybePunctuationSuffix + @")";
     private const string SymFirstWord = @"(?:[a-zA-Z]" + SymWordChar + @"*)";
     private const string SymSeparator = @"(?:(?:\-+)|(?:_+)|(?:\:+)|(?:/+))";
     private const string SymWord = @"(?:" + SymWordChar + @"+)";
@@ -429,6 +434,6 @@ static partial class Ae
     private const string ZeroPaddedInteger = @"(?:" + MaybeZeroPadding + Integer + @")";
     private const string StringContent = @"(?:(?:\\[abfnrtv\\""])|[^\""\n\\])*"; // Keep this in sync with EscapedChars.
 
-    //==============================================================================================================================================
+    //==================================================================================================================
   }
 }
