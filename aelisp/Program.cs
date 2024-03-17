@@ -10,22 +10,21 @@ using System.Text.RegularExpressions;
 using Char = Ae.Char;
 using String = Ae.String;
 
-//================================================================================================================================
+//======================================================================================================================
 class Program
 {
-  //==============================================================================================================================
+  //====================================================================================================================
   static void Main()
   {
-
+    WriteLine("Hello World!");
     // // EnableDebugWrite = true;
 
-    // var path = "data/data.lisp"; // "~/lib.lisp";
-    // var expandedPath = path.ExpandTilde();
-    // var fileText = File.ReadAllText(expandedPath);
+    var path = "~/dotnet/aelisp-sharp/data/fib.lisp".ExpandTilde();
+    var fileText = File.ReadAllText(path);
 
-    // // WriteLine("File contents:");
-    // // WriteLine(fileText);
-    // // WriteLine("EOF");
+    WriteLine("File contents:");
+    WriteLine(fileText);
+    WriteLine("EOF");
 
     // var tokenizer = new QueueingLispTokenizer(fileText, exclude: IsWhitespaceToken);
 
@@ -154,7 +153,7 @@ class Program
     // ConsDebugWrite = false;
     // Core.ConsDebugWrite = true;
 
-    //==============================================================================================================================
+    //==================================================================================================================
     // WriteLine("");
 
     // Do("((lambda (x) (cons x x)) 8)");
@@ -409,15 +408,13 @@ class Program
     // plist = PurePlistRemove(plist, Intern("member"));
     // WriteLine(plist.ToPrincString());
 
-
     // WriteLine(MutatingPlistRemove(plist, Intern("city")).ToPrincString());
     // WriteLine(MutatingPlistRemove(plist, Intern("name")).ToPrincString());
     // WriteLine(MutatingPlistRemove(plist, Intern("color")).ToPrincString());
     // WriteLine(MutatingPlistRemove(plist, Intern("age")).ToPrincString());
     // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
 
-
-    Do(File.ReadAllText("../aelisp-sharp/data/fib.lisp"));
+    Do(File.ReadAllText("~/dotnet/aelisp-sharp/data/fib.lisp".ExpandTilde()));
     // var obj = Nil;
 
     // try
@@ -436,7 +433,7 @@ class Program
     // obj.Eval(Root);
   }
 
-  //==============================================================================================================================
+  //====================================================================================================================
 }
 
 
