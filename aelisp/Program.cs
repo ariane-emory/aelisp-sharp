@@ -417,7 +417,7 @@ class Program
     // WriteLine(MutatingPlistRemove(plist, Intern("category")).ToPrincString());
 
 
-    Do(File.ReadAllText("../data/fib.lisp"));
+    Do(File.ReadAllText("../aelisp-sharp/data/fib.lisp"));
     // var obj = Nil;
 
     // try

@@ -4,51 +4,51 @@ using static Ae;
 //======================================================================================================================
 static partial class Ae
 {
-   //====================================================================================================================
-   public static partial class Core
-   {
-      //=================================================================================================================
-      private static CoreFun.FuncT ShortCircuitingSpecialFun(Func<LispObject, bool> pred) =>
-         (env, argsList) =>
+  //===================================================================================================================
+  public static partial class Core
+  {
+    //=================================================================================================================
+    private static CoreFun.FuncT ShortCircuitingSpecialFun(Func<LispObject, bool> pred) =>
+       (env, argsList) =>
+       {
+         ThrowUnlessIsProperList("argsList", argsList);
+
+         var result = Nil;
+
+         while (argsList is Pair argsListPair)
          {
-            ThrowUnlessIsProperList("argsList", argsList);
+           var head = argsListPair.Car;
 
-            var result = Nil;
+           // WriteLine($"progn evaling head = {head.ToPrincString()}...");
 
-            while (argsList is Pair argsListPair)
-            {
-               var head = argsListPair.Car;
+           result = head.Eval(env);
+           // WriteLine($"result = {result.ToPrincString()}");
 
-               // WriteLine($"progn evaling head = {head.ToPrincString()}...");
+           if (pred(result))
+             return result;
 
-               result = head.Eval(env);
-               // WriteLine($"result = {result.ToPrincString()}");
+           argsList = argsListPair.Cdr;
+         }
 
-               if (pred(result))
-                  return result;
+         return result;
+       };
 
-               argsList = argsListPair.Cdr;
-            }
+    //=================================================================================================================
+    public static LispObject And(Env env, LispObject argsList) =>
+       ShortCircuitingSpecialFun(o => o.IsNil)
+       (env, argsList);
 
-            return result;
-         };
+    //=================================================================================================================
+    public static LispObject Or(Env env, LispObject argsList) =>
+       ShortCircuitingSpecialFun(o => !o.IsNil)
+       (env, argsList);
 
-      //=================================================================================================================
-      public static LispObject And(Env env, LispObject argsList) =>
-         ShortCircuitingSpecialFun(o => o.IsNil)
-         (env, argsList);
+    //=================================================================================================================
+    public static LispObject Progn(Env env, LispObject argsList) =>
+       ShortCircuitingSpecialFun(o => false)
+       (env, argsList);
 
-      //=================================================================================================================
-      public static LispObject Or(Env env, LispObject argsList) =>
-         ShortCircuitingSpecialFun(o => !o.IsNil)
-         (env, argsList);
-
-      //=================================================================================================================
-      public static LispObject Progn(Env env, LispObject argsList) =>
-         ShortCircuitingSpecialFun(o => false)
-         (env, argsList);
-
-      //================================================================================================================
-   }
-   //===================================================================================================================
+    //================================================================================================================
+  }
+  //===================================================================================================================
 }
